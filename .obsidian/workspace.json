@@ -185,6 +185,10 @@
   },
   "active": "268e5cdb344b191d",
   "lastOpenFiles": [
+    "site/public/static/rsd-logo.svg",
+    "site/quartz/components/SiteBranding.tsx",
+    "site/quartz/static/rsd-logo.svg",
+    "00_Podklady/rsd-logo-sirkove-2c-barevne-rgb.svg",
     "site/node_modules/hast-util-to-jsx-runtime/node_modules/unist-util-stringify-position/package.json",
     "site/node_modules/hast-util-to-jsx-runtime/node_modules/unist-util-stringify-position/license",
     "site/node_modules/hast-util-to-jsx-runtime/node_modules/property-information/index.d.ts",
@@ -196,8 +200,6 @@
     "site/node_modules/hast-util-to-jsx-runtime/node_modules/property-information/readme.md",
     "site/node_modules/mdast-util-mdx-jsx/node_modules/vfile-message/index.js",
     "site/node_modules/mdast-util-mdx-jsx/node_modules/vfile-message/license",
-    "site/node_modules/hast-util-to-html/node_modules/property-information/index.d.ts",
-    "site/node_modules/mdast-util-mdx-jsx/node_modules/vfile-message/package.json",
     "site/node_modules/mdast-util-mdx-jsx/node_modules/vfile-message/readme.md",
     "site/node_modules/hast-util-to-html/node_modules/property-information/readme.md",
     "site/node_modules/hast-util-from-html/node_modules/vfile-message/readme.md",
@@ -228,8 +230,6 @@
     "site/public/site/docs/tags/component-og-image.webp",
     "site/public/site/docs/plugins/HardLineBreaks-og-image.webp",
     "site/public/site/docs/plugins/TableOfContents-og-image.webp",
-    "site/public/site/docs/plugins/SyntaxHighlighting-og-image.webp",
-    "site/public/site/docs/plugins/Static-og-image.webp",
-    "site/public/site/docs/plugins/RoamFlavoredMarkdown-og-image.webp"
+    "site/public/site/docs/plugins/SyntaxHighlighting-og-image.webp"
   ]
 }

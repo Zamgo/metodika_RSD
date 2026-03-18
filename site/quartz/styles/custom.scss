@@ -1,3 +1,111 @@
 @use "./base.scss";
 
-// put your custom CSS here!
+// --- Rozložení: bílé boční sloupce | šedý střed se stínem | bílý pravý sloupec ---
+
+body {
+  background-color: #ffffff;
+}
+
+.page {
+  max-width: calc(1200px + 360px);
+}
+
+#quartz-body {
+  // Odebrat mezeru mezi „sloupci“, ať působí jako souvislé pruhy
+  column-gap: 0 !important;
+
+  & .sidebar.left,
+  & .sidebar.right {
+    background-color: #ffffff;
+  }
+
+  & .sidebar.left {
+    padding-top: 1.5rem;
+    border-right: 1px solid rgba(0, 0, 0, 0.06);
+  }
+
+  & .sidebar.right {
+    border-left: 1px solid rgba(0, 0, 0, 0.06);
+  }
+
+  & .center {
+    background-color: #eef1f5;
+    padding-left: clamp(1rem, 3vw, 2.25rem);
+    padding-right: clamp(1rem, 3vw, 2.25rem);
+    padding-bottom: 2rem;
+    box-shadow:
+      -12px 0 28px -18px rgba(9, 65, 122, 0.12),
+      12px 0 28px -18px rgba(9, 65, 122, 0.08);
+    box-sizing: border-box;
+  }
+
+  & .page-header {
+    padding-left: 0;
+    padding-right: 0;
+  }
+
+  & article {
+    background-color: rgba(255, 255, 255, 0.65);
+    border-radius: 8px;
+    padding: 1.25rem 1.5rem 2rem;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+  }
+
+  @media all and (max-width: 800px) {
+    column-gap: 5px !important;
+
+    & .sidebar.left,
+    & .sidebar.right {
+      background-color: transparent;
+      border: none;
+    }
+
+    & .center {
+      background-color: transparent;
+      box-shadow: none;
+      padding-left: 0;
+      padding-right: 0;
+    }
+
+    & article {
+      background-color: transparent;
+      box-shadow: none;
+      padding: 0;
+    }
+  }
+}
+
+// Tmavý režim: zachovat čitelnost, jemný kontrast středu
+:root[saved-theme="dark"] body {
+  background-color: var(--light);
+}
+
+:root[saved-theme="dark"] {
+  #quartz-body {
+    & .sidebar.left,
+    & .sidebar.right {
+      background-color: var(--light);
+      border-right-color: var(--lightgray);
+      border-left-color: var(--lightgray);
+    }
+
+    & .center {
+      background-color: color-mix(in srgb, var(--lightgray) 35%, var(--light));
+      box-shadow:
+        -10px 0 24px -14px rgba(0, 0, 0, 0.35),
+        10px 0 24px -14px rgba(0, 0, 0, 0.25);
+    }
+
+    & article {
+      background-color: color-mix(in srgb, var(--lightgray) 20%, transparent);
+    }
+
+    @media all and (max-width: 800px) {
+      & .center,
+      & article {
+        background-color: transparent;
+        box-shadow: none;
+      }
+    }
+  }
+}
