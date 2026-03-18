@@ -18,6 +18,7 @@ export default ((userOpts?: Partial<SearchOptions>) => {
     const opts = { ...defaultOptions, ...userOpts }
     const s = i18n(cfg.locale).components.search
     const searchPlaceholder = s.searchBarPlaceholder
+    const cs = cfg.locale.startsWith("cs")
     return (
       <div class={classNames(displayClass, "search")}>
         <button class="search-button">
@@ -34,6 +35,11 @@ export default ((userOpts?: Partial<SearchOptions>) => {
           class="search-container"
           data-search-no-results-title={s.noResultsTitle}
           data-search-no-results-hint={s.noResultsHint}
+          data-search-locale={cfg.locale}
+          data-str-active-filters={cs ? "Aktivní filtry" : "Active filters"}
+          data-str-clear-all={cs ? "Zrušit filtry" : "Clear filters"}
+          data-str-add-filter={cs ? "Vybrat z metadat" : "Filter by metadata"}
+          data-str-filter-hint={cs ? "Klikněte na hodnotu — u tagů platí současně všechny vybrané." : "Click values to filter — tags use AND; other fields use OR within the same group."}
         >
           <div class="search-space">
             <div class="search-top-card">
@@ -45,22 +51,27 @@ export default ((userOpts?: Partial<SearchOptions>) => {
                 aria-label={searchPlaceholder}
                 placeholder={searchPlaceholder}
               />
-              <div class="search-tag-panel">
-                <button type="button" class="search-tag-toggle" aria-expanded="false">
-                  {s.tagFilterToggle}
+              <div class="search-filters-ui">
+                <div class="search-active-filters-wrap" hidden>
+                  <span class="search-active-filters-label" />
+                  <div class="search-active-filters" />
+                  <button type="button" class="search-clear-all-filters">
+                    {s.clearTagFilters}
+                  </button>
+                </div>
+                <button type="button" class="search-filters-toggle" aria-expanded="false">
+                  <span class="search-filters-toggle-text">{s.tagFilterToggle}</span>
                 </button>
-                <div class="search-tag-panel-body">
+                <div class="search-filters-panel">
+                  <p class="search-filters-hint" />
                   <input
                     type="search"
-                    class="search-tag-list-filter"
+                    class="search-facet-filter"
                     autocomplete="off"
                     placeholder={s.tagFilterPlaceholder}
                     aria-label={s.tagFilterPlaceholder}
                   />
-                  <div class="search-tag-checkboxes" />
-                  <button type="button" class="search-tag-clear">
-                    {s.clearTagFilters}
-                  </button>
+                  <div class="search-facet-sections" />
                 </div>
               </div>
             </div>

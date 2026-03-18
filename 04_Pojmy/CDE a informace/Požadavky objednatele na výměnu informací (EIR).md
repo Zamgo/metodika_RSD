@@ -36,6 +36,6 @@ Požadavky objednatele na výměnu informací (EIR)
 ## Související pojmy
 
 - [[BIM Execution Plan (BEP)]]
-- [[Digitální informační model stavby (DiMS)]]
+- [[Digitální model stavby (DiMS)]]
 - [[Společné datové prostředí (CDE)]]
 

@@ -17,7 +17,7 @@ tags: [proces]
 
 ## Účel
 
-Účelem evidence změn během výstavby je zajistit transparentní, systematické a auditovatelné řízení všech úprav projektové dokumentace, digitálního informačního modelu stavby ([[Digitální informační model stavby (DiMS)|DiMS]]) a souvisejících výstupů, které vznikají v průběhu realizace stavby.
+Účelem evidence změn během výstavby je zajistit transparentní, systematické a auditovatelné řízení všech úprav projektové dokumentace, digitálního informačního modelu stavby ([[Digitální model stavby (DiMS)|DiMS]]) a souvisejících výstupů, které vznikají v průběhu realizace stavby.
 V průběhu výstavby dochází ke změnám z technických, organizačních, majetkoprávních nebo ekonomických důvodů. Každá taková změna může mít dopad na rozsah díla, cenu, harmonogram nebo budoucí provoz stavby. Bez jednoznačné evidence změn hrozí riziko ztráty přehledu o platné dokumentaci, vznik sporů mezi účastníky projektu nebo nemožnost doložit rozhodovací proces.
 
 ## Kdy se používá
@@ -28,7 +28,7 @@ V průběhu výstavby dochází ke změnám z technických, organizačních, maj
 
 Pro evidenci změn během výstavby musí být k dispozici zejména:
   - aktuální projektová dokumentace,
-  - aktuální digitální informační model stavby ([[Digitální informační model stavby (DiMS)|DiMS]]),
+  - aktuální digitální informační model stavby ([[Digitální model stavby (DiMS)|DiMS]]),
   - evidence změnových řízení ([[ZBV]]),
   - zápisy z kontrolních dnů stavby,
   - technické návrhy změn nebo požadavky na úpravy projektu,
@@ -46,7 +46,7 @@ Správce stavby zajistí, aby:
   - datum vzniku,
   - odpovědnou osobu.
   - Změna byla provázána s:
-  - aktualizovaným [[Digitální informační model stavby (DiMS)|DiMS]],
+  - aktualizovaným [[Digitální model stavby (DiMS)|DiMS]],
   - výkresovou dokumentací,
   - změnovým řízením ([[ZBV]]), je-li relevantní.
   - Před uzavřením změny bylo ověřeno:
@@ -60,7 +60,7 @@ Správce stavby zajistí, aby:
 - Zhotovitel:
     - identifikuje změny vznikající během realizace stavby,
     - předkládá návrhy změn a aktualizované projektové výstupy,
-    - aktualizuje projektovou dokumentaci a [[Digitální informační model stavby (DiMS)|DiMS]] v návaznosti na schválené změny.
+    - aktualizuje projektovou dokumentaci a [[Digitální model stavby (DiMS)|DiMS]] v návaznosti na schválené změny.
 - Správce stavby:
     - kontroluje evidenci změn v nástroji [[Společné datové prostředí (CDE)|CDE]],
     - sleduje provázání změn s dokumentací, modelem a změnovým řízením,

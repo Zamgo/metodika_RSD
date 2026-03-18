@@ -17,7 +17,7 @@ tags: [workflow]
 
 ## Účel workflow
 
-Schválení aktualizace [[Digitální informační model stavby (DiMS)|DiMS]]
+Schválení aktualizace [[Digitální model stavby (DiMS)|DiMS]]
 
 ## Kdy se spouští
 

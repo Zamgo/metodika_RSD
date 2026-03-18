@@ -9,6 +9,65 @@ import { write } from "./helpers"
 import { i18n } from "../../i18n"
 
 export type ContentIndexMap = Map<FullSlug, ContentDetails>
+/** Frontmatter metadata used for search facets (CDE knowledge base). */
+export type PageMeta = {
+  typ?: string
+  stav?: string
+  vlastnik?: string
+  faze?: string[]
+  role?: string[]
+  cinnosti?: string[]
+  workflow?: string[]
+  temata?: string[]
+}
+
+function toScalar(v: unknown): string | undefined {
+  if (v == null || v === "") return undefined
+  const s = String(v).trim()
+  return s || undefined
+}
+
+function toStringArray(v: unknown): string[] {
+  if (v == null) return []
+  if (Array.isArray(v)) return [...new Set(v.map((x) => String(x).trim()).filter(Boolean))]
+  if (typeof v === "string" && v.trim()) return [v.trim()]
+  return []
+}
+
+function metaFromFrontmatter(fm: Record<string, unknown> | undefined): PageMeta | undefined {
+  if (!fm) return undefined
+  const meta: PageMeta = {}
+  const typ = toScalar(fm.typ)
+  const stav = toScalar(fm.stav)
+  const vlastnik = toScalar(fm.vlastnik)
+  if (typ) meta.typ = typ
+  if (stav) meta.stav = stav
+  if (vlastnik) meta.vlastnik = vlastnik
+  const faze = toStringArray(fm.faze)
+  const role = toStringArray(fm.role)
+  const cinnosti = toStringArray(fm.cinnosti)
+  const workflow = toStringArray(fm.workflow)
+  const temata = toStringArray(fm.temata)
+  if (faze.length) meta.faze = faze
+  if (role.length) meta.role = role
+  if (cinnosti.length) meta.cinnosti = cinnosti
+  if (workflow.length) meta.workflow = workflow
+  if (temata.length) meta.temata = temata
+  if (
+    !meta.typ &&
+    !meta.stav &&
+    !meta.vlastnik &&
+    !meta.faze?.length &&
+    !meta.role?.length &&
+    !meta.cinnosti?.length &&
+    !meta.workflow?.length &&
+    !meta.temata?.length
+  ) {
+    return undefined
+  }
+  return meta
+}
+
 export type ContentDetails = {
   slug: FullSlug
   filePath: FilePath
@@ -19,6 +78,7 @@ export type ContentDetails = {
   richContent?: string
   date?: Date
   description?: string
+  meta?: PageMeta
 }
 
 interface Options {
@@ -103,12 +163,14 @@ export const ContentIndex: QuartzEmitterPlugin<Partial<Options>> = (opts) => {
         const slug = file.data.slug!
         const date = getDate(ctx.cfg.configuration, file.data) ?? new Date()
         if (opts?.includeEmptyFiles || (file.data.text && file.data.text !== "")) {
+          const fm = file.data.frontmatter as Record<string, unknown> | undefined
           linkIndex.set(slug, {
             slug,
             filePath: file.data.relativePath!,
             title: file.data.frontmatter?.title!,
             links: file.data.links ?? [],
             tags: file.data.frontmatter?.tags ?? [],
+            meta: metaFromFrontmatter(fm),
             content: file.data.text ?? "",
             richContent: opts?.rssFullHtml
               ? escapeHTML(toHtml(tree as Root, { allowDangerousHtml: true }))

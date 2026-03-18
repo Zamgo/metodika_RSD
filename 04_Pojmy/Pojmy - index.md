@@ -41,7 +41,7 @@ tags: [index, pojmy, role, metadata, kontejner, audit]
 - [[Informační model stavby]]
 - [[Požadavky objednatele na výměnu informací (EIR)]]
 - [[BIM Execution Plan (BEP)]]
-- [[Digitální informační model stavby (DiMS)]]
+- [[Digitální model stavby (DiMS)]]
 
 ## Řízení a kontrola (výběr)
 

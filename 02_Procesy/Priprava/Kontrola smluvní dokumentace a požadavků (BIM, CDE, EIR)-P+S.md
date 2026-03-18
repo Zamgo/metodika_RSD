@@ -17,7 +17,7 @@ tags: [proces]
 
 ## Účel
 
-Účelem činnosti je ověřit, že smluvní dokumentace a zadávací podklady obsahují jednoznačně definované, vzájemně konzistentní a kontrolovatelné požadavky na správu informací o stavbě, využití metody BIM, digitálního informačního modelu stavby ([[Digitální informační model stavby (DiMS)|DiMS]]) a nástroje společného datového prostředí ([[Společné datové prostředí (CDE)|CDE]]).
+Účelem činnosti je ověřit, že smluvní dokumentace a zadávací podklady obsahují jednoznačně definované, vzájemně konzistentní a kontrolovatelné požadavky na správu informací o stavbě, využití metody BIM, digitálního informačního modelu stavby ([[Digitální model stavby (DiMS)|DiMS]]) a nástroje společného datového prostředí ([[Společné datové prostředí (CDE)|CDE]]).
 Tato kontrola je základním předpokladem pro správné nastavení projektových procesů a minimalizaci rizik v průběhu realizace stavby.
 
 ## Kdy se používá
@@ -38,7 +38,7 @@ Správce stavby provede systematickou kontrolu dokumentace v následujícím roz
 - Kontrola vymezení povinnosti využívat [[Společné datové prostředí (CDE)|CDE]]
   - Ověřit, zda je ve smlouvě jednoznačně stanoveno, že projekt bude řízen prostřednictvím CDE.
   - Ověřit, zda jsou definovány základní požadavky na stavy [[Informační kontejner|informačních kontejnerů]], verzování a archivaci.
-- Kontrola požadavků na [[Digitální informační model stavby (DiMS)|DiMS]]
+- Kontrola požadavků na [[Digitální model stavby (DiMS)|DiMS]]
   - Ověřit, zda je definován rozsah modelování.
   - Ověřit požadovaný formát (např. IFC).
   - Ověřit požadovanou úroveň podrobnosti a informací.

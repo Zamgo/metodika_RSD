@@ -17,8 +17,8 @@ tags: [proces]
 
 ## Účel
 
-Cílem ověřování alfanumerických informací je zajistit, aby alfanumerické informace v [[Digitální informační model stavby (DiMS)|DiMS]] (identifikátory, parametry, klasifikace a vazby) byla úplná, správná, konzistentní, a aby odpovídala požadavkům stanovených v rámci datového standardu stavby (DSS).
-- Ověřování alfanumerických informací v rámci [[Digitální informační model stavby (DiMS)|DiMS]] slouží zejména k:
+Cílem ověřování alfanumerických informací je zajistit, aby alfanumerické informace v [[Digitální model stavby (DiMS)|DiMS]] (identifikátory, parametry, klasifikace a vazby) byla úplná, správná, konzistentní, a aby odpovídala požadavkům stanovených v rámci datového standardu stavby (DSS).
+- Ověřování alfanumerických informací v rámci [[Digitální model stavby (DiMS)|DiMS]] slouží zejména k:
     - zajištění jednoznačné identifikace prvků v rámci jednotlyvých dílčích DiMS podle požadavků DSS,
     - zajištění jednoznačné struktury zápisu informací (atributů, vlastností, vztahů…) v rámci DiMS podle požadavků DSS.
 
@@ -29,7 +29,7 @@ Cílem ověřování alfanumerických informací je zajistit, aby alfanumerické
 ## Vstupy
 
 Pro provedení ověřování alfanumerických informací musí být k dispozici:
-- aktuální [[Digitální informační model stavby (DiMS)|DiMS]] (dílčí DiMS) ve stupni, podorobnosti a formátu požadovaném projektem (např. IFC),
+- aktuální [[Digitální model stavby (DiMS)|DiMS]] (dílčí DiMS) ve stupni, podorobnosti a formátu požadovaném projektem (např. IFC),
 - definice požadavků na data podle varianty projektu:
     - strojově čitelný a standardizovaný datový standard stavby ve formátu IDS (pokud existuje), nebo
     - datový standard stavby v tabulkové formě (např. XLSX).
@@ -65,7 +65,7 @@ Správce stavby ověřuje, že pracuje s aktuálními verzemi [[Informační kon
 - Zhotovitel:
     - dodává alfanumerické informace v požadované struktuře,
     - provádí pravidelnou [[Verifikace|verifikaci]] alfanumerických informací podle [[BIM Execution Plan (BEP)|BEP]] (jestli to vyplývá z jeho kompetencí na daném projektu)
-    - odstraňuje neshody a promítá změny do [[Digitální informační model stavby (DiMS)|DiMS]].
+    - odstraňuje neshody a promítá změny do [[Digitální model stavby (DiMS)|DiMS]].
 - Správce stavby:
     - provádí pravidelnou [[Verifikace|verifikaci]] alfanumerických informací podle [[BIM Execution Plan (BEP)|BEP]] (jestli to vyplývá z jeho kompetencí na daném projektu)
     - vede evidenci neshod a sleduje jejich uzavírání,

@@ -18,7 +18,7 @@ tags: [proces]
 ## Účel
 
 Cílem prostorové koordinace je zajistit, aby jednotlivé části stavby (stavební objekty, technologie, inženýrské sítě apod.) byly navrženy a realizovány bez vzájemných prostorových kolizí a v souladu se schválenou dokumentací.
-Prostorová koordinace v rámci [[Digitální informační model stavby (DiMS)|DiMS]] slouží zejména k:
+Prostorová koordinace v rámci [[Digitální model stavby (DiMS)|DiMS]] slouží zejména k:
 - identifikaci kolizí mezi profesemi,
 - předcházení vícenákladům a zdržení stavby,
 - zajištění souladu mezi modelem, dokumentací a skutečným provedením.
@@ -30,7 +30,7 @@ Prostorová koordinace v rámci [[Digitální informační model stavby (DiMS)|D
 ## Vstupy
 
 Pro provedení prostorové koordinace musí být k dispozici:
-- dílčí [[Digitální informační model stavby (DiMS)|DiMS]] jednotlivých profesí/částí, které
+- dílčí [[Digitální model stavby (DiMS)|DiMS]] jednotlivých profesí/částí, které
     - odpovídají zadefinovanému souřadnicovému a výškovému systému projektu;
     - je možné současně zobrazit v rámci nástroje [[Společné datové prostředí (CDE)|CDE]] (případně jiného)
 - další výstupy projektové dokumentace.
@@ -38,8 +38,8 @@ Správce stavby ověřuje, že pracuje s aktuálními verzemi dokumentů a model
 
 ## Postup
 
-- Federace dílčích [[Digitální informační model stavby (DiMS)|DiMS]] v rámci zvoleného nástroje
-- Zobrazení koordinovaných dílčích [[Digitální informační model stavby (DiMS)|DiMS]] v rámci nástroje.
+- Federace dílčích [[Digitální model stavby (DiMS)|DiMS]] v rámci zvoleného nástroje
+- Zobrazení koordinovaných dílčích [[Digitální model stavby (DiMS)|DiMS]] v rámci nástroje.
 - Kontrola správného umístění modelů v souřadnicovém systému.
 - Ověření, že všechny modely odpovídají aktuální revizi dokumentace.
   - Identifikace kolizí
@@ -60,7 +60,7 @@ Správce stavby ověřuje, že pracuje s aktuálními verzemi dokumentů a model
 - Řešení je posouzeno z hlediska dopadu na ostatní části stavby.
 - Pokud má řešení dopad na cenu nebo rozsah díla, posoudí se jeho vazba na [[ZBV]].
 - Po schválení řešení se aktualizuje:
-    - dotčené dílčí [[Digitální informační model stavby (DiMS)|DiMS]],
+    - dotčené dílčí [[Digitální model stavby (DiMS)|DiMS]],
     - dotčená dokumentace,
     - evidence změn.
 - Kolize je uzavřena až po zapracování změny do všech relevantních výstupů.
@@ -70,7 +70,7 @@ Správce stavby ověřuje, že pracuje s aktuálními verzemi dokumentů a model
 
 - Zhotovitel:
     - provádí pravidelnou prostorovou koordinaci podle [[BIM Execution Plan (BEP)|BEP]] (jestli to vyplývá z jeho kompetencí na daném projektu),
-    - aktualizuje dílčí [[Digitální informační model stavby (DiMS)|DiMS]],
+    - aktualizuje dílčí [[Digitální model stavby (DiMS)|DiMS]],
     - řeší identifikované kolize.
 - Správce stavby:
     - provádí pravidelnou prostorovou koordinaci podle [[BIM Execution Plan (BEP)|BEP]] (jestli to vyplývá z jeho kompetencí na daném projektu),
@@ -85,7 +85,7 @@ Správce stavby ověřuje, že pracuje s aktuálními verzemi dokumentů a model
 ## Výstupy
 
 Výstupem prostorové koordinace je:
-- aktuální [[Digitální informační model stavby (DiMS)|DiMS]] bez otevřených zásadních kolizí,
+- aktuální [[Digitální model stavby (DiMS)|DiMS]] bez otevřených zásadních kolizí,
 - seznam otevřených a uzavřených kolizí,
 - podklady pro změnové řízení,
 - podklady pro dokumentaci skutečného provedení.
@@ -93,7 +93,7 @@ Výstupem prostorové koordinace je:
 ## Kontrolní body pro správce stavby
 
 Správce stavby pravidelně ověřuje:
-- zda jsou dílčí [[Digitální informační model stavby (DiMS)|DiMS]] aktuální,
+- zda jsou dílčí [[Digitální model stavby (DiMS)|DiMS]] aktuální,
 - zda jsou kolize evidovány a řešeny,
 - zda jsou zapracovány schválené změny,
 - zda nedochází k nesouladu mezi modelem, dokumentací a realizací.
