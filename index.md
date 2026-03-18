@@ -2,8 +2,6 @@
 title: Metodika ŘSD Plzeň (POC)
 typ: index
 stav: poc
-permalink: /
-aliases: [Home]
 tags: [index]
 ---
 
