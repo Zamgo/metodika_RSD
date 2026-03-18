@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<rss version="2.0">
+    <channel>
+      <title>Metodika ŘSD Plzeň (POC)</title>
+      <link>https://zamgo.github.io/metodika_RSD</link>
+      <description>Posledních 10 poznámek on Metodika ŘSD Plzeň (POC)</description>
+      <generator>Quartz -- quartz.jzhao.xyz</generator>
+      <item>
+    <title>Index</title>
+    <link>https://zamgo.github.io/metodika_RSD/01_Uvod/Index</link>
+    <guid>https://zamgo.github.io/metodika_RSD/01_Uvod/Index</guid>
+    <description><![CDATA[ Účel vaultu Tento Obsidian vault slouží jako praktická, živá a propojená metodika pro správu informací o stavbě pro ŘSD (Plzeň) s využitím BIM a CDE. ]]></description>
+    <pubDate>Wed, 18 Mar 2026 13:26:25 GMT</pubDate>
+  </item><item>
+    <title>Pojmy a definice (zdroj)</title>
+    <link>https://zamgo.github.io/metodika_RSD/01_Uvod/Pojmy-a-definice-(zdroj)</link>
+    <guid>https://zamgo.github.io/metodika_RSD/01_Uvod/Pojmy-a-definice-(zdroj)</guid>
+    <description><![CDATA[ Poznámka Tato stránka slouží jako věrný převod části „Pojmy a definice“ z hlavní metodiky (docx) a jako rozcestník na detailní pojmové stránky ve 04_Pojmy/. ]]></description>
+    <pubDate>Wed, 18 Mar 2026 13:26:25 GMT</pubDate>
+  </item><item>
+    <title>Konfigurace projektového nástroje CDE - Pavlína + příloha</title>
+    <link>https://zamgo.github.io/metodika_RSD/02_Procesy/Priprava/Konfigurace-projektov%C3%A9ho-n%C3%A1stroje-CDE---Pavl%C3%ADna-+-p%C5%99%C3%ADloha</link>
+    <guid>https://zamgo.github.io/metodika_RSD/02_Procesy/Priprava/Konfigurace-projektov%C3%A9ho-n%C3%A1stroje-CDE---Pavl%C3%ADna-+-p%C5%99%C3%ADloha</guid>
+    <description><![CDATA[ Účel Účelem nastavení struktury společného datového prostředí (CDE) je vytvořit přehledný, jednotný a dlouhodobě udržitelný rámec pro ukládání, správu a sdílení informačních kontejnerů v průběhu celého životního cyklu stavby. ]]></description>
+    <pubDate>Wed, 18 Mar 2026 13:26:25 GMT</pubDate>
+  </item><item>
+    <title>Kontrola smluvní dokumentace a požadavků (BIM, CDE, EIR)-P+S</title>
+    <link>https://zamgo.github.io/metodika_RSD/02_Procesy/Priprava/Kontrola-smluvn%C3%AD-dokumentace-a-po%C5%BEadavk%C5%AF-(BIM,-CDE,-EIR)-P+S</link>
+    <guid>https://zamgo.github.io/metodika_RSD/02_Procesy/Priprava/Kontrola-smluvn%C3%AD-dokumentace-a-po%C5%BEadavk%C5%AF-(BIM,-CDE,-EIR)-P+S</guid>
+    <description><![CDATA[ Účel Účelem činnosti je ověřit, že smluvní dokumentace a zadávací podklady obsahují jednoznačně definované, vzájemně konzistentní a kontrolovatelné požadavky na správu informací o stavbě, využití metody BIM, digitálního informačního modelu stavby (DiMS) a nástroje společného datového prostředí (CDE)... ]]></description>
+    <pubDate>Wed, 18 Mar 2026 13:26:25 GMT</pubDate>
+  </item><item>
+    <title>Příprava - index</title>
+    <link>https://zamgo.github.io/metodika_RSD/02_Procesy/Priprava/P%C5%99%C3%ADprava---index</link>
+    <guid>https://zamgo.github.io/metodika_RSD/02_Procesy/Priprava/P%C5%99%C3%ADprava---index</guid>
+    <description><![CDATA[ Procesy ve fázi přípravy Kontrola smluvní dokumentace a požadavků (BIM, CDE, EIR)-P+S Konfigurace projektového nástroje CDE - Pavlína + příloha . ]]></description>
+    <pubDate>Wed, 18 Mar 2026 13:26:25 GMT</pubDate>
+  </item><item>
+    <title>Procesy - index</title>
+    <link>https://zamgo.github.io/metodika_RSD/02_Procesy/Procesy---index</link>
+    <guid>https://zamgo.github.io/metodika_RSD/02_Procesy/Procesy---index</guid>
+    <description><![CDATA[ Přehled podle fází projektu Příprava - index Realizace - index Provoz a údržba - index . ]]></description>
+    <pubDate>Wed, 18 Mar 2026 13:26:25 GMT</pubDate>
+  </item><item>
+    <title>Archivace</title>
+    <link>https://zamgo.github.io/metodika_RSD/02_Procesy/Provoz-a-udrzba/Archivace</link>
+    <guid>https://zamgo.github.io/metodika_RSD/02_Procesy/Provoz-a-udrzba/Archivace</guid>
+    <description><![CDATA[ Poznámka ze zdroje Po dokončení stavby je nutné zajistit řádné uzavření projektového CDE a archivaci informací. ]]></description>
+    <pubDate>Wed, 18 Mar 2026 13:26:25 GMT</pubDate>
+  </item><item>
+    <title>Export do AspeHub - Pavlína</title>
+    <link>https://zamgo.github.io/metodika_RSD/02_Procesy/Provoz-a-udrzba/Export-do-AspeHub---Pavl%C3%ADna</link>
+    <guid>https://zamgo.github.io/metodika_RSD/02_Procesy/Provoz-a-udrzba/Export-do-AspeHub---Pavl%C3%ADna</guid>
+    <description><![CDATA[ Poznámka ze zdroje Součástí fáze předání je export vybraných informací do navazujících systémů, zejména do systému AspeHub. ]]></description>
+    <pubDate>Wed, 18 Mar 2026 13:26:25 GMT</pubDate>
+  </item><item>
+    <title>Provoz a údržba - index</title>
+    <link>https://zamgo.github.io/metodika_RSD/02_Procesy/Provoz-a-udrzba/Provoz-a-%C3%BAdr%C5%BEba---index</link>
+    <guid>https://zamgo.github.io/metodika_RSD/02_Procesy/Provoz-a-udrzba/Provoz-a-%C3%BAdr%C5%BEba---index</guid>
+    <description><![CDATA[ Procesy ve fázi provozu a údržby Archivace Export do AspeHub - Pavlína . ]]></description>
+    <pubDate>Wed, 18 Mar 2026 13:26:25 GMT</pubDate>
+  </item><item>
+    <title>Ověřování alfanumerických informací v rámci DiMS – Sam</title>
+    <link>https://zamgo.github.io/metodika_RSD/02_Procesy/Realizace/Ov%C4%9B%C5%99ov%C3%A1n%C3%AD-alfanumerick%C3%BDch-informac%C3%AD-v-r%C3%A1mci-DiMS-%E2%80%93-Sam</link>
+    <guid>https://zamgo.github.io/metodika_RSD/02_Procesy/Realizace/Ov%C4%9B%C5%99ov%C3%A1n%C3%AD-alfanumerick%C3%BDch-informac%C3%AD-v-r%C3%A1mci-DiMS-%E2%80%93-Sam</guid>
+    <description><![CDATA[ Účel Cílem ověřování alfanumerických informací je zajistit, aby alfanumerické informace v DiMS (identifikátory, parametry, klasifikace a vazby) byla úplná, správná, konzistentní, a aby odpovídala požadavkům stanovených v rámci datového standardu stavby (DSS). ]]></description>
+    <pubDate>Wed, 18 Mar 2026 13:26:25 GMT</pubDate>
+  </item>
+    </channel>
+  </rss>
