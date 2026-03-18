@@ -16,7 +16,8 @@ const defaultOptions: SearchOptions = {
 export default ((userOpts?: Partial<SearchOptions>) => {
   const Search: QuartzComponent = ({ displayClass, cfg }: QuartzComponentProps) => {
     const opts = { ...defaultOptions, ...userOpts }
-    const searchPlaceholder = i18n(cfg.locale).components.search.searchBarPlaceholder
+    const s = i18n(cfg.locale).components.search
+    const searchPlaceholder = s.searchBarPlaceholder
     return (
       <div class={classNames(displayClass, "search")}>
         <button class="search-button">
@@ -27,18 +28,42 @@ export default ((userOpts?: Partial<SearchOptions>) => {
               <circle cx="8" cy="8" r="7" />
             </g>
           </svg>
-          <p>{i18n(cfg.locale).components.search.title}</p>
+          <p>{s.title}</p>
         </button>
-        <div class="search-container">
+        <div
+          class="search-container"
+          data-search-no-results-title={s.noResultsTitle}
+          data-search-no-results-hint={s.noResultsHint}
+        >
           <div class="search-space">
-            <input
-              autocomplete="off"
-              class="search-bar"
-              name="search"
-              type="text"
-              aria-label={searchPlaceholder}
-              placeholder={searchPlaceholder}
-            />
+            <div class="search-top-card">
+              <input
+                autocomplete="off"
+                class="search-bar"
+                name="search"
+                type="text"
+                aria-label={searchPlaceholder}
+                placeholder={searchPlaceholder}
+              />
+              <div class="search-tag-panel">
+                <button type="button" class="search-tag-toggle" aria-expanded="false">
+                  {s.tagFilterToggle}
+                </button>
+                <div class="search-tag-panel-body">
+                  <input
+                    type="search"
+                    class="search-tag-list-filter"
+                    autocomplete="off"
+                    placeholder={s.tagFilterPlaceholder}
+                    aria-label={s.tagFilterPlaceholder}
+                  />
+                  <div class="search-tag-checkboxes" />
+                  <button type="button" class="search-tag-clear">
+                    {s.clearTagFilters}
+                  </button>
+                </div>
+              </div>
+            </div>
             <div class="search-layout" data-preview={opts.enablePreview}></div>
           </div>
         </div>

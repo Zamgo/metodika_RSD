@@ -52,6 +52,11 @@ export default {
     search: {
       title: "검색",
       searchBarPlaceholder: "검색어를 입력하세요",
+      tagFilterToggle: "Filter by tags",
+      tagFilterPlaceholder: "Filter tag list…",
+      clearTagFilters: "Clear tag filters",
+      noResultsTitle: "No results.",
+      noResultsHint: "Try another search or fewer tags.",
     },
     tableOfContents: {
       title: "목차",

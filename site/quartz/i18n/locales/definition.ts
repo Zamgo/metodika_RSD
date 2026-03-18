@@ -55,6 +55,11 @@ export interface Translation {
     search: {
       title: string
       searchBarPlaceholder: string
+      tagFilterToggle: string
+      tagFilterPlaceholder: string
+      clearTagFilters: string
+      noResultsTitle: string
+      noResultsHint: string
     }
     tableOfContents: {
       title: string

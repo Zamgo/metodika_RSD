@@ -52,6 +52,11 @@ export default {
     search: {
       title: "Search",
       searchBarPlaceholder: "Search for something",
+      tagFilterToggle: "Filter by tags",
+      tagFilterPlaceholder: "Filter tag list…",
+      clearTagFilters: "Clear tag filters",
+      noResultsTitle: "No results.",
+      noResultsHint: "Try another search or fewer tags.",
     },
     tableOfContents: {
       title: "Table of Contents",

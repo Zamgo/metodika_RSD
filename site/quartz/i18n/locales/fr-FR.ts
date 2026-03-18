@@ -52,6 +52,11 @@ export default {
     search: {
       title: "Recherche",
       searchBarPlaceholder: "Rechercher quelque chose",
+      tagFilterToggle: "Filter by tags",
+      tagFilterPlaceholder: "Filter tag list…",
+      clearTagFilters: "Clear tag filters",
+      noResultsTitle: "No results.",
+      noResultsHint: "Try another search or fewer tags.",
     },
     tableOfContents: {
       title: "Table des Matières",

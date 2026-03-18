@@ -52,6 +52,11 @@ export default {
     search: {
       title: "Hledat",
       searchBarPlaceholder: "Hledejte něco",
+      tagFilterToggle: "Filtrovat podle tagů",
+      tagFilterPlaceholder: "Najít v seznamu tagů…",
+      clearTagFilters: "Zrušit výběr tagů",
+      noResultsTitle: "Nic nenalezeno.",
+      noResultsHint: "Zkuste jiný dotaz nebo méně tagů.",
     },
     tableOfContents: {
       title: "Obsah",

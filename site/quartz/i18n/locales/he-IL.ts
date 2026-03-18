@@ -53,6 +53,11 @@ export default {
     search: {
       title: "חיפוש",
       searchBarPlaceholder: "חפשו משהו",
+      tagFilterToggle: "Filter by tags",
+      tagFilterPlaceholder: "Filter tag list…",
+      clearTagFilters: "Clear tag filters",
+      noResultsTitle: "No results.",
+      noResultsHint: "Try another search or fewer tags.",
     },
     tableOfContents: {
       title: "תוכן עניינים",

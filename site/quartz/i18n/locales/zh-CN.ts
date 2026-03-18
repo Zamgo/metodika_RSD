@@ -52,6 +52,11 @@ export default {
     search: {
       title: "搜索",
       searchBarPlaceholder: "搜索些什么",
+      tagFilterToggle: "Filter by tags",
+      tagFilterPlaceholder: "Filter tag list…",
+      clearTagFilters: "Clear tag filters",
+      noResultsTitle: "No results.",
+      noResultsHint: "Try another search or fewer tags.",
     },
     tableOfContents: {
       title: "目录",

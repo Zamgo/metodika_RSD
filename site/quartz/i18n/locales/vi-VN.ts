@@ -52,6 +52,11 @@ export default {
     search: {
       title: "Tìm",
       searchBarPlaceholder: "Tìm kiếm thông tin",
+      tagFilterToggle: "Filter by tags",
+      tagFilterPlaceholder: "Filter tag list…",
+      clearTagFilters: "Clear tag filters",
+      noResultsTitle: "No results.",
+      noResultsHint: "Try another search or fewer tags.",
     },
     tableOfContents: {
       title: "Mục lục",

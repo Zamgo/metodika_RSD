@@ -52,6 +52,11 @@ export default {
     search: {
       title: "Suche",
       searchBarPlaceholder: "Suche nach etwas",
+      tagFilterToggle: "Nach Tags filtern",
+      tagFilterPlaceholder: "Tagliste filtern…",
+      clearTagFilters: "Tagauswahl löschen",
+      noResultsTitle: "Keine Treffer.",
+      noResultsHint: "Anderen Suchbegriff oder weniger Tags versuchen.",
     },
     tableOfContents: {
       title: "Inhaltsverzeichnis",

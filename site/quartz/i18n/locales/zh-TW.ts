@@ -52,6 +52,11 @@ export default {
     search: {
       title: "搜尋",
       searchBarPlaceholder: "搜尋些什麼",
+      tagFilterToggle: "Filter by tags",
+      tagFilterPlaceholder: "Filter tag list…",
+      clearTagFilters: "Clear tag filters",
+      noResultsTitle: "No results.",
+      noResultsHint: "Try another search or fewer tags.",
     },
     tableOfContents: {
       title: "目錄",
