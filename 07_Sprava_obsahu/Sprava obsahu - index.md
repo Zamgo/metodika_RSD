@@ -1,5 +1,6 @@
 ---
 title: Sprava obsahu - index
+description: Pravidla pro metadata, odkazy a názvy souborů při správě obsahu metodiky a vaultu.
 typ: index
 faze: []
 role: []
@@ -15,7 +16,7 @@ souvisi:
 priloha: []
 permalink: /sprava-obsahu
 aliases: [Správa obsahu - index]
-tags: [index, sprava_obsahu]
+tags: [index, sprava_obsahu, metadata, odkazy, soubory]
 ---
 
 ## Pravidla

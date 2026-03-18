@@ -1,5 +1,6 @@
 ---
 title: Reference - index
+description: Technické a strukturální reference – např. adresářová struktura CDE a odkazované standardy.
 typ: index
 faze: []
 role: []
@@ -13,7 +14,7 @@ souvisi:
 priloha: []
 permalink: /reference
 aliases: []
-tags: [index, reference]
+tags: [index, reference, struktura, cde]
 ---
 
 ## Přehled referencí

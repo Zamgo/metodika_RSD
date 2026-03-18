@@ -1,5 +1,6 @@
 ---
 title: Workflow - index
+description: Přehled schvalovacích a projektových workflow v CDE – BEP, DiMS, HMG, ZBV a související postupy.
 typ: index
 faze: []
 role: []
@@ -15,7 +16,7 @@ souvisi:
 priloha: []
 permalink: /workflow
 aliases: []
-tags: [index, workflow]
+tags: [index, workflow, schvalovani, bep, dims, cde]
 ---
 
 ## Přehled workflow

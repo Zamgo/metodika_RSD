@@ -1,5 +1,6 @@
 ---
 title: Realizace - index
+description: Procesy fáze realizace – CDE během výstavby, schvalování, DiMS a změny v průběhu stavby.
 typ: index
 faze: [realizace]
 role: []
@@ -14,7 +15,7 @@ souvisi:
 priloha: []
 permalink: /proces/realizace
 aliases: []
-tags: [index, procesy]
+tags: [index, procesy, realizace, dims, schvalovani]
 ---
 
 ## Procesy ve fázi realizace

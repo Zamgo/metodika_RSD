@@ -1,5 +1,6 @@
 ---
 title: Index
+description: Úvod do Obsidian vaultu metodiky ŘSD Plzeň – BIM, CDE, role a navigace po dokumentaci stavby.
 typ: index
 faze: []
 role: []
@@ -14,7 +15,7 @@ souvisi:
   - "[[Zdroje a editorska doplneni]]"
 priloha: []
 aliases: [Domů, Home]
-tags: [index]
+tags: [index, uvod, dokumentace, bim, cde]
 ---
 
 ## Účel vaultu

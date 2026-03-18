@@ -1,5 +1,6 @@
 ---
 title: Prilohy - index
+description: Přílohy metodiky – šablony workflow a další ke stažení či odkazu z metodiky ŘSD.
 typ: index
 faze: []
 role: []
@@ -13,7 +14,7 @@ souvisi:
 priloha: []
 permalink: /priloha
 aliases: [Přílohy - index]
-tags: [index, priloha]
+tags: [index, priloha, sablony, workflow]
 ---
 
 ## Přehled příloh

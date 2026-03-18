@@ -1,5 +1,6 @@
 ---
 title: Příprava - index
+description: Procesy fáze přípravy stavby – smluvní dokumentace, EIR, BEP, konfigurace CDE a související postupy ŘSD.
 typ: index
 faze: [priprava]
 role: []
@@ -14,7 +15,7 @@ souvisi:
 priloha: []
 permalink: /proces/priprava
 aliases: []
-tags: [index, procesy]
+tags: [index, procesy, priprava, eir, bep]
 ---
 
 ## Procesy ve fázi přípravy

@@ -1,5 +1,6 @@
 ---
 title: Pojmy - index
+description: Slovník rolí, fází, CDE, informačních kontejnerů, oprávnění a auditní stopy v metodice ŘSD.
 typ: index
 faze: []
 role: []
@@ -15,7 +16,7 @@ souvisi:
 priloha: []
 permalink: /pojem
 aliases: []
-tags: [index, pojmy]
+tags: [index, pojmy, role, metadata, kontejner, audit]
 ---
 
 ## Role
