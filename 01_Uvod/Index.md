@@ -13,7 +13,6 @@ souvisi:
   - "[[Pravidla odkazovani]]"
   - "[[Zdroje a editorska doplneni]]"
 priloha: []
-permalink: /
 aliases: [Domů, Home]
 tags: [index]
 ---

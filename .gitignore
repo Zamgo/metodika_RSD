@@ -1,0 +1,10 @@
+# Quartz build artifacts
+site/node_modules/
+site/public/
+site/.quartz-cache/
+site/.cache/
+
+# OS / editor noise
+.DS_Store
+Thumbs.db
+
