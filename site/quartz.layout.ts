@@ -56,8 +56,9 @@ export const defaultContentPageLayout: PageLayout = {
       ],
     }),
     Component.Explorer({
-    sortFn: sortByNumericPrefix,
-  }),
+      sortFn: sortByNumericPrefix,
+      folderClickBehavior: "toggle",
+    }),
   ],
   right: [
     Component.Graph(),
@@ -82,8 +83,9 @@ export const defaultListPageLayout: PageLayout = {
       ],
     }),
     Component.Explorer({
-    sortFn: sortByNumericPrefix,
-  }),
+      sortFn: sortByNumericPrefix,
+      folderClickBehavior: "toggle",
+    }),
   ],
   right: [],
 }

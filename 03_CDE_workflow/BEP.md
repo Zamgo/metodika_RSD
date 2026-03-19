@@ -1,18 +1,26 @@
 ---
 title: BEP
 typ: workflow
-faze: []
-role: [spravce stavby, zhotovitel]
-cinnosti: [schvalovani]
-workflow: [bep]
-temata: [workflow, cde]
+faze:
+  - priprava
+role:
+  - spravce stavby
+  - zhotovitel
+cinnosti:
+  - schvalovani
+workflow:
+  - bep
+temata:
+  - workflow
+  - cde
 stav: draft
 vlastnik: rsd
 souvisi: []
 priloha: []
 permalink: /workflow/bep
 aliases: []
-tags: [workflow]
+tags:
+  - workflow
 ---
 
 ## Účel workflow
