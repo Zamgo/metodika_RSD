@@ -9,6 +9,18 @@ interface CanvasFileData {
   canvasPage?: boolean
 }
 
+const style = `
+.quartz-canvas-viewer {
+  position: relative;
+  width: 100%;
+  height: 70vh;
+  min-height: 400px;
+  overflow: hidden;
+  border: 1px solid var(--lightgray);
+  border-radius: 5px;
+}
+`
+
 export default ((): QuartzComponent => {
   const CanvasViewer: QuartzComponent = ({ fileData }: QuartzComponentProps) => {
     const data = fileData as CanvasFileData
@@ -18,10 +30,10 @@ export default ((): QuartzComponent => {
       <div
         class="quartz-canvas-viewer"
         data-canvas-url={canvasUrl}
-        style={{ width: "100%", minHeight: "60vh" }}
       />
     )
   }
+  CanvasViewer.css = style
   CanvasViewer.afterDOMLoaded = script
   return CanvasViewer
 })()

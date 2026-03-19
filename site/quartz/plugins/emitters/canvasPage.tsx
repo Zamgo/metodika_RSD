@@ -4,8 +4,9 @@ import BodyConstructor from "../../components/Body"
 import { pageResources, renderPage } from "../../components/renderPage"
 import { FullPageLayout } from "../../cfg"
 import { FilePath, FullSlug, joinSegments, slugifyFilePath } from "../../util/path"
-import { sharedPageComponents } from "../../../quartz.layout"
+import { defaultContentPageLayout, sharedPageComponents } from "../../../quartz.layout"
 import CanvasViewer from "../../components/CanvasViewer"
+import HeaderConstructor from "../../components/Header"
 import { defaultProcessedContent } from "../vfile"
 import { write } from "./helpers"
 import { BuildCtx } from "../../util/ctx"
@@ -27,19 +28,29 @@ function titleFromPath(fp: string): string {
 export const CanvasPage: QuartzEmitterPlugin = () => {
   const opts: FullPageLayout = {
     ...sharedPageComponents,
+    ...defaultContentPageLayout,
     pageBody: CanvasViewer,
-    beforeBody: [],
-    left: [],
-    right: [],
   }
 
-  const { head: Head, pageBody, footer: Footer } = opts
+  const { head: Head, header, beforeBody, pageBody, afterBody, left, right, footer: Footer } = opts
+  const Header = HeaderConstructor()
   const Body = BodyConstructor()
 
   return {
     name: "CanvasPage",
     getQuartzComponents() {
-      return [Head, Body, pageBody, Footer]
+      return [
+        Head,
+        Header,
+        Body,
+        ...header,
+        ...beforeBody,
+        pageBody,
+        ...afterBody,
+        ...left,
+        ...right,
+        Footer,
+      ]
     },
     async *emit(ctx, _content, resources) {
       const { argv, cfg } = ctx
