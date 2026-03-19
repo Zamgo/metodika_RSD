@@ -1,0 +1,30 @@
+---
+title: BIM-protokol
+typ: term
+faze: [priprava, realizace]
+role: []
+cinnosti: [schvalovani, dokumentace]
+workflow: []
+temata: [dokumentace]
+stav: draft
+vlastnik: rsd
+souvisi:
+  - "[[BIM Execution Plan (BEP)]]"
+  - "[[Požadavky objednatele na výměnu informací (EIR)]]"
+  - "[[Informační model stavby]]"
+priloha: []
+permalink: /pojem/cde/bim-protokol
+aliases: []
+tags: [pojem, bim]
+---
+
+# Definice
+
+Projektový informační protokol doplňující smlouvu o dílo ustanoveními a pravidly pro tvorbu, předání a užívání informačního modelu stavby (IMS) včetně specifikace konkrétního způsobu využití metody BIM na daném projektu.
+
+
+## Praktický význam pro správu informací o stavbě / ŘSD
+
+- BIM-protokol je smluvní podklad; na něj navazuje [[BIM Execution Plan (BEP)|BEP]], který rozpracovává způsob realizace BIM v souladu s [[Požadavky objednatele na výměnu informací (EIR)|EIR]].
+
+![[Pasted image 20260318174005.png]]

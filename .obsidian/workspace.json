@@ -11,17 +11,86 @@
             "id": "268e5cdb344b191d",
             "type": "leaf",
             "state": {
+              "type": "image",
+              "state": {
+                "file": "99_Media/obrazky/Pasted image 20260318173319.png"
+              },
+              "icon": "lucide-image",
+              "title": "Pasted image 20260318173319"
+            }
+          },
+          {
+            "id": "151fc22ebf8eb61a",
+            "type": "leaf",
+            "state": {
               "type": "markdown",
               "state": {
-                "file": "04_Pojmy/CDE a informace/Informační kontejner.md",
+                "file": "01_Oblasti správy informací/Realizace/Změny během výstavby pomocí nástrojů CDE.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "Informační kontejner"
+              "title": "Změny během výstavby pomocí nástrojů CDE"
+            }
+          },
+          {
+            "id": "4a1bc2b0a6143872",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "03_Šablony/CDE_workflow/BEP.md",
+                "mode": "source",
+                "source": false
+              },
+              "icon": "lucide-file",
+              "title": "BEP"
+            }
+          },
+          {
+            "id": "79e55103056df64d",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "03_Šablony/CDE_workflow/Claim.md",
+                "mode": "source",
+                "source": false
+              },
+              "icon": "lucide-file",
+              "title": "Claim"
+            }
+          },
+          {
+            "id": "db1d9ea440b3bc66",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "04_Definice pojmů/Informační management/Společné datové prostředí (CDE).md",
+                "mode": "source",
+                "source": false
+              },
+              "icon": "lucide-file",
+              "title": "Společné datové prostředí (CDE)"
+            }
+          },
+          {
+            "id": "64883aae171e027c",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "04_Definice pojmů/Informační management/Digitální model stavby (DiMS).md",
+                "mode": "source",
+                "source": false
+              },
+              "icon": "lucide-file",
+              "title": "Digitální model stavby (DiMS)"
             }
           }
-        ]
+        ],
+        "currentTab": 5
       }
     ],
     "direction": "vertical"
@@ -78,7 +147,7 @@
       }
     ],
     "direction": "horizontal",
-    "width": 300
+    "width": 525.5
   },
   "right": {
     "id": "925f1fb0b98116e3",
@@ -94,7 +163,7 @@
             "state": {
               "type": "backlink",
               "state": {
-                "file": "04_Pojmy/CDE a informace/Informační kontejner.md",
+                "file": "04_Definice pojmů/Informační management/Správa informací o stavbě.md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -104,7 +173,7 @@
                 "unlinkedCollapsed": true
               },
               "icon": "links-coming-in",
-              "title": "Zpětné odkazy pro Informační kontejner"
+              "title": "Zpětné odkazy pro Správa informací o stavbě"
             }
           },
           {
@@ -113,12 +182,12 @@
             "state": {
               "type": "outgoing-link",
               "state": {
-                "file": "04_Pojmy/CDE a informace/Informační kontejner.md",
+                "file": "04_Definice pojmů/Informační management/Správa informací o stavbě.md",
                 "linksCollapsed": false,
                 "unlinkedCollapsed": true
               },
               "icon": "links-going-out",
-              "title": "Odchozí odkazy z Informační kontejner"
+              "title": "Odchozí odkazy z Správa informací o stavbě"
             }
           },
           {
@@ -156,13 +225,13 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "04_Pojmy/CDE a informace/Informační kontejner.md",
+                "file": "04_Definice pojmů/Informační management/Správa informací o stavbě.md",
                 "followCursor": false,
                 "showSearch": false,
                 "searchQuery": ""
               },
               "icon": "lucide-list",
-              "title": "Přehled Informační kontejner"
+              "title": "Přehled Správa informací o stavbě"
             }
           }
         ],
@@ -184,53 +253,53 @@
       "bases:Vytvořit novou základnu": false
     }
   },
-  "active": "268e5cdb344b191d",
+  "active": "64883aae171e027c",
   "lastOpenFiles": [
-    "04_Pojmy/CDE a informace/Informační model stavby.md",
-    "Pasted image 20260318173319.png",
-    "04_Pojmy/CDE a informace/Digitální model stavby (DiMS).md",
-    "99_Media/obrazky/metodika-rsd-plzen-image1.png",
-    "99_Media/obrazky/metodika-rsd-plzen-image6.svg",
-    "99_Media/obrazky/metodika-rsd-plzen-image5.png",
-    "99_Media/obrazky/metodika-rsd-plzen-image4.svg",
-    "99_Media/obrazky/metodika-rsd-plzen-image3.png",
-    "99_Media/obrazky/metodika-rsd-plzen-image2.png",
-    "99_Media/obrazky/cde-metodika-image26.jpeg",
-    "99_Media/obrazky/cde-metodika-image25.png",
-    "99_Media/obrazky/cde-metodika-image17.png",
-    "04_Pojmy/CDE a informace/BIM Execution Plan (BEP).md",
-    "Index.md",
-    "index.md",
-    "01_Uvod/Pojmy a definice (zdroj).md",
-    "02_Procesy/Priprava/Konfigurace projektového nástroje CDE - Pavlína + příloha.md",
-    "site/public/04_Pojmy/Role/index.html",
-    "site/public/pojem/rizeni/auditni-stopa.html",
-    "site/public/04_Pojmy/Faze/Provoz-a-údržba.html",
-    "site/public/04_Pojmy/CDE-a-informace/BIM-Execution-Plan-(BEP).html",
-    "site/public/04_Pojmy/CDE-a-informace/Informační-model-stavby.html",
-    "site/public/07_Sprava_obsahu/Sprava-obsahu---index.html",
-    "site/public/04_Pojmy/index.html",
-    "site/public/proces/realizace/zmeny-behem-vystavby-pomoci-nastroju-cde-pavlina.html",
-    "site/public/proces/priprava/kontrola-smluvni-dokumentace-a-pozadavku-p-s.html",
-    "site/public/03_Workflow/Materiály,-výrobny.html",
-    "site/node_modules/hast-util-to-jsx-runtime/node_modules/unist-util-stringify-position/readme.md",
-    "site/node_modules/hast-util-to-jsx-runtime/node_modules/property-information/readme.md",
-    "site/node_modules/mdast-util-mdx-jsx/node_modules/vfile-message/readme.md",
-    "site/node_modules/hast-util-to-html/node_modules/property-information/readme.md",
-    "site/node_modules/hast-util-from-html/node_modules/vfile-message/readme.md",
-    "site/node_modules/mdast-util-mdx-jsx/node_modules/unist-util-stringify-position/readme.md",
-    "site/node_modules/hast-util-from-html/node_modules/unist-util-stringify-position/readme.md",
-    "site/node_modules/mdast-util-from-markdown/node_modules/unist-util-stringify-position/readme.md",
-    "site/node_modules/gray-matter/node_modules/js-yaml/CHANGELOG.md",
-    "site/node_modules/fetch-ponyfill/node_modules/whatwg-url/README.md",
-    "site/node_modules/fetch-ponyfill/node_modules/webidl-conversions/LICENSE.md",
-    "site/node_modules/linebreak/node_modules/base64-js/README.md",
-    "site/node_modules/fetch-ponyfill/node_modules/webidl-conversions/README.md",
-    "site/node_modules/gray-matter/node_modules/js-yaml/README.md",
-    "site/node_modules/gray-matter/node_modules/argparse/CHANGELOG.md",
-    "site/node_modules/hast-util-to-jsx-runtime/node_modules/vfile-message/readme.md",
-    "site/node_modules/fetch-ponyfill/node_modules/node-fetch/LICENSE.md",
-    "site/node_modules/katex/node_modules/commander/Readme.md",
-    "site/node_modules/gray-matter/node_modules/argparse/README.md"
+    "04_Definice pojmů/Informační management/Datový standard stavby (DSS).md",
+    "04_Definice pojmů/Informační management/Informační model stavby.md",
+    "04_Definice pojmů/Informační management/Informační model aktiva (AIM).md",
+    "04_Definice pojmů/Informační management/Informační model.md",
+    "04_Definice pojmů/Informační management/Informační kontejner.md",
+    "04_Definice pojmů/Informační management/Informace.md",
+    "04_Definice pojmů/Informační management/Hlavní plán předávání informací (MIDP).md",
+    "04_Definice pojmů/Informační management/Digitální model stavby (DiMS).md",
+    "04_Definice pojmů/Informační management/Datový soubor.md",
+    "04_Definice pojmů/Informační management/CDE nástroj.md",
+    "04_Definice pojmů/Informační management/BIM-protokol.md",
+    "04_Definice pojmů/Informační management/BIM Execution Plan (BEP).md",
+    "04_Definice pojmů/Informační management/BIM (Informační modelování staveb).md",
+    "04_Definice pojmů/Informační management/Aktivum.md",
+    "04_Definice pojmů/Informační management/Úkolový tým.md",
+    "04_Definice pojmů/Informační management/Zákon o správě informací o stavbě a vystavěném prostředí.md",
+    "03_Šablony ke stažení.md",
+    "99_Media/obrazky/cdeimp_image11.png",
+    "01_Oblasti správy informací/Priprava/Konfigurace projektového nástroje CDE.md",
+    "99_Media/obrazky/cde-metodika-image15.png",
+    "99_Media/obrazky/cde-metodika-image16.png",
+    "99_Media/obrazky/controlis_cde/image70.png",
+    "99_Media/obrazky/controlis_cde/image54.png",
+    "99_Media/obrazky/controlis_cde/image28.png",
+    "99_Media/obrazky/controlis_cde/image3.png",
+    "99_Media/obrazky/controlis_cde/image2.jpg",
+    "99_Media/obrazky/controlis_cde/image1.png",
+    "99_Media/obrazky/zaklady_image145.png",
+    "99_Media/Placeholdery obrazku.md",
+    "01_Oblasti správy informací/Priprava/Kontrola smluvní dokumentace a požadavků.md",
+    "02_CDE_workflow/Claim.md",
+    "02_CDE_workflow/BEP.md",
+    "04_Definice pojmů/Informační management/Smlouva.md",
+    "04_Definice pojmů/Informační management/Pověření.md",
+    "04_Definice pojmů/Informační management/Strany.md",
+    "04_Definice pojmů/Informační management/Organizace.md",
+    "site/public/features/callouts.html",
+    "site/public/features/breadcrumbs.html",
+    "site/public/features/backlinks.html",
+    "site/public/features/SPA-Routing.html",
+    "site/public/upgrading.html",
+    "site/public/showcase.html",
+    "site/public/setting-up-your-GitHub-repository.html",
+    "site/public/plugins/TagPage.html",
+    "site/public/plugins/TableOfContents.html",
+    "site/public/plugins/SyntaxHighlighting.html"
   ]
 }

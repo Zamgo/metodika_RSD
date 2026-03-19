@@ -88,10 +88,114 @@ function escapeHtml(s: string): string {
     .replace(/"/g, "&quot;")
 }
 
+const META_DIMS = [
+  "typ",
+  "stav",
+  "vlastnik",
+  "faze",
+  "role",
+  "cinnosti",
+  "workflow",
+  "temata",
+  "tags",
+] as const
+type MetaDim = (typeof META_DIMS)[number]
+
+const DIM_LABELS_CS: Record<string, string> = {
+  typ: "Typ",
+  stav: "Stav",
+  vlastnik: "Vlastník",
+  faze: "Fáze",
+  role: "Role",
+  cinnosti: "Činnosti",
+  workflow: "Workflow",
+  temata: "Témata",
+  tags: "Tagy",
+}
+const DIM_LABELS_EN: Record<string, string> = {
+  typ: "Type",
+  stav: "Status",
+  vlastnik: "Owner",
+  faze: "Phase",
+  role: "Role",
+  cinnosti: "Activities",
+  workflow: "Workflow",
+  temata: "Topics",
+  tags: "Tags",
+}
+
+function getPageDimValues(slug: FullSlug, dim: string, data: ContentIndex): string[] {
+  const d = data[slug]
+  if (!d) return []
+  if (dim === "tags") return d.tags ?? []
+  const meta = (d as ContentDetails & { meta?: Record<string, unknown> }).meta
+  if (!meta) return []
+  const v = meta[dim]
+  if (dim === "typ" || dim === "stav" || dim === "vlastnik") {
+    return v != null && String(v).trim() ? [String(v).trim()] : []
+  }
+  return Array.isArray(v) ? v.map((x) => String(x).trim()).filter(Boolean) : []
+}
+
+function pageMatchesFacets(
+  slug: FullSlug,
+  selected: Map<string, Set<string>>,
+  data: ContentIndex,
+): boolean {
+  for (const [dim, values] of selected) {
+    if (values.size === 0) continue
+    const pageVals = getPageDimValues(slug, dim, data)
+    if (dim === "tags") {
+      if (![...values].every((v) => pageVals.includes(v))) return false
+    } else {
+      if (![...values].some((v) => pageVals.includes(v))) return false
+    }
+  }
+  return true
+}
+
 function pageHasAllTags(slug: FullSlug, data: ContentIndex, required: string[]): boolean {
   if (required.length === 0) return true
   const tags = data[slug]?.tags ?? []
   return required.every((t) => tags.includes(t))
+}
+
+type FacetOptions = Map<string, Map<string, number>>
+
+function buildFacetOptions(data: ContentIndex): FacetOptions {
+  const out = new Map<string, Map<string, number>>()
+  for (const dim of META_DIMS) out.set(dim, new Map())
+  for (const details of Object.values<ContentDetails>(data)) {
+    for (const t of details.tags ?? []) {
+      const m = out.get("tags")!
+      m.set(t, (m.get(t) ?? 0) + 1)
+    }
+    const meta = (details as ContentDetails & { meta?: Record<string, unknown> }).meta
+    if (meta) {
+      const scalar = (k: string) => {
+        const v = meta![k]
+        if (v != null && String(v).trim()) {
+          const m = out.get(k)!
+          const s = String(v).trim()
+          m.set(s, (m.get(s) ?? 0) + 1)
+        }
+      }
+      scalar("typ")
+      scalar("stav")
+      scalar("vlastnik")
+      for (const k of ["faze", "role", "cinnosti", "workflow", "temata"] as const) {
+        const arr = meta[k]
+        if (Array.isArray(arr)) {
+          const target = out.get(k)!
+          for (const x of arr) {
+            const s = String(x).trim()
+            if (s) target.set(s, (target.get(s) ?? 0) + 1)
+          }
+        }
+      }
+    }
+  }
+  return out
 }
 
 function collectUniqueTags(data: ContentIndex): string[] {
@@ -231,51 +335,153 @@ async function setupSearch(searchElement: Element, currentSlug: FullSlug, data: 
   if (!searchLayout) return
 
   const idDataMap = Object.keys(data) as FullSlug[]
-  const tagToggle = searchElement.querySelector(".search-tag-toggle") as HTMLButtonElement | null
-  const tagPanelBody = searchElement.querySelector(".search-tag-panel-body") as HTMLElement | null
-  const tagListFilter = searchElement.querySelector(".search-tag-list-filter") as HTMLInputElement | null
-  const tagCheckboxesRoot = searchElement.querySelector(".search-tag-checkboxes") as HTMLElement | null
-  const tagClearBtn = searchElement.querySelector(".search-tag-clear") as HTMLButtonElement | null
+  const filtersToggle = searchElement.querySelector(".search-filters-toggle") as HTMLButtonElement | null
+  const filtersPanel = searchElement.querySelector(".search-filters-panel") as HTMLElement | null
+  const facetSectionsRoot = searchElement.querySelector(".search-facet-sections") as HTMLElement | null
+  const facetFilterInput = searchElement.querySelector(".search-facet-filter") as HTMLInputElement | null
+  const activeFiltersWrap = searchElement.querySelector(".search-active-filters-wrap") as HTMLElement | null
+  const activeFiltersRoot = searchElement.querySelector(".search-active-filters") as HTMLElement | null
+  const activeFiltersLabel = searchElement.querySelector(".search-active-filters-label") as HTMLElement | null
+  const clearAllFiltersBtn = searchElement.querySelector(".search-clear-all-filters") as HTMLButtonElement | null
+  const filtersHint = searchElement.querySelector(".search-filters-hint") as HTMLElement | null
 
   const noResultsTitle = container.dataset.searchNoResultsTitle ?? "No results."
   const noResultsHint = container.dataset.searchNoResultsHint ?? "Try another search term?"
+  const isCs = (container.dataset.searchLocale ?? "").startsWith("cs")
+  const dimLabels = isCs ? DIM_LABELS_CS : DIM_LABELS_EN
+  const strActiveFilters = container.dataset.strActiveFilters ?? "Active filters"
+  const strClearAll = container.dataset.strClearAll ?? "Clear filters"
+  const strAddFilter = container.dataset.strAddFilter ?? "Filter by metadata"
+  const strFilterHint = container.dataset.strFilterHint ?? ""
 
-  if (tagToggle && tagPanelBody) {
-    tagToggle.addEventListener("click", () => {
-      const open = tagPanelBody.classList.toggle("is-open")
-      tagToggle.setAttribute("aria-expanded", open ? "true" : "false")
+  const toggleTextEl = filtersToggle?.querySelector(".search-filters-toggle-text")
+  if (toggleTextEl && strAddFilter) toggleTextEl.textContent = strAddFilter
+  if (filtersHint && strFilterHint) filtersHint.textContent = strFilterHint
+  if (activeFiltersLabel) activeFiltersLabel.textContent = strActiveFilters + ": "
+  if (clearAllFiltersBtn && strClearAll) clearAllFiltersBtn.textContent = strClearAll
+
+  if (filtersToggle && filtersPanel) {
+    filtersToggle.addEventListener("click", () => {
+      const open = filtersPanel.classList.toggle("is-open")
+      filtersToggle.setAttribute("aria-expanded", open ? "true" : "false")
     })
   }
 
-  if (!host.dataset.searchTagPanelBuilt && tagCheckboxesRoot) {
-    host.dataset.searchTagPanelBuilt = "1"
-    const tags = collectUniqueTags(data)
-    for (const tag of tags) {
-      const label = document.createElement("label")
-      const input = document.createElement("input")
-      input.type = "checkbox"
-      input.value = tag
-      label.appendChild(input)
-      label.appendChild(document.createTextNode(`#${tag}`))
-      tagCheckboxesRoot.appendChild(label)
+  const selectedFacets = new Map<string, Set<string>>()
+
+  function getSelectedFacets(): Map<string, Set<string>> {
+    const out = new Map<string, Set<string>>()
+    if (!facetSectionsRoot) return out
+    for (const chip of facetSectionsRoot.querySelectorAll<HTMLElement>("[data-dim][data-value].is-selected")) {
+      const dim = chip.dataset.dim!
+      const val = chip.dataset.value!
+      if (!out.has(dim)) out.set(dim, new Set())
+      out.get(dim)!.add(val)
+    }
+    return out
+  }
+
+  function syncActiveFiltersBar() {
+    if (!activeFiltersRoot || !activeFiltersWrap) return
+    const sel = getSelectedFacets()
+    let total = 0
+    for (const s of sel.values()) total += s.size
+    if (total === 0) {
+      activeFiltersWrap.hidden = true
+      return
+    }
+    activeFiltersWrap.hidden = false
+    removeAllChildren(activeFiltersRoot)
+    for (const [dim, values] of sel) {
+      const label = dimLabels[dim] ?? dim
+      for (const val of values) {
+        const chip = document.createElement("span")
+        chip.className = "search-active-chip"
+        chip.innerHTML = `${escapeHtml(label)}: ${escapeHtml(val)} <button type="button" class="search-active-chip-remove" aria-label="Remove">×</button>`
+        const removeBtn = chip.querySelector(".search-active-chip-remove") as HTMLButtonElement
+        const dimChip = facetSectionsRoot?.querySelector(
+          `[data-dim="${dim}"][data-value="${CSS.escape(val)}"]`,
+        ) as HTMLElement | null
+        removeBtn?.addEventListener("click", () => {
+          dimChip?.classList.remove("is-selected")
+          if (selectedFacets.get(dim)) {
+            selectedFacets.get(dim)!.delete(val)
+            if (selectedFacets.get(dim)!.size === 0) selectedFacets.delete(dim)
+          }
+          syncActiveFiltersBar()
+          runSearch()
+        })
+        activeFiltersRoot.appendChild(chip)
+      }
     }
   }
 
-  if (tagListFilter && tagCheckboxesRoot) {
-    tagListFilter.addEventListener("input", () => {
-      const q = tagListFilter.value.trim().toLowerCase()
-      for (const label of tagCheckboxesRoot.querySelectorAll("label")) {
-        const text = label.textContent?.toLowerCase() ?? ""
-        label.classList.toggle("is-hidden", q !== "" && !text.includes(q))
+  if (!host.dataset.searchFacetsBuilt && facetSectionsRoot) {
+    host.dataset.searchFacetsBuilt = "1"
+    const options = buildFacetOptions(data)
+    const facetFilterLower = () => (facetFilterInput?.value ?? "").trim().toLowerCase()
+    for (const dim of META_DIMS) {
+      const valuesMap = options.get(dim)!
+      const entries = [...valuesMap.entries()].sort((a, b) => a[0].localeCompare(b[0], undefined, { sensitivity: "base" }))
+      if (entries.length === 0) continue
+      const section = document.createElement("details")
+      section.className = "search-facet-section"
+      section.open = dim === "typ" || dim === "tags"
+      const summary = document.createElement("summary")
+      summary.className = "search-facet-section-title"
+      summary.textContent = `${dimLabels[dim] ?? dim} (${entries.length})`
+      section.appendChild(summary)
+      const chipsWrap = document.createElement("div")
+      chipsWrap.className = "search-facet-chips"
+      for (const [value, count] of entries) {
+        const chip = document.createElement("button")
+        chip.type = "button"
+        chip.className = "search-facet-chip"
+        chip.dataset.dim = dim
+        chip.dataset.value = value
+        chip.setAttribute("data-searchable", (dim === "tags" ? `#${value}` : value).toLowerCase())
+        chip.innerHTML = dim === "tags" ? `#${escapeHtml(value)}` : escapeHtml(value)
+        if (count > 1) {
+          const cnt = document.createElement("span")
+          cnt.className = "search-facet-count"
+          cnt.textContent = ` ${count}`
+          chip.appendChild(cnt)
+        }
+        chip.addEventListener("click", () => {
+          chip.classList.toggle("is-selected")
+          if (!selectedFacets.has(dim)) selectedFacets.set(dim, new Set())
+          if (chip.classList.contains("is-selected")) {
+            selectedFacets.get(dim)!.add(value)
+          } else {
+            selectedFacets.get(dim)!.delete(value)
+            if (selectedFacets.get(dim)!.size === 0) selectedFacets.delete(dim)
+          }
+          syncActiveFiltersBar()
+          runSearch()
+        })
+        chipsWrap.appendChild(chip)
       }
-    })
+      section.appendChild(chipsWrap)
+      facetSectionsRoot.appendChild(section)
+    }
+    if (facetFilterInput && facetSectionsRoot) {
+      facetFilterInput.addEventListener("input", () => {
+        const q = facetFilterLower()
+        for (const chip of facetSectionsRoot.querySelectorAll<HTMLElement>(".search-facet-chip")) {
+          const searchable = (chip.getAttribute("data-searchable") ?? "").toLowerCase()
+          chip.classList.toggle("is-hidden", q !== "" && !searchable.includes(q))
+        }
+        for (const section of facetSectionsRoot.querySelectorAll<HTMLDetailsElement>(".search-facet-section")) {
+          const visible = section.querySelectorAll(".search-facet-chip:not(.is-hidden)").length > 0
+          ;(section as HTMLElement).classList.toggle("is-empty", !visible)
+        }
+      })
+    }
   }
 
   const getSelectedCheckboxTags = (): string[] => {
-    if (!tagCheckboxesRoot) return []
-    return [
-      ...tagCheckboxesRoot.querySelectorAll<HTMLInputElement>("input[type=checkbox]:checked"),
-    ].map((i) => i.value)
+    const sel = getSelectedFacets()
+    return [...(sel.get("tags") ?? [])]
   }
 
   const appendLayout = (el: HTMLElement) => {
@@ -302,16 +508,18 @@ async function setupSearch(searchElement: Element, currentSlug: FullSlug, data: 
   function hideSearch() {
     container.classList.remove("active")
     searchBar.value = ""
-    if (tagListFilter) tagListFilter.value = ""
-    if (tagCheckboxesRoot) {
-      tagCheckboxesRoot.querySelectorAll<HTMLInputElement>("input[type=checkbox]").forEach((i) => {
-        i.checked = false
+    if (facetFilterInput) facetFilterInput.value = ""
+    if (facetSectionsRoot) {
+      facetSectionsRoot.querySelectorAll(".search-facet-chip.is-selected").forEach((c) => c.classList.remove("is-selected"))
+      facetSectionsRoot.querySelectorAll(".search-facet-chip, .search-facet-section").forEach((el) => {
+        el.classList.remove("is-hidden", "is-empty")
       })
-      tagCheckboxesRoot.querySelectorAll("label").forEach((l) => l.classList.remove("is-hidden"))
     }
-    if (tagPanelBody) {
-      tagPanelBody.classList.remove("is-open")
-      tagToggle?.setAttribute("aria-expanded", "false")
+    selectedFacets.clear()
+    syncActiveFiltersBar()
+    if (filtersPanel) {
+      filtersPanel.classList.remove("is-open")
+      filtersToggle?.setAttribute("aria-expanded", "false")
     }
     if (sidebar) sidebar.style.zIndex = ""
     removeAllChildren(results)
@@ -460,13 +668,13 @@ async function setupSearch(searchElement: Element, currentSlug: FullSlug, data: 
     highlights[0]?.scrollIntoView({ block: "start" })
   }
 
-  const filterIdsByCheckbox = (ids: number[], checkboxTags: string[]): number[] => {
-    if (checkboxTags.length === 0) return ids
-    return ids.filter((id) => pageHasAllTags(idDataMap[id], data, checkboxTags))
+  const filterIdsByFacets = (ids: number[], facets: Map<string, Set<string>>): number[] => {
+    if (facets.size === 0) return ids
+    return ids.filter((id) => pageMatchesFacets(idDataMap[id], facets, data))
   }
 
-  function idsForCheckboxOnly(checkboxTags: string[]): number[] {
-    const slugs = idDataMap.filter((slug) => pageHasAllTags(slug, data, checkboxTags))
+  function idsForFacetsOnly(facets: Map<string, Set<string>>): number[] {
+    const slugs = idDataMap.filter((slug) => pageMatchesFacets(slug, facets, data))
     slugs.sort((a, b) =>
       (data[a].title ?? "").localeCompare(data[b].title ?? "", undefined, { sensitivity: "base" }),
     )
@@ -476,9 +684,11 @@ async function setupSearch(searchElement: Element, currentSlug: FullSlug, data: 
   async function runSearch() {
     if (!searchLayout || !index) return
 
+    const facets = getSelectedFacets()
+    const hasFacets = facets.size > 0 && [...facets.values()].some((s) => s.size > 0)
     const checkboxTags = getSelectedCheckboxTags()
     const rawValue = searchBar.value
-    const showResults = rawValue.trim() !== "" || checkboxTags.length > 0
+    const showResults = rawValue.trim() !== "" || hasFacets
     searchLayout.classList.toggle("display-results", showResults)
 
     if (!showResults) {
@@ -513,12 +723,12 @@ async function setupSearch(searchElement: Element, currentSlug: FullSlug, data: 
         const merged = [
           ...new Set([...getByField(searchResults, "title"), ...getByField(searchResults, "content")]),
         ]
-        finalIds = filterIdsByCheckbox(merged, checkboxTags).slice(0, numSearchResults)
+        finalIds = filterIdsByFacets(merged, facets).slice(0, numSearchResults)
       } else {
         mode = "tags"
         tagBarQuery = rest
-        if (rest === "" && checkboxTags.length > 0) {
-          finalIds = idsForCheckboxOnly(checkboxTags)
+        if (rest === "" && hasFacets) {
+          finalIds = idsForFacetsOnly(facets)
           mode = "basic"
           highlightTerm = ""
           showPageTags = true
@@ -529,13 +739,13 @@ async function setupSearch(searchElement: Element, currentSlug: FullSlug, data: 
             index: ["tags"],
           })
           let merged = [...new Set(getByField(searchResults, "tags"))]
-          merged = filterIdsByCheckbox(merged, checkboxTags).slice(0, numSearchResults)
+          merged = filterIdsByFacets(merged, facets).slice(0, numSearchResults)
           finalIds = merged
         }
       }
     } else {
       const query = rawValue.trim()
-      if (checkboxTags.length === 0) {
+      if (!hasFacets) {
         if (query === "") {
           removeAllChildren(results)
           if (preview) removeAllChildren(preview)
@@ -552,7 +762,7 @@ async function setupSearch(searchElement: Element, currentSlug: FullSlug, data: 
         highlightTerm = query
       } else {
         if (query === "") {
-          finalIds = idsForCheckboxOnly(checkboxTags)
+          finalIds = idsForFacetsOnly(facets)
           showPageTags = true
           highlightTerm = ""
         } else {
@@ -565,7 +775,7 @@ async function setupSearch(searchElement: Element, currentSlug: FullSlug, data: 
           const merged = [
             ...new Set([...getByField(searchResults, "title"), ...getByField(searchResults, "content")]),
           ]
-          finalIds = filterIdsByCheckbox(merged, checkboxTags).slice(0, numSearchResults)
+          finalIds = filterIdsByFacets(merged, facets).slice(0, numSearchResults)
         }
       }
     }
@@ -644,18 +854,19 @@ async function setupSearch(searchElement: Element, currentSlug: FullSlug, data: 
   searchBar.addEventListener("input", () => runSearch())
   window.addCleanup(() => searchBar.removeEventListener("input", () => runSearch()))
 
-  if (tagCheckboxesRoot) {
-    tagCheckboxesRoot.addEventListener("change", () => runSearch())
-  }
-  if (tagClearBtn && tagCheckboxesRoot) {
-    tagClearBtn.addEventListener("click", () => {
-      tagCheckboxesRoot.querySelectorAll<HTMLInputElement>("input[type=checkbox]").forEach((i) => {
-        i.checked = false
-      })
-      if (tagListFilter) {
-        tagListFilter.value = ""
-        tagCheckboxesRoot.querySelectorAll("label").forEach((l) => l.classList.remove("is-hidden"))
+  if (clearAllFiltersBtn) {
+    clearAllFiltersBtn.addEventListener("click", () => {
+      if (facetSectionsRoot) {
+        facetSectionsRoot.querySelectorAll(".search-facet-chip.is-selected").forEach((c) => c.classList.remove("is-selected"))
+        if (facetFilterInput) {
+          facetFilterInput.value = ""
+          facetSectionsRoot.querySelectorAll(".search-facet-chip, .search-facet-section").forEach((el) => {
+            el.classList.remove("is-hidden", "is-empty")
+          })
+        }
       }
+      selectedFacets.clear()
+      syncActiveFiltersBar()
       runSearch()
     })
   }
