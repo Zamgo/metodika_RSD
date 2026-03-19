@@ -2,14 +2,16 @@ import { PageLayout, SharedLayout } from "./quartz/cfg"
 import * as Component from "./quartz/components"
 import { FileTrieNode } from "./quartz/util/fileTrie"
 
-/** Řazení podle číselného prefixu (01_, 02_, …) ve složkách a souborech. */
+/** Řazení: 1) podle číselného prefixu (01_, 02_, …), 2) složky před soubory, 3) podle názvu. Používá slugSegment (segment cesty), ne displayName (může být z frontmatter). */
 function sortByNumericPrefix(a: FileTrieNode, b: FileTrieNode): number {
+  const segA = a.slugSegment ?? a.displayName ?? ""
+  const segB = b.slugSegment ?? b.displayName ?? ""
+  const numA = parseInt(segA.match(/^(\d+)/)?.[1] ?? "999999", 10)
+  const numB = parseInt(segB.match(/^(\d+)/)?.[1] ?? "999999", 10)
+  if (numA !== numB) return numA - numB
   if (!a.isFolder && b.isFolder) return 1
   if (a.isFolder && !b.isFolder) return -1
-  const numA = parseInt(a.displayName.match(/^(\d+)/)?.[1] ?? "999999", 10)
-  const numB = parseInt(b.displayName.match(/^(\d+)/)?.[1] ?? "999999", 10)
-  if (numA !== numB) return numA - numB
-  return a.displayName.localeCompare(b.displayName, undefined, {
+  return (segA || a.displayName).localeCompare(segB || b.displayName, undefined, {
     numeric: true,
     sensitivity: "base",
   })

@@ -4,93 +4,20 @@
     "type": "split",
     "children": [
       {
-        "id": "a51c80e62db21c1f",
+        "id": "08cde8067c7f40fb",
         "type": "tabs",
         "children": [
           {
-            "id": "268e5cdb344b191d",
+            "id": "b1b051617c654508",
             "type": "leaf",
             "state": {
-              "type": "image",
-              "state": {
-                "file": "99_Media/obrazky/Pasted image 20260318173319.png"
-              },
-              "icon": "lucide-image",
-              "title": "Pasted image 20260318173319"
-            }
-          },
-          {
-            "id": "151fc22ebf8eb61a",
-            "type": "leaf",
-            "state": {
-              "type": "markdown",
-              "state": {
-                "file": "01_Oblasti správy informací/Realizace/Změny během výstavby pomocí nástrojů CDE.md",
-                "mode": "source",
-                "source": false
-              },
+              "type": "empty",
+              "state": {},
               "icon": "lucide-file",
-              "title": "Změny během výstavby pomocí nástrojů CDE"
-            }
-          },
-          {
-            "id": "4a1bc2b0a6143872",
-            "type": "leaf",
-            "state": {
-              "type": "markdown",
-              "state": {
-                "file": "03_Šablony/CDE_workflow/BEP.md",
-                "mode": "source",
-                "source": false
-              },
-              "icon": "lucide-file",
-              "title": "BEP"
-            }
-          },
-          {
-            "id": "79e55103056df64d",
-            "type": "leaf",
-            "state": {
-              "type": "markdown",
-              "state": {
-                "file": "03_Šablony/CDE_workflow/Claim.md",
-                "mode": "source",
-                "source": false
-              },
-              "icon": "lucide-file",
-              "title": "Claim"
-            }
-          },
-          {
-            "id": "db1d9ea440b3bc66",
-            "type": "leaf",
-            "state": {
-              "type": "markdown",
-              "state": {
-                "file": "04_Definice pojmů/Informační management/Společné datové prostředí (CDE).md",
-                "mode": "source",
-                "source": false
-              },
-              "icon": "lucide-file",
-              "title": "Společné datové prostředí (CDE)"
-            }
-          },
-          {
-            "id": "64883aae171e027c",
-            "type": "leaf",
-            "state": {
-              "type": "markdown",
-              "state": {
-                "file": "02_Oblasti správy informací/Priprava/Konfigurace projektového nástroje CDE.md",
-                "mode": "source",
-                "source": false
-              },
-              "icon": "lucide-file",
-              "title": "Konfigurace projektového nástroje CDE"
+              "title": "Nová karta"
             }
           }
-        ],
-        "currentTab": 5
+        ]
       }
     ],
     "direction": "vertical"
@@ -253,8 +180,21 @@
       "bases:Vytvořit novou základnu": false
     }
   },
-  "active": "64883aae171e027c",
+  "active": "6ed3e31a2ef3654b",
   "lastOpenFiles": [
+    "99_Media/Pasted image 20260319095752.png",
+    "99_Media/Pasted image 20260319095434.png",
+    "05_Definice pojmů/Role/Pověřující strana.md",
+    "05_Definice pojmů/Role/Projektant.md",
+    "05_Definice pojmů/Role/Správce CDE.md",
+    "05_Definice pojmů/Role/Technický dozor.md",
+    "05_Definice pojmů/Role/Vedoucí pověřená strana.md",
+    "05_Definice pojmů/Role/Zhotovitel.md",
+    "05_Definice pojmů/Role/Pověřená strana.md",
+    "05_Definice pojmů/Faze/Realizace.md",
+    "05_Definice pojmů/Faze/Příprava.md",
+    "05_Definice pojmů/Faze/Provoz a údržba.md",
+    "02_Oblasti správy informací/Priprava/Konfigurace projektového nástroje CDE.md",
     "site/public",
     "site/public/plugins/TagPage.html",
     "site/public/plugins/TableOfContents.html",
@@ -265,7 +205,6 @@
     "site/public/plugins/OxHugoFlavoredMarkdown.html",
     "site/public/plugins/ObsidianFlavoredMarkdown.html",
     "site/public/plugins/NotFoundPage.html",
-    "site/public/plugins/Latex.html",
     "site/public/images/quartz-transform-pipeline.png",
     "site/public/images/social-image-preview-light.png",
     "site/public/images/social-image-preview-dark.png",
@@ -275,10 +214,8 @@
     "site/public/images/github-quick-setup.png",
     "site/public/images/github-init-repo-options.png",
     "site/public/images/giscus-results.png",
-    "site/public/images/giscus-repo.png",
     "02_Oblasti správy informací/Provoz a udrzba/Archivace.md",
     "02_Oblasti správy informací/Priprava/Kontrola smluvní dokumentace a požadavků.md",
-    "02_Oblasti správy informací/Priprava/Konfigurace projektového nástroje CDE.md",
     "03_CDE_workflow/BEP.md",
     "03_CDE_workflow/ZBV do 50 mil.md",
     "03_CDE_workflow/ZBV nad 50 mil.md",
@@ -290,16 +227,6 @@
     "05_Definice pojmů/Informační management/Společné datové prostředí (CDE).md",
     "05_Definice pojmů/Informační management/BIM (Informační modelování staveb).md",
     "05_Definice pojmů/Informační management/Projektový tým.md",
-    "05_Definice pojmů/Informační management/Projektový informační model (PIM).md",
-    "05_Definice pojmů/Informační management/Požadavky objednatele na výměnu informací (EIR).md",
-    "05_Definice pojmů/Informační management/BIM-protokol.md",
-    "05_Definice pojmů/Informační management/Požadavky na projektové informace (PIR).md",
-    "05_Definice pojmů/Informační management/Požadavky na informace o aktivu (AIR).md",
-    "04_Definice pojmů/Informační management/Požadavky na informace (IR).md",
-    "05_Definice pojmů/Informační management/Předběžný plán realizace BIM (Pre-BEP).md",
-    "05_Definice pojmů/Informační management/Přístupová oprávnění.md",
-    "05_Definice pojmů/Informační management/Realizační tým.md",
-    "05_Definice pojmů/Informační management/Smlouva.md",
-    "05_Definice pojmů/Informační management/Správa informací o stavbě.md"
+    "05_Definice pojmů/Informační management/Projektový informační model (PIM).md"
   ]
 }
