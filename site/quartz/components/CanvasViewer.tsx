@@ -1,12 +1,13 @@
 import type { QuartzComponent, QuartzComponentProps } from "./types"
 // @ts-ignore
 import script from "./scripts/canvasViewer.inline"
-import { joinSegments, pathToRoot } from "../util/path"
+import { pathToRoot } from "../util/path"
 import type { FullSlug } from "../util/path"
 
 interface CanvasFileData {
   slug?: FullSlug
   canvasPage?: boolean
+  canvasEmbeddedData?: string
 }
 
 const style = `
@@ -135,13 +136,6 @@ const style = `
   border-radius: 3px;
   font-size: 0.9em;
 }
-.canvas-node-body .callout {
-  padding: 8px 12px;
-  border-radius: 4px;
-  border-left: 3px solid var(--secondary);
-  background: rgba(128,128,128,0.05);
-  margin: 0.4em 0;
-}
 `
 
 export default ((): QuartzComponent => {
@@ -149,13 +143,21 @@ export default ((): QuartzComponent => {
     const data = fileData as CanvasFileData
     if (!data?.canvasPage || !data.slug) return null
     const base = pathToRoot(data.slug)
-    const canvasUrl = joinSegments(base, data.slug + ".canvas")
+
     return (
-      <div
-        class="quartz-canvas-viewer"
-        data-canvas-url={canvasUrl}
-        data-base-url={base}
-      />
+      <>
+        <div
+          class="quartz-canvas-viewer"
+          data-base-url={base}
+        />
+        {data.canvasEmbeddedData && (
+          <script
+            type="application/json"
+            class="canvas-embedded-data"
+            dangerouslySetInnerHTML={{ __html: data.canvasEmbeddedData }}
+          />
+        )}
+      </>
     )
   }
   CanvasViewer.css = style

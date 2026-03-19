@@ -8,10 +8,12 @@ interface CanvasNode {
   width: number
   height: number
   file?: string
+  subpath?: string
   text?: string
   url?: string
   color?: string
   label?: string
+  renderedHtml?: string
 }
 
 interface CanvasEdge {
@@ -111,64 +113,9 @@ function svgEl(tag: string, attrs: Record<string, string> = {}): SVGElement {
   return e
 }
 
-// Rebase relative URLs in fetched HTML to be absolute
-function rebaseUrls(root: Document | Element, sourceUrl: string) {
-  const fix = (el: Element, attr: string) => {
-    const val = el.getAttribute(attr)
-    if (!val || val.startsWith("http") || val.startsWith("//") || val.startsWith("#") || val.startsWith("data:") || val.startsWith("mailto:")) return
-    try {
-      const resolved = new URL(val, sourceUrl)
-      el.setAttribute(attr, resolved.pathname + resolved.hash)
-    } catch { /* ignore */ }
-  }
-  root.querySelectorAll("[href]").forEach((el) => fix(el, "href"))
-  root.querySelectorAll("[src]").forEach((el) => fix(el, "src"))
-}
-
-// Cache fetched page fragments
-const pageCache = new Map<string, Promise<DocumentFragment | null>>()
-
-function fetchPageFragment(pageUrl: string): Promise<DocumentFragment | null> {
-  if (!pageCache.has(pageUrl)) {
-    pageCache.set(
-      pageUrl,
-      (async (): Promise<DocumentFragment | null> => {
-        try {
-          const resp = await fetch(pageUrl)
-          if (!resp.ok) return null
-          const html = await resp.text()
-          const doc = new DOMParser().parseFromString(html, "text/html")
-          rebaseUrls(doc, pageUrl)
-
-          const hints = [...doc.querySelectorAll(".popover-hint")]
-          // Skip breadcrumb (first hint if it contains breadcrumb)
-          const contentHints = hints.filter((h) => !h.querySelector(".breadcrumb-container"))
-          if (!contentHints.length) return null
-
-          const frag = document.createDocumentFragment()
-          for (const h of contentHints) {
-            for (const child of h.children) {
-              frag.appendChild(child.cloneNode(true))
-            }
-          }
-          return frag
-        } catch {
-          return null
-        }
-      })(),
-    )
-  }
-  return pageCache.get(pageUrl)!
-}
-
-function buildFileNodeContent(
-  node: CanvasNode,
-  baseUrl: string,
-  prefetched: Map<string, DocumentFragment | null>,
-): HTMLElement {
+function buildFileNodeContent(node: CanvasNode, baseUrl: string): HTMLElement {
   const filePath = node.file!
 
-  // Image files: render directly
   if (isImageFile(filePath)) {
     const wrapper = document.createElement("div")
     Object.assign(wrapper.style, {
@@ -190,18 +137,14 @@ function buildFileNodeContent(
     return wrapper
   }
 
-  // MD files: use pre-fetched rendered content
-  const hashIdx = filePath.indexOf("#")
-  const pathPart = hashIdx >= 0 ? filePath.slice(0, hashIdx) : filePath
-  const anchor = hashIdx >= 0 ? filePath.slice(hashIdx + 1) : ""
-  const slug = slugifyPath(pathPart)
-  const linkHref = baseUrl + "/" + slug + (anchor ? "#" + anchor : "")
-  const label = pathPart.split("/").pop()?.replace(/\.md$/, "") ?? ""
+  const slug = slugifyPath(filePath)
+  const anchor = node.subpath?.replace(/^#/, "") || ""
+  const linkHref = baseUrl + "/" + slug + (anchor ? "#" + encodeURIComponent(anchor) : "")
+  const label = filePath.split("/").pop()?.replace(/\.md$/, "") ?? ""
 
   const container = document.createElement("div")
   container.className = "canvas-node-content"
 
-  // Header bar with link to full page
   const header = document.createElement("a")
   header.href = linkHref
   header.className = "internal canvas-node-header"
@@ -215,34 +158,11 @@ function buildFileNodeContent(
   header.appendChild(titleSpan)
   container.appendChild(header)
 
-  // Content body -- populated from pre-fetched content
   const body = document.createElement("div")
   body.className = "canvas-node-body"
 
-  const frag = prefetched.get(node.id)
-  if (frag) {
-    const clone = frag.cloneNode(true) as DocumentFragment
-
-    if (anchor) {
-      const temp = document.createElement("div")
-      temp.appendChild(clone)
-      const decoded = decodeURIComponent(anchor)
-      const target =
-        temp.querySelector(`[id="${decoded}"]`) ||
-        temp.querySelector(`[id="${decoded.toLowerCase().replace(/\s+/g, "-")}"]`)
-      if (target) {
-        let el: Node | null = target
-        while (el?.parentElement && el.parentElement !== temp) el = el.parentElement
-        if (el) {
-          while (el.previousSibling) el.previousSibling.remove()
-        }
-      }
-      body.appendChild(temp)
-    } else {
-      body.appendChild(clone)
-    }
-
-    // Mark internal links for Quartz SPA router
+  if (node.renderedHtml) {
+    body.innerHTML = node.renderedHtml
     body.querySelectorAll("a[href]").forEach((a) => {
       const href = a.getAttribute("href") || ""
       if (!href.startsWith("http") && !href.startsWith("mailto:") && !href.startsWith("data:")) {
@@ -281,12 +201,7 @@ function buildLinkNodeContent(node: CanvasNode): HTMLElement {
   return a
 }
 
-function renderCanvas(
-  container: HTMLElement,
-  data: CanvasData,
-  baseUrl: string,
-  prefetched: Map<string, DocumentFragment | null>,
-) {
+function renderCanvas(container: HTMLElement, data: CanvasData, baseUrl: string) {
   container.innerHTML = ""
   if (!data.nodes?.length) return
 
@@ -310,7 +225,6 @@ function renderCanvas(
     height: "100%",
   }) as SVGSVGElement
 
-  // Defs
   const defs = svgEl("defs")
   const marker = svgEl("marker", {
     id: "canvas-arrow",
@@ -335,7 +249,6 @@ function renderCanvas(
   defs.appendChild(pattern)
   svg.appendChild(defs)
 
-  // Background dots
   svg.appendChild(
     svgEl("rect", {
       x: String(vb.x - 2000),
@@ -348,7 +261,6 @@ function renderCanvas(
 
   const nodeMap = new Map(data.nodes.map((n) => [n.id, n]))
 
-  // Edges
   for (const edge of data.edges ?? []) {
     const from = nodeMap.get(edge.fromNode)
     const to = nodeMap.get(edge.toNode)
@@ -385,7 +297,6 @@ function renderCanvas(
     }
   }
 
-  // Nodes
   for (const node of data.nodes) {
     const g = svgEl("g")
     const fill = (node.color && NODE_FILLS[node.color]) || "var(--light)"
@@ -413,7 +324,7 @@ function renderCanvas(
 
     let content: HTMLElement
     if (node.type === "file" && node.file) {
-      content = buildFileNodeContent(node, baseUrl, prefetched)
+      content = buildFileNodeContent(node, baseUrl)
     } else if (node.type === "link" && node.url) {
       content = buildLinkNodeContent(node)
     } else {
@@ -490,44 +401,21 @@ function renderCanvas(
 }
 
 document.addEventListener("nav", () => {
-  pageCache.clear()
-  const roots = document.querySelectorAll<HTMLElement>("[data-canvas-url]")
-  for (const root of roots) {
-    const url = root.getAttribute("data-canvas-url")
-    const baseUrl = root.getAttribute("data-base-url") || ".."
-    if (!url) continue
+  const container = document.querySelector<HTMLElement>(".quartz-canvas-viewer")
+  if (!container) return
 
-    root.innerHTML = ""
-    const canvasHref = new URL(url, window.location.href).href
+  const baseUrl = container.getAttribute("data-base-url") || ".."
+  const dataEl = document.querySelector<HTMLScriptElement>("script.canvas-embedded-data")
+  if (!dataEl?.textContent) return
 
-    fetch(canvasHref)
-      .then((r) => {
-        if (!r.ok) throw new Error("Canvas fetch failed: " + r.status)
-        return r.json()
-      })
-      .then(async (canvas: CanvasData) => {
-        if (!canvas?.nodes) return
-
-        // Pre-fetch all file node page contents in parallel BEFORE rendering SVG.
-        // foreignObject in SVG does not re-render reliably when content is injected
-        // after the SVG is already in the DOM.
-        const prefetched = new Map<string, DocumentFragment | null>()
-        const fetches = canvas.nodes
-          .filter((n) => n.type === "file" && n.file && !isImageFile(n.file))
-          .map(async (n) => {
-            const hashIdx = n.file!.indexOf("#")
-            const pathPart = hashIdx >= 0 ? n.file!.slice(0, hashIdx) : n.file!
-            const slug = slugifyPath(pathPart)
-            const fullUrl = new URL(baseUrl + "/" + slug, window.location.href).href
-            const frag = await fetchPageFragment(fullUrl)
-            prefetched.set(n.id, frag)
-          })
-
-        await Promise.all(fetches)
-        renderCanvas(root, canvas, baseUrl, prefetched)
-      })
-      .catch((err) => {
-        console.warn("[quartz canvas]", err)
-      })
+  let canvas: CanvasData
+  try {
+    canvas = JSON.parse(dataEl.textContent)
+  } catch {
+    console.warn("[quartz canvas] Failed to parse embedded canvas data")
+    return
   }
+
+  if (!canvas?.nodes) return
+  renderCanvas(container, canvas, baseUrl)
 })
