@@ -52,6 +52,30 @@ const NODE_STROKES: Record<string, string> = {
   "6": "rgba(142, 36, 170, 0.6)",
 }
 
+const FILE_ICON = `<svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"/><polyline points="14 2 14 8 20 8"/><line x1="8" y1="13" x2="16" y2="13"/><line x1="8" y1="17" x2="16" y2="17"/></svg>`
+
+const LINK_ICON = `<svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>`
+
+function slugifyPath(fp: string): string {
+  return fp
+    .replace(/\.md$/, "")
+    .split("/")
+    .map((seg) =>
+      seg
+        .replace(/\s/g, "-")
+        .replace(/&/g, "-and-")
+        .replace(/%/g, "-percent")
+        .replace(/\?/g, "")
+        .replace(/#/g, ""),
+    )
+    .join("/")
+    .replace(/\/$/, "")
+}
+
+function isImageFile(fp: string): boolean {
+  return /\.(png|jpg|jpeg|gif|svg|webp|avif|bmp|ico)$/i.test(fp)
+}
+
 function getNodeLabel(node: CanvasNode): string {
   if (node.type === "file" && node.file)
     return node.file.split("/").pop()?.replace(/\.md$/, "") ?? ""
@@ -99,7 +123,112 @@ function svgEl(tag: string, attrs: Record<string, string> = {}): SVGElement {
   return e
 }
 
-function renderCanvas(container: HTMLElement, data: CanvasData) {
+function buildFileNodeContent(
+  node: CanvasNode,
+  baseUrl: string,
+): HTMLElement {
+  const filePath = node.file!
+
+  if (isImageFile(filePath)) {
+    const wrapper = document.createElement("div")
+    Object.assign(wrapper.style, {
+      width: "100%",
+      height: "100%",
+      overflow: "hidden",
+      borderRadius: "8px",
+    })
+    const img = document.createElement("img")
+    img.src = baseUrl + "/" + filePath
+    Object.assign(img.style, {
+      width: "100%",
+      height: "100%",
+      objectFit: "cover",
+      display: "block",
+    })
+    img.loading = "lazy"
+    wrapper.appendChild(img)
+    return wrapper
+  }
+
+  const slug = slugifyPath(filePath)
+  const href = baseUrl + "/" + slug
+  const label = getNodeLabel(node)
+
+  const a = document.createElement("a")
+  a.href = href
+  a.className = "internal canvas-file-link"
+
+  const iconDiv = document.createElement("div")
+  iconDiv.className = "canvas-file-icon"
+  iconDiv.innerHTML = FILE_ICON
+  a.appendChild(iconDiv)
+
+  const title = document.createElement("span")
+  title.className = "canvas-file-title"
+  title.textContent = label
+  a.appendChild(title)
+
+  const hint = document.createElement("span")
+  hint.className = "canvas-file-hint"
+  hint.textContent = "Klikni pro otevření →"
+  a.appendChild(hint)
+
+  return a
+}
+
+function buildLinkNodeContent(node: CanvasNode): HTMLElement {
+  const wrapper = document.createElement("a")
+  wrapper.href = node.url || "#"
+  wrapper.target = "_blank"
+  wrapper.rel = "noopener"
+  wrapper.className = "canvas-file-link"
+
+  const iconDiv = document.createElement("div")
+  iconDiv.className = "canvas-file-icon"
+  iconDiv.innerHTML = LINK_ICON
+  wrapper.appendChild(iconDiv)
+
+  const title = document.createElement("span")
+  title.className = "canvas-file-title"
+  try {
+    title.textContent = new URL(node.url || "").hostname
+  } catch {
+    title.textContent = node.url || "Link"
+  }
+  wrapper.appendChild(title)
+
+  return wrapper
+}
+
+function buildTextNodeContent(node: CanvasNode): HTMLElement {
+  const div = document.createElement("div")
+  Object.assign(div.style, {
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    width: "100%",
+    height: "100%",
+    padding: "12px",
+    boxSizing: "border-box",
+    fontSize: "14px",
+    color: "var(--darkgray)",
+    textAlign: "center",
+    wordBreak: "break-word",
+    fontFamily: "var(--bodyFont)",
+    fontWeight: "600",
+    lineHeight: "1.4",
+  })
+
+  const text = node.text || ""
+  div.innerHTML = text
+    .replace(/\*\*([^*]+)\*\*/g, "<strong>$1</strong>")
+    .replace(/\*([^*]+)\*/g, "<em>$1</em>")
+    .replace(/\n/g, "<br/>")
+
+  return div
+}
+
+function renderCanvas(container: HTMLElement, data: CanvasData, baseUrl: string) {
   container.innerHTML = ""
   if (!data.nodes?.length) return
 
@@ -128,8 +257,8 @@ function renderCanvas(container: HTMLElement, data: CanvasData) {
     height: "100%",
   }) as SVGSVGElement
 
+  // Defs
   const defs = svgEl("defs")
-
   const marker = svgEl("marker", {
     id: "canvas-arrow",
     markerWidth: "10",
@@ -151,10 +280,9 @@ function renderCanvas(container: HTMLElement, data: CanvasData) {
   })
   pattern.appendChild(svgEl("circle", { cx: "10", cy: "10", r: "1", fill: "var(--lightgray)" }))
   defs.appendChild(pattern)
-
   svg.appendChild(defs)
 
-  // Dot-pattern background
+  // Dot background
   svg.appendChild(
     svgEl("rect", {
       x: String(vb.x - 2000),
@@ -224,42 +352,30 @@ function renderCanvas(container: HTMLElement, data: CanvasData) {
       }),
     )
 
-    const label = getNodeLabel(node)
-    if (label) {
-      const fo = svgEl("foreignObject", {
-        x: String(node.x),
-        y: String(node.y),
-        width: String(node.width),
-        height: String(node.height),
-      })
-      const div = document.createElement("div")
-      div.setAttribute("xmlns", "http://www.w3.org/1999/xhtml")
-      Object.assign(div.style, {
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "center",
-        width: "100%",
-        height: "100%",
-        padding: "12px",
-        boxSizing: "border-box",
-        fontSize: "14px",
-        color: "var(--darkgray)",
-        textAlign: "center",
-        wordBreak: "break-word",
-        fontFamily: "var(--bodyFont)",
-        fontWeight: "600",
-      })
-      div.textContent = label
-      fo.appendChild(div)
-      g.appendChild(fo)
+    const fo = svgEl("foreignObject", {
+      x: String(node.x),
+      y: String(node.y),
+      width: String(node.width),
+      height: String(node.height),
+    })
+
+    let content: HTMLElement
+    if (node.type === "file" && node.file) {
+      content = buildFileNodeContent(node, baseUrl)
+    } else if (node.type === "link" && node.url) {
+      content = buildLinkNodeContent(node)
+    } else {
+      content = buildTextNodeContent(node)
     }
 
+    fo.appendChild(content)
+    g.appendChild(fo)
     svg.appendChild(g)
   }
 
   container.appendChild(svg)
 
-  // Pan & zoom via viewBox manipulation
+  // Pan & zoom
   let isPanning = false
   let panStart: Point = { x: 0, y: 0 }
 
@@ -276,6 +392,7 @@ function renderCanvas(container: HTMLElement, data: CanvasData) {
   }
 
   const onDown = (e: MouseEvent) => {
+    if ((e.target as HTMLElement).closest("a")) return
     isPanning = true
     panStart = toSvg(e.clientX, e.clientY)
     svg.style.cursor = "grabbing"
@@ -312,7 +429,6 @@ function renderCanvas(container: HTMLElement, data: CanvasData) {
   svg.addEventListener("wheel", onWheel, { passive: false })
   svg.style.cursor = "grab"
 
-  // Cleanup for SPA navigation
   ;(window as any).addCleanup?.(() => {
     svg.removeEventListener("mousedown", onDown)
     svg.removeEventListener("mousemove", onMove)
@@ -325,6 +441,7 @@ document.addEventListener("nav", () => {
   const roots = document.querySelectorAll<HTMLElement>("[data-canvas-url]")
   for (const root of roots) {
     const url = root.getAttribute("data-canvas-url")
+    const baseUrl = root.getAttribute("data-base-url") || ".."
     if (!url) continue
 
     root.innerHTML = ""
@@ -337,7 +454,7 @@ document.addEventListener("nav", () => {
       })
       .then((canvas: CanvasData) => {
         if (!canvas?.nodes) return
-        renderCanvas(root, canvas)
+        renderCanvas(root, canvas, baseUrl)
       })
       .catch((err) => {
         console.warn("[quartz canvas]", err)
