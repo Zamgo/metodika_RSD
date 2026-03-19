@@ -35,33 +35,30 @@ interface Point {
 }
 
 const NODE_FILLS: Record<string, string> = {
-  "1": "rgba(229, 57, 53, 0.12)",
-  "2": "rgba(255, 152, 0, 0.12)",
-  "3": "rgba(253, 216, 53, 0.12)",
-  "4": "rgba(67, 160, 71, 0.12)",
-  "5": "rgba(30, 136, 229, 0.12)",
-  "6": "rgba(142, 36, 170, 0.12)",
+  "1": "rgba(229,57,53,0.1)",
+  "2": "rgba(255,152,0,0.1)",
+  "3": "rgba(253,216,53,0.1)",
+  "4": "rgba(67,160,71,0.1)",
+  "5": "rgba(30,136,229,0.1)",
+  "6": "rgba(142,36,170,0.1)",
 }
-
 const NODE_STROKES: Record<string, string> = {
-  "1": "rgba(229, 57, 53, 0.6)",
-  "2": "rgba(255, 152, 0, 0.6)",
-  "3": "rgba(253, 216, 53, 0.6)",
-  "4": "rgba(67, 160, 71, 0.6)",
-  "5": "rgba(30, 136, 229, 0.6)",
-  "6": "rgba(142, 36, 170, 0.6)",
+  "1": "rgba(229,57,53,0.5)",
+  "2": "rgba(255,152,0,0.5)",
+  "3": "rgba(253,216,53,0.5)",
+  "4": "rgba(67,160,71,0.5)",
+  "5": "rgba(30,136,229,0.5)",
+  "6": "rgba(142,36,170,0.5)",
 }
 
-const FILE_ICON = `<svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"/><polyline points="14 2 14 8 20 8"/><line x1="8" y1="13" x2="16" y2="13"/><line x1="8" y1="17" x2="16" y2="17"/></svg>`
-
-const LINK_ICON = `<svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>`
+const FILE_ICON_SMALL = `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"/><polyline points="14 2 14 8 20 8"/></svg>`
 
 function slugifyPath(fp: string): string {
   return fp
     .replace(/\.md$/, "")
     .split("/")
-    .map((seg) =>
-      seg
+    .map((s) =>
+      s
         .replace(/\s/g, "-")
         .replace(/&/g, "-and-")
         .replace(/%/g, "-percent")
@@ -74,15 +71,6 @@ function slugifyPath(fp: string): string {
 
 function isImageFile(fp: string): boolean {
   return /\.(png|jpg|jpeg|gif|svg|webp|avif|bmp|ico)$/i.test(fp)
-}
-
-function getNodeLabel(node: CanvasNode): string {
-  if (node.type === "file" && node.file)
-    return node.file.split("/").pop()?.replace(/\.md$/, "") ?? ""
-  if (node.type === "text" && node.text)
-    return node.text.replace(/\*\*([^*]+)\*\*/g, "$1").replace(/\*([^*]+)\*/g, "$1")
-  if (node.type === "group" && node.label) return node.label
-  return ""
 }
 
 function getAnchor(node: CanvasNode, side: string): Point {
@@ -123,12 +111,60 @@ function svgEl(tag: string, attrs: Record<string, string> = {}): SVGElement {
   return e
 }
 
-function buildFileNodeContent(
-  node: CanvasNode,
-  baseUrl: string,
-): HTMLElement {
+// Rebase relative URLs in fetched HTML to be absolute
+function rebaseUrls(root: Document | Element, sourceUrl: string) {
+  const fix = (el: Element, attr: string) => {
+    const val = el.getAttribute(attr)
+    if (!val || val.startsWith("http") || val.startsWith("//") || val.startsWith("#") || val.startsWith("data:") || val.startsWith("mailto:")) return
+    try {
+      const resolved = new URL(val, sourceUrl)
+      el.setAttribute(attr, resolved.pathname + resolved.hash)
+    } catch { /* ignore */ }
+  }
+  root.querySelectorAll("[href]").forEach((el) => fix(el, "href"))
+  root.querySelectorAll("[src]").forEach((el) => fix(el, "src"))
+}
+
+// Cache fetched page fragments
+const pageCache = new Map<string, Promise<DocumentFragment | null>>()
+
+function fetchPageFragment(pageUrl: string): Promise<DocumentFragment | null> {
+  if (!pageCache.has(pageUrl)) {
+    pageCache.set(
+      pageUrl,
+      (async (): Promise<DocumentFragment | null> => {
+        try {
+          const resp = await fetch(pageUrl)
+          if (!resp.ok) return null
+          const html = await resp.text()
+          const doc = new DOMParser().parseFromString(html, "text/html")
+          rebaseUrls(doc, pageUrl)
+
+          const hints = [...doc.querySelectorAll(".popover-hint")]
+          // Skip breadcrumb (first hint if it contains breadcrumb)
+          const contentHints = hints.filter((h) => !h.querySelector(".breadcrumb-container"))
+          if (!contentHints.length) return null
+
+          const frag = document.createDocumentFragment()
+          for (const h of contentHints) {
+            for (const child of h.children) {
+              frag.appendChild(child.cloneNode(true))
+            }
+          }
+          return frag
+        } catch {
+          return null
+        }
+      })(),
+    )
+  }
+  return pageCache.get(pageUrl)!
+}
+
+function buildFileNodeContent(node: CanvasNode, baseUrl: string): HTMLElement {
   const filePath = node.file!
 
+  // Image files: render directly
   if (isImageFile(filePath)) {
     const wrapper = document.createElement("div")
     Object.assign(wrapper.style, {
@@ -150,82 +186,98 @@ function buildFileNodeContent(
     return wrapper
   }
 
-  const slug = slugifyPath(filePath)
-  const href = baseUrl + "/" + slug
-  const label = getNodeLabel(node)
+  // MD files: fetch rendered content
+  const hashIdx = filePath.indexOf("#")
+  const pathPart = hashIdx >= 0 ? filePath.slice(0, hashIdx) : filePath
+  const anchor = hashIdx >= 0 ? filePath.slice(hashIdx + 1) : ""
+  const slug = slugifyPath(pathPart)
+  const linkHref = baseUrl + "/" + slug + (anchor ? "#" + anchor : "")
+  const label = pathPart.split("/").pop()?.replace(/\.md$/, "") ?? ""
 
-  const a = document.createElement("a")
-  a.href = href
-  a.className = "internal canvas-file-link"
+  const container = document.createElement("div")
+  container.className = "canvas-node-content"
 
-  const iconDiv = document.createElement("div")
-  iconDiv.className = "canvas-file-icon"
-  iconDiv.innerHTML = FILE_ICON
-  a.appendChild(iconDiv)
+  // Header bar
+  const header = document.createElement("a")
+  header.href = linkHref
+  header.className = "internal canvas-node-header"
+  const iconSpan = document.createElement("span")
+  iconSpan.className = "canvas-header-icon"
+  iconSpan.innerHTML = FILE_ICON_SMALL
+  header.appendChild(iconSpan)
+  const titleSpan = document.createElement("span")
+  titleSpan.className = "canvas-header-text"
+  titleSpan.textContent = label
+  header.appendChild(titleSpan)
+  container.appendChild(header)
 
-  const title = document.createElement("span")
-  title.className = "canvas-file-title"
-  title.textContent = label
-  a.appendChild(title)
+  // Content body
+  const body = document.createElement("div")
+  body.className = "canvas-node-body"
+  container.appendChild(body)
 
-  const hint = document.createElement("span")
-  hint.className = "canvas-file-hint"
-  hint.textContent = "Klikni pro otevření →"
-  a.appendChild(hint)
+  // Async load the rendered page content
+  const fullUrl = new URL(baseUrl + "/" + slug, window.location.href).href
+  fetchPageFragment(fullUrl).then((frag) => {
+    if (!frag) return
 
-  return a
-}
+    const clone = frag.cloneNode(true) as DocumentFragment
 
-function buildLinkNodeContent(node: CanvasNode): HTMLElement {
-  const wrapper = document.createElement("a")
-  wrapper.href = node.url || "#"
-  wrapper.target = "_blank"
-  wrapper.rel = "noopener"
-  wrapper.className = "canvas-file-link"
+    if (anchor) {
+      const temp = document.createElement("div")
+      temp.appendChild(clone)
+      const decoded = decodeURIComponent(anchor)
+      const target =
+        temp.querySelector(`[id="${decoded}"]`) ||
+        temp.querySelector(`[id="${decoded.toLowerCase().replace(/\s+/g, "-")}"]`)
+      if (target) {
+        let el: Node | null = target
+        while (el?.parentElement && el.parentElement !== temp) el = el.parentElement
+        if (el) {
+          while (el.previousSibling) el.previousSibling.remove()
+        }
+      }
+      body.appendChild(temp)
+    } else {
+      body.appendChild(clone)
+    }
 
-  const iconDiv = document.createElement("div")
-  iconDiv.className = "canvas-file-icon"
-  iconDiv.innerHTML = LINK_ICON
-  wrapper.appendChild(iconDiv)
+    // Mark internal links for Quartz SPA router
+    body.querySelectorAll("a[href]").forEach((a) => {
+      const href = a.getAttribute("href") || ""
+      if (!href.startsWith("http") && !href.startsWith("mailto:") && !href.startsWith("data:")) {
+        a.classList.add("internal")
+      }
+    })
+  })
 
-  const title = document.createElement("span")
-  title.className = "canvas-file-title"
-  try {
-    title.textContent = new URL(node.url || "").hostname
-  } catch {
-    title.textContent = node.url || "Link"
-  }
-  wrapper.appendChild(title)
-
-  return wrapper
+  return container
 }
 
 function buildTextNodeContent(node: CanvasNode): HTMLElement {
   const div = document.createElement("div")
-  Object.assign(div.style, {
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
-    width: "100%",
-    height: "100%",
-    padding: "12px",
-    boxSizing: "border-box",
-    fontSize: "14px",
-    color: "var(--darkgray)",
-    textAlign: "center",
-    wordBreak: "break-word",
-    fontFamily: "var(--bodyFont)",
-    fontWeight: "600",
-    lineHeight: "1.4",
-  })
-
+  div.className = "canvas-node-body canvas-text-node"
   const text = node.text || ""
   div.innerHTML = text
     .replace(/\*\*([^*]+)\*\*/g, "<strong>$1</strong>")
     .replace(/\*([^*]+)\*/g, "<em>$1</em>")
     .replace(/\n/g, "<br/>")
-
   return div
+}
+
+function buildLinkNodeContent(node: CanvasNode): HTMLElement {
+  const a = document.createElement("a")
+  a.href = node.url || "#"
+  a.target = "_blank"
+  a.rel = "noopener"
+  a.className = "canvas-node-body canvas-text-node"
+  Object.assign(a.style, { textDecoration: "none", color: "var(--secondary)" })
+  try {
+    a.textContent = new URL(node.url || "").hostname
+  } catch {
+    a.textContent = node.url || "Link"
+  }
+  return a
 }
 
 function renderCanvas(container: HTMLElement, data: CanvasData, baseUrl: string) {
@@ -243,13 +295,8 @@ function renderCanvas(container: HTMLElement, data: CanvasData, baseUrl: string)
     maxY = Math.max(maxY, n.y + n.height)
   }
 
-  const pad = 80
-  const vb = {
-    x: minX - pad,
-    y: minY - pad,
-    w: maxX - minX + pad * 2,
-    h: maxY - minY + pad * 2,
-  }
+  const pad = 60
+  const vb = { x: minX - pad, y: minY - pad, w: maxX - minX + pad * 2, h: maxY - minY + pad * 2 }
 
   const svg = svgEl("svg", {
     viewBox: `${vb.x} ${vb.y} ${vb.w} ${vb.h}`,
@@ -282,7 +329,7 @@ function renderCanvas(container: HTMLElement, data: CanvasData, baseUrl: string)
   defs.appendChild(pattern)
   svg.appendChild(defs)
 
-  // Dot background
+  // Background dots
   svg.appendChild(
     svgEl("rect", {
       x: String(vb.x - 2000),
@@ -326,7 +373,6 @@ function renderCanvas(container: HTMLElement, data: CanvasData, baseUrl: string)
         "text-anchor": "middle",
         fill: "var(--darkgray)",
         "font-size": "13",
-        "font-family": "var(--bodyFont)",
       })
       txt.textContent = edge.label
       svg.appendChild(txt)
@@ -438,6 +484,7 @@ function renderCanvas(container: HTMLElement, data: CanvasData, baseUrl: string)
 }
 
 document.addEventListener("nav", () => {
+  pageCache.clear()
   const roots = document.querySelectorAll<HTMLElement>("[data-canvas-url]")
   for (const root of roots) {
     const url = root.getAttribute("data-canvas-url")
@@ -445,7 +492,6 @@ document.addEventListener("nav", () => {
     if (!url) continue
 
     root.innerHTML = ""
-
     const href = new URL(url, window.location.href).href
     fetch(href)
       .then((r) => {
