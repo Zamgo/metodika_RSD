@@ -13,15 +13,15 @@
             "state": {
               "type": "canvas",
               "state": {
-                "file": "Bez názvu.canvas",
+                "file": "03_CDE_workflow/0_Diagram.canvas",
                 "viewState": {
-                  "x": -79.25307742683307,
-                  "y": -6.964516076655478,
+                  "x": 156.95208284130948,
+                  "y": -33.63283437226699,
                   "zoom": -0.6666666666666666
                 }
               },
               "icon": "lucide-layout-dashboard",
-              "title": "Bez názvu"
+              "title": "0_Diagram"
             }
           }
         ]
@@ -189,17 +189,20 @@
   },
   "active": "b1b051617c654508",
   "lastOpenFiles": [
-    "site/public/tags/faze.html",
-    "site/public/06_Sprava_obsahu/Zdroje-a-editorska-doplneni.html",
-    "site/public/06_Sprava_obsahu/Pravidla-odkazovani.html",
-    "site/public/06_Sprava_obsahu/Sprava-obsahu---index.html",
-    "site/public/06_Sprava_obsahu/Pravidla-nazvu-souboru.html",
-    "site/public/06_Sprava_obsahu/Pravidla-metadat.html",
-    "site/public/06_Sprava_obsahu/index.html",
-    "site/public/06_Sprava_obsahu/Ciselnik-workflow.html",
-    "site/public/06_Sprava_obsahu/Ciselnik-temat.html",
-    "site/public/06_Sprava_obsahu/Ciselnik-roli.html",
-    "site/public/06_Sprava_obsahu/Ciselnik-cinnosti.html",
+    "site/public/tags/aim.html",
+    "site/public/tags/audit.html",
+    "site/public/tags/bep.html",
+    "site/public/tags/bim.html",
+    "site/public/tags/cinnosti.html",
+    "site/public/tags/ciselnik.html",
+    "site/public/tags/cde.html",
+    "site/public/tags/dims.html",
+    "site/public/tags/editorske_doplneni.html",
+    "site/public/tags/dss.html",
+    "site/public/tags/eir.html",
+    "site/public/Bez-názvu.canvas",
+    "site/node_modules/@needle-di/core/README.md",
+    "site/node_modules/json-canvas-viewer/README.md",
     "site/public/99_Media/obrazky/zaklady_bim/image98.png",
     "site/public/99_Media/obrazky/zaklady_bim/image99.png",
     "site/public/99_Media/obrazky/zaklady_bim/image97.jpeg",
@@ -218,7 +221,7 @@
     "site/node_modules/marked/LICENSE.md",
     "site/node_modules/@types/trusted-types/README.md",
     "02_Oblasti správy informací/Priprava/Konfigurace projektového nástroje CDE.md",
-    "Bez názvu.canvas",
+    "03_CDE_workflow/0_Diagram.canvas",
     "05_Definice pojmů/Role/Pověřující strana.md",
     "05_Definice pojmů/Role/Projektant.md",
     "05_Definice pojmů/Role/Správce CDE.md",
@@ -233,8 +236,6 @@
     "02_Oblasti správy informací/Priprava/Kontrola smluvní dokumentace a požadavků.md",
     "03_CDE_workflow/BEP.md",
     "03_CDE_workflow/ZBV do 50 mil.md",
-    "03_CDE_workflow/ZBV nad 50 mil.md",
-    "04_Šablony ke stažení.md",
-    "01_Úvod.md"
+    "03_CDE_workflow/ZBV nad 50 mil.md"
   ]
 }

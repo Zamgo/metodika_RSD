@@ -2,8 +2,9 @@ import { Root } from "hast"
 import { GlobalConfiguration } from "../../cfg"
 import { getDate } from "../../components/Date"
 import { escapeHTML } from "../../util/escape"
-import { FilePath, FullSlug, SimpleSlug, joinSegments, simplifySlug } from "../../util/path"
+import { FilePath, FullSlug, SimpleSlug, joinSegments, simplifySlug, slugifyFilePath } from "../../util/path"
 import { QuartzEmitterPlugin } from "../types"
+import { glob } from "../../util/glob"
 import { toHtml } from "hast-util-to-html"
 import { write } from "./helpers"
 import { i18n } from "../../i18n"
@@ -179,6 +180,22 @@ export const ContentIndex: QuartzEmitterPlugin<Partial<Options>> = (opts) => {
             description: file.data.description ?? "",
           })
         }
+      }
+
+      // Include canvas pages in the index so they appear in the Explorer (folder structure)
+      const canvasFiles = await glob("**/*.canvas", ctx.argv.directory, cfg.ignorePatterns)
+      for (const fp of canvasFiles) {
+        const slug = slugifyFilePath(fp as FilePath, true) as FullSlug
+        if (linkIndex.has(slug)) continue
+        const title = slug.split("/").pop()?.replace(/-/g, " ").replace(/_/g, " ").trim() || "Canvas"
+        linkIndex.set(slug, {
+          slug,
+          filePath: fp as FilePath,
+          title,
+          links: [],
+          tags: [],
+          content: "",
+        })
       }
 
       if (opts?.enableSiteMap) {

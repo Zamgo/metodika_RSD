@@ -1,9 +1,0 @@
-{
-	"nodes":[
-		{"id":"39663384ab2d6b87","x":-260,"y":-120,"width":400,"height":360,"type":"file","file":"03_CDE_workflow/BEP.md"},
-		{"id":"7a673d7bd5c8992c","x":-520,"y":-240,"width":400,"height":50,"type":"file","file":"05_Definice pojmů/Role/Správce stavby.md"}
-	],
-	"edges":[
-		{"id":"6e81f5e8c3b766af","fromNode":"7a673d7bd5c8992c","fromSide":"right","toNode":"39663384ab2d6b87","toSide":"top"}
-	]
-}
