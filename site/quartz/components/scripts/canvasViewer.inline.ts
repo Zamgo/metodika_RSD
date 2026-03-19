@@ -161,7 +161,11 @@ function fetchPageFragment(pageUrl: string): Promise<DocumentFragment | null> {
   return pageCache.get(pageUrl)!
 }
 
-function buildFileNodeContent(node: CanvasNode, baseUrl: string): HTMLElement {
+function buildFileNodeContent(
+  node: CanvasNode,
+  baseUrl: string,
+  prefetched: Map<string, DocumentFragment | null>,
+): HTMLElement {
   const filePath = node.file!
 
   // Image files: render directly
@@ -186,7 +190,7 @@ function buildFileNodeContent(node: CanvasNode, baseUrl: string): HTMLElement {
     return wrapper
   }
 
-  // MD files: fetch rendered content
+  // MD files: use pre-fetched rendered content
   const hashIdx = filePath.indexOf("#")
   const pathPart = hashIdx >= 0 ? filePath.slice(0, hashIdx) : filePath
   const anchor = hashIdx >= 0 ? filePath.slice(hashIdx + 1) : ""
@@ -197,7 +201,7 @@ function buildFileNodeContent(node: CanvasNode, baseUrl: string): HTMLElement {
   const container = document.createElement("div")
   container.className = "canvas-node-content"
 
-  // Header bar
+  // Header bar with link to full page
   const header = document.createElement("a")
   header.href = linkHref
   header.className = "internal canvas-node-header"
@@ -211,16 +215,12 @@ function buildFileNodeContent(node: CanvasNode, baseUrl: string): HTMLElement {
   header.appendChild(titleSpan)
   container.appendChild(header)
 
-  // Content body
+  // Content body -- populated from pre-fetched content
   const body = document.createElement("div")
   body.className = "canvas-node-body"
-  container.appendChild(body)
 
-  // Async load the rendered page content
-  const fullUrl = new URL(baseUrl + "/" + slug, window.location.href).href
-  fetchPageFragment(fullUrl).then((frag) => {
-    if (!frag) return
-
+  const frag = prefetched.get(node.id)
+  if (frag) {
     const clone = frag.cloneNode(true) as DocumentFragment
 
     if (anchor) {
@@ -249,8 +249,9 @@ function buildFileNodeContent(node: CanvasNode, baseUrl: string): HTMLElement {
         a.classList.add("internal")
       }
     })
-  })
+  }
 
+  container.appendChild(body)
   return container
 }
 
@@ -280,7 +281,12 @@ function buildLinkNodeContent(node: CanvasNode): HTMLElement {
   return a
 }
 
-function renderCanvas(container: HTMLElement, data: CanvasData, baseUrl: string) {
+function renderCanvas(
+  container: HTMLElement,
+  data: CanvasData,
+  baseUrl: string,
+  prefetched: Map<string, DocumentFragment | null>,
+) {
   container.innerHTML = ""
   if (!data.nodes?.length) return
 
@@ -407,7 +413,7 @@ function renderCanvas(container: HTMLElement, data: CanvasData, baseUrl: string)
 
     let content: HTMLElement
     if (node.type === "file" && node.file) {
-      content = buildFileNodeContent(node, baseUrl)
+      content = buildFileNodeContent(node, baseUrl, prefetched)
     } else if (node.type === "link" && node.url) {
       content = buildLinkNodeContent(node)
     } else {
@@ -492,15 +498,33 @@ document.addEventListener("nav", () => {
     if (!url) continue
 
     root.innerHTML = ""
-    const href = new URL(url, window.location.href).href
-    fetch(href)
+    const canvasHref = new URL(url, window.location.href).href
+
+    fetch(canvasHref)
       .then((r) => {
         if (!r.ok) throw new Error("Canvas fetch failed: " + r.status)
         return r.json()
       })
-      .then((canvas: CanvasData) => {
+      .then(async (canvas: CanvasData) => {
         if (!canvas?.nodes) return
-        renderCanvas(root, canvas, baseUrl)
+
+        // Pre-fetch all file node page contents in parallel BEFORE rendering SVG.
+        // foreignObject in SVG does not re-render reliably when content is injected
+        // after the SVG is already in the DOM.
+        const prefetched = new Map<string, DocumentFragment | null>()
+        const fetches = canvas.nodes
+          .filter((n) => n.type === "file" && n.file && !isImageFile(n.file))
+          .map(async (n) => {
+            const hashIdx = n.file!.indexOf("#")
+            const pathPart = hashIdx >= 0 ? n.file!.slice(0, hashIdx) : n.file!
+            const slug = slugifyPath(pathPart)
+            const fullUrl = new URL(baseUrl + "/" + slug, window.location.href).href
+            const frag = await fetchPageFragment(fullUrl)
+            prefetched.set(n.id, frag)
+          })
+
+        await Promise.all(fetches)
+        renderCanvas(root, canvas, baseUrl, prefetched)
       })
       .catch((err) => {
         console.warn("[quartz canvas]", err)
