@@ -1,30 +1,26 @@
-/**
- * After DOM load: find all [data-canvas-url] elements, fetch the JSON Canvas
- * and mount json-canvas-viewer on each.
- */
-function canvasViewerInit() {
-  const roots = document.querySelectorAll("[data-canvas-url]")
-  roots.forEach((el: Element) => {
-    const url = (el as HTMLElement).getAttribute("data-canvas-url")
+import { JSONCanvasViewer } from "json-canvas-viewer"
+
+document.addEventListener("nav", () => {
+  const roots = document.querySelectorAll<HTMLElement>("[data-canvas-url]")
+  for (const el of roots) {
+    const url = el.getAttribute("data-canvas-url")
     if (!url) return
+
     const href = new URL(url, window.location.href).href
     fetch(href)
       .then((r) => {
         if (!r.ok) throw new Error("Canvas fetch failed: " + r.status)
         return r.json()
       })
-      .then((canvas: { nodes?: unknown }) => {
-        if (!canvas || (Array.isArray(canvas.nodes) === false && !canvas.nodes)) {
+      .then((canvas) => {
+        if (!canvas || !Array.isArray(canvas.nodes)) {
           console.warn("[quartz canvas] Invalid JSON Canvas data")
           return
         }
-        return import("json-canvas-viewer").then(({ JSONCanvasViewer }) => {
-          new JSONCanvasViewer({ container: el as HTMLElement, canvas })
-        })
+        new JSONCanvasViewer({ container: el, canvas })
       })
-      .catch((err: unknown) => {
+      .catch((err) => {
         console.warn("[quartz canvas] Failed to load canvas:", err)
       })
-  })
-}
-canvasViewerInit()
+  }
+})
