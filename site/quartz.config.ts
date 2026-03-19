@@ -14,7 +14,7 @@ const config: QuartzConfig = {
     enablePopovers: true,
     analytics: null,
     locale: "cs-CZ",
-    baseUrl: "zamgo.github.io/metodika_RSD",
+    baseUrl: "https://zamgo.github.io/metodika_RSD",
     ignorePatterns: [
       "private",
       "templates",

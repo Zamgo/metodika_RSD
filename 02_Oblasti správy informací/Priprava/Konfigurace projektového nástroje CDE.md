@@ -18,11 +18,6 @@ tags: [proces]
 
 Účelem nastavení struktury společného datového prostředí ([[Společné datové prostředí (CDE)|CDE]]) je vytvořit přehledný, jednotný a dlouhodobě udržitelný rámec pro ukládání, správu a sdílení [[Informační kontejner|informačních kontejnerů]] v průběhu celého životního cyklu stavby. Správně navržená struktura [[Společné datové prostředí (CDE)|CDE]] představuje základní předpoklad pro zajištění dohledatelnosti informací, jednoznačné orientace uživatelů v projektové dokumentaci a minimalizaci rizika práce s neaktuálními nebo nesprávně zařazenými podklady.
 Struktura [[Společné datové prostředí (CDE)|CDE]] musí podporovat řízení stavů [[Informační kontejner|informačních kontejnerů]] (např. rozpracováno, sdíleno, schváleno, uchováno), umožňovat jednoznačné přiřazení dokumentů ke stavebním objektům, profesím a typům výstupů a současně respektovat budoucí potřeby archivace a exportu dat do navazujících systémů objednatele.
-
-## Kdy se používá
-
-**Editorske doplneni:** V podkladu není explicitní sekce; doplnit podle kontextu projektu.
-
 ## Vstupy
 
 Pro konfiguraci projektového nástroje CDE musí být k dispozici zejména následující podklady:
@@ -34,7 +29,6 @@ Pro konfiguraci projektového nástroje CDE musí být k dispozici zejména nás
   - požadavky na strukturu a klasifikaci [[Informační kontejner|informačních kontejnerů]],
   - požadavky na názvosloví a verzování dokumentů.
 Správce stavby ověřuje, že tyto podklady jsou aktuální a že jejich požadavky jsou při konfiguraci [[Společné datové prostředí (CDE)|CDE]] zohledněny.
-
 ## Postup
 
 - Správce stavby:
@@ -51,7 +45,6 @@ Správce stavby ověřuje, že tyto podklady jsou aktuální a že jejich požad
   - umožňuje jednoznačné zařazení dokumentů,
   - podporuje budoucí archivaci,
   - umožňuje export dat.
-
 ## Role a odpovědnosti
 
 - Správce stavby:
@@ -65,16 +58,14 @@ Správce stavby ověřuje, že tyto podklady jsou aktuální a že jejich požad
 - ŘSD:
     - schvaluje základní principy nastavení CDE,
     - rozhoduje o případných zásadních změnách struktury během projektu.
-
 ## Výstupy
 
   - Aktivní struktura CDE
   - Dokumentace nastavení
-
 ## Kontrolní body pro správce stavby
 
-**Editorske doplneni:** V podkladu není explicitní sekce; doplnit pokud je uvedeno jinde.
+
 
 ## Návaznosti
 
-- [[03_Šablony ke stažení]]
+- [[04_Šablony ke stažení]]

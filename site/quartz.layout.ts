@@ -1,5 +1,19 @@
 import { PageLayout, SharedLayout } from "./quartz/cfg"
 import * as Component from "./quartz/components"
+import { FileTrieNode } from "./quartz/util/fileTrie"
+
+/** Řazení podle číselného prefixu (01_, 02_, …) ve složkách a souborech. */
+function sortByNumericPrefix(a: FileTrieNode, b: FileTrieNode): number {
+  if (!a.isFolder && b.isFolder) return 1
+  if (a.isFolder && !b.isFolder) return -1
+  const numA = parseInt(a.displayName.match(/^(\d+)/)?.[1] ?? "999999", 10)
+  const numB = parseInt(b.displayName.match(/^(\d+)/)?.[1] ?? "999999", 10)
+  if (numA !== numB) return numA - numB
+  return a.displayName.localeCompare(b.displayName, undefined, {
+    numeric: true,
+    sensitivity: "base",
+  })
+}
 
 // components shared across all pages
 export const sharedPageComponents: SharedLayout = {
@@ -39,7 +53,9 @@ export const defaultContentPageLayout: PageLayout = {
         { Component: Component.ReaderMode() },
       ],
     }),
-    Component.Explorer(),
+    Component.Explorer({
+    sortFn: sortByNumericPrefix,
+  }),
   ],
   right: [
     Component.Graph(),
@@ -63,7 +79,9 @@ export const defaultListPageLayout: PageLayout = {
         { Component: Component.Darkmode() },
       ],
     }),
-    Component.Explorer(),
+    Component.Explorer({
+    sortFn: sortByNumericPrefix,
+  }),
   ],
   right: [],
 }

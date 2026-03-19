@@ -20,10 +20,6 @@ tags: [proces]
 Účelem činnosti je ověřit, že smluvní dokumentace a zadávací podklady obsahují jednoznačně definované, vzájemně konzistentní a kontrolovatelné požadavky na správu informací o stavbě, využití metody BIM, digitálního informačního modelu stavby ([[Digitální model stavby (DiMS)|DiMS]]) a nástroje společného datového prostředí ([[Společné datové prostředí (CDE)|CDE]]).
 Tato kontrola je základním předpokladem pro správné nastavení projektových procesů a minimalizaci rizik v průběhu realizace stavby.
 
-## Kdy se používá
-
-**Editorske doplneni:** V podkladu není explicitní sekce; doplnit podle kontextu projektu.
-
 ## Vstupy
 
 - Smlouva o dílo

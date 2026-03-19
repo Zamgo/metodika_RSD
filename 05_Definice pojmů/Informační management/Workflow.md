@@ -21,9 +21,7 @@ tags: [pojem, workflow]
 # Definice
 
 Workflow (pracovní postup) je v podkladech používáno jako řízený proces sdílení, připomínkování, schvalování a publikace informačních kontejnerů v CDE.
-
-![[99_Media/obrazky/cdez_image5.png]]
-
+![[Pasted image 20260319095907.png]]
 ## Praktický význam pro správu informací o stavbě / ŘSD
 
 - Workflow je mechanismus řízení kvality a spolehlivosti informací před jejich uvolněním k použití.

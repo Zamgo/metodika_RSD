@@ -21,7 +21,7 @@ tags: [pojem, eir]
 # Definice
 
 Požadavky na informace ve vztahu k pověření.
-
+![[Pasted image 20260319095434.png]]
 
 ## Praktický význam pro správu informací o stavbě / ŘSD
 

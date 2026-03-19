@@ -54,4 +54,4 @@ Tato stránka obsahuje odkazy na stažení šablon a podkladů používaných v 
 
 - [[Konfigurace projektového nástroje CDE]] – využití P1a při nastavení CDE
 - [[BEP]], [[DiMS]], [[ZBV]] a další workflow ve složce `02_CDE_workflow` – využití P1b pro definici kroků
-- [[Úvod]] – cíl metodiky a použití znalostní databáze
+- [[01_Úvod]] – cíl metodiky a použití znalostní databáze

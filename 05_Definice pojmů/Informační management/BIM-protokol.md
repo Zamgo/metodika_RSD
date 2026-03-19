@@ -26,5 +26,6 @@ Projektový informační protokol doplňující smlouvu o dílo ustanoveními a 
 ## Praktický význam pro správu informací o stavbě / ŘSD
 
 - BIM-protokol je smluvní podklad; na něj navazuje [[BIM Execution Plan (BEP)|BEP]], který rozpracovává způsob realizace BIM v souladu s [[Požadavky objednatele na výměnu informací (EIR)|EIR]].
+![[Pasted image 20260319095434.png|697]]
 
 ![[Pasted image 20260318174005.png]]

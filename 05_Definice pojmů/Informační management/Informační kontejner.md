@@ -24,6 +24,8 @@ tags: [pojem, informacni_kontejner]
 _zdroj: ČSN EN ISO 19650-1, 3.3.12_
 
 _poznámka: Informačním kontejnerem se podle zákona č. 330/2025 Sb. a jeho prováděcích předpisů rozumí pojmenovaná množina informací o stavbě platná k datu odsouhlasení obsahu informačního kontejneru, která je opětovně získatelná ze společného datového prostředí, a která je tvořená strukturovanými a nestrukturovanými daty společně_
+
+![[Pasted image 20260319095923.png]]
 ## Praktický význam pro správu informací o stavbě / ŘSD
 
 - Základní jednotka, se kterou se v CDE pracuje (stavy, revize, schvalování, archivace).
