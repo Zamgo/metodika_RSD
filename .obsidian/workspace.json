@@ -15,8 +15,8 @@
               "state": {
                 "file": "03_CDE_workflow/0_Diagram.canvas",
                 "viewState": {
-                  "x": 156.95208284130948,
-                  "y": -33.63283437226699,
+                  "x": 184.8903026010413,
+                  "y": -5.377018137416059,
                   "zoom": -0.6666666666666666
                 }
               },
@@ -187,8 +187,19 @@
       "bases:Vytvořit novou základnu": false
     }
   },
-  "active": "6ed3e31a2ef3654b",
+  "active": "b1b051617c654508",
   "lastOpenFiles": [
+    "site/public/04_Šablony-ke-stažení.html",
+    "site/public/AIM.html",
+    "site/public/AIR.html",
+    "site/public/Auditni-stopa.html",
+    "site/public/BEP.html",
+    "site/public/BIM.html",
+    "site/public/CDE-nástroj.html",
+    "site/public/Common-Data-Environment.html",
+    "site/public/DiMS.html",
+    "site/public/EIR.html",
+    "site/public/LoIN.html",
     "site/public/99_Media/obrazky/zaklady_bim/image93.png",
     "site/public/99_Media/obrazky/zaklady_bim/image92.png",
     "site/public/99_Media/obrazky/zaklady_bim/image98.png",
@@ -199,17 +210,6 @@
     "site/public/99_Media/obrazky/zaklady_bim/image95.jpeg",
     "site/public/99_Media/obrazky/zaklady_bim/image94.png",
     "site/public/99_Media/obrazky/zaklady_bim/image91.png",
-    "site/public/99_Media/obrazky/zaklady_bim/image9.png",
-    "site/public/99_Media/obrazky/zaklady_bim/hdphoto1.wdp",
-    "site/public/99_Media/obrazky/controlis_implementace/hdphoto1.wdp",
-    "site/public/99_Media/obrazky/controlis_cde/image76.emf",
-    "site/public/99_Media/obrazky/controlis_cde/image69.emf",
-    "site/public/99_Media/obrazky/controlis_cde/hdphoto1.wdp",
-    "site/public/pojem/role/zhotovitel.html",
-    "site/public/pojem/role/vedouci-poverena-strana.html",
-    "site/public/pojem/role/technicky-dozor.html",
-    "site/public/pojem/role/spravce-stavby.html",
-    "site/public/pojem/role/spravce-cde.html",
     "site/public/03_CDE_workflow/0_Diagram.canvas",
     "site/public/Bez-názvu.canvas",
     "site/node_modules/@needle-di/core/README.md",

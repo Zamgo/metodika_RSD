@@ -18,6 +18,9 @@ const style = `
   overflow: hidden;
   border: 1px solid var(--lightgray);
   border-radius: 5px;
+  background: var(--light);
+  user-select: none;
+  -webkit-user-select: none;
 }
 `
 
