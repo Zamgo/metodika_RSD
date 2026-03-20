@@ -19,9 +19,10 @@ function sortByNumericPrefix(a: FileTrieNode, b: FileTrieNode): number {
 
 function explorerFilter(node: FileTrieNode): boolean {
   if (node.slugSegment === "tags") return false
-  if (node.slugSegment === "03_sorava_obsahu") return false
-  if (node.slugSegment === "03_sprava_obsahu") return false
-  if (node.slugSegment === "99_media") return false
+  const normalizedSegment = (node.slugSegment ?? "").toLowerCase().replace(/^\d+_+/, "")
+  if (normalizedSegment === "sprava_obsahu") return false
+  if (normalizedSegment === "sorava_obsahu") return false
+  if (normalizedSegment === "media") return false
   return true
 }
 
@@ -68,6 +69,7 @@ export const defaultContentPageLayout: PageLayout = {
       ],
     }),
     Component.Explorer({
+      title: "",
       sortFn: sortByNumericPrefix,
       folderClickBehavior: "collapse",
       filterFn: explorerFilter,
@@ -97,6 +99,7 @@ export const defaultListPageLayout: PageLayout = {
       ],
     }),
     Component.Explorer({
+      title: "",
       sortFn: sortByNumericPrefix,
       folderClickBehavior: "collapse",
       filterFn: explorerFilter,

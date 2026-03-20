@@ -131,28 +131,29 @@ body {
 
 /* Explorer on desktop: hide title row and show menu list immediately */
 @media all and (min-width: 801px) {
-  .explorer button.desktop-explorer {
-    display: none;
+  #quartz-body .sidebar.left .explorer button.desktop-explorer {
+    display: none !important;
   }
 
-  .explorer .explorer-content {
+  #quartz-body .sidebar.left .explorer .explorer-content {
     margin-top: 0;
   }
 }
 
 /* Keep links consistently blue across the site */
-a,
-article a,
-.explorer .explorer-content ul li > a,
-.folder-container div > a,
-.folder-container div > button span {
+#quartz-body .sidebar.left a,
+#quartz-body .sidebar.left .folder-container div > a,
+#quartz-body .sidebar.left .folder-container div > button span,
+#quartz-body .sidebar.left .page-title,
+#quartz-body .sidebar.left .page-title a,
+#quartz-body .sidebar.left .folder-icon {
   color: $rsd-blue-dark;
 }
 
-a:hover,
-article a:hover,
-.explorer .explorer-content ul li > a:hover,
-.folder-container div > a:hover,
-.folder-container div > button:hover span {
+#quartz-body .sidebar.left a:hover,
+#quartz-body .sidebar.left .folder-container div > a:hover,
+#quartz-body .sidebar.left .folder-container div > button:hover span,
+#quartz-body .sidebar.left .page-title a:hover,
+#quartz-body .sidebar.left .folder-icon:hover {
   color: $rsd-blue-light;
 }
