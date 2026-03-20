@@ -189,6 +189,7 @@
   },
   "active": "b1b051617c654508",
   "lastOpenFiles": [
+    "site/tsconfig.tsbuildinfo",
     "index.md",
     "site/public/99_Media/obrazky/zaklady_bim/image98.png",
     "site/public/99_Media/obrazky/zaklady_bim/image99.png",
@@ -236,7 +237,6 @@
     "05_Definice pojmů/Faze/Provoz a údržba.md",
     "02_Oblasti správy informací/Provoz a udrzba/Archivace.md",
     "02_Oblasti správy informací/Priprava/Kontrola smluvní dokumentace a požadavků.md",
-    "03_CDE_workflow/BEP.md",
-    "03_CDE_workflow/ZBV do 50 mil.md"
+    "03_CDE_workflow/BEP.md"
   ]
 }

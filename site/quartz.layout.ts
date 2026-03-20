@@ -17,6 +17,18 @@ function sortByNumericPrefix(a: FileTrieNode, b: FileTrieNode): number {
   })
 }
 
+function explorerFilter(node: FileTrieNode): boolean {
+  if (node.slugSegment === "tags") return false
+  if (node.slugSegment === "03_sorava_obsahu") return false
+  if (node.slugSegment === "03_sprava_obsahu") return false
+  if (node.slugSegment === "99_media") return false
+  return true
+}
+
+function hideOrderingPrefix(node: FileTrieNode): void {
+  node.displayName = node.displayName.replace(/^\d+_+/, "")
+}
+
 // components shared across all pages
 export const sharedPageComponents: SharedLayout = {
   head: Component.Head(),
@@ -57,7 +69,9 @@ export const defaultContentPageLayout: PageLayout = {
     }),
     Component.Explorer({
       sortFn: sortByNumericPrefix,
-      folderClickBehavior: "toggle",
+      folderClickBehavior: "collapse",
+      filterFn: explorerFilter,
+      mapFn: hideOrderingPrefix,
     }),
   ],
   right: [
@@ -84,7 +98,9 @@ export const defaultListPageLayout: PageLayout = {
     }),
     Component.Explorer({
       sortFn: sortByNumericPrefix,
-      folderClickBehavior: "toggle",
+      folderClickBehavior: "collapse",
+      filterFn: explorerFilter,
+      mapFn: hideOrderingPrefix,
     }),
   ],
   right: [],
