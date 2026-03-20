@@ -198,3 +198,42 @@ body {
 #quartz-body .center article a:active {
   color: $rsd-blue-light;
 }
+
+/* Reader mode: smooth collapse/expand of right white panel (desktop) */
+@media all and (min-width: 1200px) {
+  #quartz-body {
+    transition: grid-template-columns 0.25s ease;
+  }
+
+  #quartz-body .sidebar.right {
+    transition:
+      opacity 0.25s ease,
+      transform 0.25s ease,
+      width 0.25s ease,
+      padding 0.25s ease,
+      border-color 0.25s ease;
+    transform: translateX(0);
+  }
+
+  :root[reader-mode="on"] #quartz-body {
+    grid-template-columns: 320px auto 0 !important;
+  }
+
+  :root[reader-mode="on"] #quartz-body .sidebar.left {
+    opacity: 1 !important;
+    pointer-events: auto;
+  }
+
+  :root[reader-mode="on"] #quartz-body .sidebar.right,
+  :root[reader-mode="on"] #quartz-body .sidebar.right:hover {
+    opacity: 0 !important;
+    pointer-events: none;
+    width: 0;
+    min-width: 0;
+    padding-left: 0;
+    padding-right: 0;
+    border-left-color: transparent !important;
+    overflow: hidden;
+    transform: translateX(14px);
+  }
+}
