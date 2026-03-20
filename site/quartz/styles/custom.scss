@@ -140,25 +140,44 @@ body {
   }
 }
 
-/* Keep links consistently blue across the site */
-#quartz-body .sidebar.left a,
-#quartz-body .sidebar.left .folder-container div > a,
-#quartz-body .sidebar.left .folder-container div > button span,
-#quartz-body .sidebar.left .page-title,
-#quartz-body .sidebar.left .page-title a,
-#quartz-body .sidebar.left .folder-icon {
-  color: $rsd-blue-dark;
+/* Unified blue for all left sidebar navigation items */
+
+/* File links */
+#quartz-body .sidebar.left .explorer-content ul li > a {
+  color: $rsd-blue-dark !important;
+  opacity: 1 !important;
 }
 
-#quartz-body .sidebar.left a:hover,
-#quartz-body .sidebar.left a:visited,
-#quartz-body .sidebar.left a.active,
-#quartz-body .sidebar.left .folder-container div > a:hover,
+#quartz-body .sidebar.left .explorer-content ul li > a:hover,
+#quartz-body .sidebar.left .explorer-content ul li > a:focus-visible {
+  color: $rsd-blue-light !important;
+  opacity: 1 !important;
+}
+
+#quartz-body .sidebar.left .explorer-content ul li > a.active {
+  color: $rsd-blue-light !important;
+  opacity: 1 !important;
+}
+
+/* Folder button labels */
+#quartz-body .sidebar.left .folder-container div > button .folder-title,
+#quartz-body .sidebar.left .folder-container div > button span {
+  color: $rsd-blue-dark !important;
+}
+
+#quartz-body .sidebar.left .folder-container div > button:hover .folder-title,
 #quartz-body .sidebar.left .folder-container div > button:hover span,
-#quartz-body .sidebar.left .folder-container div > button:focus-visible span,
-#quartz-body .sidebar.left .page-title a:hover,
+#quartz-body .sidebar.left .folder-container div > button:focus-visible span {
+  color: $rsd-blue-light !important;
+}
+
+/* Folder icons */
+#quartz-body .sidebar.left .folder-icon {
+  color: $rsd-blue-dark !important;
+}
+
 #quartz-body .sidebar.left .folder-icon:hover {
-  color: $rsd-blue-light;
+  color: $rsd-blue-light !important;
 }
 
 /* Search in left sidebar: icon-only trigger (opens modal) */
@@ -201,22 +220,24 @@ body {
 
 /* Reader mode: smooth collapse/expand of right white panel (desktop) */
 @media all and (min-width: 1200px) {
+  /* Grid column animation */
   #quartz-body {
-    transition: grid-template-columns 0.25s ease;
+    transition: grid-template-columns 0.3s ease;
   }
 
+  /* Allow grid item to shrink below content size — critical for collapse */
   #quartz-body .sidebar.right {
+    min-width: 0;
+    overflow: hidden;
     transition:
-      opacity 0.25s ease,
-      transform 0.25s ease,
-      width 0.25s ease,
-      padding 0.25s ease,
-      border-color 0.25s ease;
-    transform: translateX(0);
+      opacity 0.3s ease,
+      padding 0.3s ease,
+      border-color 0.3s ease;
   }
 
+  /* Reader mode ON: collapse right column to zero */
   :root[reader-mode="on"] #quartz-body {
-    grid-template-columns: 320px auto 0 !important;
+    grid-template-columns: 320px auto 0px !important;
   }
 
   :root[reader-mode="on"] #quartz-body .sidebar.left {
@@ -224,16 +245,11 @@ body {
     pointer-events: auto;
   }
 
-  :root[reader-mode="on"] #quartz-body .sidebar.right,
-  :root[reader-mode="on"] #quartz-body .sidebar.right:hover {
+  :root[reader-mode="on"] #quartz-body .sidebar.right {
     opacity: 0 !important;
     pointer-events: none;
-    width: 0;
-    min-width: 0;
-    padding-left: 0;
-    padding-right: 0;
-    border-left-color: transparent !important;
+    padding: 0 !important;
+    border-left: none !important;
     overflow: hidden;
-    transform: translateX(14px);
   }
 }
