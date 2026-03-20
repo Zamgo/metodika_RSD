@@ -129,7 +129,7 @@ body {
   }
 }
 
-/* Explorer on desktop: hide title row and show menu list immediately */
+/* ─── Left sidebar: Explorer title hidden on desktop ─────────────── */
 @media all and (min-width: 801px) {
   #quartz-body .sidebar.left .explorer button.desktop-explorer {
     display: none !important;
@@ -140,47 +140,72 @@ body {
   }
 }
 
-/* Unified blue for all left sidebar navigation items */
+/* ─── Left sidebar: unified navigation ───────────────────────────── */
 
-/* File links */
+/* File links — base */
 #quartz-body .sidebar.left .explorer-content ul li > a {
   color: $rsd-blue-dark !important;
   opacity: 1 !important;
+  display: block;
+  padding: 2px 6px;
+  border-radius: 5px;
+  transition:
+    color 0.15s ease,
+    background-color 0.15s ease;
 }
 
-#quartz-body .sidebar.left .explorer-content ul li > a:hover,
-#quartz-body .sidebar.left .explorer-content ul li > a:focus-visible {
+/* File links — hover */
+#quartz-body .sidebar.left .explorer-content ul li > a:hover {
   color: $rsd-blue-light !important;
+  background-color: color-mix(in srgb, $rsd-blue-dark 7%, transparent) !important;
   opacity: 1 !important;
 }
 
+/* File links — active (current page) */
 #quartz-body .sidebar.left .explorer-content ul li > a.active {
   color: $rsd-blue-light !important;
+  background-color: color-mix(in srgb, $rsd-blue-light 12%, transparent) !important;
+  font-weight: 600;
   opacity: 1 !important;
 }
 
-/* Folder button labels */
+/* Folder container — hover background */
+#quartz-body .sidebar.left .folder-container {
+  border-radius: 5px;
+  padding: 2px 0;
+  transition: background-color 0.15s ease;
+}
+
+#quartz-body .sidebar.left .folder-container:hover {
+  background-color: color-mix(in srgb, $rsd-blue-dark 7%, transparent);
+}
+
+/* Folder button title text */
 #quartz-body .sidebar.left .folder-container div > button .folder-title,
 #quartz-body .sidebar.left .folder-container div > button span {
   color: $rsd-blue-dark !important;
+  font-weight: 600;
+  transition: color 0.15s ease;
 }
 
 #quartz-body .sidebar.left .folder-container div > button:hover .folder-title,
-#quartz-body .sidebar.left .folder-container div > button:hover span,
-#quartz-body .sidebar.left .folder-container div > button:focus-visible span {
+#quartz-body .sidebar.left .folder-container div > button:hover span {
   color: $rsd-blue-light !important;
 }
 
-/* Folder icons */
+/* Folder expand/collapse icon */
 #quartz-body .sidebar.left .folder-icon {
   color: $rsd-blue-dark !important;
+  transition: color 0.15s ease;
 }
 
 #quartz-body .sidebar.left .folder-icon:hover {
   color: $rsd-blue-light !important;
 }
 
-/* Search in left sidebar: icon-only trigger (opens modal) */
+/* ─── Left sidebar: icon toolbar (search / darkmode / readermode) ── */
+
+/* Search — icon only, no text, matches toolbar height */
 #quartz-body .sidebar.left .search {
   max-width: fit-content;
 }
@@ -193,7 +218,15 @@ body {
   height: 32px;
   padding: 0;
   margin: 0;
+  display: flex;
+  align-items: center;
   justify-content: center;
+  cursor: pointer;
+  transition: opacity 0.15s ease;
+}
+
+#quartz-body .sidebar.left .search > .search-button:hover {
+  opacity: 0.7;
 }
 
 #quartz-body .sidebar.left .search > .search-button > p {
@@ -201,12 +234,37 @@ body {
 }
 
 #quartz-body .sidebar.left .search > .search-button svg {
-  width: 20px;
-  height: 20px;
+  width: 18px;
+  height: 18px;
   margin: 0;
 }
 
-/* Markdown (.md) links in article content */
+#quartz-body .sidebar.left .search > .search-button svg .search-path {
+  stroke: $rsd-blue-dark !important;
+}
+
+/* Darkmode icon — brand color */
+#quartz-body .sidebar.left .darkmode svg {
+  fill: $rsd-blue-dark !important;
+  transition: fill 0.15s ease, opacity 0.15s ease;
+}
+
+#quartz-body .sidebar.left .darkmode:hover svg {
+  opacity: 0.7;
+}
+
+/* Readermode icon — brand color */
+#quartz-body .sidebar.left .readermode svg {
+  fill: $rsd-blue-dark !important;
+  stroke: $rsd-blue-dark !important;
+  transition: fill 0.15s ease, stroke 0.15s ease, opacity 0.15s ease;
+}
+
+#quartz-body .sidebar.left .readermode:hover svg {
+  opacity: 0.7;
+}
+
+/* ─── Markdown article links ─────────────────────────────────────── */
 #quartz-body .center article a,
 #quartz-body .center article a:visited {
   color: $rsd-blue-dark;
@@ -218,24 +276,77 @@ body {
   color: $rsd-blue-light;
 }
 
-/* Reader mode: smooth collapse/expand of right white panel (desktop) */
-@media all and (min-width: 1200px) {
-  /* Grid column animation */
-  #quartz-body {
-    transition: grid-template-columns 0.3s ease;
-  }
+/* ─── Right sidebar: TOC (Obsah) ─────────────────────────────────── */
 
-  /* Allow grid item to shrink below content size — critical for collapse */
+/* "Obsah" header button */
+button.toc-header {
+  color: $rsd-blue-dark !important;
+  font-weight: 600;
+}
+
+button.toc-header h3 {
+  color: $rsd-blue-dark !important;
+}
+
+button.toc-header .fold {
+  color: $rsd-blue-dark !important;
+  opacity: 1 !important;
+}
+
+/* TOC items */
+ul.toc-content.overflow > li > a {
+  color: $rsd-blue-dark !important;
+  opacity: 0.5 !important;
+  transition:
+    opacity 0.2s ease,
+    color 0.2s ease !important;
+}
+
+ul.toc-content.overflow > li > a:hover {
+  color: $rsd-blue-light !important;
+  opacity: 1 !important;
+}
+
+ul.toc-content.overflow > li > a.in-view {
+  color: $rsd-blue-light !important;
+  opacity: 1 !important;
+  font-weight: 600;
+}
+
+/* ─── Right sidebar: Graf ────────────────────────────────────────── */
+
+.graph > h3 {
+  color: $rsd-blue-dark !important;
+  font-weight: 600;
+}
+
+.graph > .graph-outer {
+  border-color: color-mix(in srgb, $rsd-blue-dark 18%, transparent) !important;
+  border-radius: 8px !important;
+}
+
+.graph > .graph-outer > .global-graph-icon {
+  color: $rsd-blue-dark !important;
+  opacity: 0.6;
+}
+
+.graph > .graph-outer > .global-graph-icon:hover {
+  opacity: 1;
+  background-color: color-mix(in srgb, $rsd-blue-dark 8%, transparent) !important;
+}
+
+/* ─── Reader mode: collapse right panel (desktop) ────────────────── */
+@media all and (min-width: 1200px) {
+  /* Only animate the visual content — grid collapses instantly to avoid white stripe */
   #quartz-body .sidebar.right {
     min-width: 0;
     overflow: hidden;
     transition:
-      opacity 0.3s ease,
-      padding 0.3s ease,
-      border-color 0.3s ease;
+      opacity 0.28s ease,
+      transform 0.28s ease;
   }
 
-  /* Reader mode ON: collapse right column to zero */
+  /* Grid column: instant collapse (no transition) — prevents visible white stripe */
   :root[reader-mode="on"] #quartz-body {
     grid-template-columns: 320px auto 0px !important;
   }
@@ -245,11 +356,12 @@ body {
     pointer-events: auto;
   }
 
+  /* Sidebar content: smooth fade + slide out to the right */
   :root[reader-mode="on"] #quartz-body .sidebar.right {
     opacity: 0 !important;
+    transform: translateX(18px) !important;
     pointer-events: none;
     padding: 0 !important;
     border-left: none !important;
-    overflow: hidden;
   }
 }
