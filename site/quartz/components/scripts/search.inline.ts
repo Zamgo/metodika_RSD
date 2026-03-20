@@ -77,7 +77,7 @@ let index = new FlexSearch.Document<Item>({
 const p = new DOMParser()
 const fetchContentCache: Map<FullSlug, Element[]> = new Map()
 const contextWindowWords = 30
-const numSearchResults = 8
+const numSearchResults = 20
 const numTagResults = 5
 
 function escapeHtml(s: string): string {
@@ -533,6 +533,7 @@ async function setupSearch(searchElement: Element, currentSlug: FullSlug, data: 
     searchType = searchTypeNew
     if (sidebar) sidebar.style.zIndex = "1"
     container.classList.add("active")
+    container.scrollTop = 0
     searchBar.focus()
   }
 
@@ -786,6 +787,11 @@ async function setupSearch(searchElement: Element, currentSlug: FullSlug, data: 
       formatForDisplay(highlightTerm, id, mode, tagBarQuery, showPageTags, checkboxTags.length),
     )
     await displayResults(items)
+
+    // Scroll results into view — needed when filter panel is open and pushes results below the fold
+    if (items.length > 0 && showResults) {
+      searchLayout.scrollIntoView({ behavior: "smooth", block: "nearest" })
+    }
   }
 
   async function shortcutHandler(e: HTMLElementEventMap["keydown"]) {

@@ -264,10 +264,25 @@
         padding: 0.2rem 0;
         cursor: pointer;
         list-style: none;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
 
         &::-webkit-details-marker {
           display: none;
         }
+
+        &::after {
+          content: "▸";
+          font-size: 0.85em;
+          color: var(--gray);
+          transition: transform 0.18s ease;
+          flex-shrink: 0;
+        }
+      }
+
+      details.search-facet-section[open] > .search-facet-section-title::after {
+        transform: rotate(90deg);
       }
 
       .search-facet-chips {
