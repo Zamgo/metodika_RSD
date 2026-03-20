@@ -113,6 +113,14 @@ function svgEl(tag: string, attrs: Record<string, string> = {}): SVGElement {
   return e
 }
 
+function resolveToAbsolute(relativeUrl: string): string {
+  try {
+    return new URL(relativeUrl, window.location.href).pathname
+  } catch {
+    return relativeUrl
+  }
+}
+
 function buildFileNodeContent(node: CanvasNode, baseUrl: string): HTMLElement {
   const filePath = node.file!
 
@@ -125,7 +133,7 @@ function buildFileNodeContent(node: CanvasNode, baseUrl: string): HTMLElement {
       borderRadius: "8px",
     })
     const img = document.createElement("img")
-    img.src = baseUrl + "/" + filePath
+    img.src = resolveToAbsolute(baseUrl + "/" + filePath)
     Object.assign(img.style, {
       width: "100%",
       height: "100%",
@@ -139,7 +147,8 @@ function buildFileNodeContent(node: CanvasNode, baseUrl: string): HTMLElement {
 
   const slug = slugifyPath(filePath)
   const anchor = node.subpath?.replace(/^#/, "") || ""
-  const linkHref = baseUrl + "/" + slug + (anchor ? "#" + encodeURIComponent(anchor) : "")
+  const resolvedPath = resolveToAbsolute(baseUrl + "/" + slug)
+  const linkHref = resolvedPath + (anchor ? "#" + encodeURIComponent(anchor) : "")
   const label = filePath.split("/").pop()?.replace(/\.md$/, "") ?? ""
 
   const container = document.createElement("div")
@@ -167,6 +176,7 @@ function buildFileNodeContent(node: CanvasNode, baseUrl: string): HTMLElement {
       const href = a.getAttribute("href") || ""
       if (!href.startsWith("http") && !href.startsWith("mailto:") && !href.startsWith("data:")) {
         a.classList.add("internal")
+        a.setAttribute("href", resolveToAbsolute(href))
       }
     })
   }
