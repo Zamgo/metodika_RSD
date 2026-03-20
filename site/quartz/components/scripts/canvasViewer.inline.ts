@@ -172,11 +172,16 @@ function buildFileNodeContent(node: CanvasNode, baseUrl: string): HTMLElement {
 
   if (node.renderedHtml) {
     body.innerHTML = node.renderedHtml
+    const sourceFileUrl = window.location.origin + resolvedPath
     body.querySelectorAll("a[href]").forEach((a) => {
       const href = a.getAttribute("href") || ""
       if (!href.startsWith("http") && !href.startsWith("mailto:") && !href.startsWith("data:")) {
         a.classList.add("internal")
-        a.setAttribute("href", resolveToAbsolute(href))
+        try {
+          a.setAttribute("href", new URL(href, sourceFileUrl).pathname)
+        } catch {
+          a.setAttribute("href", resolveToAbsolute(href))
+        }
       }
     })
   }
