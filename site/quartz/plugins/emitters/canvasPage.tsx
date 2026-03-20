@@ -3,7 +3,7 @@ import { QuartzComponentProps } from "../../components/types"
 import BodyConstructor from "../../components/Body"
 import { pageResources, renderPage } from "../../components/renderPage"
 import { FullPageLayout } from "../../cfg"
-import { FilePath, FullSlug, joinSegments, slugifyFilePath } from "../../util/path"
+import { FilePath, FullSlug, joinSegments, pathToRoot, slugifyFilePath } from "../../util/path"
 import { defaultContentPageLayout, sharedPageComponents } from "../../../quartz.layout"
 import CanvasViewer from "../../components/CanvasViewer"
 import HeaderConstructor from "../../components/Header"
@@ -248,7 +248,7 @@ export const CanvasPage: QuartzEmitterPlugin = () => {
           canvasEmbeddedData: safeJson(embeddedData),
         })
 
-        const externalResources = pageResources(slug, resources)
+        const externalResources = pageResources(pathToRoot(slug), resources)
         const componentData: QuartzComponentProps = {
           ctx,
           fileData: vfile.data,
@@ -325,7 +325,7 @@ export const CanvasPage: QuartzEmitterPlugin = () => {
             canvasEmbeddedData: safeJson(embeddedData),
           })
 
-          const externalResources = pageResources(slug, resources)
+          const externalResources = pageResources(pathToRoot(slug), resources)
           const componentData: QuartzComponentProps = {
             ctx,
             fileData: vfile.data,
