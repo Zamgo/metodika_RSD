@@ -1,5 +1,5 @@
 ---
-title: Úvod
+title: Úvod do metodiky ŘSD Plzeň
 description: Úvod do metodiky ŘSD Plzeň a její formy znalostní databáze
 typ: index
 faze: []

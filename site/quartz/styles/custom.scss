@@ -151,9 +151,50 @@ body {
 }
 
 #quartz-body .sidebar.left a:hover,
+#quartz-body .sidebar.left a:visited,
+#quartz-body .sidebar.left a.active,
 #quartz-body .sidebar.left .folder-container div > a:hover,
 #quartz-body .sidebar.left .folder-container div > button:hover span,
+#quartz-body .sidebar.left .folder-container div > button:focus-visible span,
 #quartz-body .sidebar.left .page-title a:hover,
 #quartz-body .sidebar.left .folder-icon:hover {
+  color: $rsd-blue-light;
+}
+
+/* Search in left sidebar: icon-only trigger (opens modal) */
+#quartz-body .sidebar.left .search {
+  max-width: fit-content;
+}
+
+#quartz-body .sidebar.left .search > .search-button {
+  background: none;
+  border: none;
+  width: 20px;
+  min-width: 20px;
+  height: 32px;
+  padding: 0;
+  margin: 0;
+  justify-content: center;
+}
+
+#quartz-body .sidebar.left .search > .search-button > p {
+  display: none;
+}
+
+#quartz-body .sidebar.left .search > .search-button svg {
+  width: 20px;
+  height: 20px;
+  margin: 0;
+}
+
+/* Markdown (.md) links in article content */
+#quartz-body .center article a,
+#quartz-body .center article a:visited {
+  color: $rsd-blue-dark;
+}
+
+#quartz-body .center article a:hover,
+#quartz-body .center article a:focus-visible,
+#quartz-body .center article a:active {
   color: $rsd-blue-light;
 }

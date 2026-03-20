@@ -11,17 +11,14 @@
             "id": "b1b051617c654508",
             "type": "leaf",
             "state": {
-              "type": "canvas",
+              "type": "markdown",
               "state": {
-                "file": "03_CDE_workflow/0_Diagram.canvas",
-                "viewState": {
-                  "x": 222.4000244140625,
-                  "y": 73.60000610351562,
-                  "zoom": 0
-                }
+                "file": "01_Úvod do metodiky ŘSD Plzeň.md",
+                "mode": "source",
+                "source": false
               },
-              "icon": "lucide-layout-dashboard",
-              "title": "0_Diagram"
+              "icon": "lucide-file",
+              "title": "01_Úvod do metodiky ŘSD Plzeň"
             }
           }
         ]
@@ -189,6 +186,7 @@
   },
   "active": "b1b051617c654508",
   "lastOpenFiles": [
+    "03_CDE_workflow/0_Diagram.canvas",
     "site/tsconfig.tsbuildinfo",
     "index.md",
     "site/public/99_Media/obrazky/zaklady_bim/image98.png",
@@ -210,10 +208,8 @@
     "site/public/static/giscus/dark.css",
     "site/public/proces/realizace/zmeny-behem-vystavby-pomoci-nastroju-cde-pavlina.html",
     "site/public/proces/realizace/schvalovaci-procesy-pavlina-priloha.html",
-    "site/public/proces/realizace/prostorova-koordinace-v-ramci-dims-sam.html",
     "site/public/03_CDE_workflow/0_Diagram.canvas",
     "05_Definice pojmů/Informační management/Požadavky objednatele na výměnu informací (EIR).md",
-    "03_CDE_workflow/0_Diagram.canvas",
     "site/public/Bez-názvu.canvas",
     "site/node_modules/@needle-di/core/README.md",
     "site/node_modules/json-canvas-viewer/README.md",
