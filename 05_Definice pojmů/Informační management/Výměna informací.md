@@ -3,20 +3,10 @@ title: Výměna informací
 typ: term
 faze: [priprava, realizace, provoz a udrzba]
 role: []
-cinnosti: [predani]
 workflow: []
-temata: [dokumentace, informacni kontejnery]
 stav: draft
-vlastnik: rsd
-souvisi:
-  - "[[Požadavky na informace (IR)]]"
-  - "[[Požadavky objednatele na výměnu informací (EIR)]]"
-  - "[[Informační kontejner]]"
-  - "[[Společné datové prostředí (CDE)]]"
-priloha: []
 permalink: /pojem/cde/vymena-informaci
-aliases: []
-tags: [pojem]
+tags: [pojem, dokumentace, informacni kontejnery]
 ---
 
 # Definice

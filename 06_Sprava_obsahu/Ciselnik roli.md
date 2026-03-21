@@ -3,17 +3,11 @@ title: Ciselnik roli
 typ: catalog
 faze: []
 role: []
-cinnosti: []
 workflow: []
-temata: [cde, dokumentace]
 stav: draft
-vlastnik: rsd
-souvisi:
-  - "[[Pravidla metadat]]"
-priloha: []
 permalink: /sprava-obsahu/ciselnik-roli
 aliases: [Číselník rolí]
-tags: [sprava_obsahu, ciselnik, role]
+tags: [sprava_obsahu, ciselnik, role, cde, dokumentace]
 ---
 
 ## Použití
@@ -27,6 +21,9 @@ Tento číselník je jediný zdroj hodnot pro metadata `role` (a pro konzistentn
 - `projektant`
 - `spravce cde`
 - `technicky dozor`
+- `poverujici strana`
+- `poverena strana`
+- `vedouci poverena strana`
 
 ## Odpovídající pojmové stránky (Obsidian)
 
@@ -35,4 +32,6 @@ Tento číselník je jediný zdroj hodnot pro metadata `role` (a pro konzistentn
 - [[Projektant]]
 - [[Správce CDE]]
 - [[Technický dozor]]
-
+- [[Pověřující strana]]
+- [[Pověřená strana]]
+- [[Vedoucí pověřená strana]]

@@ -3,19 +3,10 @@ title: Vedoucí pověřená strana
 typ: term
 faze: [priprava, realizace, provoz a udrzba]
 role: [vedouci poverena strana]
-cinnosti: [koordinace, predani]
 workflow: []
-temata: [cde, dokumentace]
 stav: draft
-vlastnik: rsd
-souvisi:
-  - "[[Pověřená strana]]"
-  - "[[Realizační tým]]"
-  - "[[Pověřující strana]]"
-priloha: []
 permalink: /pojem/role/vedouci-poverena-strana
-aliases: []
-tags: [pojem, role]
+tags: [pojem, role, cde, dokumentace]
 ---
 
 # Definice

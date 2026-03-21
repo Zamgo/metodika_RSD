@@ -3,19 +3,10 @@ title: Příprava
 typ: term
 faze: [priprava]
 role: []
-cinnosti: []
 workflow: []
-temata: [dokumentace]
 stav: draft
-vlastnik: rsd
-souvisi:
-  - "[[Společné datové prostředí (CDE)]]"
-  - "[[Metadata]]"
-  - "[[Informační kontejner]]"
-priloha: []
 permalink: /pojem/faze/priprava
-aliases: []
-tags: [pojem, faze]
+tags: [pojem, faze, dokumentace]
 ---
 
 # Definice

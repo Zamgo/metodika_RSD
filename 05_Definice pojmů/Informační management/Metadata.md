@@ -3,19 +3,10 @@ title: Metadata
 typ: term
 faze: [priprava, realizace, provoz a udrzba]
 role: []
-cinnosti: [evidence, vyhledavani]
 workflow: []
-temata: [metadata, vyhledavani]
 stav: draft
-vlastnik: rsd
-souvisi:
-  - "[[Společné datové prostředí (CDE)]]"
-  - "[[Informační kontejner]]"
-  - "[[Přístupová oprávnění]]"
-priloha: []
 permalink: /pojem/cde/metadata
-aliases: []
-tags: [pojem, metadata]
+tags: [pojem, metadata, vyhledavani]
 ---
 
 # Definice

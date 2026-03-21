@@ -3,19 +3,11 @@ title: CDE nástroj
 typ: term
 faze: [priprava, realizace, provoz a udrzba]
 role: []
-cinnosti: [ulozeni, sledovani]
 workflow: []
-temata: [cde, workflow]
 stav: draft
-vlastnik: rsd
-souvisi:
-  - "[[Společné datové prostředí (CDE)]]"
-  - "[[Workflow]]"
-  - "[[Informační kontejner]]"
-priloha: []
 permalink: /pojem/cde/cde-nastroj
 aliases: [CDE nástroj]
-tags: [pojem, cde]
+tags: [pojem, cde, workflow]
 ---
 
 # Definice

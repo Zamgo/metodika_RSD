@@ -3,16 +3,10 @@ title: Změny během výstavby pomocí nástrojů CDE - Pavlína
 typ: process
 faze: [realizace]
 role: [spravce cde, spravce stavby, zhotovitel]
-cinnosti: []
 workflow: []
-temata: [cde, dokumentace]
 stav: draft
-vlastnik: rsd
-souvisi: []
-priloha: []
 permalink: /proces/realizace/zmeny-behem-vystavby-pomoci-nastroju-cde-pavlina
-aliases: []
-tags: [proces]
+tags: [proces, cde, dokumentace]
 ---
 
 ## Účel

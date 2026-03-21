@@ -3,19 +3,11 @@ title: Auditní stopa
 typ: term
 faze: [priprava, realizace, provoz a udrzba]
 role: []
-cinnosti: [evidence, sledovani, kontrola]
 workflow: []
-temata: [auditni stopa, cde, workflow]
 stav: draft
-vlastnik: rsd
-souvisi:
-  - "[[Společné datové prostředí (CDE)]]"
-  - "[[Metadata]]"
-  - "[[Přístupová oprávnění]]"
-priloha: []
 permalink: /pojem/rizeni/auditni-stopa
 aliases: [Auditni stopa]
-tags: [pojem, audit]
+tags: [pojem, audit, auditni stopa, cde, workflow]
 ---
 
 # Definice

@@ -4,25 +4,13 @@ description: Odkazy na stažení šablon a podkladů pro konfiguraci CDE a workf
 typ: reference
 faze: [priprava, realizace]
 role: [spravce cde, spravce stavby, zhotovitel]
-cinnosti: []
 workflow: []
-temata: [cde, dokumentace, workflow]
 stav: draft
-vlastnik: rsd
-souvisi:
-  - "[[Konfigurace projektového nástroje CDE]]"
-  - "[[Pravidla metadat]]"
-priloha: []
 permalink: /reference/sablony-ke-stazeni
 aliases:
   - Šablony
   - Stažení šablon
-tags:
-  - sablony
-  - cde
-  - workflow
-  - reference
----
+tags: [sablony, cde, workflow, reference, dokumentace]
 
 # Šablony ke stažení
 

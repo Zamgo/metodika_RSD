@@ -6,21 +6,11 @@ faze:
 role:
   - spravce stavby
   - zhotovitel
-cinnosti:
-  - schvalovani
-workflow:
-  - bep
-temata:
-  - workflow
-  - cde
+workflow: [bep]
 stav: draft
-vlastnik: rsd
-souvisi: []
-priloha: []
 permalink: /workflow/bep
-aliases: []
-tags:
-  - workflow
+aliases: [BEP]
+tags: [workflow, cde]
 ---
 
 ## Účel workflow

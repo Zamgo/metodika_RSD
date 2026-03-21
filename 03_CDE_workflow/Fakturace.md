@@ -3,16 +3,10 @@ title: Fakturace
 typ: workflow
 faze: []
 role: [technicky dozor, zhotovitel]
-cinnosti: [schvalovani]
 workflow: [fakturace]
-temata: [workflow, cde]
 stav: draft
-vlastnik: rsd
-souvisi: []
-priloha: []
 permalink: /workflow/fakturace
-aliases: []
-tags: [workflow]
+tags: [workflow, cde]
 ---
 
 ## Účel workflow

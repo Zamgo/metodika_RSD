@@ -3,20 +3,11 @@ title: Společné datové prostředí (CDE)
 typ: term
 faze: [priprava, realizace, provoz a udrzba]
 role: []
-cinnosti: [ulozeni, sledovani]
 workflow: []
-temata: [cde, workflow, auditni stopa, opravneni, vyhledavani]
 stav: draft
-vlastnik: rsd
-souvisi:
-  - "[[Informační kontejner]]"
-  - "[[Metadata]]"
-  - "[[Přístupová oprávnění]]"
-  - "[[Informační model stavby]]"
-priloha: []
 permalink: /pojem/cde/spolecne-datove-prostredi
 aliases: [CDE, Common Data Environment, Spolecne datove prostredi]
-tags: [pojem, cde]
+tags: [pojem, cde, workflow, auditni stopa, opravneni, vyhledavani]
 ---
 
 # Definice

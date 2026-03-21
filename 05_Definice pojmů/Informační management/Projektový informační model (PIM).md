@@ -3,19 +3,11 @@ title: Projektový informační model (PIM)
 typ: term
 faze: [priprava, realizace]
 role: []
-cinnosti: [evidence, predani]
 workflow: []
-temata: [informacni kontejnery, predani dat]
 stav: draft
-vlastnik: rsd
-souvisi:
-  - "[[Informační model stavby]]"
-  - "[[Informační model aktiva (AIM)]]"
-  - "[[Společné datové prostředí (CDE)]]"
-priloha: []
 permalink: /pojem/cde/pim
 aliases: [PIM]
-tags: [pojem, pim]
+tags: [pojem, pim, informacni kontejnery, predani dat]
 ---
 
 # Definice

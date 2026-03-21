@@ -3,16 +3,10 @@ title: Informační kontejner
 typ: term
 faze: [priprava, realizace, provoz a udrzba]
 role: []
-cinnosti: [ulozeni, evidence]
 workflow: []
-temata: [informacni kontejnery, metadata]
 stav: draft
-vlastnik: rsd
-souvisi: []
-priloha: []
 permalink: /pojem/cde/informacni-kontejner
-aliases: []
-tags: [pojem, informacni_kontejner]
+tags: [pojem, informacni_kontejner, informacni kontejnery, metadata]
 ---
 
 # Definice

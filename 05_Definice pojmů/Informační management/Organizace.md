@@ -3,18 +3,9 @@ title: Organizace
 typ: term
 faze: []
 role: []
-cinnosti: []
 workflow: []
-temata: []
 stav: draft
-vlastnik: rsd
-souvisi:
-  - "[[Požadavky organizace na informace (OIR)]]"
-  - "[[Pověřující strana]]"
-  - "[[Pověřená strana]]"
-priloha: []
 permalink: /pojem/cde/organizace
-aliases: []
 tags: [pojem]
 ---
 

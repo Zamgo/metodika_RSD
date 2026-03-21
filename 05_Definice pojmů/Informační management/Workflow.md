@@ -3,19 +3,11 @@ title: Workflow
 typ: term
 faze: [priprava, realizace, provoz a udrzba]
 role: []
-cinnosti: [schvalovani, sledovani]
 workflow: []
-temata: [workflow, cde]
 stav: draft
-vlastnik: rsd
-souvisi:
-  - "[[Společné datové prostředí (CDE)]]"
-  - "[[Auditní stopa]]"
-  - "[[Přístupová oprávnění]]"
-priloha: []
 permalink: /pojem/rizeni/workflow
 aliases: [Pracovní postup]
-tags: [pojem, workflow]
+tags: [pojem, workflow, cde]
 ---
 
 # Definice

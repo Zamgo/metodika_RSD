@@ -3,19 +3,10 @@ title: Zhotovitel
 typ: term
 faze: [priprava, realizace, provoz a udrzba]
 role: [zhotovitel]
-cinnosti: [predani, aktualizace, ulozeni]
 workflow: []
-temata: [cde, dokumentace]
 stav: draft
-vlastnik: rsd
-souvisi:
-  - "[[Společné datové prostředí (CDE)]]"
-  - "[[Informační kontejner]]"
-  - "[[Metadata]]"
-priloha: []
 permalink: /pojem/role/zhotovitel
-aliases: []
-tags: [pojem, role]
+tags: [pojem, role, cde, dokumentace]
 ---
 
 # Definice

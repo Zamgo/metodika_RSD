@@ -12,20 +12,9 @@ import { i18n } from "../../i18n"
 export type ContentIndexMap = Map<FullSlug, ContentDetails>
 /** Frontmatter metadata used for search facets (CDE knowledge base). */
 export type PageMeta = {
-  typ?: string
-  stav?: string
-  vlastnik?: string
   faze?: string[]
   role?: string[]
-  cinnosti?: string[]
   workflow?: string[]
-  temata?: string[]
-}
-
-function toScalar(v: unknown): string | undefined {
-  if (v == null || v === "") return undefined
-  const s = String(v).trim()
-  return s || undefined
 }
 
 function toStringArray(v: unknown): string[] {
@@ -38,32 +27,13 @@ function toStringArray(v: unknown): string[] {
 function metaFromFrontmatter(fm: Record<string, unknown> | undefined): PageMeta | undefined {
   if (!fm) return undefined
   const meta: PageMeta = {}
-  const typ = toScalar(fm.typ)
-  const stav = toScalar(fm.stav)
-  const vlastnik = toScalar(fm.vlastnik)
-  if (typ) meta.typ = typ
-  if (stav) meta.stav = stav
-  if (vlastnik) meta.vlastnik = vlastnik
   const faze = toStringArray(fm.faze)
   const role = toStringArray(fm.role)
-  const cinnosti = toStringArray(fm.cinnosti)
   const workflow = toStringArray(fm.workflow)
-  const temata = toStringArray(fm.temata)
   if (faze.length) meta.faze = faze
   if (role.length) meta.role = role
-  if (cinnosti.length) meta.cinnosti = cinnosti
   if (workflow.length) meta.workflow = workflow
-  if (temata.length) meta.temata = temata
-  if (
-    !meta.typ &&
-    !meta.stav &&
-    !meta.vlastnik &&
-    !meta.faze?.length &&
-    !meta.role?.length &&
-    !meta.cinnosti?.length &&
-    !meta.workflow?.length &&
-    !meta.temata?.length
-  ) {
+  if (!meta.faze?.length && !meta.role?.length && !meta.workflow?.length) {
     return undefined
   }
   return meta

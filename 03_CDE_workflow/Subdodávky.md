@@ -3,16 +3,10 @@ title: Subdodávky
 typ: workflow
 faze: []
 role: [technicky dozor, zhotovitel]
-cinnosti: [schvalovani]
 workflow: [subdodavky]
-temata: [workflow, cde]
 stav: draft
-vlastnik: rsd
-souvisi: []
-priloha: []
 permalink: /workflow/subdodavky
-aliases: []
-tags: [workflow]
+tags: [workflow, cde]
 ---
 
 ## Účel workflow

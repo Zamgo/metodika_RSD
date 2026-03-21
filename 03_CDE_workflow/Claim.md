@@ -3,16 +3,10 @@ title: Claim
 typ: workflow
 faze: []
 role: [zhotovitel]
-cinnosti: [schvalovani]
 workflow: [claim]
-temata: [workflow, cde]
 stav: draft
-vlastnik: rsd
-souvisi: []
-priloha: []
 permalink: /workflow/claim
-aliases: []
-tags: [workflow]
+tags: [workflow, cde]
 ---
 
 ## Účel workflow

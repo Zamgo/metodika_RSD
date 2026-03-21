@@ -13,17 +13,11 @@ const defaultOptions: SearchOptions = {
   enablePreview: true,
 }
 
-const FACET_DIMS: readonly { dim: string; size: number }[] = [
-  { dim: "typ", size: 4 },
-  { dim: "stav", size: 4 },
-  { dim: "vlastnik", size: 4 },
-  { dim: "faze", size: 5 },
-  { dim: "role", size: 5 },
-  { dim: "cinnosti", size: 5 },
-  { dim: "workflow", size: 5 },
-  { dim: "temata", size: 5 },
-  { dim: "tags", size: 8 },
-]
+const FACET_DIMS = [
+  "faze",
+  "role",
+  "workflow",
+] as const
 
 export default ((userOpts?: Partial<SearchOptions>) => {
   const Search: QuartzComponent = ({ displayClass, cfg }: QuartzComponentProps) => {
@@ -33,32 +27,21 @@ export default ((userOpts?: Partial<SearchOptions>) => {
     const cs = cfg.locale.startsWith("cs")
     const dimLabel: Record<string, string> = cs
       ? {
-          typ: "Typ",
-          stav: "Stav",
-          vlastnik: "Vlastník",
           faze: "Fáze",
           role: "Role",
-          cinnosti: "Činnosti",
           workflow: "Workflow",
-          temata: "Témata",
-          tags: "Tagy",
         }
       : {
-          typ: "Type",
-          stav: "Status",
-          vlastnik: "Owner",
           faze: "Phase",
           role: "Role",
-          cinnosti: "Activities",
           workflow: "Workflow",
-          temata: "Topics",
-          tags: "Tags",
         }
     const panelTitle = cs ? "Hledání v metodice" : "Search the site"
     const closeLabel = cs ? "Zavřít" : "Close"
     const multiHint = cs
-      ? "U každého pole můžete vybrat více položek: Ctrl+klik (Windows) nebo ⌘+klik (Mac). U tagů musí stránka mít všechny vybrané; u ostatních polí stačí jedna z vybraných hodnot."
-      : "Select multiple values with Ctrl+click (Windows) or ⌘+click (Mac). Tags use AND; other fields use OR within the same group."
+      ? "Filtrujte podle fáze, role nebo workflow. V každém poli stačí shoda s jednou z vybraných hodnot."
+      : "Filter by phase, role or workflow. Within each field, a match with any selected value is sufficient."
+    const filterPh = s.tagFilterPlaceholder
 
     return (
       <div class={classNames(displayClass, "search")}>
@@ -79,6 +62,8 @@ export default ((userOpts?: Partial<SearchOptions>) => {
           data-search-locale={cfg.locale}
           data-str-active-filters={cs ? "Aktivní filtry" : "Active filters"}
           data-str-clear-all={cs ? "Zrušit filtry" : "Clear filters"}
+          data-str-dd-placeholder={cs ? "Vyberte…" : "Choose…"}
+          data-str-dd-n={cs ? "{n} vybráno" : "{n} selected"}
         >
           <div class="search-space">
             <div class="search-top-card">
@@ -105,20 +90,37 @@ export default ((userOpts?: Partial<SearchOptions>) => {
                   </button>
                 </div>
                 <p class="search-facet-multi-hint">{multiHint}</p>
-                <div class="search-facet-multis">
-                  {FACET_DIMS.map(({ dim, size }) => {
+                <div class="search-facet-dd-grid">
+                  {FACET_DIMS.map((dim) => {
                     const label = dimLabel[dim] ?? dim
                     return (
-                      <label key={dim} class="search-facet-multi-wrap">
-                        <span class="search-facet-multi-label">{label}</span>
-                        <select
-                          multiple
-                          class="search-facet-multi"
-                          data-dim={dim}
-                          size={size}
-                          aria-label={label}
-                        />
-                      </label>
+                      <div key={dim} class="search-facet-dd" data-dim={dim}>
+                        <span class="search-facet-dd-caption" id={`search-dd-cap-${dim}`}>
+                          {label}
+                        </span>
+                        <button
+                          type="button"
+                          class="search-facet-dd-trigger"
+                          aria-expanded="false"
+                          aria-haspopup="listbox"
+                          aria-labelledby={`search-dd-cap-${dim} search-dd-val-${dim}`}
+                        >
+                          <span class="search-facet-dd-text" id={`search-dd-val-${dim}`} />
+                          <span class="search-facet-dd-chevron" aria-hidden="true">
+                            ▾
+                          </span>
+                        </button>
+                        <div class="search-facet-dd-panel" hidden>
+                          <input
+                            type="search"
+                            class="search-facet-dd-filter"
+                            autocomplete="off"
+                            placeholder={filterPh}
+                            aria-label={filterPh}
+                          />
+                          <div class="search-facet-dd-list" />
+                        </div>
+                      </div>
                     )
                   })}
                 </div>

@@ -3,20 +3,11 @@ title: Správce CDE
 typ: term
 faze: [priprava, realizace, provoz a udrzba]
 role: [spravce cde]
-cinnosti: [koordinace, ulozeni, sledovani]
 workflow: []
-temata: [cde, opravneni, auditni stopa]
 stav: draft
-vlastnik: rsd
-souvisi:
-  - "[[Společné datové prostředí (CDE)]]"
-  - "[[Přístupová oprávnění]]"
-  - "[[Auditní stopa]]"
-  - "[[Metadata]]"
-priloha: []
 permalink: /pojem/role/spravce-cde
 aliases: [Spravce CDE]
-tags: [pojem, role]
+tags: [pojem, role, cde, opravneni, auditni stopa]
 ---
 
 # Definice

@@ -3,16 +3,10 @@ title: DiMS
 typ: workflow
 faze: []
 role: [spravce stavby, technicky dozor, zhotovitel]
-cinnosti: [schvalovani]
 workflow: [dims]
-temata: [workflow, cde]
 stav: draft
-vlastnik: rsd
-souvisi: []
-priloha: []
 permalink: /workflow/dims
-aliases: []
-tags: [workflow]
+tags: [workflow, cde]
 ---
 
 ## Účel workflow

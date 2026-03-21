@@ -3,16 +3,11 @@ title: Informační model stavby
 typ: term
 faze: [priprava, realizace, provoz a udrzba]
 role: []
-cinnosti: [evidence, ulozeni]
 workflow: []
-temata: [informacni kontejnery, predani dat]
 stav: draft
-vlastnik: rsd
-souvisi: []
-priloha: []
 permalink: /pojem/cde/informacni-model-stavby
 aliases: [IMS]
-tags: [pojem, ims]
+tags: [pojem, ims, informacni kontejnery, predani dat]
 ---
 
 # Definice

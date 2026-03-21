@@ -3,18 +3,10 @@ title: Datový soubor
 typ: term
 faze: [priprava, realizace, provoz a udrzba]
 role: []
-cinnosti: [ulozeni, evidence]
 workflow: []
-temata: [informacni kontejnery, metadata]
 stav: draft
-vlastnik: rsd
-souvisi:
-  - "[[Informační kontejner]]"
-  - "[[Metadata]]"
-priloha: []
 permalink: /pojem/cde/datovy-soubor
-aliases: []
-tags: [pojem]
+tags: [pojem, informacni kontejnery, metadata]
 ---
 
 # Definice

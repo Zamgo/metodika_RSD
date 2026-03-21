@@ -3,19 +3,10 @@ title: Smlouva
 typ: term
 faze: [priprava, realizace]
 role: []
-cinnosti: []
 workflow: []
-temata: [dokumentace]
 stav: draft
-vlastnik: rsd
-souvisi:
-  - "[[BIM-protokol]]"
-  - "[[Pověření]]"
-  - "[[Požadavky objednatele na výměnu informací (EIR)]]"
-priloha: []
 permalink: /pojem/cde/smlouva
-aliases: []
-tags: [pojem]
+tags: [pojem, dokumentace]
 ---
 
 # Definice

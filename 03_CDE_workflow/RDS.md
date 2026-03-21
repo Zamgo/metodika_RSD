@@ -3,16 +3,10 @@ title: RDS
 typ: workflow
 faze: []
 role: [spravce stavby, technicky dozor, zhotovitel]
-cinnosti: [schvalovani]
 workflow: [rds]
-temata: [workflow, cde]
 stav: draft
-vlastnik: rsd
-souvisi: []
-priloha: []
 permalink: /workflow/rds
-aliases: []
-tags: [workflow]
+tags: [workflow, cde]
 ---
 
 ## Účel workflow

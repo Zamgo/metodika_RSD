@@ -3,20 +3,10 @@ title: Informační model
 typ: term
 faze: [priprava, realizace, provoz a udrzba]
 role: []
-cinnosti: []
 workflow: []
-temata: [informacni kontejnery]
 stav: draft
-vlastnik: rsd
-souvisi:
-  - "[[Informační kontejner]]"
-  - "[[Informační model stavby]]"
-  - "[[Projektový informační model (PIM)]]"
-  - "[[Informační model aktiva (AIM)]]"
-priloha: []
 permalink: /pojem/cde/informacni-model
-aliases: []
-tags: [pojem]
+tags: [pojem, informacni kontejnery]
 ---
 
 # Definice

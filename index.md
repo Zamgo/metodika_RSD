@@ -4,27 +4,12 @@ description: Úvod do metodiky ŘSD Plzeň a její formy znalostní databáze
 typ: index
 faze: []
 role: []
-cinnosti: []
 workflow: []
-temata:
-  - dokumentace
 stav: draft
-vlastnik: rsd
-souvisi:
-  - "[[Pravidla metadat]]"
-  - "[[Pravidla odkazovani]]"
-  - "[[Zdroje a editorska doplneni]]"
-priloha: []
-aliases:
-  - Domů
-  - Home
-tags:
-  - index
-  - uvod
-  - dokumentace
-  - bim
-  - cde
+aliases: [Domů, Home]
+tags: [index, uvod, dokumentace, bim, cde]
 ---
+
 # Cíl metodiky
 
 Tato metodika slouží jako praktický návod pro správu informací o stavbě, primárně s využitím metody BIM a nástrojů CDE, na projektech ŘSD v průběhu celého životního cyklu stavby. Metodika klade důraz na srozumitelnost, jednotný minimální standard a praktickou použitelnost pro tým správce stavby a další zástupce ŘSD.

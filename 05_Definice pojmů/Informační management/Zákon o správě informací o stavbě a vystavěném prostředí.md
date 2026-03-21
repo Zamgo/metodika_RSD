@@ -3,23 +3,12 @@ title: Zákon o správě informací o stavbě a vystavěném prostředí
 typ: term
 faze: []
 role: []
-cinnosti: []
 workflow: []
-temata: []
 stav: draft
-vlastnik: rsd
-souvisi:
-  - "[[Společné datové prostředí (CDE)]]"
-  - "[[Informační model stavby]]"
-  - "[[Informační kontejner]]"
-  - "[[Správa informací o stavbě]]"
-priloha: []
 permalink: /pojem/cde/zakon-330-2025
 aliases:
   - Zákon
-tags:
-  - pojem
-  - legislativa
+tags: [pojem, legislativa]
 ---
 
 # Definice

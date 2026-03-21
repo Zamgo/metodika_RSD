@@ -3,19 +3,11 @@ title: BIM (Informační modelování staveb)
 typ: term
 faze: [priprava, realizace, provoz a udrzba]
 role: []
-cinnosti: []
 workflow: []
-temata: [dokumentace, informacni kontejnery]
 stav: draft
-vlastnik: rsd
-souvisi:
-  - "[[Informační model stavby]]"
-  - "[[Digitální model stavby (DiMS)]]"
-  - "[[Společné datové prostředí (CDE)]]"
-priloha: []
 permalink: /pojem/cde/bim
 aliases: [BIM]
-tags: [pojem, bim]
+tags: [pojem, bim, dokumentace, informacni kontejnery]
 ---
 
 # Definice

@@ -3,19 +3,10 @@ title: Provoz a údržba
 typ: term
 faze: [provoz a udrzba]
 role: []
-cinnosti: []
 workflow: []
-temata: [predani dat]
 stav: draft
-vlastnik: rsd
-souvisi:
-  - "[[Provoz a údržba - index]]"
-  - "[[Informační model stavby]]"
-  - "[[Společné datové prostředí (CDE)]]"
-priloha: []
 permalink: /pojem/faze/provoz-a-udrzba
-aliases: []
-tags: [pojem, faze]
+tags: [pojem, faze, predani dat]
 ---
 
 # Definice

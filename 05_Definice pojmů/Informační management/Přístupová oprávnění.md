@@ -3,19 +3,11 @@ title: Přístupová oprávnění
 typ: term
 faze: [priprava, realizace, provoz a udrzba]
 role: []
-cinnosti: [kontrola]
 workflow: []
-temata: [opravneni, cde]
 stav: draft
-vlastnik: rsd
-souvisi:
-  - "[[Společné datové prostředí (CDE)]]"
-  - "[[Auditní stopa]]"
-  - "[[Metadata]]"
-priloha: []
 permalink: /pojem/rizeni/pristupova-opravneni
 aliases: [Pristupova opravneni]
-tags: [pojem, opravneni]
+tags: [pojem, opravneni, cde]
 ---
 
 # Definice

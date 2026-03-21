@@ -3,19 +3,11 @@ title: Požadavky objednatele na výměnu informací (EIR)
 typ: term
 faze: [priprava, realizace]
 role: []
-cinnosti: [kontrola, schvalovani]
 workflow: [bep]
-temata: [dokumentace, metadata]
 stav: draft
-vlastnik: rsd
-souvisi:
-  - "[[BIM Execution Plan (BEP)]]"
-  - "[[Digitální model stavby (DiMS)]]"
-  - "[[Společné datové prostředí (CDE)]]"
-priloha: []
 permalink: /pojem/cde/eir
 aliases: [EIR]
-tags: [pojem, eir]
+tags: [pojem, eir, dokumentace, metadata]
 ---
 
 # Definice

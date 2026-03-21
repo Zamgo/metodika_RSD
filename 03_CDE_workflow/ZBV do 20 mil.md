@@ -3,16 +3,10 @@ title: ZBV do 20 mil
 typ: workflow
 faze: []
 role: [spravce stavby, technicky dozor, zhotovitel]
-cinnosti: [schvalovani]
 workflow: [zbv]
-temata: [workflow, cde]
 stav: draft
-vlastnik: rsd
-souvisi: []
-priloha: []
 permalink: /workflow/zbv-do-20-mil
-aliases: []
-tags: [workflow]
+tags: [workflow, cde]
 ---
 
 ## Účel workflow

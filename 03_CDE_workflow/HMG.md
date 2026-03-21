@@ -3,16 +3,10 @@ title: HMG
 typ: workflow
 faze: []
 role: [spravce stavby, technicky dozor, zhotovitel]
-cinnosti: [schvalovani]
 workflow: [hmg]
-temata: [workflow, cde]
 stav: draft
-vlastnik: rsd
-souvisi: []
-priloha: []
 permalink: /workflow/hmg
-aliases: []
-tags: [workflow]
+tags: [workflow, cde]
 ---
 
 ## Účel workflow

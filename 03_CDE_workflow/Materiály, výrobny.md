@@ -3,16 +3,10 @@ title: Materiály, výrobny
 typ: workflow
 faze: []
 role: [spravce stavby, technicky dozor, zhotovitel]
-cinnosti: [schvalovani]
 workflow: [materialy-a-vyrobny]
-temata: [workflow, cde]
 stav: draft
-vlastnik: rsd
-souvisi: []
-priloha: []
 permalink: /workflow/materialy-vyrobny
-aliases: []
-tags: [workflow]
+tags: [workflow, cde]
 ---
 
 ## Účel workflow

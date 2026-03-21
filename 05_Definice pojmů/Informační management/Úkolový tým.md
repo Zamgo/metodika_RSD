@@ -3,19 +3,10 @@ title: Úkolový tým
 typ: term
 faze: [priprava, realizace]
 role: []
-cinnosti: []
 workflow: []
-temata: [dokumentace]
 stav: draft
-vlastnik: rsd
-souvisi:
-  - "[[Úkolový plán předávání informací (TIDP)]]"
-  - "[[Realizační tým]]"
-  - "[[Hlavní plán předávání informací (MIDP)]]"
-priloha: []
 permalink: /pojem/cde/ukolovy-tym
-aliases: []
-tags: [pojem]
+tags: [pojem, dokumentace]
 ---
 
 # Definice

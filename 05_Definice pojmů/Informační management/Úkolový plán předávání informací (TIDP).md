@@ -3,19 +3,11 @@ title: Úkolový plán předávání informací (TIDP)
 typ: term
 faze: [priprava, realizace]
 role: []
-cinnosti: []
 workflow: []
-temata: [dokumentace]
 stav: draft
-vlastnik: rsd
-souvisi:
-  - "[[Hlavní plán předávání informací (MIDP)]]"
-  - "[[Úkolový tým]]"
-  - "[[Informační kontejner]]"
-priloha: []
 permalink: /pojem/cde/tidp
 aliases: [TIDP]
-tags: [pojem]
+tags: [pojem, dokumentace]
 ---
 
 # Definice

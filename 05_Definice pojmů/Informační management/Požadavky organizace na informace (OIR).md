@@ -3,20 +3,11 @@ title: Požadavky organizace na informace (OIR)
 typ: term
 faze: [priprava, realizace, provoz a udrzba]
 role: []
-cinnosti: []
 workflow: []
-temata: [dokumentace]
 stav: draft
-vlastnik: rsd
-souvisi:
-  - "[[Požadavky na informace (IR)]]"
-  - "[[Požadavky na projektové informace (PIR)]]"
-  - "[[Požadavky na informace o aktivu (AIR)]]"
-  - "[[Organizace]]"
-priloha: []
 permalink: /pojem/cde/oir
 aliases: [OIR]
-tags: [pojem]
+tags: [pojem, dokumentace]
 ---
 
 # Definice

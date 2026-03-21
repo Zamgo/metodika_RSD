@@ -3,19 +3,10 @@ title: Pověřující strana
 typ: term
 faze: [priprava, realizace, provoz a udrzba]
 role: [poverujici strana]
-cinnosti: [kontrola, schvalovani]
 workflow: []
-temata: [cde, dokumentace]
 stav: draft
-vlastnik: rsd
-souvisi:
-  - "[[Pověřená strana]]"
-  - "[[Projektový tým]]"
-  - "[[Strany]]"
-priloha: []
 permalink: /pojem/role/poverujici-strana
-aliases: []
-tags: [pojem, role]
+tags: [pojem, role, cde, dokumentace]
 ---
 
 # Definice

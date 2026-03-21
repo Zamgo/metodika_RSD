@@ -3,16 +3,11 @@ title: Placeholdery obrazku
 typ: reference
 faze: []
 role: []
-cinnosti: []
 workflow: []
-temata: [dokumentace]
 stav: draft
-vlastnik: rsd
-souvisi: []
-priloha: []
 permalink: /media/placeholdery-obrazku
 aliases: [Placeholdery obrázků]
-tags: [media, obrazky, placeholder]
+tags: [media, obrazky, placeholder, dokumentace]
 ---
 
 ## Účel

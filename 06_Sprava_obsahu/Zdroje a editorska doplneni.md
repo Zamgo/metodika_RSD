@@ -3,17 +3,11 @@ title: Zdroje a editorska doplneni
 typ: catalog
 faze: []
 role: []
-cinnosti: []
 workflow: []
-temata: [dokumentace]
 stav: draft
-vlastnik: rsd
-souvisi:
-  - "[[Pravidla metadat]]"
-priloha: []
 permalink: /sprava-obsahu/zdroje-a-editorske-doplneni
 aliases: [Zdroje a editorské doplnění]
-tags: [sprava_obsahu, zdroje, editorske_doplneni]
+tags: [sprava_obsahu, zdroje, editorske_doplneni, dokumentace]
 ---
 
 ## Primární zdroje (podklady)

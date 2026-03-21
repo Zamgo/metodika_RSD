@@ -3,17 +3,11 @@ title: Ciselnik fazi
 typ: catalog
 faze: []
 role: []
-cinnosti: []
 workflow: []
-temata: [dokumentace]
 stav: draft
-vlastnik: rsd
-souvisi:
-  - "[[Pravidla metadat]]"
-priloha: []
 permalink: /sprava-obsahu/ciselnik-fazi
 aliases: [Číselník fází]
-tags: [sprava_obsahu, ciselnik, faze]
+tags: [sprava_obsahu, ciselnik, faze, dokumentace]
 ---
 
 ## Použití
@@ -31,4 +25,3 @@ Tento číselník je jediný zdroj hodnot pro metadata `faze` (a pro konzistentn
 - [[Příprava]]
 - [[Realizace]]
 - [[Provoz a údržba]]
-

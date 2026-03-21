@@ -3,16 +3,10 @@ title: Ověřování alfanumerických informací v rámci DiMS – Sam
 typ: process
 faze: [realizace]
 role: [spravce cde, spravce stavby, zhotovitel]
-cinnosti: []
 workflow: []
-temata: [cde, dokumentace]
 stav: draft
-vlastnik: rsd
-souvisi: []
-priloha: []
 permalink: /proces/realizace/overovani-alfanumerickych-informaci-v-ramci-dims-sam
-aliases: []
-tags: [proces]
+tags: [proces, cde, dokumentace]
 ---
 
 ## Účel

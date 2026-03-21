@@ -3,20 +3,10 @@ title: Pověření
 typ: term
 faze: [priprava, realizace]
 role: []
-cinnosti: []
 workflow: []
-temata: [dokumentace]
 stav: draft
-vlastnik: rsd
-souvisi:
-  - "[[Pověřená strana]]"
-  - "[[Pověřující strana]]"
-  - "[[Požadavky objednatele na výměnu informací (EIR)]]"
-  - "[[BIM Execution Plan (BEP)]]"
-priloha: []
 permalink: /pojem/cde/povereni
-aliases: []
-tags: [pojem]
+tags: [pojem, dokumentace]
 ---
 
 # Definice

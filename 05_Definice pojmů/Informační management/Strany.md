@@ -3,19 +3,10 @@ title: Strany
 typ: term
 faze: [priprava, realizace, provoz a udrzba]
 role: []
-cinnosti: []
 workflow: []
-temata: [cde]
 stav: draft
-vlastnik: rsd
-souvisi:
-  - "[[Pověřující strana]]"
-  - "[[Pověřená strana]]"
-  - "[[Projektový tým]]"
-priloha: []
 permalink: /pojem/cde/strany
-aliases: []
-tags: [pojem]
+tags: [pojem, cde]
 ---
 
 # Definice

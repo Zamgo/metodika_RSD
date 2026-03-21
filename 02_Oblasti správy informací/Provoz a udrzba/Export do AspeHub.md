@@ -3,16 +3,10 @@ title: Export do AspeHub - Pavlína
 typ: process
 faze: [provoz a udrzba]
 role: [spravce stavby]
-cinnosti: []
 workflow: []
-temata: [cde, dokumentace]
 stav: draft
-vlastnik: rsd
-souvisi: []
-priloha: []
 permalink: /proces/provoz-a-udrzba/export-do-aspehub-pavlina
-aliases: []
-tags: [proces]
+tags: [proces, cde, dokumentace]
 ---
 
 ## Poznámka ze zdroje

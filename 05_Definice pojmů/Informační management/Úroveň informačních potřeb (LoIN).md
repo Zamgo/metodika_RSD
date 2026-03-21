@@ -3,19 +3,11 @@ title: Úroveň informačních potřeb (LoIN)
 typ: term
 faze: [priprava, realizace, provoz a udrzba]
 role: []
-cinnosti: []
 workflow: []
-temata: [dokumentace]
 stav: draft
-vlastnik: rsd
-souvisi:
-  - "[[Požadavky na informace (IR)]]"
-  - "[[Požadavky objednatele na výměnu informací (EIR)]]"
-  - "[[Účel užití]]"
-priloha: []
 permalink: /pojem/cde/loin
 aliases: [LoIN]
-tags: [pojem]
+tags: [pojem, dokumentace]
 ---
 
 # Definice

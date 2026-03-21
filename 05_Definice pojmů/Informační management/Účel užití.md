@@ -3,19 +3,11 @@ title: Účel užití
 typ: term
 faze: [priprava, realizace, provoz a udrzba]
 role: []
-cinnosti: []
 workflow: []
-temata: [dokumentace]
 stav: draft
-vlastnik: rsd
-souvisi:
-  - "[[Verifikace]]"
-  - "[[Validace]]"
-  - "[[Požadavky objednatele na výměnu informací (EIR)]]"
-priloha: []
 permalink: /pojem/rizeni/ucel-uziti
 aliases: [Ucel uziti]
-tags: [pojem]
+tags: [pojem, dokumentace]
 ---
 
 # Definice

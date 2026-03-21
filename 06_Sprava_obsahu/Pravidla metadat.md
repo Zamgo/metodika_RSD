@@ -3,15 +3,9 @@ title: Pravidla metadat
 typ: catalog
 faze: []
 role: []
-cinnosti: []
 workflow: []
-temata: [metadata]
 stav: draft
-vlastnik: rsd
-souvisi: []
-priloha: []
 permalink: /sprava-obsahu/pravidla-metadat
-aliases: []
 tags: [sprava_obsahu, metadata, quartz]
 ---
 
@@ -21,20 +15,23 @@ Tato stránka definuje jednotná pravidla pro frontmatter ve všech stránkách 
 
 ## Povinné klíče frontmatteru (všechny stránky)
 
-- `title`
-- `typ`
-- `faze`
-- `role`
-- `cinnosti`
-- `workflow`
-- `temata`
-- `stav`
-- `vlastnik`
-- `souvisi`
-- `priloha`
-- `permalink`
-- `aliases`
-- `tags`
+| Klíč | Popis | Typ |
+|------|-------|-----|
+| `title` | Název stránky | text |
+| `typ` | Typ stránky (viz níže) | text |
+| `faze` | Fáze projektu, ve kterých je obsah relevantní | seznam |
+| `role` | Role, pro které je obsah relevantní | seznam |
+| `workflow` | Související workflow | seznam |
+| `stav` | Redakční stav | text |
+| `permalink` | Stabilní URL pro Quartz | text |
+| `tags` | Volné štítky pro vyhledávání | seznam |
+
+## Volitelné klíče
+
+| Klíč | Popis |
+|------|-------|
+| `aliases` | Alternativní názvy/zkratky (pro vyhledávání) |
+| `description` | Popis stránky (pro SEO/meta tagy) |
 
 ## Povolené hodnoty `typ`
 
@@ -54,22 +51,16 @@ Následující pole se vždy zapisují jako seznamy (i když obsahují jen jednu
 
 - `faze`
 - `role`
-- `cinnosti`
 - `workflow`
-- `temata`
-- `souvisi`
-- `aliases`
 - `tags`
 
 ## Vazba na číselníky
 
-Hodnoty pro `role`, `faze`, `workflow`, `cinnosti` a `temata` se berou **výhradně** z číselníků:
+Hodnoty pro `faze`, `role` a `workflow` se berou **výhradně** z číselníků:
 
-- [[Ciselnik roli]]
 - [[Ciselnik fazi]]
+- [[Ciselnik roli]]
 - [[Ciselnik workflow]]
-- [[Ciselnik cinnosti]]
-- [[Ciselnik temat]]
 
 Pokud je potřeba nová hodnota:
 
@@ -95,5 +86,17 @@ Používané hodnoty (v prvním průchodu):
 - `draft`
 - `ready`
 
-**Editorske doplneni:** Pokud bude potřeba detailnější workflow publikace (např. `review`, `approved`), doplní se do pravidel a sjednotí v celém vaultu.
+## Příklad frontmatteru
 
+```yaml
+---
+title: ZBV
+typ: workflow
+faze: [realizace]
+role: [spravce stavby, technicky dozor, zhotovitel]
+workflow: [zbv]
+stav: draft
+permalink: /workflow/zbv
+tags: [workflow, cde]
+---
+```

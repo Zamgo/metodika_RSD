@@ -3,19 +3,10 @@ title: Projektový tým
 typ: term
 faze: [priprava, realizace]
 role: []
-cinnosti: []
 workflow: []
-temata: [cde, dokumentace]
 stav: draft
-vlastnik: rsd
-souvisi:
-  - "[[Pověřující strana]]"
-  - "[[Realizační tým]]"
-  - "[[Společné datové prostředí (CDE)]]"
-priloha: []
 permalink: /pojem/cde/projektovy-tym
-aliases: []
-tags: [pojem]
+tags: [pojem, cde, dokumentace]
 ---
 
 # Definice

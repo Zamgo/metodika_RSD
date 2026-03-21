@@ -3,19 +3,11 @@ title: Technický dozor
 typ: term
 faze: [realizace]
 role: [technicky dozor]
-cinnosti: [kontrola, overeni]
 workflow: []
-temata: [dokumentace, workflow]
 stav: draft
-vlastnik: rsd
-souvisi:
-  - "[[Společné datové prostředí (CDE)]]"
-  - "[[Workflow]]"
-  - "[[Auditní stopa]]"
-priloha: []
 permalink: /pojem/role/technicky-dozor
 aliases: [Technicky dozor, TDS]
-tags: [pojem, role]
+tags: [pojem, role, dokumentace, workflow]
 ---
 
 # Definice

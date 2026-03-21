@@ -3,17 +3,11 @@ title: Pravidla odkazovani
 typ: catalog
 faze: []
 role: []
-cinnosti: []
 workflow: []
-temata: [cde, workflow]
 stav: draft
-vlastnik: rsd
-souvisi:
-  - "[[Pravidla metadat]]"
-priloha: []
 permalink: /sprava-obsahu/pravidla-odkazovani
 aliases: [Pravidla odkazování]
-tags: [sprava_obsahu, odkazy, obsidian]
+tags: [sprava_obsahu, odkazy, obsidian, cde, workflow]
 ---
 
 ## Základní pravidlo

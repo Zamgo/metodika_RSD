@@ -3,16 +3,10 @@ title: Variace
 typ: workflow
 faze: []
 role: [spravce stavby, zhotovitel]
-cinnosti: [schvalovani]
 workflow: [variace]
-temata: [workflow, cde]
 stav: draft
-vlastnik: rsd
-souvisi: []
-priloha: []
 permalink: /workflow/variace
-aliases: []
-tags: [workflow]
+tags: [workflow, cde]
 ---
 
 ## Účel workflow

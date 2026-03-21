@@ -3,19 +3,11 @@ title: Požadavky na informace o aktivu (AIR)
 typ: term
 faze: [provoz a udrzba]
 role: []
-cinnosti: []
 workflow: []
-temata: [dokumentace]
 stav: draft
-vlastnik: rsd
-souvisi:
-  - "[[Požadavky na informace (IR)]]"
-  - "[[Informační model aktiva (AIM)]]"
-  - "[[Aktivum]]"
-priloha: []
 permalink: /pojem/cde/air
 aliases: [AIR]
-tags: [pojem]
+tags: [pojem, dokumentace]
 ---
 
 # Definice

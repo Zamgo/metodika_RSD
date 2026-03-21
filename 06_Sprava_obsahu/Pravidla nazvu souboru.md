@@ -3,18 +3,11 @@ title: Pravidla nazvu souboru
 typ: catalog
 faze: []
 role: []
-cinnosti: []
 workflow: []
-temata: [dokumentace]
 stav: draft
-vlastnik: rsd
-souvisi:
-  - "[[Pravidla metadat]]"
-  - "[[Pravidla odkazovani]]"
-priloha: []
 permalink: /sprava-obsahu/pravidla-nazvu-souboru
 aliases: [Pravidla názvu souboru]
-tags: [sprava_obsahu, nazvy_souboru, quartz]
+tags: [sprava_obsahu, nazvy_souboru, quartz, dokumentace]
 ---
 
 ## Zásady

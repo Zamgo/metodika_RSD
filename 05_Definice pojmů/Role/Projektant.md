@@ -3,19 +3,10 @@ title: Projektant
 typ: term
 faze: [priprava, realizace]
 role: [projektant]
-cinnosti: [predani, aktualizace]
 workflow: []
-temata: [dokumentace, cde]
 stav: draft
-vlastnik: rsd
-souvisi:
-  - "[[Společné datové prostředí (CDE)]]"
-  - "[[Informační kontejner]]"
-  - "[[Metadata]]"
-priloha: []
 permalink: /pojem/role/projektant
-aliases: []
-tags: [pojem, role]
+tags: [pojem, role, dokumentace, cde]
 ---
 
 # Definice

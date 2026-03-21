@@ -3,19 +3,10 @@ title: Informace
 typ: term
 faze: [priprava, realizace, provoz a udrzba]
 role: []
-cinnosti: []
 workflow: []
-temata: [dokumentace]
 stav: draft
-vlastnik: rsd
-souvisi:
-  - "[[Informační kontejner]]"
-  - "[[Informační model stavby]]"
-  - "[[Metadata]]"
-priloha: []
 permalink: /pojem/cde/informace
-aliases: []
-tags: [pojem]
+tags: [pojem, dokumentace]
 ---
 
 # Definice

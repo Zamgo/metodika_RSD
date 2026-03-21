@@ -89,50 +89,28 @@ function escapeHtml(s: string): string {
 }
 
 const META_DIMS = [
-  "typ",
-  "stav",
-  "vlastnik",
   "faze",
   "role",
-  "cinnosti",
   "workflow",
-  "temata",
-  "tags",
 ] as const
 
 const DIM_LABELS_CS: Record<string, string> = {
-  typ: "Typ",
-  stav: "Stav",
-  vlastnik: "Vlastník",
   faze: "Fáze",
   role: "Role",
-  cinnosti: "Činnosti",
   workflow: "Workflow",
-  temata: "Témata",
-  tags: "Tagy",
 }
 const DIM_LABELS_EN: Record<string, string> = {
-  typ: "Type",
-  stav: "Status",
-  vlastnik: "Owner",
   faze: "Phase",
   role: "Role",
-  cinnosti: "Activities",
   workflow: "Workflow",
-  temata: "Topics",
-  tags: "Tags",
 }
 
 function getPageDimValues(slug: FullSlug, dim: string, data: ContentIndex): string[] {
   const d = data[slug]
   if (!d) return []
-  if (dim === "tags") return d.tags ?? []
   const meta = (d as ContentDetails & { meta?: Record<string, unknown> }).meta
   if (!meta) return []
   const v = meta[dim]
-  if (dim === "typ" || dim === "stav" || dim === "vlastnik") {
-    return v != null && String(v).trim() ? [String(v).trim()] : []
-  }
   return Array.isArray(v) ? v.map((x) => String(x).trim()).filter(Boolean) : []
 }
 
@@ -144,11 +122,7 @@ function pageMatchesFacets(
   for (const [dim, values] of selected) {
     if (values.size === 0) continue
     const pageVals = getPageDimValues(slug, dim, data)
-    if (dim === "tags") {
-      if (![...values].every((v) => pageVals.includes(v))) return false
-    } else {
-      if (![...values].some((v) => pageVals.includes(v))) return false
-    }
+    if (![...values].some((v) => pageVals.includes(v))) return false
   }
   return true
 }
@@ -165,24 +139,9 @@ function buildFacetOptions(data: ContentIndex): FacetOptions {
   const out = new Map<string, Map<string, number>>()
   for (const dim of META_DIMS) out.set(dim, new Map())
   for (const details of Object.values<ContentDetails>(data)) {
-    for (const t of details.tags ?? []) {
-      const m = out.get("tags")!
-      m.set(t, (m.get(t) ?? 0) + 1)
-    }
     const meta = (details as ContentDetails & { meta?: Record<string, unknown> }).meta
     if (meta) {
-      const scalar = (k: string) => {
-        const v = meta![k]
-        if (v != null && String(v).trim()) {
-          const m = out.get(k)!
-          const s = String(v).trim()
-          m.set(s, (m.get(s) ?? 0) + 1)
-        }
-      }
-      scalar("typ")
-      scalar("stav")
-      scalar("vlastnik")
-      for (const k of ["faze", "role", "cinnosti", "workflow", "temata"] as const) {
+      for (const k of META_DIMS) {
         const arr = meta[k]
         if (Array.isArray(arr)) {
           const target = out.get(k)!
@@ -349,15 +308,47 @@ async function setupSearch(searchElement: Element, currentSlug: FullSlug, data: 
   if (activeFiltersLabel) activeFiltersLabel.textContent = strActiveFilters + ": "
   if (clearAllFiltersBtn && strClearAll) clearAllFiltersBtn.textContent = strClearAll
 
+  const strDdPlaceholder = container.dataset.strDdPlaceholder ?? "Choose…"
+  const strDdN = container.dataset.strDdN ?? "{n} selected"
+
+  function closeAllDdPanels() {
+    for (const dd of searchElement.querySelectorAll(".search-facet-dd")) {
+      const panel = dd.querySelector(".search-facet-dd-panel") as HTMLElement | null
+      const trig = dd.querySelector(".search-facet-dd-trigger") as HTMLButtonElement | null
+      panel?.setAttribute("hidden", "")
+      trig?.setAttribute("aria-expanded", "false")
+    }
+  }
+
+  function updateDdTriggerText(dim: string) {
+    const dd = searchElement.querySelector(
+      `.search-facet-dd[data-dim="${CSS.escape(dim)}"]`,
+    ) as HTMLElement | null
+    if (!dd) return
+    const textEl = dd.querySelector(".search-facet-dd-text") as HTMLElement | null
+    if (!textEl) return
+    const checked = dd.querySelectorAll<HTMLInputElement>("input.search-facet-dd-cb:checked")
+    const n = checked.length
+    if (n === 0) {
+      textEl.textContent = strDdPlaceholder
+      return
+    }
+    if (n === 1) {
+      const v = checked[0]!.dataset.value ?? ""
+      textEl.textContent = v
+      return
+    }
+    textEl.textContent = strDdN.replace("{n}", String(n))
+  }
+
   function getSelectedFacets(): Map<string, Set<string>> {
     const out = new Map<string, Set<string>>()
-    for (const sel of searchElement.querySelectorAll<HTMLSelectElement>("select.search-facet-multi[data-dim]")) {
-      const dim = sel.dataset.dim!
-      const selected = Array.from(sel.selectedOptions)
-        .map((o) => o.value)
-        .filter(Boolean)
-      if (selected.length === 0) continue
-      out.set(dim, new Set(selected))
+    for (const cb of searchElement.querySelectorAll<HTMLInputElement>("input.search-facet-dd-cb:checked")) {
+      const dim = cb.dataset.dim!
+      const val = cb.dataset.value ?? ""
+      if (!val) continue
+      if (!out.has(dim)) out.set(dim, new Set())
+      out.get(dim)!.add(val)
     }
     return out
   }
@@ -380,15 +371,12 @@ async function setupSearch(searchElement: Element, currentSlug: FullSlug, data: 
         chip.className = "search-active-chip"
         chip.innerHTML = `${escapeHtml(label)}: ${escapeHtml(val)} <button type="button" class="search-active-chip-remove" aria-label="Remove">×</button>`
         const removeBtn = chip.querySelector(".search-active-chip-remove") as HTMLButtonElement
-        const multi = searchElement.querySelector(
-          `select.search-facet-multi[data-dim="${CSS.escape(dim)}"]`,
-        ) as HTMLSelectElement | null
         removeBtn?.addEventListener("click", () => {
-          if (multi) {
-            for (const opt of Array.from(multi.options)) {
-              if (opt.value === val) opt.selected = false
-            }
-          }
+          const cb = searchElement.querySelector(
+            `input.search-facet-dd-cb[data-dim="${CSS.escape(dim)}"][data-value="${CSS.escape(val)}"]`,
+          ) as HTMLInputElement | null
+          if (cb) cb.checked = false
+          updateDdTriggerText(dim)
           syncActiveFiltersBar()
           runSearch()
         })
@@ -397,41 +385,94 @@ async function setupSearch(searchElement: Element, currentSlug: FullSlug, data: 
     }
   }
 
+  function onDocPointerCloseDd(e: PointerEvent) {
+    if (!container.classList.contains("active")) return
+    const t = e.target
+    if (!(t instanceof Element)) return
+    if (t.closest(".search-facet-dd")) return
+    closeAllDdPanels()
+  }
+
   if (!host.dataset.searchFacetsBuilt) {
     host.dataset.searchFacetsBuilt = "1"
     const options = buildFacetOptions(data)
     for (const dim of META_DIMS) {
-      const sel = searchElement.querySelector(
-        `select.search-facet-multi[data-dim="${dim}"]`,
-      ) as HTMLSelectElement | null
-      if (!sel) continue
+      const dd = searchElement.querySelector(
+        `.search-facet-dd[data-dim="${dim}"]`,
+      ) as HTMLElement | null
+      if (!dd) continue
+      const list = dd.querySelector(".search-facet-dd-list") as HTMLElement | null
+      const filterIn = dd.querySelector(".search-facet-dd-filter") as HTMLInputElement | null
+      const trig = dd.querySelector(".search-facet-dd-trigger") as HTMLButtonElement | null
+      const panel = dd.querySelector(".search-facet-dd-panel") as HTMLElement | null
+      if (!list || !trig || !panel) continue
+
       const valuesMap = options.get(dim)!
       const entries = [...valuesMap.entries()].sort((a, b) =>
         a[0].localeCompare(b[0], undefined, { sensitivity: "base" }),
       )
-      const prevSelected = new Set(Array.from(sel.selectedOptions).map((o) => o.value))
-      sel.replaceChildren()
-      for (const [value, count] of entries) {
-        const opt = document.createElement("option")
-        opt.value = value
-        const label =
-          dim === "tags" ? `#${value}` : count > 1 ? `${value} (${count})` : value
-        opt.textContent = label
-        if (prevSelected.has(value)) opt.selected = true
-        sel.appendChild(opt)
-      }
-    }
-    for (const sel of searchElement.querySelectorAll<HTMLSelectElement>("select.search-facet-multi[data-dim]")) {
-      sel.addEventListener("change", () => {
-        syncActiveFiltersBar()
-        runSearch()
-      })
-    }
-  }
 
-  const getSelectedCheckboxTags = (): string[] => {
-    const sel = getSelectedFacets()
-    return [...(sel.get("tags") ?? [])]
+      if (entries.length === 0) {
+        dd.classList.add("is-empty")
+        updateDdTriggerText(dim)
+        continue
+      }
+      dd.classList.remove("is-empty")
+
+      removeAllChildren(list)
+      for (const [value, count] of entries) {
+        const display = count > 1 ? `${value} (${count})` : value
+        const searchText = value.toLowerCase()
+        const row = document.createElement("label")
+        row.className = "search-facet-dd-row"
+        row.setAttribute("data-searchable", searchText)
+        const cb = document.createElement("input")
+        cb.type = "checkbox"
+        cb.className = "search-facet-dd-cb"
+        cb.dataset.dim = dim
+        cb.dataset.value = value
+        const span = document.createElement("span")
+        span.className = "search-facet-dd-row-text"
+        span.textContent = display
+        row.appendChild(cb)
+        row.appendChild(span)
+        cb.addEventListener("change", () => {
+          updateDdTriggerText(dim)
+          syncActiveFiltersBar()
+          runSearch()
+        })
+        list.appendChild(row)
+      }
+
+      if (filterIn) {
+        filterIn.addEventListener("input", () => {
+          const q = filterIn.value.trim().toLowerCase()
+          for (const row of list.querySelectorAll<HTMLElement>(".search-facet-dd-row")) {
+            const s = row.getAttribute("data-searchable") ?? ""
+            row.classList.toggle("is-hidden", q !== "" && !s.includes(q))
+          }
+        })
+      }
+
+      trig.addEventListener("click", (e) => {
+        e.stopPropagation()
+        const isOpen = !panel.hasAttribute("hidden")
+        if (isOpen) {
+          panel.setAttribute("hidden", "")
+          trig.setAttribute("aria-expanded", "false")
+        } else {
+          closeAllDdPanels()
+          panel.removeAttribute("hidden")
+          trig.setAttribute("aria-expanded", "true")
+          filterIn?.focus()
+        }
+      })
+
+      updateDdTriggerText(dim)
+    }
+
+    document.addEventListener("pointerdown", onDocPointerCloseDd)
+    window.addCleanup(() => document.removeEventListener("pointerdown", onDocPointerCloseDd))
   }
 
   const appendLayout = (el: HTMLElement) => {
@@ -458,11 +499,17 @@ async function setupSearch(searchElement: Element, currentSlug: FullSlug, data: 
   function hideSearch() {
     container.classList.remove("active")
     searchBar.value = ""
-    searchElement.querySelectorAll<HTMLSelectElement>("select.search-facet-multi[data-dim]").forEach((s) => {
-      Array.from(s.options).forEach((o) => {
-        o.selected = false
-      })
+    searchElement.querySelectorAll<HTMLInputElement>("input.search-facet-dd-cb").forEach((cb) => {
+      cb.checked = false
     })
+    searchElement.querySelectorAll<HTMLInputElement>(".search-facet-dd-filter").forEach((inp) => {
+      inp.value = ""
+    })
+    searchElement.querySelectorAll<HTMLElement>(".search-facet-dd-row.is-hidden").forEach((row) => {
+      row.classList.remove("is-hidden")
+    })
+    for (const dim of META_DIMS) updateDdTriggerText(dim)
+    closeAllDdPanels()
     syncActiveFiltersBar()
     if (sidebar) sidebar.style.zIndex = ""
     removeAllChildren(results)
@@ -500,13 +547,12 @@ async function setupSearch(searchElement: Element, currentSlug: FullSlug, data: 
     mode: SearchType,
     tagBarQuery: string,
     showPageTags: boolean,
-    checkboxCount: number,
   ) => {
     const slug = idDataMap[id]
     let cardTags: string[] = []
     if (mode === "tags" && !showPageTags) {
       cardTags = highlightTagsBarMode(tagBarQuery, data[slug]?.tags ?? [])
-    } else if (checkboxCount > 0 || showPageTags) {
+    } else if (showPageTags) {
       cardTags = formatTagsForCard(slug, data)
     }
     return {
@@ -630,7 +676,6 @@ async function setupSearch(searchElement: Element, currentSlug: FullSlug, data: 
 
     const facets = getSelectedFacets()
     const hasFacets = facets.size > 0 && [...facets.values()].some((s) => s.size > 0)
-    const checkboxTags = getSelectedCheckboxTags()
     const rawValue = searchBar.value
     const showResults = rawValue.trim() !== "" || hasFacets
     searchLayout.classList.toggle("display-results", showResults)
@@ -727,7 +772,7 @@ async function setupSearch(searchElement: Element, currentSlug: FullSlug, data: 
     currentSearchTerm = highlightTerm
     searchType = mode
     const items = finalIds.map((id) =>
-      formatForDisplay(highlightTerm, id, mode, tagBarQuery, showPageTags, checkboxTags.length),
+      formatForDisplay(highlightTerm, id, mode, tagBarQuery, showPageTags),
     )
     await displayResults(items)
 
@@ -821,11 +866,17 @@ async function setupSearch(searchElement: Element, currentSlug: FullSlug, data: 
 
   if (clearAllFiltersBtn) {
     clearAllFiltersBtn.addEventListener("click", () => {
-      searchElement.querySelectorAll<HTMLSelectElement>("select.search-facet-multi[data-dim]").forEach((s) => {
-        Array.from(s.options).forEach((o) => {
-          o.selected = false
-        })
+      searchElement.querySelectorAll<HTMLInputElement>("input.search-facet-dd-cb").forEach((cb) => {
+        cb.checked = false
       })
+      searchElement.querySelectorAll<HTMLInputElement>(".search-facet-dd-filter").forEach((inp) => {
+        inp.value = ""
+      })
+      searchElement.querySelectorAll<HTMLElement>(".search-facet-dd-row.is-hidden").forEach((row) => {
+        row.classList.remove("is-hidden")
+      })
+      for (const dim of META_DIMS) updateDdTriggerText(dim)
+      closeAllDdPanels()
       syncActiveFiltersBar()
       runSearch()
     })

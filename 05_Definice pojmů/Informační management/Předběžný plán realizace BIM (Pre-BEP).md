@@ -3,18 +3,11 @@ title: Předběžný plán realizace BIM (Pre-BEP)
 typ: term
 faze: [priprava]
 role: []
-cinnosti: [schvalovani]
 workflow: [bep]
-temata: [dokumentace]
 stav: draft
-vlastnik: rsd
-souvisi:
-  - "[[BIM Execution Plan (BEP)]]"
-  - "[[Požadavky objednatele na výměnu informací (EIR)]]"
-priloha: []
 permalink: /pojem/cde/pre-bep
 aliases: [Pre-BEP, Předběžný BEP]
-tags: [pojem, bep]
+tags: [pojem, bep, dokumentace]
 ---
 
 # Definice

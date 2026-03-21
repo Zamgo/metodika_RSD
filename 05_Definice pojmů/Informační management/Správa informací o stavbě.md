@@ -3,19 +3,10 @@ title: Správa informací o stavbě
 typ: term
 faze: [priprava, realizace, provoz a udrzba]
 role: []
-cinnosti: [evidence, aktualizace, ulozeni]
 workflow: []
-temata: [cde, dokumentace]
 stav: draft
-vlastnik: rsd
-souvisi:
-  - "[[Informační model stavby]]"
-  - "[[Společné datové prostředí (CDE)]]"
-  - "[[Workflow]]"
-priloha: []
 permalink: /pojem/cde/sprava-informaci-o-stavbe
-aliases: []
-tags: [pojem]
+tags: [pojem, cde, dokumentace]
 ---
 
 # Definice

@@ -3,18 +3,10 @@ title: Aktivum
 typ: term
 faze: [priprava, realizace, provoz a udrzba]
 role: []
-cinnosti: []
 workflow: []
-temata: [dokumentace, informacni kontejnery]
 stav: draft
-vlastnik: rsd
-souvisi:
-  - "[[Informační model stavby]]"
-  - "[[Informační model aktiva (AIM)]]"
-priloha: []
 permalink: /pojem/cde/aktivum
-aliases: []
-tags: [pojem]
+tags: [pojem, dokumentace, informacni kontejnery]
 ---
 
 # Definice

@@ -3,19 +3,11 @@ title: Informační model aktiva (AIM)
 typ: term
 faze: [provoz a udrzba]
 role: []
-cinnosti: [evidence, aktualizace]
 workflow: []
-temata: [informacni kontejnery, predani dat]
 stav: draft
-vlastnik: rsd
-souvisi:
-  - "[[Informační model stavby]]"
-  - "[[Projektový informační model (PIM)]]"
-  - "[[Aktivum]]"
-priloha: []
 permalink: /pojem/cde/aim
 aliases: [AIM]
-tags: [pojem, aim]
+tags: [pojem, aim, informacni kontejnery, predani dat]
 ---
 
 # Definice

@@ -3,16 +3,10 @@ title: Konfigurace projektového nástroje CDE - Pavlína + příloha
 typ: process
 faze: [priprava]
 role: [spravce cde, spravce stavby, zhotovitel]
-cinnosti: []
 workflow: []
-temata: [cde, dokumentace]
 stav: draft
-vlastnik: rsd
-souvisi: []
-priloha: []
 permalink: /proces/priprava/konfigurace-projektoveho-nastroje-cde-pavlina-priloha
-aliases: []
-tags: [proces]
+tags: [proces, cde, dokumentace]
 ---
 # Účel
 

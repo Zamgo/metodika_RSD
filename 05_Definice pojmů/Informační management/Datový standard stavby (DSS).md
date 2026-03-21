@@ -3,19 +3,11 @@ title: Datový standard stavby (DSS)
 typ: term
 faze: [priprava, realizace, provoz a udrzba]
 role: []
-cinnosti: []
 workflow: []
-temata: [dokumentace, metadata]
 stav: draft
-vlastnik: rsd
-souvisi:
-  - "[[Požadavky objednatele na výměnu informací (EIR)]]"
-  - "[[Informační model stavby]]"
-  - "[[Verifikace]]"
-priloha: []
 permalink: /pojem/cde/dss
 aliases: [DSS]
-tags: [pojem, dss]
+tags: [pojem, dss, dokumentace, metadata]
 ---
 
 # Definice

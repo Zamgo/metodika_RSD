@@ -3,19 +3,10 @@ title: BIM-protokol
 typ: term
 faze: [priprava, realizace]
 role: []
-cinnosti: [schvalovani, dokumentace]
 workflow: []
-temata: [dokumentace]
 stav: draft
-vlastnik: rsd
-souvisi:
-  - "[[BIM Execution Plan (BEP)]]"
-  - "[[Požadavky objednatele na výměnu informací (EIR)]]"
-  - "[[Informační model stavby]]"
-priloha: []
 permalink: /pojem/cde/bim-protokol
-aliases: []
-tags: [pojem, bim]
+tags: [pojem, bim, dokumentace]
 ---
 
 # Definice

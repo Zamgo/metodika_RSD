@@ -3,16 +3,10 @@ title: Archivace
 typ: process
 faze: [provoz a udrzba]
 role: [spravce stavby]
-cinnosti: []
 workflow: []
-temata: [cde, dokumentace]
 stav: draft
-vlastnik: rsd
-souvisi: []
-priloha: []
 permalink: /proces/provoz-a-udrzba/archivace
-aliases: []
-tags: [proces]
+tags: [proces, cde, dokumentace]
 ---
 
 ## Poznámka ze zdroje

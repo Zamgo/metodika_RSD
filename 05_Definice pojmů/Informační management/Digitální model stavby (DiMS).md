@@ -6,24 +6,11 @@ faze:
   - realizace
   - provoz a udrzba
 role: []
-cinnosti:
-  - evidence
-  - aktualizace
-workflow:
-  - dims
-temata:
-  - dokumentace
-  - informacni kontejnery
+workflow: []
 stav: draft
-vlastnik: rsd
-souvisi: []
-priloha: []
 permalink: /pojem/cde/dims
-aliases:
-  - DiMS
-tags:
-  - pojem
-  - dims
+aliases: [DiMS, Digitální model stavby]
+tags: [pojem, informacni_kontejner, dokumentace]
 ---
 
 # Definice

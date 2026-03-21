@@ -3,19 +3,10 @@ title: Realizace
 typ: term
 faze: [realizace]
 role: []
-cinnosti: []
 workflow: []
-temata: [dokumentace, workflow]
 stav: draft
-vlastnik: rsd
-souvisi:
-  - "[[Realizace - index]]"
-  - "[[Schvalovací procesy (WF)]]"
-  - "[[Změny během výstavby pomocí nástrojů CDE]]"
-priloha: []
 permalink: /pojem/faze/realizace
-aliases: []
-tags: [pojem, faze]
+tags: [pojem, faze, dokumentace, workflow]
 ---
 
 # Definice

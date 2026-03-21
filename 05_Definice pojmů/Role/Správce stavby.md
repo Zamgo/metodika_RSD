@@ -3,19 +3,11 @@ title: Správce stavby
 typ: term
 faze: [priprava, realizace, provoz a udrzba]
 role: [spravce stavby]
-cinnosti: [kontrola, koordinace, sledovani]
 workflow: []
-temata: [cde, dokumentace]
 stav: draft
-vlastnik: rsd
-souvisi:
-  - "[[Společné datové prostředí (CDE)]]"
-  - "[[Informační kontejner]]"
-  - "[[Metadata]]"
-priloha: []
 permalink: /pojem/role/spravce-stavby
 aliases: [Spravce stavby]
-tags: [pojem, role]
+tags: [pojem, role, cde, dokumentace]
 ---
 
 # Definice

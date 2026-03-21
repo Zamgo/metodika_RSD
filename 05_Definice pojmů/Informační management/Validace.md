@@ -3,18 +3,10 @@ title: Validace
 typ: term
 faze: [priprava, realizace, provoz a udrzba]
 role: []
-cinnosti: [overeni]
 workflow: []
-temata: [dokumentace]
 stav: draft
-vlastnik: rsd
-souvisi:
-  - "[[Verifikace]]"
-  - "[[Účel užití]]"
-priloha: []
 permalink: /pojem/rizeni/validace
-aliases: []
-tags: [pojem, kontrola]
+tags: [pojem, kontrola, dokumentace]
 ---
 
 # Definice

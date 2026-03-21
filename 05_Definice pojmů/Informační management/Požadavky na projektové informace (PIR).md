@@ -3,19 +3,11 @@ title: Požadavky na projektové informace (PIR)
 typ: term
 faze: [priprava, realizace]
 role: []
-cinnosti: []
 workflow: []
-temata: [dokumentace]
 stav: draft
-vlastnik: rsd
-souvisi:
-  - "[[Požadavky na informace (IR)]]"
-  - "[[Požadavky objednatele na výměnu informací (EIR)]]"
-  - "[[Projektový informační model (PIM)]]"
-priloha: []
 permalink: /pojem/cde/pir
 aliases: [PIR]
-tags: [pojem]
+tags: [pojem, dokumentace]
 ---
 
 # Definice

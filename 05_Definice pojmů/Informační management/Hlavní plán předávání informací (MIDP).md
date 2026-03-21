@@ -3,19 +3,11 @@ title: Hlavní plán předávání informací (MIDP)
 typ: term
 faze: [priprava, realizace]
 role: []
-cinnosti: []
 workflow: []
-temata: [dokumentace]
 stav: draft
-vlastnik: rsd
-souvisi:
-  - "[[Úkolový plán předávání informací (TIDP)]]"
-  - "[[BIM Execution Plan (BEP)]]"
-  - "[[Požadavky objednatele na výměnu informací (EIR)]]"
-priloha: []
 permalink: /pojem/cde/midp
 aliases: [MIDP]
-tags: [pojem]
+tags: [pojem, dokumentace]
 ---
 
 # Definice

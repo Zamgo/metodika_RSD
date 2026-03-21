@@ -3,18 +3,10 @@ title: Nativní formát
 typ: term
 faze: [priprava, realizace, provoz a udrzba]
 role: []
-cinnosti: []
 workflow: []
-temata: [dokumentace]
 stav: draft
-vlastnik: rsd
-souvisi:
-  - "[[Datový soubor]]"
-  - "[[Informační kontejner]]"
-priloha: []
 permalink: /pojem/cde/nativni-format
-aliases: []
-tags: [pojem]
+tags: [pojem, dokumentace]
 ---
 
 # Definice
