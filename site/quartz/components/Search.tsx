@@ -24,6 +24,8 @@ export default ((userOpts?: Partial<SearchOptions>) => {
     const dimStav = cs ? "Stav" : "Status"
     const dimVlastnik = cs ? "Vlastník" : "Owner"
     const shortcutHint = cs ? "Ctrl+K · # tagy" : "Ctrl+K · # tags"
+    const panelTitle = cs ? "Hledání v metodice" : "Search the site"
+    const closeLabel = cs ? "Zavřít panel" : "Close panel"
     return (
       <div class={classNames(displayClass, "search")}>
         <button class="search-button" type="button">
@@ -50,6 +52,12 @@ export default ((userOpts?: Partial<SearchOptions>) => {
         >
           <div class="search-space">
             <div class="search-top-card">
+              <div class="search-panel-toolbar">
+                <span class="search-panel-toolbar-title">{panelTitle}</span>
+                <button type="button" class="search-panel-close" aria-label={closeLabel}>
+                  <span aria-hidden="true">×</span>
+                </button>
+              </div>
               <input
                 autocomplete="off"
                 class="search-bar"

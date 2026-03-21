@@ -238,6 +238,10 @@ body {
   border-radius: 6px;
 }
 
+#quartz-body .center .popover-hint .search:has(.search-container.active) {
+  z-index: 120;
+}
+
 #quartz-body .center .popover-hint .search > .search-button {
   border-color: color-mix(in srgb, $rsd-blue-dark 35%, var(--lightgray));
   border-radius: 6px;

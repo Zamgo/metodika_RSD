@@ -1,6 +1,6 @@
 import FlexSearch, { DefaultDocumentSearchResults } from "flexsearch"
 import { ContentDetails } from "../../plugins/emitters/contentIndex"
-import { registerEscapeHandler, removeAllChildren } from "./util"
+import { removeAllChildren } from "./util"
 import { FullSlug, normalizeRelativeURLs, resolveRelative } from "../../util/path"
 
 interface Item {
@@ -589,6 +589,10 @@ async function setupSearch(searchElement: Element, currentSlug: FullSlug, data: 
     if (sidebar) sidebar.style.zIndex = "1"
     container.classList.add("active")
     container.scrollTop = 0
+    if (filtersPanel && filtersToggle) {
+      filtersPanel.classList.add("is-open")
+      filtersToggle.setAttribute("aria-expanded", "true")
+    }
     searchBar.focus()
   }
 
@@ -910,8 +914,40 @@ async function setupSearch(searchElement: Element, currentSlug: FullSlug, data: 
 
   document.addEventListener("keydown", shortcutHandler)
   window.addCleanup(() => document.removeEventListener("keydown", shortcutHandler))
-  searchButton.addEventListener("click", () => showSearch("basic"))
-  window.addCleanup(() => searchButton.removeEventListener("click", () => showSearch("basic")))
+
+  function onPointerDownOutside(e: PointerEvent) {
+    if (!container.classList.contains("active")) return
+    const t = e.target
+    if (t instanceof Node && host.contains(t)) return
+    hideSearch()
+  }
+  document.addEventListener("pointerdown", onPointerDownOutside, true)
+  window.addCleanup(() => document.removeEventListener("pointerdown", onPointerDownOutside, true))
+
+  function onEscapeClosePanel(e: KeyboardEvent) {
+    if (!container.classList.contains("active")) return
+    if (!e.key.startsWith("Esc")) return
+    e.preventDefault()
+    hideSearch()
+  }
+  document.addEventListener("keydown", onEscapeClosePanel)
+  window.addCleanup(() => document.removeEventListener("keydown", onEscapeClosePanel))
+
+  const panelCloseBtn = searchElement.querySelector(".search-panel-close") as HTMLButtonElement | null
+  function onPanelCloseClick(e: MouseEvent) {
+    e.stopPropagation()
+    hideSearch()
+  }
+  panelCloseBtn?.addEventListener("click", onPanelCloseClick)
+  window.addCleanup(() => panelCloseBtn?.removeEventListener("click", onPanelCloseClick))
+
+  function onSearchButtonClick(e: MouseEvent) {
+    e.stopPropagation()
+    if (container.classList.contains("active")) hideSearch()
+    else showSearch("basic")
+  }
+  searchButton.addEventListener("click", onSearchButtonClick)
+  window.addCleanup(() => searchButton.removeEventListener("click", onSearchButtonClick))
   searchBar.addEventListener("input", () => runSearch())
   window.addCleanup(() => searchBar.removeEventListener("input", () => runSearch()))
 
@@ -935,7 +971,6 @@ async function setupSearch(searchElement: Element, currentSlug: FullSlug, data: 
     })
   }
 
-  registerEscapeHandler(container, hideSearch)
   await fillDocument(data)
 }
 
