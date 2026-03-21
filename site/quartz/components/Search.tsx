@@ -19,9 +19,14 @@ export default ((userOpts?: Partial<SearchOptions>) => {
     const s = i18n(cfg.locale).components.search
     const searchPlaceholder = s.searchBarPlaceholder
     const cs = cfg.locale.startsWith("cs")
+    const facetAllLabel = cs ? "Vše" : "All"
+    const dimTyp = cs ? "Typ" : "Type"
+    const dimStav = cs ? "Stav" : "Status"
+    const dimVlastnik = cs ? "Vlastník" : "Owner"
+    const shortcutHint = cs ? "Ctrl+K · # tagy" : "Ctrl+K · # tags"
     return (
       <div class={classNames(displayClass, "search")}>
-        <button class="search-button">
+        <button class="search-button" type="button">
           <svg role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 19.9 19.7">
             <title>Search</title>
             <g class="search-path" fill="none">
@@ -30,6 +35,7 @@ export default ((userOpts?: Partial<SearchOptions>) => {
             </g>
           </svg>
           <p>{s.title}</p>
+          <span class="search-button-hint">{shortcutHint}</span>
         </button>
         <div
           class="search-container"
@@ -40,6 +46,7 @@ export default ((userOpts?: Partial<SearchOptions>) => {
           data-str-clear-all={cs ? "Zrušit filtry" : "Clear filters"}
           data-str-add-filter={cs ? "Vybrat z metadat" : "Filter by metadata"}
           data-str-filter-hint={cs ? "Klikněte na hodnotu — u tagů platí současně všechny vybrané." : "Click values to filter — tags use AND; other fields use OR within the same group."}
+          data-str-facet-all={facetAllLabel}
         >
           <div class="search-space">
             <div class="search-top-card">
@@ -64,6 +71,26 @@ export default ((userOpts?: Partial<SearchOptions>) => {
                 </button>
                 <div class="search-filters-panel">
                   <p class="search-filters-hint" />
+                  <div class="search-facet-scalars">
+                    <label class="search-facet-scalar">
+                      <span class="search-facet-scalar-label">{dimTyp}</span>
+                      <select class="search-facet-select" data-dim="typ" aria-label={dimTyp}>
+                        <option value="">{facetAllLabel}</option>
+                      </select>
+                    </label>
+                    <label class="search-facet-scalar">
+                      <span class="search-facet-scalar-label">{dimStav}</span>
+                      <select class="search-facet-select" data-dim="stav" aria-label={dimStav}>
+                        <option value="">{facetAllLabel}</option>
+                      </select>
+                    </label>
+                    <label class="search-facet-scalar">
+                      <span class="search-facet-scalar-label">{dimVlastnik}</span>
+                      <select class="search-facet-select" data-dim="vlastnik" aria-label={dimVlastnik}>
+                        <option value="">{facetAllLabel}</option>
+                      </select>
+                    </label>
+                  </div>
                   <input
                     type="search"
                     class="search-facet-filter"

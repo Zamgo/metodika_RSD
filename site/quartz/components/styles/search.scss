@@ -1,11 +1,9 @@
 @use "../../styles/variables.scss" as *;
 
 .search {
-  min-width: fit-content;
-  max-width: 14rem;
-  @media all and ($mobile) {
-    flex-grow: 0.3;
-  }
+  box-sizing: border-box;
+  width: 100%;
+  min-width: 0;
 
   & > .search-button {
     background-color: transparent;
@@ -13,10 +11,11 @@
     border-radius: 4px;
     font-family: inherit;
     font-size: inherit;
-    height: 2rem;
-    padding: 0 1rem 0 0;
+    min-height: 2.5rem;
+    padding: 0.35rem 1rem 0.35rem 0;
     display: flex;
     align-items: center;
+    justify-content: flex-start;
     text-align: inherit;
     cursor: pointer;
     white-space: nowrap;
@@ -201,6 +200,44 @@
 
         &:hover {
           color: var(--dark);
+        }
+      }
+
+      .search-facet-scalars {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(10rem, 1fr));
+        gap: 0.5rem 0.75rem;
+        margin-bottom: 0.65rem;
+      }
+
+      .search-facet-scalar {
+        display: flex;
+        flex-direction: column;
+        gap: 0.25rem;
+        min-width: 0;
+
+        .search-facet-scalar-label {
+          font-size: 0.78em;
+          font-weight: $semiBoldWeight;
+          color: var(--darkgray);
+        }
+
+        .search-facet-select {
+          box-sizing: border-box;
+          width: 100%;
+          padding: 0.4em 0.5em;
+          font-family: var(--bodyFont);
+          font-size: 0.85em;
+          color: var(--dark);
+          border: 1px solid var(--lightgray);
+          border-radius: 6px;
+          background: var(--light);
+          cursor: pointer;
+
+          &:focus {
+            outline: 2px solid var(--secondary);
+            outline-offset: 1px;
+          }
         }
       }
 
