@@ -1,6 +1,6 @@
 import FlexSearch, { DefaultDocumentSearchResults } from "flexsearch"
 import { ContentDetails } from "../../plugins/emitters/contentIndex"
-import { removeAllChildren } from "./util"
+import { registerEscapeHandler, removeAllChildren } from "./util"
 import { FullSlug, normalizeRelativeURLs, resolveRelative } from "../../util/path"
 
 interface Item {
@@ -99,9 +99,6 @@ const META_DIMS = [
   "temata",
   "tags",
 ] as const
-type MetaDim = (typeof META_DIMS)[number]
-
-const SCALAR_DIMS = new Set<string>(["typ", "stav", "vlastnik"])
 
 const DIM_LABELS_CS: Record<string, string> = {
   typ: "Typ",
@@ -337,15 +334,10 @@ async function setupSearch(searchElement: Element, currentSlug: FullSlug, data: 
   if (!searchLayout) return
 
   const idDataMap = Object.keys(data) as FullSlug[]
-  const filtersToggle = searchElement.querySelector(".search-filters-toggle") as HTMLButtonElement | null
-  const filtersPanel = searchElement.querySelector(".search-filters-panel") as HTMLElement | null
-  const facetSectionsRoot = searchElement.querySelector(".search-facet-sections") as HTMLElement | null
-  const facetFilterInput = searchElement.querySelector(".search-facet-filter") as HTMLInputElement | null
   const activeFiltersWrap = searchElement.querySelector(".search-active-filters-wrap") as HTMLElement | null
   const activeFiltersRoot = searchElement.querySelector(".search-active-filters") as HTMLElement | null
   const activeFiltersLabel = searchElement.querySelector(".search-active-filters-label") as HTMLElement | null
   const clearAllFiltersBtn = searchElement.querySelector(".search-clear-all-filters") as HTMLButtonElement | null
-  const filtersHint = searchElement.querySelector(".search-filters-hint") as HTMLElement | null
 
   const noResultsTitle = container.dataset.searchNoResultsTitle ?? "No results."
   const noResultsHint = container.dataset.searchNoResultsHint ?? "Try another search term?"
@@ -353,40 +345,19 @@ async function setupSearch(searchElement: Element, currentSlug: FullSlug, data: 
   const dimLabels = isCs ? DIM_LABELS_CS : DIM_LABELS_EN
   const strActiveFilters = container.dataset.strActiveFilters ?? "Active filters"
   const strClearAll = container.dataset.strClearAll ?? "Clear filters"
-  const strAddFilter = container.dataset.strAddFilter ?? "Filter by metadata"
-  const strFilterHint = container.dataset.strFilterHint ?? ""
 
-  const toggleTextEl = filtersToggle?.querySelector(".search-filters-toggle-text")
-  if (toggleTextEl && strAddFilter) toggleTextEl.textContent = strAddFilter
-  if (filtersHint && strFilterHint) filtersHint.textContent = strFilterHint
   if (activeFiltersLabel) activeFiltersLabel.textContent = strActiveFilters + ": "
   if (clearAllFiltersBtn && strClearAll) clearAllFiltersBtn.textContent = strClearAll
 
-  if (filtersToggle && filtersPanel) {
-    filtersToggle.addEventListener("click", () => {
-      const open = filtersPanel.classList.toggle("is-open")
-      filtersToggle.setAttribute("aria-expanded", open ? "true" : "false")
-    })
-  }
-
-  const selectedFacets = new Map<string, Set<string>>()
-
   function getSelectedFacets(): Map<string, Set<string>> {
     const out = new Map<string, Set<string>>()
-    if (facetSectionsRoot) {
-      for (const chip of facetSectionsRoot.querySelectorAll<HTMLElement>("[data-dim][data-value].is-selected")) {
-        const dim = chip.dataset.dim!
-        const val = chip.dataset.value!
-        if (!out.has(dim)) out.set(dim, new Set())
-        out.get(dim)!.add(val)
-      }
-    }
-    for (const sel of searchElement.querySelectorAll<HTMLSelectElement>("select.search-facet-select[data-dim]")) {
+    for (const sel of searchElement.querySelectorAll<HTMLSelectElement>("select.search-facet-multi[data-dim]")) {
       const dim = sel.dataset.dim!
-      const val = sel.value.trim()
-      if (!val) continue
-      if (!out.has(dim)) out.set(dim, new Set())
-      out.get(dim)!.add(val)
+      const selected = Array.from(sel.selectedOptions)
+        .map((o) => o.value)
+        .filter(Boolean)
+      if (selected.length === 0) continue
+      out.set(dim, new Set(selected))
     }
     return out
   }
@@ -409,20 +380,13 @@ async function setupSearch(searchElement: Element, currentSlug: FullSlug, data: 
         chip.className = "search-active-chip"
         chip.innerHTML = `${escapeHtml(label)}: ${escapeHtml(val)} <button type="button" class="search-active-chip-remove" aria-label="Remove">×</button>`
         const removeBtn = chip.querySelector(".search-active-chip-remove") as HTMLButtonElement
-        const dimChip = facetSectionsRoot?.querySelector(
-          `[data-dim="${dim}"][data-value="${CSS.escape(val)}"]`,
-        ) as HTMLElement | null
-        const scalarSelect = searchElement.querySelector(
-          `select.search-facet-select[data-dim="${CSS.escape(dim)}"]`,
+        const multi = searchElement.querySelector(
+          `select.search-facet-multi[data-dim="${CSS.escape(dim)}"]`,
         ) as HTMLSelectElement | null
         removeBtn?.addEventListener("click", () => {
-          if (scalarSelect) {
-            scalarSelect.value = ""
-          } else {
-            dimChip?.classList.remove("is-selected")
-            if (selectedFacets.get(dim)) {
-              selectedFacets.get(dim)!.delete(val)
-              if (selectedFacets.get(dim)!.size === 0) selectedFacets.delete(dim)
+          if (multi) {
+            for (const opt of Array.from(multi.options)) {
+              if (opt.value === val) opt.selected = false
             }
           }
           syncActiveFiltersBar()
@@ -436,98 +400,32 @@ async function setupSearch(searchElement: Element, currentSlug: FullSlug, data: 
   if (!host.dataset.searchFacetsBuilt) {
     host.dataset.searchFacetsBuilt = "1"
     const options = buildFacetOptions(data)
-    const strFacetAll = container.dataset.strFacetAll ?? "All"
-    for (const dim of ["typ", "stav", "vlastnik"] as const) {
+    for (const dim of META_DIMS) {
       const sel = searchElement.querySelector(
-        `select.search-facet-select[data-dim="${dim}"]`,
+        `select.search-facet-multi[data-dim="${dim}"]`,
       ) as HTMLSelectElement | null
       if (!sel) continue
       const valuesMap = options.get(dim)!
       const entries = [...valuesMap.entries()].sort((a, b) =>
         a[0].localeCompare(b[0], undefined, { sensitivity: "base" }),
       )
-      const current = sel.value
+      const prevSelected = new Set(Array.from(sel.selectedOptions).map((o) => o.value))
       sel.replaceChildren()
-      const opt0 = document.createElement("option")
-      opt0.value = ""
-      opt0.textContent = strFacetAll
-      sel.appendChild(opt0)
-      for (const [value] of entries) {
+      for (const [value, count] of entries) {
         const opt = document.createElement("option")
         opt.value = value
-        opt.textContent = value
+        const label =
+          dim === "tags" ? `#${value}` : count > 1 ? `${value} (${count})` : value
+        opt.textContent = label
+        if (prevSelected.has(value)) opt.selected = true
         sel.appendChild(opt)
       }
-      if (current && [...sel.options].some((o) => o.value === current)) sel.value = current
-      else sel.value = ""
     }
-    for (const sel of searchElement.querySelectorAll<HTMLSelectElement>("select.search-facet-select[data-dim]")) {
+    for (const sel of searchElement.querySelectorAll<HTMLSelectElement>("select.search-facet-multi[data-dim]")) {
       sel.addEventListener("change", () => {
         syncActiveFiltersBar()
         runSearch()
       })
-    }
-
-    if (facetSectionsRoot) {
-    const facetFilterLower = () => (facetFilterInput?.value ?? "").trim().toLowerCase()
-    for (const dim of META_DIMS) {
-      if (SCALAR_DIMS.has(dim)) continue
-      const valuesMap = options.get(dim)!
-      const entries = [...valuesMap.entries()].sort((a, b) => a[0].localeCompare(b[0], undefined, { sensitivity: "base" }))
-      if (entries.length === 0) continue
-      const section = document.createElement("details")
-      section.className = "search-facet-section"
-      section.open = dim === "tags"
-      const summary = document.createElement("summary")
-      summary.className = "search-facet-section-title"
-      summary.textContent = `${dimLabels[dim] ?? dim} (${entries.length})`
-      section.appendChild(summary)
-      const chipsWrap = document.createElement("div")
-      chipsWrap.className = "search-facet-chips"
-      for (const [value, count] of entries) {
-        const chip = document.createElement("button")
-        chip.type = "button"
-        chip.className = "search-facet-chip"
-        chip.dataset.dim = dim
-        chip.dataset.value = value
-        chip.setAttribute("data-searchable", (dim === "tags" ? `#${value}` : value).toLowerCase())
-        chip.innerHTML = dim === "tags" ? `#${escapeHtml(value)}` : escapeHtml(value)
-        if (count > 1) {
-          const cnt = document.createElement("span")
-          cnt.className = "search-facet-count"
-          cnt.textContent = ` ${count}`
-          chip.appendChild(cnt)
-        }
-        chip.addEventListener("click", () => {
-          chip.classList.toggle("is-selected")
-          if (!selectedFacets.has(dim)) selectedFacets.set(dim, new Set())
-          if (chip.classList.contains("is-selected")) {
-            selectedFacets.get(dim)!.add(value)
-          } else {
-            selectedFacets.get(dim)!.delete(value)
-            if (selectedFacets.get(dim)!.size === 0) selectedFacets.delete(dim)
-          }
-          syncActiveFiltersBar()
-          runSearch()
-        })
-        chipsWrap.appendChild(chip)
-      }
-      section.appendChild(chipsWrap)
-      facetSectionsRoot.appendChild(section)
-    }
-    if (facetFilterInput && facetSectionsRoot) {
-      facetFilterInput.addEventListener("input", () => {
-        const q = facetFilterLower()
-        for (const chip of facetSectionsRoot.querySelectorAll<HTMLElement>(".search-facet-chip")) {
-          const searchable = (chip.getAttribute("data-searchable") ?? "").toLowerCase()
-          chip.classList.toggle("is-hidden", q !== "" && !searchable.includes(q))
-        }
-        for (const section of facetSectionsRoot.querySelectorAll<HTMLDetailsElement>(".search-facet-section")) {
-          const visible = section.querySelectorAll(".search-facet-chip:not(.is-hidden)").length > 0
-          ;(section as HTMLElement).classList.toggle("is-empty", !visible)
-        }
-      })
-    }
     }
   }
 
@@ -560,22 +458,12 @@ async function setupSearch(searchElement: Element, currentSlug: FullSlug, data: 
   function hideSearch() {
     container.classList.remove("active")
     searchBar.value = ""
-    if (facetFilterInput) facetFilterInput.value = ""
-    if (facetSectionsRoot) {
-      facetSectionsRoot.querySelectorAll(".search-facet-chip.is-selected").forEach((c) => c.classList.remove("is-selected"))
-      facetSectionsRoot.querySelectorAll(".search-facet-chip, .search-facet-section").forEach((el) => {
-        el.classList.remove("is-hidden", "is-empty")
+    searchElement.querySelectorAll<HTMLSelectElement>("select.search-facet-multi[data-dim]").forEach((s) => {
+      Array.from(s.options).forEach((o) => {
+        o.selected = false
       })
-    }
-    searchElement.querySelectorAll<HTMLSelectElement>("select.search-facet-select[data-dim]").forEach((s) => {
-      s.value = ""
     })
-    selectedFacets.clear()
     syncActiveFiltersBar()
-    if (filtersPanel) {
-      filtersPanel.classList.remove("is-open")
-      filtersToggle?.setAttribute("aria-expanded", "false")
-    }
     if (sidebar) sidebar.style.zIndex = ""
     removeAllChildren(results)
     if (preview) removeAllChildren(preview)
@@ -589,10 +477,6 @@ async function setupSearch(searchElement: Element, currentSlug: FullSlug, data: 
     if (sidebar) sidebar.style.zIndex = "1"
     container.classList.add("active")
     container.scrollTop = 0
-    if (filtersPanel && filtersToggle) {
-      filtersPanel.classList.add("is-open")
-      filtersToggle.setAttribute("aria-expanded", "true")
-    }
     searchBar.focus()
   }
 
@@ -915,23 +799,7 @@ async function setupSearch(searchElement: Element, currentSlug: FullSlug, data: 
   document.addEventListener("keydown", shortcutHandler)
   window.addCleanup(() => document.removeEventListener("keydown", shortcutHandler))
 
-  function onPointerDownOutside(e: PointerEvent) {
-    if (!container.classList.contains("active")) return
-    const t = e.target
-    if (t instanceof Node && host.contains(t)) return
-    hideSearch()
-  }
-  document.addEventListener("pointerdown", onPointerDownOutside, true)
-  window.addCleanup(() => document.removeEventListener("pointerdown", onPointerDownOutside, true))
-
-  function onEscapeClosePanel(e: KeyboardEvent) {
-    if (!container.classList.contains("active")) return
-    if (!e.key.startsWith("Esc")) return
-    e.preventDefault()
-    hideSearch()
-  }
-  document.addEventListener("keydown", onEscapeClosePanel)
-  window.addCleanup(() => document.removeEventListener("keydown", onEscapeClosePanel))
+  registerEscapeHandler(container, hideSearch)
 
   const panelCloseBtn = searchElement.querySelector(".search-panel-close") as HTMLButtonElement | null
   function onPanelCloseClick(e: MouseEvent) {
@@ -953,19 +821,11 @@ async function setupSearch(searchElement: Element, currentSlug: FullSlug, data: 
 
   if (clearAllFiltersBtn) {
     clearAllFiltersBtn.addEventListener("click", () => {
-      if (facetSectionsRoot) {
-        facetSectionsRoot.querySelectorAll(".search-facet-chip.is-selected").forEach((c) => c.classList.remove("is-selected"))
-        if (facetFilterInput) {
-          facetFilterInput.value = ""
-          facetSectionsRoot.querySelectorAll(".search-facet-chip, .search-facet-section").forEach((el) => {
-            el.classList.remove("is-hidden", "is-empty")
-          })
-        }
-      }
-      searchElement.querySelectorAll<HTMLSelectElement>("select.search-facet-select[data-dim]").forEach((s) => {
-        s.value = ""
+      searchElement.querySelectorAll<HTMLSelectElement>("select.search-facet-multi[data-dim]").forEach((s) => {
+        Array.from(s.options).forEach((o) => {
+          o.selected = false
+        })
       })
-      selectedFacets.clear()
       syncActiveFiltersBar()
       runSearch()
     })

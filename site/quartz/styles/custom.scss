@@ -203,7 +203,7 @@ body {
   color: $rsd-blue-light !important;
 }
 
-/* ─── Left sidebar: icon toolbar (darkmode / readermode) ─────────── */
+/* ─── Left sidebar: icon toolbar (search / darkmode / readermode) ─ */
 
 /* Darkmode icon — brand color */
 #quartz-body .sidebar.left .darkmode svg {
@@ -226,50 +226,42 @@ body {
   opacity: 0.7;
 }
 
-/* ─── Center: sticky search above article ───────────────────────── */
-#quartz-body .center .popover-hint .search {
-  position: sticky;
-  top: 0.5rem;
-  z-index: 8;
-  margin: 0.35rem 0 0.85rem;
-  padding: 0.35rem 0;
-  background: color-mix(in srgb, var(--light) 92%, transparent);
-  backdrop-filter: blur(6px);
-  border-radius: 6px;
+/* ─── Left sidebar: search (ikonová zkratka) ─────────────────────── */
+#quartz-body .sidebar.left .search {
+  max-width: fit-content;
 }
 
-#quartz-body .center .popover-hint .search:has(.search-container.active) {
-  z-index: 120;
+#quartz-body .sidebar.left .search > .search-button {
+  background: none;
+  border: none;
+  width: 20px;
+  min-width: 20px;
+  height: 32px;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: opacity 0.15s ease;
 }
 
-#quartz-body .center .popover-hint .search > .search-button {
-  border-color: color-mix(in srgb, $rsd-blue-dark 35%, var(--lightgray));
-  border-radius: 6px;
-  width: 100%;
+#quartz-body .sidebar.left .search > .search-button:hover {
+  opacity: 0.7;
 }
 
-#quartz-body .center .popover-hint .search > .search-button > p {
-  color: $rsd-blue-dark;
-  font-weight: 600;
+#quartz-body .sidebar.left .search > .search-button > p {
+  display: none;
 }
 
-#quartz-body .center .popover-hint .search > .search-button svg .search-path {
+#quartz-body .sidebar.left .search > .search-button svg {
+  width: 18px;
+  height: 18px;
+  margin: 0;
+}
+
+#quartz-body .sidebar.left .search > .search-button svg .search-path {
   stroke: $rsd-blue-dark !important;
-}
-
-#quartz-body .center .popover-hint .search .search-button-hint {
-  margin-left: auto;
-  padding-left: 0.5rem;
-  font-size: 0.72em;
-  font-weight: 400;
-  color: var(--gray);
-  white-space: nowrap;
-}
-
-@media all and (max-width: 800px) {
-  #quartz-body .center .popover-hint .search .search-button-hint {
-    display: none;
-  }
 }
 
 /* ─── Markdown article links ─────────────────────────────────────── */

@@ -13,19 +13,53 @@ const defaultOptions: SearchOptions = {
   enablePreview: true,
 }
 
+const FACET_DIMS: readonly { dim: string; size: number }[] = [
+  { dim: "typ", size: 4 },
+  { dim: "stav", size: 4 },
+  { dim: "vlastnik", size: 4 },
+  { dim: "faze", size: 5 },
+  { dim: "role", size: 5 },
+  { dim: "cinnosti", size: 5 },
+  { dim: "workflow", size: 5 },
+  { dim: "temata", size: 5 },
+  { dim: "tags", size: 8 },
+]
+
 export default ((userOpts?: Partial<SearchOptions>) => {
   const Search: QuartzComponent = ({ displayClass, cfg }: QuartzComponentProps) => {
     const opts = { ...defaultOptions, ...userOpts }
     const s = i18n(cfg.locale).components.search
     const searchPlaceholder = s.searchBarPlaceholder
     const cs = cfg.locale.startsWith("cs")
-    const facetAllLabel = cs ? "Vše" : "All"
-    const dimTyp = cs ? "Typ" : "Type"
-    const dimStav = cs ? "Stav" : "Status"
-    const dimVlastnik = cs ? "Vlastník" : "Owner"
-    const shortcutHint = cs ? "Ctrl+K · # tagy" : "Ctrl+K · # tags"
+    const dimLabel: Record<string, string> = cs
+      ? {
+          typ: "Typ",
+          stav: "Stav",
+          vlastnik: "Vlastník",
+          faze: "Fáze",
+          role: "Role",
+          cinnosti: "Činnosti",
+          workflow: "Workflow",
+          temata: "Témata",
+          tags: "Tagy",
+        }
+      : {
+          typ: "Type",
+          stav: "Status",
+          vlastnik: "Owner",
+          faze: "Phase",
+          role: "Role",
+          cinnosti: "Activities",
+          workflow: "Workflow",
+          temata: "Topics",
+          tags: "Tags",
+        }
     const panelTitle = cs ? "Hledání v metodice" : "Search the site"
-    const closeLabel = cs ? "Zavřít panel" : "Close panel"
+    const closeLabel = cs ? "Zavřít" : "Close"
+    const multiHint = cs
+      ? "U každého pole můžete vybrat více položek: Ctrl+klik (Windows) nebo ⌘+klik (Mac). U tagů musí stránka mít všechny vybrané; u ostatních polí stačí jedna z vybraných hodnot."
+      : "Select multiple values with Ctrl+click (Windows) or ⌘+click (Mac). Tags use AND; other fields use OR within the same group."
+
     return (
       <div class={classNames(displayClass, "search")}>
         <button class="search-button" type="button">
@@ -37,7 +71,6 @@ export default ((userOpts?: Partial<SearchOptions>) => {
             </g>
           </svg>
           <p>{s.title}</p>
-          <span class="search-button-hint">{shortcutHint}</span>
         </button>
         <div
           class="search-container"
@@ -46,9 +79,6 @@ export default ((userOpts?: Partial<SearchOptions>) => {
           data-search-locale={cfg.locale}
           data-str-active-filters={cs ? "Aktivní filtry" : "Active filters"}
           data-str-clear-all={cs ? "Zrušit filtry" : "Clear filters"}
-          data-str-add-filter={cs ? "Vybrat z metadat" : "Filter by metadata"}
-          data-str-filter-hint={cs ? "Klikněte na hodnotu — u tagů platí současně všechny vybrané." : "Click values to filter — tags use AND; other fields use OR within the same group."}
-          data-str-facet-all={facetAllLabel}
         >
           <div class="search-space">
             <div class="search-top-card">
@@ -74,39 +104,23 @@ export default ((userOpts?: Partial<SearchOptions>) => {
                     {s.clearTagFilters}
                   </button>
                 </div>
-                <button type="button" class="search-filters-toggle" aria-expanded="false">
-                  <span class="search-filters-toggle-text">{s.tagFilterToggle}</span>
-                </button>
-                <div class="search-filters-panel">
-                  <p class="search-filters-hint" />
-                  <div class="search-facet-scalars">
-                    <label class="search-facet-scalar">
-                      <span class="search-facet-scalar-label">{dimTyp}</span>
-                      <select class="search-facet-select" data-dim="typ" aria-label={dimTyp}>
-                        <option value="">{facetAllLabel}</option>
-                      </select>
-                    </label>
-                    <label class="search-facet-scalar">
-                      <span class="search-facet-scalar-label">{dimStav}</span>
-                      <select class="search-facet-select" data-dim="stav" aria-label={dimStav}>
-                        <option value="">{facetAllLabel}</option>
-                      </select>
-                    </label>
-                    <label class="search-facet-scalar">
-                      <span class="search-facet-scalar-label">{dimVlastnik}</span>
-                      <select class="search-facet-select" data-dim="vlastnik" aria-label={dimVlastnik}>
-                        <option value="">{facetAllLabel}</option>
-                      </select>
-                    </label>
-                  </div>
-                  <input
-                    type="search"
-                    class="search-facet-filter"
-                    autocomplete="off"
-                    placeholder={s.tagFilterPlaceholder}
-                    aria-label={s.tagFilterPlaceholder}
-                  />
-                  <div class="search-facet-sections" />
+                <p class="search-facet-multi-hint">{multiHint}</p>
+                <div class="search-facet-multis">
+                  {FACET_DIMS.map(({ dim, size }) => {
+                    const label = dimLabel[dim] ?? dim
+                    return (
+                      <label key={dim} class="search-facet-multi-wrap">
+                        <span class="search-facet-multi-label">{label}</span>
+                        <select
+                          multiple
+                          class="search-facet-multi"
+                          data-dim={dim}
+                          size={size}
+                          aria-label={label}
+                        />
+                      </label>
+                    )
+                  })}
                 </div>
               </div>
             </div>
