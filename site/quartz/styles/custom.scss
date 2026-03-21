@@ -208,7 +208,9 @@ body {
 /* Darkmode icon — brand color */
 #quartz-body .sidebar.left .darkmode svg {
   fill: $rsd-blue-dark !important;
-  transition: fill 0.15s ease, opacity 0.15s ease;
+  transition:
+    fill 0.15s ease,
+    opacity 0.15s ease;
 }
 
 #quartz-body .sidebar.left .darkmode:hover svg {
@@ -219,7 +221,10 @@ body {
 #quartz-body .sidebar.left .readermode svg {
   fill: $rsd-blue-dark !important;
   stroke: $rsd-blue-dark !important;
-  transition: fill 0.15s ease, stroke 0.15s ease, opacity 0.15s ease;
+  transition:
+    fill 0.15s ease,
+    stroke 0.15s ease,
+    opacity 0.15s ease;
 }
 
 #quartz-body .sidebar.left .readermode:hover svg {

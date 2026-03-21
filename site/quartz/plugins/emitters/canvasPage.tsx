@@ -285,7 +285,9 @@ export const CanvasPage: QuartzEmitterPlugin = () => {
           const outPath = path.join(argv.output, ...slug.split("/")) + ".html"
           try {
             await fs.promises.unlink(outPath)
-          } catch { /* ignore */ }
+          } catch {
+            /* ignore */
+          }
           continue
         }
 

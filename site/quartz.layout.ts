@@ -72,10 +72,7 @@ export const defaultContentPageLayout: PageLayout = {
       mapFn: hideOrderingPrefix,
     }),
   ],
-  right: [
-    Component.Graph(),
-    Component.DesktopOnly(Component.TableOfContents()),
-  ],
+  right: [Component.Graph(), Component.DesktopOnly(Component.TableOfContents())],
 }
 
 // components for pages that display lists of pages  (e.g. tags or folders)
@@ -85,10 +82,7 @@ export const defaultListPageLayout: PageLayout = {
     Component.SiteBranding(),
     Component.MobileOnly(Component.Spacer()),
     Component.Flex({
-      components: [
-        { Component: Component.Search() },
-        { Component: Component.Darkmode() },
-      ],
+      components: [{ Component: Component.Search() }, { Component: Component.Darkmode() }],
     }),
     Component.Explorer({
       title: "",

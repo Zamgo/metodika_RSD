@@ -13,11 +13,7 @@ const defaultOptions: SearchOptions = {
   enablePreview: true,
 }
 
-const FACET_DIMS = [
-  "faze",
-  "role",
-  "workflow",
-] as const
+const FACET_DIMS = ["faze", "role", "workflow"] as const
 
 export default ((userOpts?: Partial<SearchOptions>) => {
   const Search: QuartzComponent = ({ displayClass, cfg }: QuartzComponentProps) => {

@@ -13,7 +13,6 @@ interface Item {
 }
 
 type SearchType = "basic" | "tags"
-let searchType: SearchType = "basic"
 let currentSearchTerm: string = ""
 
 const encoder = (str: string): string[] => {
@@ -88,11 +87,7 @@ function escapeHtml(s: string): string {
     .replace(/"/g, "&quot;")
 }
 
-const META_DIMS = [
-  "faze",
-  "role",
-  "workflow",
-] as const
+const META_DIMS = ["faze", "role", "workflow"] as const
 
 const DIM_LABELS_CS: Record<string, string> = {
   faze: "Fáze",
@@ -127,12 +122,6 @@ function pageMatchesFacets(
   return true
 }
 
-function pageHasAllTags(slug: FullSlug, data: ContentIndex, required: string[]): boolean {
-  if (required.length === 0) return true
-  const tags = data[slug]?.tags ?? []
-  return required.every((t) => tags.includes(t))
-}
-
 type FacetOptions = Map<string, Map<string, number>>
 
 function buildFacetOptions(data: ContentIndex): FacetOptions {
@@ -156,19 +145,9 @@ function buildFacetOptions(data: ContentIndex): FacetOptions {
   return out
 }
 
-function collectUniqueTags(data: ContentIndex): string[] {
-  const set = new Set<string>()
-  for (const file of Object.values<ContentDetails>(data)) {
-    for (const t of file.tags ?? []) set.add(t)
-  }
-  return [...set].sort((a, b) => a.localeCompare(b, undefined, { sensitivity: "base" }))
-}
-
 function formatTagsForCard(slug: FullSlug, data: ContentIndex): string[] {
   const tags = data[slug]?.tags ?? []
-  return tags
-    .slice(0, numTagResults)
-    .map((tag) => `<li><p>#${escapeHtml(tag)}</p></li>`)
+  return tags.slice(0, numTagResults).map((tag: string) => `<li><p>#${escapeHtml(tag)}</p></li>`)
 }
 
 const tokenizeTerm = (term: string) => {
@@ -293,10 +272,18 @@ async function setupSearch(searchElement: Element, currentSlug: FullSlug, data: 
   if (!searchLayout) return
 
   const idDataMap = Object.keys(data) as FullSlug[]
-  const activeFiltersWrap = searchElement.querySelector(".search-active-filters-wrap") as HTMLElement | null
-  const activeFiltersRoot = searchElement.querySelector(".search-active-filters") as HTMLElement | null
-  const activeFiltersLabel = searchElement.querySelector(".search-active-filters-label") as HTMLElement | null
-  const clearAllFiltersBtn = searchElement.querySelector(".search-clear-all-filters") as HTMLButtonElement | null
+  const activeFiltersWrap = searchElement.querySelector(
+    ".search-active-filters-wrap",
+  ) as HTMLElement | null
+  const activeFiltersRoot = searchElement.querySelector(
+    ".search-active-filters",
+  ) as HTMLElement | null
+  const activeFiltersLabel = searchElement.querySelector(
+    ".search-active-filters-label",
+  ) as HTMLElement | null
+  const clearAllFiltersBtn = searchElement.querySelector(
+    ".search-clear-all-filters",
+  ) as HTMLButtonElement | null
 
   const noResultsTitle = container.dataset.searchNoResultsTitle ?? "No results."
   const noResultsHint = container.dataset.searchNoResultsHint ?? "Try another search term?"
@@ -343,7 +330,9 @@ async function setupSearch(searchElement: Element, currentSlug: FullSlug, data: 
 
   function getSelectedFacets(): Map<string, Set<string>> {
     const out = new Map<string, Set<string>>()
-    for (const cb of searchElement.querySelectorAll<HTMLInputElement>("input.search-facet-dd-cb:checked")) {
+    for (const cb of searchElement.querySelectorAll<HTMLInputElement>(
+      "input.search-facet-dd-cb:checked",
+    )) {
       const dim = cb.dataset.dim!
       const val = cb.dataset.value ?? ""
       if (!val) continue
@@ -515,12 +504,10 @@ async function setupSearch(searchElement: Element, currentSlug: FullSlug, data: 
     removeAllChildren(results)
     if (preview) removeAllChildren(preview)
     searchLayout.classList.remove("display-results")
-    searchType = "basic"
     searchButton.focus()
   }
 
-  function showSearch(searchTypeNew: SearchType) {
-    searchType = searchTypeNew
+  function showSearch() {
     if (sidebar) sidebar.style.zIndex = "1"
     container.classList.add("active")
     container.scrollTop = 0
@@ -646,7 +633,9 @@ async function setupSearch(searchElement: Element, currentSlug: FullSlug, data: 
     if (!searchLayout || !enablePreview || !el || !preview) return
     const slug = el.id as FullSlug
     const innerDiv = await fetchContent(slug).then((contents) =>
-      contents.flatMap((node) => [...highlightHTML(currentSearchTerm, node as HTMLElement).children]),
+      contents.flatMap((node) => [
+        ...highlightHTML(currentSearchTerm, node as HTMLElement).children,
+      ]),
     )
     const previewInner = document.createElement("div")
     previewInner.classList.add("preview-inner")
@@ -710,7 +699,10 @@ async function setupSearch(searchElement: Element, currentSlug: FullSlug, data: 
           sr.result = sr.result.slice(0, numSearchResults * 2)
         }
         const merged = [
-          ...new Set([...getByField(searchResults, "title"), ...getByField(searchResults, "content")]),
+          ...new Set([
+            ...getByField(searchResults, "title"),
+            ...getByField(searchResults, "content"),
+          ]),
         ]
         finalIds = filterIdsByFacets(merged, facets).slice(0, numSearchResults)
       } else {
@@ -746,7 +738,10 @@ async function setupSearch(searchElement: Element, currentSlug: FullSlug, data: 
           index: ["title", "content"],
         })
         finalIds = [
-          ...new Set([...getByField(searchResults, "title"), ...getByField(searchResults, "content")]),
+          ...new Set([
+            ...getByField(searchResults, "title"),
+            ...getByField(searchResults, "content"),
+          ]),
         ].slice(0, numSearchResults)
         highlightTerm = query
       } else {
@@ -762,7 +757,10 @@ async function setupSearch(searchElement: Element, currentSlug: FullSlug, data: 
             index: ["title", "content"],
           })
           const merged = [
-            ...new Set([...getByField(searchResults, "title"), ...getByField(searchResults, "content")]),
+            ...new Set([
+              ...getByField(searchResults, "title"),
+              ...getByField(searchResults, "content"),
+            ]),
           ]
           finalIds = filterIdsByFacets(merged, facets).slice(0, numSearchResults)
         }
@@ -770,7 +768,6 @@ async function setupSearch(searchElement: Element, currentSlug: FullSlug, data: 
     }
 
     currentSearchTerm = highlightTerm
-    searchType = mode
     const items = finalIds.map((id) =>
       formatForDisplay(highlightTerm, id, mode, tagBarQuery, showPageTags),
     )
@@ -786,12 +783,12 @@ async function setupSearch(searchElement: Element, currentSlug: FullSlug, data: 
     if (e.key === "k" && (e.ctrlKey || e.metaKey) && !e.shiftKey) {
       e.preventDefault()
       const open = container.classList.contains("active")
-      open ? hideSearch() : showSearch("basic")
+      open ? hideSearch() : showSearch()
       return
     } else if (e.shiftKey && (e.ctrlKey || e.metaKey) && e.key.toLowerCase() === "k") {
       e.preventDefault()
       const open = container.classList.contains("active")
-      open ? hideSearch() : showSearch("tags")
+      open ? hideSearch() : showSearch()
       searchBar.value = "#"
       await runSearch()
       return
@@ -846,7 +843,9 @@ async function setupSearch(searchElement: Element, currentSlug: FullSlug, data: 
 
   registerEscapeHandler(container, hideSearch)
 
-  const panelCloseBtn = searchElement.querySelector(".search-panel-close") as HTMLButtonElement | null
+  const panelCloseBtn = searchElement.querySelector(
+    ".search-panel-close",
+  ) as HTMLButtonElement | null
   function onPanelCloseClick(e: MouseEvent) {
     e.stopPropagation()
     hideSearch()
@@ -857,7 +856,7 @@ async function setupSearch(searchElement: Element, currentSlug: FullSlug, data: 
   function onSearchButtonClick(e: MouseEvent) {
     e.stopPropagation()
     if (container.classList.contains("active")) hideSearch()
-    else showSearch("basic")
+    else showSearch()
   }
   searchButton.addEventListener("click", onSearchButtonClick)
   window.addCleanup(() => searchButton.removeEventListener("click", onSearchButtonClick))
@@ -872,9 +871,11 @@ async function setupSearch(searchElement: Element, currentSlug: FullSlug, data: 
       searchElement.querySelectorAll<HTMLInputElement>(".search-facet-dd-filter").forEach((inp) => {
         inp.value = ""
       })
-      searchElement.querySelectorAll<HTMLElement>(".search-facet-dd-row.is-hidden").forEach((row) => {
-        row.classList.remove("is-hidden")
-      })
+      searchElement
+        .querySelectorAll<HTMLElement>(".search-facet-dd-row.is-hidden")
+        .forEach((row) => {
+          row.classList.remove("is-hidden")
+        })
       for (const dim of META_DIMS) updateDdTriggerText(dim)
       closeAllDdPanels()
       syncActiveFiltersBar()

@@ -406,7 +406,6 @@ function renderCanvas(container: HTMLElement, data: CanvasData, baseUrl: string)
   window.addEventListener("mouseup", onUp)
   svg.addEventListener("wheel", onWheel, { passive: false })
   svg.style.cursor = "grab"
-
   ;(window as any).addCleanup?.(() => {
     svg.removeEventListener("mousedown", onDown)
     svg.removeEventListener("mousemove", onMove)

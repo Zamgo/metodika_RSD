@@ -146,10 +146,7 @@ export default ((): QuartzComponent => {
 
     return (
       <>
-        <div
-          class="quartz-canvas-viewer"
-          data-base-url={base}
-        />
+        <div class="quartz-canvas-viewer" data-base-url={base} />
         {data.canvasEmbeddedData && (
           <script
             type="application/json"
