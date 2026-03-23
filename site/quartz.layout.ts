@@ -37,7 +37,11 @@ export const sharedPageComponents: SharedLayout = {
   afterBody: [
     Component.ConditionalRender({
       component: Component.CinnostiTable(),
-      condition: (page) => page.fileData.slug === "Seznam-cinnosti",
+      condition: (page) => {
+        const slug = page.fileData.slug ?? ""
+        // Stránka může být v kořeni (Seznam-cinnosti) nebo ve složce (…/Seznam-cinnosti).
+        return slug === "Seznam-cinnosti" || slug.endsWith("/Seznam-cinnosti")
+      },
     }),
     Component.Backlinks(),
   ],

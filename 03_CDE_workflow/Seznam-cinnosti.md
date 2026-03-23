@@ -16,7 +16,9 @@ zdroj_typ: interni_metodika
 
 Tato stránka slouží jako **jednotný přehled činností** z oblasti správy informací a z matice RACI (ISO 19650). Na **webu** (Quartz) se pod článkem zobrazí interaktivní tabulka: můžete **filtrovat** podle typu stránky, typu zdroje, fáze a role, **vyhledávat v názvu** a **přejít** na detail kliknutím na řádek.
 
-V aplikaci Obsidian používejte soubor `Cinnosti.base` v kořeni vaultu — chování je obdobné.
+V aplikaci Obsidian používejte ve složce `03_CDE_workflow` soubor `Cinnosti.base` — chování je obdobné.
+
+> **Web (Quartz):** v levém panelu (Explorer) se zobrazují jen stránky z **Markdownu** (`.md`). Soubor `Cinnosti.base` je formát Obsidian Bases — **nepatří do buildu webu** a v postranním panelu se neobjeví. Přehled činností na webu je právě tato stránka (**Seznam činností**).
 
 ## Jak to funguje na webu
 
