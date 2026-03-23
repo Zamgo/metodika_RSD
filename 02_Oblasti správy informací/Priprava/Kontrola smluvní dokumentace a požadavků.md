@@ -7,6 +7,8 @@ workflow: []
 stav: draft
 permalink: /proces/priprava/kontrola-smluvni-dokumentace-a-pozadavku-p-s
 tags: [proces, cde, dokumentace]
+zdroj: "Požadavky objednatele na výměnu informací (EIR)"
+zdroj_typ: eir
 ---
 
 ## Účel

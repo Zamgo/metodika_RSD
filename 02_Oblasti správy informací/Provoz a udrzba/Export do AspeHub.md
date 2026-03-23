@@ -7,6 +7,8 @@ workflow: []
 stav: draft
 permalink: /proces/provoz-a-udrzba/export-do-aspehub-pavlina
 tags: [proces, cde, dokumentace]
+zdroj: "Interní metodika ŘSD"
+zdroj_typ: interni_metodika
 ---
 
 ## Poznámka ze zdroje

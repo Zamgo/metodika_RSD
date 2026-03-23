@@ -7,6 +7,8 @@ workflow: []
 stav: draft
 permalink: /proces/realizace/zmeny-behem-vystavby-pomoci-nastroju-cde-pavlina
 tags: [proces, cde, dokumentace]
+zdroj: "Interní metodika ŘSD"
+zdroj_typ: interni_metodika
 ---
 
 ## Účel

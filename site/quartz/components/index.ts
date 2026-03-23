@@ -25,6 +25,7 @@ import Comments from "./Comments"
 import Flex from "./Flex"
 import ConditionalRender from "./ConditionalRender"
 import SiteBranding from "./SiteBranding"
+import CinnostiTable from "./CinnostiTable"
 
 export {
   ArticleTitle,
@@ -54,4 +55,5 @@ export {
   Flex,
   ConditionalRender,
   SiteBranding,
+  CinnostiTable,
 }

@@ -1,0 +1,38 @@
+filters:
+  or:
+    - file.inFolder("02_Oblasti správy informací")
+    - file.inFolder("07_RACI_cinnosti")
+properties:
+  oznaceni:
+    displayName: ID
+  zdroj:
+    displayName: Zdroj
+  zdroj_typ:
+    displayName: Typ zdroje
+  raci_poverejici:
+    displayName: Objednatel
+  raci_vedouci_poverena:
+    displayName: Zhotovitel
+  raci_poverena:
+    displayName: Podzhotovitel
+  raci_spravce_stavby:
+    displayName: Správce stavby
+  raci_bim_koordinator:
+    displayName: BIM koord.
+views:
+  - type: table
+    name: Všechny činnosti
+    order:
+      - file.name
+      - typ
+      - faze
+      - role
+      - zdroj_typ
+      - zdroj
+      - raci_poverejici
+      - raci_vedouci_poverena
+      - raci_spravce_stavby
+      - raci_bim_koordinator
+      - stav
+    columnSize:
+      file.name: 578

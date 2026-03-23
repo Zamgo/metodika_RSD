@@ -47,3 +47,4 @@ Pokud je v textu něco nejasné nebo chybí v podkladech, doplňuje se to jako `
 - **Ctrl+K** (Windows/Linux) nebo **Cmd+K** (Mac): otevře vyhledávání v textu stránek (nadpisy i obsah).
 - **Ctrl+Shift+K** / **Cmd+Shift+K**: vyhledávání podle **štítků** (do pole se doplní `#` – můžete psát název štítku).
 - **Procházení štítků:** stránka se seznamem všech štítků je na adrese **`/tags`** (nebo odkaz níže v sekci Štítky).
+- **Přehled činností (web):** [[Seznam činností]] – tabulka procesů a RACI činností s filtry (obdobně jako `Cinnosti.base` v Obsidianu).

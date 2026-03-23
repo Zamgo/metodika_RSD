@@ -17,11 +17,22 @@ import { write } from "./helpers"
 import { i18n } from "../../i18n"
 
 export type ContentIndexMap = Map<FullSlug, ContentDetails>
-/** Frontmatter metadata used for search facets (CDE knowledge base). */
+/** Frontmatter metadata used for search facets and the Činnosti web table. */
 export type PageMeta = {
   faze?: string[]
   role?: string[]
   workflow?: string[]
+  typ?: string
+  zdroj?: string
+  zdroj_typ?: string
+  oznaceni?: string
+  iso_faze?: string
+  stav?: string
+  raci_poverejici?: string
+  raci_vedouci_poverena?: string
+  raci_poverena?: string
+  raci_spravce_stavby?: string
+  raci_bim_koordinator?: string
 }
 
 function toStringArray(v: unknown): string[] {
@@ -30,6 +41,21 @@ function toStringArray(v: unknown): string[] {
   if (typeof v === "string" && v.trim()) return [v.trim()]
   return []
 }
+
+function optString(fm: Record<string, unknown>, key: string): string | undefined {
+  const v = fm[key]
+  if (v == null) return undefined
+  const s = String(v).trim()
+  return s || undefined
+}
+
+const RACI_META_KEYS = [
+  "raci_poverejici",
+  "raci_vedouci_poverena",
+  "raci_poverena",
+  "raci_spravce_stavby",
+  "raci_bim_koordinator",
+] as const
 
 function metaFromFrontmatter(fm: Record<string, unknown> | undefined): PageMeta | undefined {
   if (!fm) return undefined
@@ -40,9 +66,26 @@ function metaFromFrontmatter(fm: Record<string, unknown> | undefined): PageMeta 
   if (faze.length) meta.faze = faze
   if (role.length) meta.role = role
   if (workflow.length) meta.workflow = workflow
-  if (!meta.faze?.length && !meta.role?.length && !meta.workflow?.length) {
-    return undefined
+
+  const typ = optString(fm, "typ")
+  if (typ) meta.typ = typ
+  const zdroj = optString(fm, "zdroj")
+  if (zdroj) meta.zdroj = zdroj
+  const zdrojTyp = optString(fm, "zdroj_typ")
+  if (zdrojTyp) meta.zdroj_typ = zdrojTyp
+  const oznaceni = optString(fm, "oznaceni")
+  if (oznaceni) meta.oznaceni = oznaceni
+  const isoFaze = optString(fm, "iso_faze")
+  if (isoFaze) meta.iso_faze = isoFaze
+  const stav = optString(fm, "stav")
+  if (stav) meta.stav = stav
+
+  for (const k of RACI_META_KEYS) {
+    const v = optString(fm, k)
+    if (v) meta[k] = v
   }
+
+  if (Object.keys(meta).length === 0) return undefined
   return meta
 }
 

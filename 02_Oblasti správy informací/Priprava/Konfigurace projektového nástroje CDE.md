@@ -7,6 +7,8 @@ workflow: []
 stav: draft
 permalink: /proces/priprava/konfigurace-projektoveho-nastroje-cde-pavlina-priloha
 tags: [proces, cde, dokumentace]
+zdroj: "Interní metodika ŘSD"
+zdroj_typ: interni_metodika
 ---
 # Účel
 
@@ -27,18 +29,18 @@ Správce stavby ověřuje, že tyto podklady jsou aktuální a že jejich požad
 
 - Správce stavby:
   - Nastaví základní členění dle stavů:
-  - Rozpracováno
-  - Sdíleno
-  - Schváleno
-  - Uchováno
+	  - Rozpracováno
+	  - Sdíleno
+	  - Schváleno
+	  - Uchováno
   - Vytvoří logickou strukturu dle:
-  - stavebních objektů (SO/PS),
-  - profesí,
-  - typu výstupu.
+	  - stavebních objektů (SO/PS),
+	  - profesí,
+	  - typu výstupu.
   - Ověří, že struktura:
-  - umožňuje jednoznačné zařazení dokumentů,
-  - podporuje budoucí archivaci,
-  - umožňuje export dat.
+	  - umožňuje jednoznačné zařazení dokumentů,
+	  - podporuje budoucí archivaci,
+	  - umožňuje export dat.
 ## Role a odpovědnosti
 
 - Správce stavby:

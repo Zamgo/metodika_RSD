@@ -34,7 +34,13 @@ function hideOrderingPrefix(node: FileTrieNode): void {
 export const sharedPageComponents: SharedLayout = {
   head: Component.Head(),
   header: [],
-  afterBody: [Component.Backlinks()],
+  afterBody: [
+    Component.ConditionalRender({
+      component: Component.CinnostiTable(),
+      condition: (page) => page.fileData.slug === "Seznam-cinnosti",
+    }),
+    Component.Backlinks(),
+  ],
   footer: Component.Footer({
     links: {
       "ŘSD.cz": "https://www.rsd.cz",

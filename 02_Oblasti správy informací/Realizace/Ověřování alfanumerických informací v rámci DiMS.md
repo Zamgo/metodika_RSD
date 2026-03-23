@@ -7,6 +7,8 @@ workflow: []
 stav: draft
 permalink: /proces/realizace/overovani-alfanumerickych-informaci-v-ramci-dims-sam
 tags: [proces, cde, dokumentace]
+zdroj: "Interní metodika ŘSD"
+zdroj_typ: interni_metodika
 ---
 
 ## Účel

@@ -24,6 +24,7 @@ Tento číselník je jediný zdroj hodnot pro metadata `role` (a pro konzistentn
 - `poverujici strana`
 - `poverena strana`
 - `vedouci poverena strana`
+- `bim koordinator`
 
 ## Odpovídající pojmové stránky (Obsidian)
 
@@ -35,3 +36,4 @@ Tento číselník je jediný zdroj hodnot pro metadata `role` (a pro konzistentn
 - [[Pověřující strana]]
 - [[Pověřená strana]]
 - [[Vedoucí pověřená strana]]
+- BIM koordinátor (pojmová stránka zatím neexistuje)
