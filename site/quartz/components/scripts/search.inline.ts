@@ -258,7 +258,6 @@ async function setupSearch(searchElement: Element, currentSlug: FullSlug, data: 
 
   if (host.dataset.quartzSearchReady === "1") {
     host.dataset.searchBaseSlug = currentSlug
-    return
   }
   host.dataset.quartzSearchReady = "1"
   host.dataset.searchBaseSlug = currentSlug
@@ -467,6 +466,10 @@ async function setupSearch(searchElement: Element, currentSlug: FullSlug, data: 
   const appendLayout = (el: HTMLElement) => {
     searchLayout.appendChild(el)
   }
+
+  // Reinitialize layout containers on each navigation to avoid stale state.
+  removeAllChildren(searchLayout)
+  searchLayout.classList.remove("display-results")
 
   const enablePreview = searchLayout.dataset.preview === "true"
   let preview: HTMLDivElement | undefined
