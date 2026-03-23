@@ -37,7 +37,6 @@ export default ((userOpts?: Partial<SearchOptions>) => {
     const multiHint = cs
       ? "Filtrujte podle fáze, role nebo workflow. V každém poli stačí shoda s jednou z vybraných hodnot."
       : "Filter by phase, role or workflow. Within each field, a match with any selected value is sufficient."
-    const filterPh = s.tagFilterPlaceholder
 
     return (
       <div class={classNames(displayClass, "search")}>
@@ -107,13 +106,6 @@ export default ((userOpts?: Partial<SearchOptions>) => {
                           </span>
                         </button>
                         <div class="search-facet-dd-panel" hidden>
-                          <input
-                            type="search"
-                            class="search-facet-dd-filter"
-                            autocomplete="off"
-                            placeholder={filterPh}
-                            aria-label={filterPh}
-                          />
                           <div class="search-facet-dd-list" />
                         </div>
                       </div>
