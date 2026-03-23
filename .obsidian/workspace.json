@@ -185,6 +185,10 @@
   },
   "active": "6ed3e31a2ef3654b",
   "lastOpenFiles": [
+    "site/quartz/components/styles/cinnosti-explorer.scss",
+    "site/quartz/components/CinnostiExplorerList.tsx",
+    "site/quartz/components/scripts/cinnostiShared.ts",
+    "site/quartz/components/scripts/cinnosti-explorer.inline.ts",
     "03_CDE_workflow/Seznam-cinnosti.md",
     "site/public/index.css",
     "site/public/01_Úvod-do-metodiky-ŘSD-Plzeň.html",
@@ -203,9 +207,6 @@
     "site/public/99_Media/obrazky/zaklady_image108.png",
     "site/public/static/giscus/light.css",
     "site/public/static/giscus/dark.css",
-    "site/public/static/contentIndex.json",
-    "site/public/static/giscus",
-    "site/public/static",
     "site/public/03_CDE_workflow/0_Diagram.canvas",
     "Seznam-cinnosti.md",
     "07_RACI_cinnosti/1.1.3 - Stanovit ukoly ktere maji byt poskytovany v ramci rozsahu sluzeb v pripade pover.md",
@@ -231,7 +232,6 @@
     "07_RACI_cinnosti/2.4.1 - Sestaveni informaci k zahrnuti do sestavy pro vyzvu k verejne soutezi vcetne.md",
     "07_RACI_cinnosti/2.4.2 - zajisteni ze pozadavky poverujici strany na vymenu informaci jsou obsazeny v ses.md",
     "07_RACI_cinnosti/2.4.3 - zajisteni ze relevantni referencni informace a sdilene zdroje v ramci projektove.md",
-    "07_RACI_cinnosti/2.4.4 - zajisteni ze pozadavky na odpoved na verejnou soutez a hodnotici kriteria v pris.md",
     "03_CDE_workflow/0_Diagram.canvas",
     "site/public/Bez-názvu.canvas"
   ]

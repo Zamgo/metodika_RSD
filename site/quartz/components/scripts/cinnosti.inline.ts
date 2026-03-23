@@ -1,9 +1,11 @@
-import { ContentDetails } from "../../plugins/emitters/contentIndex"
 import { FullSlug, resolveRelative } from "../../util/path"
-
-type CinnostiIndex = Record<string, ContentDetails & { meta?: Record<string, unknown> }>
-
-const FOLDER_MARKERS = ["02_Oblasti správy informací/", "07_RACI_cinnosti/"]
+import {
+  CinnostiIndex,
+  getMetaArray,
+  getMetaString,
+  isCinnostRow,
+  sortKeyForRow,
+} from "./cinnostiShared"
 
 const FILTER_DIMS = ["zdroj_typ", "typ"] as const
 const ARRAY_DIMS = ["faze", "role"] as const
@@ -14,32 +16,6 @@ function escapeHtml(s: string): string {
     .replace(/</g, "&lt;")
     .replace(/>/g, "&gt;")
     .replace(/"/g, "&quot;")
-}
-
-function normalizePath(fp: string): string {
-  return fp.replace(/\\/g, "/")
-}
-
-function isCinnostRow(fp: string): boolean {
-  const p = normalizePath(fp)
-  if (p.includes("Seznam-cinnosti.md")) return false
-  return FOLDER_MARKERS.some((m) => p.includes(m)) && p.endsWith(".md")
-}
-
-function getMetaString(meta: Record<string, unknown> | undefined, key: string): string {
-  if (!meta) return ""
-  const v = meta[key]
-  if (v == null) return ""
-  if (Array.isArray(v)) return v.join(", ")
-  return String(v).trim()
-}
-
-function getMetaArray(meta: Record<string, unknown> | undefined, key: string): string[] {
-  if (!meta) return []
-  const v = meta[key]
-  if (Array.isArray(v)) return v.map((x) => String(x).trim()).filter(Boolean)
-  if (typeof v === "string" && v.trim()) return [v.trim()]
-  return []
 }
 
 function rowMatchesFilters(
@@ -89,15 +65,6 @@ function collectOptions(data: CinnostiIndex): Map<string, Set<string>> {
   return out
 }
 
-function sortKeyForRow(meta: Record<string, unknown> | undefined, title: string): string {
-  const oz = getMetaString(meta, "oznaceni")
-  if (oz) {
-    const parts = oz.split(".").map((x) => parseInt(x, 10) || 0)
-    return parts.map((n) => n.toString().padStart(6, "0")).join(".")
-  }
-  return "zzz" + title.toLowerCase()
-}
-
 async function setupCinnosti(root: HTMLElement, currentSlug: FullSlug, data: CinnostiIndex) {
   const tbody = root.querySelector(".cinnosti-tbody") as HTMLElement
   const textInput = root.querySelector(".cinnosti-filter-text") as HTMLInputElement
@@ -129,6 +96,10 @@ async function setupCinnosti(root: HTMLElement, currentSlug: FullSlug, data: Cin
 
   const ds = root.dataset
 
+  function resolveUrl(slug: FullSlug): string {
+    return new URL(resolveRelative(currentSlug, slug), location.toString()).pathname
+  }
+
   function render() {
     const textQ = textInput.value
     tbody.innerHTML = ""
@@ -156,10 +127,6 @@ async function setupCinnosti(root: HTMLElement, currentSlug: FullSlug, data: Cin
       tbody.appendChild(tr)
     }
     countEl.textContent = String(n)
-  }
-
-  function resolveUrl(slug: FullSlug): string {
-    return new URL(resolveRelative(currentSlug, slug), location.toString()).pathname
   }
 
   const dimLabels: Record<string, string> = {
