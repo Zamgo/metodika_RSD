@@ -74,7 +74,6 @@ export const defaultContentPageLayout: PageLayout = {
         { Component: Component.ReaderMode() },
       ],
     }),
-    Component.CinnostiExplorerList(),
     Component.Explorer({
       title: "",
       sortFn: sortByNumericPrefix,
@@ -95,7 +94,6 @@ export const defaultListPageLayout: PageLayout = {
     Component.Flex({
       components: [{ Component: Component.Search() }, { Component: Component.Darkmode() }],
     }),
-    Component.CinnostiExplorerList(),
     Component.Explorer({
       title: "",
       sortFn: sortByNumericPrefix,

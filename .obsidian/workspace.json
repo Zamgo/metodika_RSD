@@ -11,13 +11,14 @@
             "id": "b1b051617c654508",
             "type": "leaf",
             "state": {
-              "type": "bases",
+              "type": "markdown",
               "state": {
-                "file": "03_CDE_workflow/Cinnosti.base",
-                "viewName": "Všechny činnosti"
+                "file": "03_CDE_workflow/Seznam-cinnosti.md",
+                "mode": "source",
+                "source": false
               },
-              "icon": "lucide-table",
-              "title": "Cinnosti"
+              "icon": "lucide-file",
+              "title": "Seznam-cinnosti"
             }
           }
         ]
@@ -183,8 +184,9 @@
       "bases:Vytvořit novou základnu": false
     }
   },
-  "active": "6ed3e31a2ef3654b",
+  "active": "b1b051617c654508",
   "lastOpenFiles": [
+    "03_CDE_workflow/Cinnosti.base",
     "site/quartz/components/styles/cinnosti-explorer.scss",
     "site/quartz/components/CinnostiExplorerList.tsx",
     "site/quartz/components/scripts/cinnostiShared.ts",
@@ -206,7 +208,6 @@
     "site/public/99_Media/obrazky/zaklady_image107.png",
     "site/public/99_Media/obrazky/zaklady_image108.png",
     "site/public/static/giscus/light.css",
-    "site/public/static/giscus/dark.css",
     "site/public/03_CDE_workflow/0_Diagram.canvas",
     "Seznam-cinnosti.md",
     "07_RACI_cinnosti/1.1.3 - Stanovit ukoly ktere maji byt poskytovany v ramci rozsahu sluzeb v pripade pover.md",

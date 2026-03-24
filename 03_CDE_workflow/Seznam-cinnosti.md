@@ -18,7 +18,7 @@ Tato stránka slouží jako **jednotný přehled činností** z oblasti správy 
 
 V aplikaci Obsidian používejte ve složce `03_CDE_workflow` soubor `Cinnosti.base` — chování je obdobné.
 
-> **Web (Quartz):** soubor `Cinnosti.base` (Obsidian Bases) se do webu negeneruje. Nad standardním **Explorerem** je ale blok **Činnosti** — stejný výběr stránek jako v `.base` (složky `02_Oblasti…` a `07_RACI_cinnosti`), s rychlým filtrem a odkazem sem na **tabulku + filtry**.
+> **Web (Quartz):** soubor `Cinnosti.base` (Obsidian Bases) se do webu negeneruje. Na webu používejte tuto normální stránku **Seznam činností** (v Exploreru pod `03_CDE_workflow`) s tabulkou a filtry.
 
 ## Jak to funguje na webu
 

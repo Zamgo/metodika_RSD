@@ -26,7 +26,6 @@ import Flex from "./Flex"
 import ConditionalRender from "./ConditionalRender"
 import SiteBranding from "./SiteBranding"
 import CinnostiTable from "./CinnostiTable"
-import CinnostiExplorerList from "./CinnostiExplorerList"
 
 export {
   ArticleTitle,
@@ -57,5 +56,4 @@ export {
   ConditionalRender,
   SiteBranding,
   CinnostiTable,
-  CinnostiExplorerList,
 }
