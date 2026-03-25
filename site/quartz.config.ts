@@ -14,7 +14,7 @@ const config: QuartzConfig = {
     enablePopovers: true,
     analytics: null,
     locale: "cs-CZ",
-    baseUrl: "zamgo.github.io/metodika_RSD",
+    baseUrl: "www.ceskesilnice.cz/RSD_Plzen",
     ignorePatterns: ["private", "templates", ".obsidian", ".git", ".github", "site", "site/**"],
     defaultDateType: "modified",
     theme: {

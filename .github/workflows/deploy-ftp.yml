@@ -1,0 +1,62 @@
+name: Deploy Quartz to FTP/SFTP
+
+on:
+  push:
+    branches: ["main"]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    env:
+      FTP_DEST: RSD_Plzen
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+
+      - name: Install dependencies
+        working-directory: site
+        run: npm ci
+
+      - name: Build site
+        working-directory: site
+        run: node ./quartz/bootstrap-cli.mjs build -d ..
+
+      - name: Generate .htaccess for Quartz (no .html)
+        working-directory: site
+        run: |
+          cat > public/.htaccess <<'EOF'
+          RewriteEngine On
+          ErrorDocument 404 404.html
+          RewriteCond %{REQUEST_FILENAME} !-f
+          RewriteCond %{REQUEST_FILENAME} !-d
+          RewriteCond %{DOCUMENT_ROOT}/%{REQUEST_URI}.html -f
+          RewriteRule ^(.*)$ $1.html [L]
+          RewriteCond %{REQUEST_FILENAME} -d
+          RewriteRule ^(.*)/$ $1/index.html [L]
+          EOF
+
+      - name: Install lftp
+        run: sudo apt-get update && sudo apt-get install -y lftp
+
+      - name: Deploy site/public to RSD_Plzen (SFTP)
+        working-directory: site
+        run: |
+          lftp -u "${{ secrets.FTP_USER }}","${{ secrets.FTP_PASS }}" "sftp://${{ secrets.FTP_HOST }}:${{ secrets.FTP_PORT }}" <<EOF
+          set sftp:auto-confirm yes
+          set cmd:fail-exit yes
+          mkdir -p "${FTP_DEST}"
+          mirror -R --delete --verbose --exclude-glob ".htaccess" "public/" "${FTP_DEST}/"
+          put -O "${FTP_DEST}" "public/.htaccess"
+          quit
+          EOF
+
