@@ -48,11 +48,12 @@ jobs:
       - name: Install lftp
         run: sudo apt-get update && sudo apt-get install -y lftp
 
-      - name: Deploy site/public to RSD_Plzen (SFTP)
+      - name: Deploy site/public to RSD_Plzen (FTP)
         working-directory: site
         run: |
-          lftp -u "${{ secrets.FTP_USER }}","${{ secrets.FTP_PASS }}" "sftp://${{ secrets.FTP_HOST }}:${{ secrets.FTP_PORT }}" <<EOF
-          set sftp:auto-confirm yes
+          lftp -u "${{ secrets.FTP_USER }}","${{ secrets.FTP_PASS }}" "ftp://${{ secrets.FTP_HOST }}:${{ secrets.FTP_PORT }}" <<EOF
+          set ftp:passive-mode yes
+          set ftp:ssl-allow no
           set cmd:fail-exit yes
           mkdir -p "${FTP_DEST}"
           mirror -R --delete --verbose --exclude-glob ".htaccess" "public/" "${FTP_DEST}/"
