@@ -2,9 +2,12 @@ import { FullSlug, resolveRelative } from "../../util/path"
 import { load as yamlLoad } from "js-yaml"
 import {
   CinnostiIndex,
+  createNoteSlugResolver,
+  escapeHtml,
   getMetaArray,
   getMetaString,
   isCinnostRow,
+  metaStringToTableHtml,
   sortKeyForRow,
 } from "./cinnostiShared"
 
@@ -31,14 +34,6 @@ type Row = {
   title: string
   fp: string
   meta?: Record<string, unknown>
-}
-
-function escapeHtml(s: string): string {
-  return s
-    .replace(/&/g, "&amp;")
-    .replace(/</g, "&lt;")
-    .replace(/>/g, "&gt;")
-    .replace(/"/g, "&quot;")
 }
 
 function prettyLabel(key: string): string {
@@ -174,6 +169,8 @@ async function setupCinnosti(root: HTMLElement, currentSlug: FullSlug, data: Cin
     if (ka !== kb) return ka.localeCompare(kb, undefined, { numeric: true })
     return a.title.localeCompare(b.title, "cs")
   })
+
+  const resolveNote = createNoteSlugResolver(data)
 
   const options = collectOptions(data)
   const selected = new Map<string, Set<string>>()
@@ -334,7 +331,7 @@ async function setupCinnosti(root: HTMLElement, currentSlug: FullSlug, data: Cin
     if (col === "file.name") {
       return `<a href="${escapeHtml(resolveUrl(row.slug))}">${escapeHtml(row.title)}</a>`
     }
-    return escapeHtml(getMetaString(row.meta, col))
+    return metaStringToTableHtml(getMetaString(row.meta, col), currentSlug, resolveNote)
   }
 
   function render() {
