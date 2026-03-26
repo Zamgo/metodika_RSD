@@ -162,6 +162,9 @@ async function renderGraph(graph: HTMLElement, fullSlug: FullSlug) {
   }
 
   const width = graph.offsetWidth
+  if (width <= 0) {
+    return () => {}
+  }
   const height = Math.max(graph.offsetHeight, 250)
 
   // we virtualize the simulation and use pixi to actually render it
@@ -526,6 +529,10 @@ async function renderGraph(graph: HTMLElement, fullSlug: FullSlug) {
   let stopAnimation = false
   function animate(time: number) {
     if (stopAnimation) return
+    if (graph.offsetWidth <= 0 || graph.offsetHeight <= 0) {
+      requestAnimationFrame(animate)
+      return
+    }
     for (const n of nodeRenderData) {
       const { x, y } = n.simulationData
       if (!x || !y) continue

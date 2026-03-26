@@ -78,6 +78,9 @@ export const defaultContentPageLayout: PageLayout = {
   ],
   left: [
     Component.SiteBranding(),
+    // Graph goes into the left sidebar (under the logo).
+    // On mobile it will be shown only when the left explorer is expanded (see custom.scss).
+    Component.Graph(),
     Component.MobileOnly(Component.Spacer()),
     Component.Flex({
       components: [
@@ -94,7 +97,8 @@ export const defaultContentPageLayout: PageLayout = {
       mapFn: hideOrderingPrefix,
     }),
   ],
-  right: [Component.Graph(), Component.DesktopOnly(Component.TableOfContents())],
+  // No right sidebar panel.
+  right: [],
 }
 
 // components for pages that display lists of pages  (e.g. tags or folders)

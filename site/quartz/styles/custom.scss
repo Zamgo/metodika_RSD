@@ -340,6 +340,41 @@ ul.toc-content.overflow > li > a.in-view {
   background-color: color-mix(in srgb, $rsd-blue-dark 8%, transparent) !important;
 }
 
+/* ─── No right sidebar panel ────────────────────────────────────── */
+#quartz-body .sidebar.right {
+  display: none !important;
+}
+
+/* ─── Desktop: expand center column ────────────────────────────── */
+@media all and (min-width: 1200px) {
+  #quartz-body {
+    grid-template-columns: 320px auto 0px !important;
+  }
+}
+
+/* ─── Graph: move under logo on mobile ───────────────────────────── */
+@media all and ($mobile) {
+  // Until the left explorer is opened, hide the graph (matches behavior of left panel).
+  #quartz-body .sidebar.left .graph {
+    display: none;
+    width: 100%;
+  }
+
+  // When the explorer drawer is expanded, show the graph under the logo.
+  #quartz-body .sidebar.left:has(.explorer:not(.collapsed)) .graph {
+    display: block;
+    flex: 0 0 100%;
+    position: relative;
+    // Keep above the explorer drawer overlay (`.explorer-content` uses z-index: 100).
+    z-index: 101;
+  }
+
+  // Ensure the graph can take a full-width row under the logo.
+  #quartz-body .sidebar.left:has(.explorer:not(.collapsed)) {
+    flex-wrap: wrap;
+  }
+}
+
 /* ─── Reader mode: collapse right panel (desktop) ────────────────── */
 @media all and (min-width: 1200px) {
   /* Only animate the visual content — grid collapses instantly to avoid white stripe */

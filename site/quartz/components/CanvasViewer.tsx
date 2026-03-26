@@ -82,7 +82,7 @@ const style = `
 .canvas-node-body h4,
 .canvas-node-body h5,
 .canvas-node-body h6 {
-  margin: 0.5em 0 0.3em;
+  margin: 0;
   color: var(--dark);
   line-height: 1.3;
 }

@@ -80,6 +80,29 @@ function isHexColor(color: string): boolean {
   return /^#(?:[0-9a-fA-F]{3}){1,2}$/.test(color)
 }
 
+function hexToRgb(hex: string): { r: number; g: number; b: number } | null {
+  const m = hex.trim().match(/^#([0-9a-fA-F]{3}){1,2}$/)
+  if (!m) return null
+
+  let h = hex.trim().slice(1)
+  if (h.length === 3)
+    h = h
+      .split("")
+      .map((c) => c + c)
+      .join("")
+  const n = parseInt(h, 16)
+  const r = (n >> 16) & 255
+  const g = (n >> 8) & 255
+  const b = n & 255
+  return { r, g, b }
+}
+
+function hexToRgba(hex: string, alpha: number): string {
+  const rgb = hexToRgb(hex)
+  if (!rgb) return hex
+  return `rgba(${rgb.r},${rgb.g},${rgb.b},${alpha})`
+}
+
 function getAnchor(node: CanvasNode, side: string): Point {
   const cx = node.x + node.width / 2
   const cy = node.y + node.height / 2
@@ -263,7 +286,13 @@ function renderTextMarkup(
   const withInline = withWikiLinks
     .replace(/\*\*([^*]+)\*\*/g, "<strong>$1</strong>")
     .replace(/\*([^*]+)\*/g, "<em>$1</em>")
-  const withHeading = withInline.replace(/^#{1,6}\s+(.+)$/gm, "<strong>$1</strong>")
+  const withHeading = withInline.replace(
+    /^(\s*)(#{1,6})\s+(.+)$/gm,
+    (_all, indent, hashes, headingText) => {
+      const level = Math.min(6, hashes.length)
+      return `${indent}<h${level}>${headingText}</h${level}>`
+    },
+  )
   return withHeading.replace(/\n/g, "<br/>")
 }
 
@@ -394,12 +423,12 @@ function renderCanvas(container: HTMLElement, data: CanvasData, baseUrl: string)
     const g = svgEl("g")
     const fill = node.color
       ? isHexColor(node.color)
-        ? node.color
+        ? hexToRgba(node.color, 0.1)
         : (NODE_FILLS[node.color] ?? "var(--light)")
       : "var(--light)"
     const stroke = node.color
       ? isHexColor(node.color)
-        ? node.color
+        ? hexToRgba(node.color, 0.5)
         : (NODE_STROKES[node.color] ?? "var(--lightgray)")
       : "var(--lightgray)"
 
