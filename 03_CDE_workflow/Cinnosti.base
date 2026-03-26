@@ -78,9 +78,9 @@ views:
       and:
         - typ == "cinnost"
     order:
-      - oznaceni
       - procesni_oblast
       - pracovni_balicek
+      - oznaceni
       - file.name
       - popis
       - zdroj
@@ -93,6 +93,7 @@ views:
         direction: ASC
     columnSize:
       note.oznaceni: 107
+      note.procesni_oblast: 456
       note.pracovni_balicek: 441
       file.name: 650
       note.popis: 332

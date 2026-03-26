@@ -1,12 +1,18 @@
 ---
 title: Správce CDE
 typ: term
-faze: [priprava]
+faze:
+  - priprava
 workflow: []
 stav: draft
 permalink: /pojem/role/spravce-cde
-aliases: [Spravce CDE]
-tags: [pojem, role, cde, opravneni, auditni stopa]
+aliases:
+  - Spravce CDE
+tags:
+  - pojem
+  - role
+  - cde
+  - opravneni
 ---
 
 # Definice
