@@ -24,8 +24,8 @@ const CinnostiTable: QuartzComponent = ({ cfg }: QuartzComponentProps) => {
       data-str-view={cs ? "Pohled" : "View"}
       data-str-view-all={cs ? "Vše" : "All"}
       data-str-columns={cs ? "Sloupce" : "Columns"}
-      data-str-wide-on={cs ? "Zúžit" : "Narrow"}
-      data-str-wide-off={cs ? "Rozšířit" : "Expand"}
+      data-str-wide-on={cs ? "Zobrazit panel" : "Show panel"}
+      data-str-wide-off={cs ? "Skrýt panel" : "Hide panel"}
     >
       <div class="cinnosti-toolbar">
         <input
@@ -74,10 +74,10 @@ const CinnostiTable: QuartzComponent = ({ cfg }: QuartzComponentProps) => {
         <button
           type="button"
           class="cinnosti-wide-toggle"
-          data-label-on={cs ? "Zúžit" : "Narrow"}
-          data-label-off={cs ? "Rozšířit" : "Expand"}
+          data-label-on={cs ? "Zobrazit panel" : "Show panel"}
+          data-label-off={cs ? "Skrýt panel" : "Hide panel"}
         >
-          {cs ? "Rozšířit" : "Expand"}
+          {cs ? "Skrýt panel" : "Hide panel"}
         </button>
         <button type="button" class="cinnosti-clear-filters">
           {cs ? "Zrušit filtry" : "Clear filters"}

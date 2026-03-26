@@ -77,9 +77,8 @@ export const defaultContentPageLayout: PageLayout = {
     Component.TagList(),
   ],
   left: [
+    Component.SidebarToggle(),
     Component.SiteBranding(),
-    // Graph goes into the left sidebar (under the logo).
-    // On mobile it will be shown only when the left explorer is expanded (see custom.scss).
     Component.Graph(),
     Component.MobileOnly(Component.Spacer()),
     Component.Flex({
@@ -97,7 +96,6 @@ export const defaultContentPageLayout: PageLayout = {
       mapFn: hideOrderingPrefix,
     }),
   ],
-  // No right sidebar panel.
   right: [],
 }
 
@@ -105,6 +103,7 @@ export const defaultContentPageLayout: PageLayout = {
 export const defaultListPageLayout: PageLayout = {
   beforeBody: [Component.Breadcrumbs(), Component.ArticleTitle(), Component.ContentMeta()],
   left: [
+    Component.SidebarToggle(),
     Component.SiteBranding(),
     Component.MobileOnly(Component.Spacer()),
     Component.Flex({

@@ -11,7 +11,8 @@ body {
 }
 
 .page {
-  max-width: calc(1200px + 360px);
+  max-width: 100%;
+  margin: 0;
 }
 
 #quartz-body {
@@ -24,7 +25,12 @@ body {
 
   & .sidebar.left {
     padding-top: 1.5rem;
+    padding-left: 1rem;
+    padding-right: 1rem;
     border-right: 1px solid color-mix(in srgb, $rsd-blue-dark 8%, transparent);
+    transition:
+      width 0.3s ease,
+      padding 0.3s ease;
   }
 
   & .sidebar.right {
@@ -346,10 +352,97 @@ ul.toc-content.overflow > li > a.in-view {
   display: none !important;
 }
 
-/* ─── Desktop: expand center column ────────────────────────────── */
+/* ─── Desktop: two-column full-width layout ────────────────────── */
 @media all and (min-width: 1200px) {
   #quartz-body {
-    grid-template-columns: 320px auto 0px !important;
+    grid-template-columns: 280px auto 0px !important;
+    transition: grid-template-columns 0.3s ease;
+  }
+}
+
+/* ─── Sidebar toggle button ────────────────────────────────────── */
+.sidebar-toggle {
+  position: fixed;
+  left: 280px;
+  top: 1.1rem;
+  z-index: 10;
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid color-mix(in srgb, $rsd-blue-dark 15%, transparent);
+  border-radius: 6px;
+  background: #ffffff;
+  color: $rsd-blue-dark;
+  cursor: pointer;
+  transition:
+    left 0.3s ease,
+    background-color 0.15s ease,
+    transform 0.3s ease;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08);
+  padding: 0;
+
+  &:hover {
+    background: color-mix(in srgb, $rsd-blue-dark 6%, #ffffff);
+  }
+
+  svg {
+    width: 14px;
+    height: 14px;
+    transition: transform 0.3s ease;
+  }
+}
+
+@media all and (max-width: 800px) {
+  .sidebar-toggle {
+    display: none !important;
+  }
+}
+
+/* ─── Sidebar collapsed state ──────────────────────────────────── */
+body[data-sidebar-collapsed] {
+  @media all and (min-width: 1200px) {
+    #quartz-body {
+      grid-template-columns: 0px auto 0px !important;
+    }
+  }
+
+  @media all and (min-width: 801px) and (max-width: 1199px) {
+    #quartz-body {
+      grid-template-columns: 0px auto !important;
+    }
+  }
+
+  #quartz-body .sidebar.left {
+    overflow: hidden;
+    width: 0;
+    min-width: 0;
+    padding: 0 !important;
+    border: none !important;
+    pointer-events: none;
+    transition:
+      width 0.3s ease,
+      padding 0.3s ease;
+  }
+
+  .sidebar-toggle {
+    left: 0.5rem;
+    pointer-events: auto;
+
+    svg {
+      transform: rotate(180deg);
+    }
+  }
+}
+
+:root[saved-theme="dark"] .sidebar-toggle {
+  background: var(--light);
+  border-color: var(--lightgray);
+  color: var(--secondary);
+
+  &:hover {
+    background: color-mix(in srgb, var(--secondary) 10%, var(--light));
   }
 }
 
@@ -373,31 +466,12 @@ ul.toc-content.overflow > li > a.in-view {
 
 /* ─── Reader mode: collapse right panel (desktop) ────────────────── */
 @media all and (min-width: 1200px) {
-  /* Only animate the visual content — grid collapses instantly to avoid white stripe */
-  #quartz-body .sidebar.right {
-    min-width: 0;
-    overflow: hidden;
-    transition:
-      opacity 0.28s ease,
-      transform 0.28s ease;
-  }
-
-  /* Grid column: instant collapse (no transition) — prevents visible white stripe */
   :root[reader-mode="on"] #quartz-body {
-    grid-template-columns: 320px auto 0px !important;
+    grid-template-columns: 280px auto 0px !important;
   }
 
   :root[reader-mode="on"] #quartz-body .sidebar.left {
     opacity: 1 !important;
     pointer-events: auto;
-  }
-
-  /* Sidebar content: smooth fade + slide out to the right */
-  :root[reader-mode="on"] #quartz-body .sidebar.right {
-    opacity: 0 !important;
-    transform: translateX(18px) !important;
-    pointer-events: none;
-    padding: 0 !important;
-    border-left: none !important;
   }
 }

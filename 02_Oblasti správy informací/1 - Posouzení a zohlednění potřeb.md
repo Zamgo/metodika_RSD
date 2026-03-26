@@ -44,5 +44,3 @@ SORT pracovni_balicek ASC, oznaceni ASC, file.name ASC
 ## Zdroj
 
 A/R
-
-![[site/public/06_Diagramy/Tým_správce_stavby_hierachie.canvas|Tým_správce_stavby_hierachie]]

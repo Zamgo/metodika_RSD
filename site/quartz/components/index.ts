@@ -26,6 +26,7 @@ import Flex from "./Flex"
 import ConditionalRender from "./ConditionalRender"
 import SiteBranding from "./SiteBranding"
 import CinnostiTable from "./CinnostiTable"
+import SidebarToggle from "./SidebarToggle"
 
 export {
   ArticleTitle,
@@ -56,4 +57,5 @@ export {
   ConditionalRender,
   SiteBranding,
   CinnostiTable,
+  SidebarToggle,
 }

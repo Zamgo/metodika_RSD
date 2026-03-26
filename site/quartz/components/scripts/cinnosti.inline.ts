@@ -11,7 +11,7 @@ import {
 const FILTER_DIMS = ["zdroj_typ", "typ"] as const
 const ARRAY_DIMS = ["faze", "role"] as const
 
-const LS_WIDE_KEY = "cinnosti-wide"
+const LS_SIDEBAR_KEY = "sidebar-collapsed"
 const LS_HIDDEN_COLS_PREFIX = "cinnosti-hidden-cols:"
 
 type BaseConfig = {
@@ -210,47 +210,32 @@ async function setupCinnosti(root: HTMLElement, currentSlug: FullSlug, data: Cin
     return cols.length > 0 ? cols : fallbackView.order!
   }
 
-  // ── Wide mode ──────────────────────────────────────────────────────────
-
-  const savedWide = localStorage.getItem(LS_WIDE_KEY)
-  if (savedWide === "on") document.body.dataset.cinnostiWide = "on"
+  // ── Sidebar toggle (wide mode) ──────────────────────────────────────
 
   function updateWideBtn() {
     if (!wideBtn) return
-    const isWide = document.body.dataset.cinnostiWide === "on"
-    wideBtn.textContent = isWide
-      ? (wideBtn.dataset.labelOn ?? "Zúžit")
-      : (wideBtn.dataset.labelOff ?? "Rozšířit")
+    const isCollapsed = "sidebarCollapsed" in document.body.dataset
+    wideBtn.textContent = isCollapsed
+      ? (wideBtn.dataset.labelOn ?? "Zobrazit panel")
+      : (wideBtn.dataset.labelOff ?? "Skrýt panel")
   }
   updateWideBtn()
 
   if (wideBtn) {
-    let wideToggleLock = false
     const onWideToggle = () => {
-      if (wideToggleLock) return
-      wideToggleLock = true
-
-      const isWide = document.body.dataset.cinnostiWide === "on"
-      if (isWide) {
-        delete document.body.dataset.cinnostiWide
-        localStorage.setItem(LS_WIDE_KEY, "off")
+      const isCollapsed = "sidebarCollapsed" in document.body.dataset
+      if (isCollapsed) {
+        delete document.body.dataset.sidebarCollapsed
+        localStorage.setItem(LS_SIDEBAR_KEY, "false")
       } else {
-        document.body.dataset.cinnostiWide = "on"
-        localStorage.setItem(LS_WIDE_KEY, "on")
+        document.body.dataset.sidebarCollapsed = ""
+        localStorage.setItem(LS_SIDEBAR_KEY, "true")
       }
       updateWideBtn()
-
-      window.setTimeout(() => {
-        wideToggleLock = false
-      }, 150)
     }
     wideBtn.addEventListener("click", onWideToggle)
     window.addCleanup(() => wideBtn.removeEventListener("click", onWideToggle))
   }
-
-  window.addCleanup(() => {
-    delete document.body.dataset.cinnostiWide
-  })
 
   // ── Column toggle ─────────────────────────────────────────────────────
 

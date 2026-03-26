@@ -11,14 +11,12 @@
             "id": "2688640799de1ad3",
             "type": "leaf",
             "state": {
-              "type": "markdown",
+              "type": "image",
               "state": {
-                "file": "02_Oblasti správy informací/1 - Posouzení a zohlednění potřeb.md",
-                "mode": "source",
-                "source": false
+                "file": "99_Media/obrazky/cdez_image29.png"
               },
-              "icon": "lucide-file",
-              "title": "1 - Posouzení a zohlednění potřeb"
+              "icon": "lucide-image",
+              "title": "cdez_image29"
             }
           }
         ]
@@ -78,7 +76,7 @@
       }
     ],
     "direction": "horizontal",
-    "width": 479.5
+    "width": 651.5
   },
   "right": {
     "id": "925f1fb0b98116e3",
@@ -184,10 +182,31 @@
       "bases:Vytvořit novou základnu": false
     }
   },
-  "active": "2688640799de1ad3",
+  "active": "6ed3e31a2ef3654b",
   "lastOpenFiles": [
-    "site/public/06_Diagramy/Tým_správce_stavby_hierachie.canvas",
+    "site/quartz/components/SidebarToggle.tsx",
+    "02_Oblasti správy informací-Michaela - MacBook Air/Priprava",
+    "02_Oblasti správy informací-Michaela - MacBook Air/Realizace",
+    "02_Oblasti správy informací-Michaela - MacBook Air/Provoz a udrzba",
+    "02_Oblasti správy informací-Michaela - MacBook Air",
+    "99_Media/obrazky/cdez_image64.jpeg",
+    "99_Media/obrazky/cdez_image61.png",
+    "99_Media/obrazky/metodika-rsd-plzen-image1.png",
+    "99_Media/obrazky/metodika-rsd-plzen-image2.png",
+    "99_Media/obrazky/metodika-rsd-plzen-image3.png",
+    "99_Media/obrazky/metodika-rsd-plzen-image5.png",
+    "99_Media/obrazky/metodika-rsd-plzen-image6.svg",
+    "99_Media/obrazky/Pasted image 20260319095434.png",
+    "99_Media/obrazky/zaklady_image52.png",
+    "99_Media/obrazky/zaklady_image89.jpeg",
+    "05_Definice pojmů/Role/Asistent správce stavby – Zástupce vedoucího Týmu správce stavby.md",
+    "05_Definice pojmů/Role/Asistent správce stavby – Specialista v oboru.md",
+    "05_Definice pojmů/Role/Pomocný asistent Správce stavby.md",
+    "05_Definice pojmů/Role/Koordinátor CDE.md",
+    "05_Definice pojmů/Role/Koordinátor BIM.md",
+    "05_Definice pojmů/Role/Koordinátor BOZP.md",
     "02_Oblasti správy informací/1 - Posouzení a zohlednění potřeb.md",
+    "site/public/06_Diagramy/Tým_správce_stavby_hierachie.canvas",
     "site/public/03_CDE_workflow/0_Diagram.canvas",
     "site/public/sprava-obsahu/ciselnik-workflow.html",
     "site/public/tags/editorske_doplneni.html",
@@ -195,22 +214,8 @@
     "site/public/sprava-obsahu/ciselnik-fazi.html",
     "site/public/sprava-obsahu/ciselnik-roli.html",
     "site/public/sprava-obsahu/pravidla-metadat.html",
-    "site/public/sprava-obsahu/pravidla-nazvu-souboru.html",
-    "site/public/sprava-obsahu/pravidla-odkazovani.html",
-    "site/public/sprava-obsahu/zdroje-a-editorske-doplneni.html",
-    "site/public/Pravidla-názvu-souboru.html",
-    "site/public/static/rsd-logo.svg",
-    "site/public/99_Media/obrazky/Pasted-image-20260319095752.png",
-    "site/public/99_Media/obrazky/Pasted-image-20260319095840.png",
-    "site/public/99_Media/obrazky/Pasted-image-20260319095434.png",
-    "site/public/99_Media/obrazky/Pasted-image-20260319095907.png",
-    "site/public/99_Media/obrazky/Pasted-image-20260319095923.png",
-    "site/public/99_Media/obrazky/Pasted-image-20260319095826.png",
     "03_CDE_workflow/0_Diagram.canvas",
     "02_Oblasti správy informací/Konfigurace projektového nástroje CDE.md",
-    "site/public/00_Podklady/rsd-logo-sirkove-2c-barevne-rgb.svg",
-    "site/public/static/og-image.png",
-    "site/public/static/icon.png",
     "02_Oblasti správy informací/4.6.8 - Provést změnový kontrolní proces související se pověřovacími dokumenty vedoucí pověřené strany.md",
     "02_Oblasti správy informací/0 - Seznam činností.md",
     "02_Oblasti správy informací/7.1.1 - Predlozeni informaci vedouci pov strane.md",
@@ -229,12 +234,6 @@
     "02_Oblasti správy informací/1.1.3 - stanovit ukoly ktere maji byt poskytovany v.md",
     "02_Oblasti správy informací/3.7.2 - Shrnuti posouzeni v odpovedi.md",
     "02_Oblasti správy informací/3.7.4 - Posouzeni rizik v odpovedi.md",
-    "02_Oblasti správy informací/4.1.1 - Vypracovat plan realizace BIM BEP.md",
-    "02_Oblasti správy informací/4.1.2 - Potvrzeni jmen jednotlivcu.md",
-    "02_Oblasti správy informací/4.1.6 - Dohodnout dodatky a zmeny standardu.md",
-    "02_Oblasti správy informací/4.1.7 - Potvrzeni nasazeni SW HW IT.md",
-    "02_Oblasti správy informací/4.3.6 - Stanovit podporne informace.md",
-    "02_Oblasti správy informací/4.4.1 - Vytvorit sablonu TIDP.md",
     "site/public/Bez-názvu.canvas"
   ]
 }
