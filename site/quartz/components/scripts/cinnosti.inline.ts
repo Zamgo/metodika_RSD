@@ -156,9 +156,7 @@ async function setupCinnosti(root: HTMLElement, currentSlug: FullSlug, data: Cin
   const clearBtn = root.querySelector(".cinnosti-clear-filters") as HTMLButtonElement
   const wideBtn = root.querySelector(".cinnosti-wide-toggle") as HTMLButtonElement | null
   const colToggleBtn = root.querySelector(".cinnosti-column-toggle-btn") as HTMLButtonElement | null
-  const colTogglePanel = root.querySelector(
-    ".cinnosti-column-toggle-panel",
-  ) as HTMLElement | null
+  const colTogglePanel = root.querySelector(".cinnosti-column-toggle-panel") as HTMLElement | null
   if (!headRow || !tbody || !textInput || !countEl || !viewSelect) return
 
   const rows: Row[] = []
@@ -227,7 +225,11 @@ async function setupCinnosti(root: HTMLElement, currentSlug: FullSlug, data: Cin
   updateWideBtn()
 
   if (wideBtn) {
+    let wideToggleLock = false
     const onWideToggle = () => {
+      if (wideToggleLock) return
+      wideToggleLock = true
+
       const isWide = document.body.dataset.cinnostiWide === "on"
       if (isWide) {
         delete document.body.dataset.cinnostiWide
@@ -237,6 +239,10 @@ async function setupCinnosti(root: HTMLElement, currentSlug: FullSlug, data: Cin
         localStorage.setItem(LS_WIDE_KEY, "on")
       }
       updateWideBtn()
+
+      window.setTimeout(() => {
+        wideToggleLock = false
+      }, 150)
     }
     wideBtn.addEventListener("click", onWideToggle)
     window.addCleanup(() => wideBtn.removeEventListener("click", onWideToggle))
@@ -301,6 +307,15 @@ async function setupCinnosti(root: HTMLElement, currentSlug: FullSlug, data: Cin
       const input = e.target as HTMLInputElement
       if (input.tagName !== "INPUT") return
       const col = input.value
+      const allCols = getColumnsForView(views[activeViewIdx])
+      const currentlyVisibleCount = allCols.filter((c) => !hiddenCols.has(c)).length
+
+      // Keep at least one column visible so the table cannot render "empty".
+      if (!input.checked && currentlyVisibleCount <= 1) {
+        input.checked = true
+        return
+      }
+
       if (input.checked) {
         hiddenCols.delete(col)
       } else {
@@ -371,7 +386,8 @@ async function setupCinnosti(root: HTMLElement, currentSlug: FullSlug, data: Cin
     tbody.innerHTML = ""
     const activeView = views[activeViewIdx]
     const allCols = getColumnsForView(activeView)
-    const cols = allCols.filter((c) => !hiddenCols.has(c))
+    const visibleCols = allCols.filter((c) => !hiddenCols.has(c))
+    const cols = visibleCols.length > 0 ? visibleCols : [allCols[0] ?? "file.name"]
     renderHeader(cols)
 
     let sortedRows: Row[]
