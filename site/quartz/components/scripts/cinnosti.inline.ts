@@ -1,4 +1,5 @@
 import { FullSlug, resolveRelative } from "../../util/path"
+import { load as yamlLoad } from "js-yaml"
 import {
   CinnostiIndex,
   getMetaArray,
@@ -10,6 +11,17 @@ import {
 const FILTER_DIMS = ["zdroj_typ", "typ"] as const
 const ARRAY_DIMS = ["faze", "role"] as const
 
+type BaseConfig = {
+  properties?: Record<string, { displayName?: string }>
+  views?: {
+    name?: string
+    filters?: { and?: string[]; or?: string[] }
+    order?: string[]
+  }[]
+}
+
+type BaseView = NonNullable<BaseConfig["views"]>[number]
+
 function escapeHtml(s: string): string {
   return s
     .replace(/&/g, "&amp;")
@@ -18,14 +30,55 @@ function escapeHtml(s: string): string {
     .replace(/"/g, "&quot;")
 }
 
+function prettyLabel(key: string): string {
+  if (key === "file.name") return "Činnost"
+  return key
+}
+
+function readBaseConfig(root: HTMLElement): BaseConfig {
+  const script = root.querySelector(".cinnosti-base-config") as HTMLScriptElement | null
+  const raw = script?.textContent?.trim() ?? ""
+  if (!raw) return {}
+  try {
+    const parsed = yamlLoad(raw)
+    if (!parsed || typeof parsed !== "object") return {}
+    return parsed as BaseConfig
+  } catch {
+    return {}
+  }
+}
+
+function exprMatches(meta: Record<string, unknown> | undefined, expr: string): boolean {
+  const s = expr.trim()
+  const eq = s.match(/^(.+?)\s*==\s*"([^"]*)"$/)
+  if (eq) return getMetaString(meta, eq[1].trim()) === eq[2]
+  const neq = s.match(/^(.+?)\s*!=\s*"([^"]*)"$/)
+  if (neq) return getMetaString(meta, neq[1].trim()) !== neq[2]
+  return true
+}
+
+function rowMatchesViewFilters(
+  meta: Record<string, unknown> | undefined,
+  view?: BaseView,
+): boolean {
+  if (!view?.filters) return true
+  const andExpr = Array.isArray(view.filters.and) ? view.filters.and : []
+  const orExpr = Array.isArray(view.filters.or) ? view.filters.or : []
+  if (andExpr.length > 0 && !andExpr.every((expr) => exprMatches(meta, expr))) return false
+  if (orExpr.length > 0 && !orExpr.some((expr) => exprMatches(meta, expr))) return false
+  return true
+}
+
 function rowMatchesFilters(
   meta: Record<string, unknown> | undefined,
   textQ: string,
   selected: Map<string, Set<string>>,
   title: string,
+  view?: BaseView,
 ): boolean {
   const tq = textQ.trim().toLowerCase()
   if (tq && !title.toLowerCase().includes(tq)) return false
+  if (!rowMatchesViewFilters(meta, view)) return false
 
   for (const dim of FILTER_DIMS) {
     const want = selected.get(dim)
@@ -66,11 +119,13 @@ function collectOptions(data: CinnostiIndex): Map<string, Set<string>> {
 }
 
 async function setupCinnosti(root: HTMLElement, currentSlug: FullSlug, data: CinnostiIndex) {
+  const headRow = root.querySelector(".cinnosti-head-row") as HTMLElement
   const tbody = root.querySelector(".cinnosti-tbody") as HTMLElement
   const textInput = root.querySelector(".cinnosti-filter-text") as HTMLInputElement
+  const viewSelect = root.querySelector(".cinnosti-view-select") as HTMLSelectElement
   const countEl = root.querySelector(".cinnosti-count") as HTMLElement
   const clearBtn = root.querySelector(".cinnosti-clear-filters") as HTMLButtonElement
-  if (!tbody || !textInput || !countEl) return
+  if (!headRow || !tbody || !textInput || !countEl || !viewSelect) return
 
   const rows: { slug: FullSlug; title: string; fp: string; meta?: Record<string, unknown> }[] = []
   for (const [slug, details] of Object.entries(data)) {
@@ -95,35 +150,69 @@ async function setupCinnosti(root: HTMLElement, currentSlug: FullSlug, data: Cin
   for (const dim of [...FILTER_DIMS, ...ARRAY_DIMS]) selected.set(dim, new Set())
 
   const ds = root.dataset
+  const baseConfig = readBaseConfig(root)
+  const allViews = Array.isArray(baseConfig.views) ? baseConfig.views.filter((v) => !!v?.name) : []
+  const fallbackView: BaseView = {
+    name: ds.strViewAll ?? "Vše",
+    order: [
+      "file.name",
+      "oznaceni",
+      "typ",
+      "zdroj_typ",
+      "zdroj",
+      "faze",
+      "role",
+      "raci_poverejici",
+      "raci_vedouci_poverena",
+      "raci_poverena",
+      "raci_spravce_stavby",
+      "raci_bim_koordinator",
+      "stav",
+    ],
+  }
+  const views = allViews.length > 0 ? allViews : [fallbackView]
+  let activeViewIdx = 0
+
+  const getColumnsForView = (view?: BaseView): string[] => {
+    const cols = Array.isArray(view?.order) ? view!.order!.filter(Boolean) : []
+    return cols.length > 0 ? cols : fallbackView.order!
+  }
 
   function resolveUrl(slug: FullSlug): string {
     return new URL(resolveRelative(currentSlug, slug), location.toString()).pathname
   }
 
+  function renderHeader(cols: string[]) {
+    headRow.innerHTML = cols
+      .map((col) => {
+        const label =
+          col === "file.name"
+            ? "Činnost"
+            : (baseConfig.properties?.[col]?.displayName ?? prettyLabel(col))
+        return `<th>${escapeHtml(label)}</th>`
+      })
+      .join("")
+  }
+
+  function getCellHtml(row: (typeof rows)[number], col: string): string {
+    if (col === "file.name") {
+      return `<a href="${escapeHtml(resolveUrl(row.slug))}">${escapeHtml(row.title)}</a>`
+    }
+    return escapeHtml(getMetaString(row.meta, col))
+  }
+
   function render() {
     const textQ = textInput.value
     tbody.innerHTML = ""
+    const activeView = views[activeViewIdx]
+    const cols = getColumnsForView(activeView)
+    renderHeader(cols)
     let n = 0
     for (const row of rows) {
-      if (!rowMatchesFilters(row.meta, textQ, selected, row.title)) continue
+      if (!rowMatchesFilters(row.meta, textQ, selected, row.title, activeView)) continue
       n++
-      const m = row.meta
       const tr = document.createElement("tr")
-      tr.innerHTML = `
-        <td class="cinnosti-col-title"><a href="${escapeHtml(resolveUrl(row.slug))}">${escapeHtml(row.title)}</a></td>
-        <td>${escapeHtml(getMetaString(m, "oznaceni"))}</td>
-        <td>${escapeHtml(getMetaString(m, "typ"))}</td>
-        <td>${escapeHtml(getMetaString(m, "zdroj_typ"))}</td>
-        <td class="cinnosti-col-zdroj">${escapeHtml(getMetaString(m, "zdroj"))}</td>
-        <td>${escapeHtml(getMetaString(m, "faze"))}</td>
-        <td>${escapeHtml(getMetaString(m, "role"))}</td>
-        <td>${escapeHtml(getMetaString(m, "raci_poverejici"))}</td>
-        <td>${escapeHtml(getMetaString(m, "raci_vedouci_poverena"))}</td>
-        <td>${escapeHtml(getMetaString(m, "raci_poverena"))}</td>
-        <td>${escapeHtml(getMetaString(m, "raci_spravce_stavby"))}</td>
-        <td>${escapeHtml(getMetaString(m, "raci_bim_koordinator"))}</td>
-        <td>${escapeHtml(getMetaString(m, "stav"))}</td>
-      `
+      tr.innerHTML = cols.map((col) => `<td>${getCellHtml(row, col)}</td>`).join("")
       tbody.appendChild(tr)
     }
     countEl.textContent = String(n)
@@ -137,7 +226,9 @@ async function setupCinnosti(root: HTMLElement, currentSlug: FullSlug, data: Cin
   }
 
   for (const dim of [...FILTER_DIMS, ...ARRAY_DIMS]) {
-    const wrap = root.querySelector(`.cinnosti-filter[data-dim="${CSS.escape(dim)}"]`) as HTMLElement | null
+    const wrap = root.querySelector(
+      `.cinnosti-filter[data-dim="${CSS.escape(dim)}"]`,
+    ) as HTMLElement | null
     if (!wrap) continue
     const select = wrap.querySelector("select") as HTMLSelectElement
     if (!select) continue
@@ -161,11 +252,26 @@ async function setupCinnosti(root: HTMLElement, currentSlug: FullSlug, data: Cin
   textInput.addEventListener("input", onInput)
   window.addCleanup(() => textInput.removeEventListener("input", onInput))
 
+  viewSelect.innerHTML = views
+    .map(
+      (view, idx) =>
+        `<option value="${idx}">${escapeHtml(view.name ?? `View ${idx + 1}`)}</option>`,
+    )
+    .join("")
+  const onViewChange = () => {
+    activeViewIdx = Number.parseInt(viewSelect.value || "0", 10) || 0
+    render()
+  }
+  viewSelect.addEventListener("change", onViewChange)
+  window.addCleanup(() => viewSelect.removeEventListener("change", onViewChange))
+
   const onClear = () => {
     textInput.value = ""
     for (const dim of [...FILTER_DIMS, ...ARRAY_DIMS]) {
       selected.get(dim)!.clear()
-      const wrap = root.querySelector(`.cinnosti-filter[data-dim="${CSS.escape(dim)}"]`) as HTMLElement | null
+      const wrap = root.querySelector(
+        `.cinnosti-filter[data-dim="${CSS.escape(dim)}"]`,
+      ) as HTMLElement | null
       const sel = wrap?.querySelector("select") as HTMLSelectElement | null
       if (sel) sel.value = ""
     }

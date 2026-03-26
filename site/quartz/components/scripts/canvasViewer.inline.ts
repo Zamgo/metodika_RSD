@@ -29,6 +29,7 @@ interface CanvasEdge {
 interface CanvasData {
   nodes: CanvasNode[]
   edges: CanvasEdge[]
+  wikiLinkMap?: Record<string, string>
 }
 
 interface Point {
@@ -133,11 +134,38 @@ function slugifyAnchor(anchor: string): string {
     .replace(/\s+/g, "-")
 }
 
-function buildInternalLink(target: string, baseUrl: string): string {
+function normalizeLookupKey(text: string): string {
+  return text
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .trim()
+    .toLowerCase()
+}
+
+function resolveWikiPath(rawPath: string, wikiLinkMap: Record<string, string> | undefined): string {
+  if (!rawPath) return ""
+  if (rawPath.includes("/")) return slugifyPath(rawPath)
+
+  if (!wikiLinkMap) return slugifyPath(rawPath)
+
+  const direct = wikiLinkMap[rawPath]
+  if (direct) return direct
+
+  const normalized = wikiLinkMap[normalizeLookupKey(rawPath)]
+  if (normalized) return normalized
+
+  return slugifyPath(rawPath)
+}
+
+function buildInternalLink(
+  target: string,
+  baseUrl: string,
+  wikiLinkMap?: Record<string, string>,
+): string {
   const [rawPath, rawAnchor] = target.split("#", 2)
   const pathPart = (rawPath || "").trim()
   const anchorPart = (rawAnchor || "").trim()
-  const slug = pathPart ? slugifyPath(pathPart) : ""
+  const slug = pathPart ? resolveWikiPath(pathPart, wikiLinkMap) : ""
   const resolved = resolveToAbsolute(slug ? `${baseUrl}/${slug}` : baseUrl)
   return resolved + (anchorPart ? `#${encodeURIComponent(slugifyAnchor(anchorPart))}` : "")
 }
@@ -215,14 +243,18 @@ function buildFileNodeContent(node: CanvasNode, baseUrl: string): HTMLElement {
   return container
 }
 
-function renderTextMarkup(text: string, baseUrl: string): string {
+function renderTextMarkup(
+  text: string,
+  baseUrl: string,
+  wikiLinkMap?: Record<string, string>,
+): string {
   const escaped = text.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;")
 
   const withWikiLinks = escaped.replace(
     /\[\[([^\]|#]+)?(?:#([^\]|]+))?(?:\|([^\]]+))?\]\]/g,
     (_all, target, anchor, alias) => {
       const linkTarget = `${target || ""}${anchor ? `#${anchor}` : ""}`
-      const href = buildInternalLink(linkTarget, baseUrl)
+      const href = buildInternalLink(linkTarget, baseUrl, wikiLinkMap)
       const label = (alias || target || anchor || "").trim() || "Odkaz"
       return `<a class="internal" href="${href}">${label}</a>`
     },
@@ -235,11 +267,15 @@ function renderTextMarkup(text: string, baseUrl: string): string {
   return withHeading.replace(/\n/g, "<br/>")
 }
 
-function buildTextNodeContent(node: CanvasNode, baseUrl: string): HTMLElement {
+function buildTextNodeContent(
+  node: CanvasNode,
+  baseUrl: string,
+  wikiLinkMap?: Record<string, string>,
+): HTMLElement {
   const div = document.createElement("div")
   div.className = "canvas-node-body canvas-text-node"
   const text = node.text || ""
-  div.innerHTML = renderTextMarkup(text, baseUrl)
+  div.innerHTML = renderTextMarkup(text, baseUrl, wikiLinkMap)
   return div
 }
 
@@ -393,7 +429,7 @@ function renderCanvas(container: HTMLElement, data: CanvasData, baseUrl: string)
     } else if (node.type === "link" && node.url) {
       content = buildLinkNodeContent(node)
     } else {
-      content = buildTextNodeContent(node, baseUrl)
+      content = buildTextNodeContent(node, baseUrl, data.wikiLinkMap)
     }
 
     fo.appendChild(content)

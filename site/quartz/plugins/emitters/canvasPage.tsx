@@ -52,6 +52,14 @@ interface CanvasRaw {
   edges: CanvasEdgeRaw[]
 }
 
+function normalizeLookupKey(text: string): string {
+  return text
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .trim()
+    .toLowerCase()
+}
+
 function isJsonCanvas(data: unknown): data is CanvasRaw {
   if (!data || typeof data !== "object") return false
   const o = data as Record<string, unknown>
@@ -77,6 +85,34 @@ function slugifyMdPath(fp: string): string {
     )
     .join("/")
     .replace(/\/$/, "")
+}
+
+function buildWikiLinkMap(markdownFiles: string[]): Record<string, string> {
+  const linkMap: Record<string, string> = {}
+
+  for (const fp of markdownFiles) {
+    const noExt = fp.replace(/\.md$/i, "")
+    const slashPath = noExt.replace(/\\/g, "/")
+    const baseName = path.basename(slashPath)
+    const slug = slugifyMdPath(slashPath)
+    const variants = new Set<string>([
+      noExt,
+      slashPath,
+      baseName,
+      baseName.replace(/-/g, " "),
+      normalizeLookupKey(noExt),
+      normalizeLookupKey(slashPath),
+      normalizeLookupKey(baseName),
+      normalizeLookupKey(baseName.replace(/-/g, " ")),
+    ])
+
+    for (const key of variants) {
+      if (!key) continue
+      linkMap[key] = slug
+    }
+  }
+
+  return linkMap
 }
 
 /**
@@ -201,6 +237,8 @@ export const CanvasPage: QuartzEmitterPlugin = () => {
       const { argv, cfg } = ctx
       const ignorePatterns = cfg.configuration.ignorePatterns
       const canvasFiles = await glob("**/*.canvas", argv.directory, ignorePatterns)
+      const markdownFiles = await glob("**/*.md", argv.directory, ignorePatterns)
+      const wikiLinkMap = buildWikiLinkMap(markdownFiles)
 
       // Build a slug → [tree, vfile] lookup from all processed content
       const contentMap = new Map<string, [Root, any]>()
@@ -231,6 +269,7 @@ export const CanvasPage: QuartzEmitterPlugin = () => {
         // Build the embedded data: canvas JSON + pre-rendered HTML per node
         const embeddedData = {
           ...canvasData,
+          wikiLinkMap,
           nodes: canvasData.nodes.map((n) => ({
             ...n,
             renderedHtml: renderedContent.get(n.id) || undefined,
@@ -307,9 +346,16 @@ export const CanvasPage: QuartzEmitterPlugin = () => {
           }
           if (!isJsonCanvas(canvasData)) continue
 
+          const markdownFiles = await glob(
+            "**/*.md",
+            argv.directory,
+            cfg.configuration.ignorePatterns,
+          )
+          const wikiLinkMap = buildWikiLinkMap(markdownFiles)
           const renderedContent = preRenderNodeContent(canvasData, contentMap)
           const embeddedData = {
             ...canvasData,
+            wikiLinkMap,
             nodes: canvasData.nodes.map((n) => ({
               ...n,
               renderedHtml: renderedContent.get(n.id) || undefined,

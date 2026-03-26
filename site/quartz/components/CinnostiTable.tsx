@@ -1,10 +1,19 @@
 import { QuartzComponent, QuartzComponentConstructor, QuartzComponentProps } from "./types"
 import style from "./styles/cinnosti.scss"
+import fs from "node:fs"
+import path from "node:path"
 // @ts-ignore
 import script from "./scripts/cinnosti.inline"
 
 const CinnostiTable: QuartzComponent = ({ cfg }: QuartzComponentProps) => {
   const cs = cfg.locale.startsWith("cs")
+  const basePath = path.resolve(
+    process.cwd(),
+    "..",
+    "02_Oblasti správy informací",
+    "0 - Seznam činností.base",
+  )
+  const baseText = fs.existsSync(basePath) ? fs.readFileSync(basePath, "utf8") : ""
   return (
     <div
       id="cinnosti-browser"
@@ -12,6 +21,8 @@ const CinnostiTable: QuartzComponent = ({ cfg }: QuartzComponentProps) => {
       data-str-zdroj-typ={cs ? "Typ zdroje" : "Source type"}
       data-str-faze={cs ? "Fáze" : "Phase"}
       data-str-role={cs ? "Role" : "Role"}
+      data-str-view={cs ? "Pohled" : "View"}
+      data-str-view-all={cs ? "Vše" : "All"}
     >
       <div class="cinnosti-toolbar">
         <input
@@ -21,6 +32,12 @@ const CinnostiTable: QuartzComponent = ({ cfg }: QuartzComponentProps) => {
           autocomplete="off"
           aria-label={cs ? "Filtrovat podle názvu" : "Filter by title"}
         />
+        <div class="cinnosti-filter">
+          <label>
+            <span>{cs ? "Pohled" : "View"}</span>
+            <select class="cinnosti-view-select" aria-label={cs ? "Pohled" : "View"} />
+          </label>
+        </div>
         <div class="cinnosti-filter" data-dim="typ">
           <label>
             <span>{cs ? "Typ" : "Type"}</span>
@@ -56,25 +73,14 @@ const CinnostiTable: QuartzComponent = ({ cfg }: QuartzComponentProps) => {
       <div class="cinnosti-table-scroll">
         <table class="cinnosti-table">
           <thead>
-            <tr>
-              <th>{cs ? "Činnost" : "Activity"}</th>
-              <th>ID</th>
-              <th>{cs ? "Typ" : "Type"}</th>
-              <th>{cs ? "Typ zdroje" : "Src type"}</th>
-              <th>{cs ? "Zdroj" : "Source"}</th>
-              <th>{cs ? "Fáze" : "Phase"}</th>
-              <th>{cs ? "Role" : "Role"}</th>
-              <th>R (Obj.)</th>
-              <th>R (Ved.)</th>
-              <th>R (Pod.)</th>
-              <th>SpSt</th>
-              <th>BIM k.</th>
-              <th>{cs ? "Stav" : "Status"}</th>
-            </tr>
+            <tr class="cinnosti-head-row" />
           </thead>
           <tbody class="cinnosti-tbody" />
         </table>
       </div>
+      <script class="cinnosti-base-config" type="application/x-yaml">
+        {baseText}
+      </script>
     </div>
   )
 }

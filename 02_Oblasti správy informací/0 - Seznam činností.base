@@ -36,14 +36,16 @@ views:
       - popis
       - typ
       - oznaceni
-      - faze
-      - zdroj
       - R - Odpovědnost za provádění činnosti
       - A - Právní odpovědnost za dokončení činnosti
       - C - Konzultace v průběhu činnosti
       - I - Informování po dokončení činnosti
+      - faze
+      - zdroj
       - stav
     sort:
+      - property: R - Odpovědnost za provádění činnosti
+        direction: DESC
       - property: procesni_oblast
         direction: ASC
       - property: pracovni_balicek
@@ -54,11 +56,11 @@ views:
         direction: ASC
     columnSize:
       note.pracovni_balicek: 383
-      note.oznaceni: 107
       file.name: 650
       note.popis: 332
       note.typ: 163
-      note.R - Odpovědnost za provádění činnosti: 74
+      note.oznaceni: 107
+      note.R - Odpovědnost za provádění činnosti: 262
   - type: table
     name: Procesní oblasti
     filters:
