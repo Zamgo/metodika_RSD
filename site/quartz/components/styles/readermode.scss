@@ -22,10 +22,10 @@
 }
 
 :root[reader-mode="on"] {
-  & .sidebar.left,
-  & .sidebar.right {
-    opacity: 0;
-    transition: opacity 0.2s ease;
+  & .sidebar.left .graph,
+  & .sidebar.right .graph {
+    display: none !important;
+    transition: none;
 
     &:hover {
       opacity: 1;

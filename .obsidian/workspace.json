@@ -8,34 +8,20 @@
         "type": "tabs",
         "children": [
           {
-            "id": "64b7e7f1c1270927",
+            "id": "2688640799de1ad3",
             "type": "leaf",
             "state": {
               "type": "markdown",
               "state": {
-                "file": "02_Oblasti správy informací/Konfigurace projektového nástroje CDE.md",
+                "file": "02_Oblasti správy informací/1 - Posouzení a zohlednění potřeb.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "Konfigurace projektového nástroje CDE"
-            }
-          },
-          {
-            "id": "2688640799de1ad3",
-            "type": "leaf",
-            "state": {
-              "type": "bases",
-              "state": {
-                "file": "02_Oblasti správy informací/0 - Seznam činností.base",
-                "viewName": "Všechny činnosti (bez rozcestníků)"
-              },
-              "icon": "lucide-table",
-              "title": "0 - Seznam činností"
+              "title": "1 - Posouzení a zohlednění potřeb"
             }
           }
-        ],
-        "currentTab": 1
+        ]
       }
     ],
     "direction": "vertical"
@@ -200,30 +186,38 @@
   },
   "active": "2688640799de1ad3",
   "lastOpenFiles": [
-    "site/public/DiMS.html",
-    "site/public/02_Oblasti-správy-informací/2.3---Stanovení-požadavků-na-odpověď-na-veřejnou-soutěž-a-hodnoticích-kritérií.html",
-    "site/public/tags/soubory.html",
-    "site/public/02_Oblasti-správy-informací/2.2.3---Zpristupneni-referencnich-informaci.html",
-    "site/public/DSS.html",
-    "site/public/tags/obsidian.html",
-    "site/public/02_Oblasti-správy-informací/2.2.2---Stanoveni-vhodnosti-pouziti-informaci.html",
-    "site/public/tags/odkazy.html",
-    "site/public/02_Oblasti-správy-informací/2.2.1---Shromazdeni-referencnich-informaci.html",
-    "site/public/tags/nazvy_souboru.html",
-    "site/public/02_Oblasti-správy-informací/2.2---Shromáždění-referenčních-informací-a-sdílených-zdrojů.html",
-    "site/public/00_Podklady/rsd-logo-sirkove-2c-barevne-rgb.svg",
     "site/public/06_Diagramy/Tým_správce_stavby_hierachie.canvas",
+    "02_Oblasti správy informací/1 - Posouzení a zohlednění potřeb.md",
+    "site/public/03_CDE_workflow/0_Diagram.canvas",
+    "site/public/sprava-obsahu/ciselnik-workflow.html",
+    "site/public/tags/editorske_doplneni.html",
+    "site/public/tags/zdroje.html",
+    "site/public/sprava-obsahu/ciselnik-fazi.html",
+    "site/public/sprava-obsahu/ciselnik-roli.html",
+    "site/public/sprava-obsahu/pravidla-metadat.html",
+    "site/public/sprava-obsahu/pravidla-nazvu-souboru.html",
+    "site/public/sprava-obsahu/pravidla-odkazovani.html",
+    "site/public/sprava-obsahu/zdroje-a-editorske-doplneni.html",
+    "site/public/Pravidla-názvu-souboru.html",
+    "site/public/static/rsd-logo.svg",
+    "site/public/99_Media/obrazky/Pasted-image-20260319095752.png",
+    "site/public/99_Media/obrazky/Pasted-image-20260319095840.png",
+    "site/public/99_Media/obrazky/Pasted-image-20260319095434.png",
+    "site/public/99_Media/obrazky/Pasted-image-20260319095907.png",
+    "site/public/99_Media/obrazky/Pasted-image-20260319095923.png",
+    "site/public/99_Media/obrazky/Pasted-image-20260319095826.png",
+    "03_CDE_workflow/0_Diagram.canvas",
+    "02_Oblasti správy informací/Konfigurace projektového nástroje CDE.md",
+    "site/public/00_Podklady/rsd-logo-sirkove-2c-barevne-rgb.svg",
     "site/public/static/og-image.png",
     "site/public/static/icon.png",
     "02_Oblasti správy informací/4.6.8 - Provést změnový kontrolní proces související se pověřovacími dokumenty vedoucí pověřené strany.md",
     "02_Oblasti správy informací/0 - Seznam činností.md",
-    "02_Oblasti správy informací/Konfigurace projektového nástroje CDE.md",
     "02_Oblasti správy informací/7.1.1 - Predlozeni informaci vedouci pov strane.md",
     "02_Oblasti správy informací/4.1.3 - aktualizaci strategie předávání informací realizačního týmu (podle požadavků);.md",
     "02_Oblasti správy informací/2.1.3 - Stanovení úrovně informačních potřeb požadovanou pro splnění jednotlivých požadavků na informace.md",
     "02_Oblasti správy informací/1.2 - Stanovení projektových požadavků na informace (PIR).md",
     "02_Oblasti správy informací/1.1 - Pověření jednotlivců k plnění funkcí při managementu informací.md",
-    "02_Oblasti správy informací/1 - Posouzení a zohlednění potřeb.md",
     "02_Oblasti správy informací/6.2.3 - 6.2.3 - Prostorově koordinovat geometrické modely s dalšími geometrickými modely sdílenými s příslušnou vhodností použití, umístěnými v projektovém společném datovém prostředí.md",
     "02_Oblasti správy informací/6.2.2 - Koordinace a krizove odkazy informaci.md",
     "02_Oblasti správy informací/6.2.1 - Tvořit informace v souladu s příslušným TIDP.md",
@@ -241,15 +235,6 @@
     "02_Oblasti správy informací/4.1.7 - Potvrzeni nasazeni SW HW IT.md",
     "02_Oblasti správy informací/4.3.6 - Stanovit podporne informace.md",
     "02_Oblasti správy informací/4.4.1 - Vytvorit sablonu TIDP.md",
-    "99_Media/obrazky/Pasted image 20260319095434.png",
-    "99_Media/obrazky/Pasted image 20260319095752.png",
-    "03_CDE_workflow/0_Diagram.canvas",
-    "site/public/99_Media/obrazky/metodika-rsd-plzen-image5.png",
-    "site/public/99_Media/obrazky/zaklady_image100.png",
-    "site/public/99_Media/obrazky/zaklady_image101.png",
-    "site/public/99_Media/obrazky/zaklady_image102.png",
-    "site/public/99_Media/obrazky/zaklady_image103.jpeg",
-    "site/public/03_CDE_workflow/0_Diagram.canvas",
     "site/public/Bez-názvu.canvas"
   ]
 }

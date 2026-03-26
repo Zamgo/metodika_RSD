@@ -355,24 +355,19 @@ ul.toc-content.overflow > li > a.in-view {
 
 /* ─── Graph: move under logo on mobile ───────────────────────────── */
 @media all and ($mobile) {
-  // Until the left explorer is opened, hide the graph (matches behavior of left panel).
-  #quartz-body .sidebar.left .graph {
-    display: none;
-    width: 100%;
+  // Ensure the graph can take a full-width row under the logo.
+  #quartz-body .sidebar.left {
+    flex-wrap: wrap;
   }
 
-  // When the explorer drawer is expanded, show the graph under the logo.
-  #quartz-body .sidebar.left:has(.explorer:not(.collapsed)) .graph {
+  // Place the graph directly under the logo (book icon toggles visibility via `reader-mode`).
+  #quartz-body .sidebar.left .graph {
     display: block;
+    width: 100%;
     flex: 0 0 100%;
     position: relative;
-    // Keep above the explorer drawer overlay (`.explorer-content` uses z-index: 100).
-    z-index: 101;
-  }
-
-  // Ensure the graph can take a full-width row under the logo.
-  #quartz-body .sidebar.left:has(.explorer:not(.collapsed)) {
-    flex-wrap: wrap;
+    // Keep above main content while the explorer drawer overlay is above itself (`z-index: 100`).
+    z-index: 1;
   }
 }
 

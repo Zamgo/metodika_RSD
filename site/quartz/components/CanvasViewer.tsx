@@ -68,6 +68,9 @@ const style = `
   line-height: 1.55;
   color: var(--darkgray);
   font-family: var(--bodyFont);
+  width: 100%;
+  height: 100%;
+  box-sizing: border-box;
 }
 .canvas-text-node {
   display: flex;
@@ -75,6 +78,8 @@ const style = `
   justify-content: center;
   text-align: center;
   font-weight: 600;
+  padding: 0;
+  line-height: 1.3;
 }
 .canvas-node-body h1,
 .canvas-node-body h2,
