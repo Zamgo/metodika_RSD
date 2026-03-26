@@ -11,6 +11,9 @@ import {
 const FILTER_DIMS = ["zdroj_typ", "typ"] as const
 const ARRAY_DIMS = ["faze", "role"] as const
 
+const LS_WIDE_KEY = "cinnosti-wide"
+const LS_HIDDEN_COLS_PREFIX = "cinnosti-hidden-cols:"
+
 type BaseConfig = {
   properties?: Record<string, { displayName?: string }>
   views?: {
@@ -21,6 +24,15 @@ type BaseConfig = {
 }
 
 type BaseView = NonNullable<BaseConfig["views"]>[number]
+
+type SortState = { col: string; dir: "asc" | "desc" } | null
+
+type Row = {
+  slug: FullSlug
+  title: string
+  fp: string
+  meta?: Record<string, unknown>
+}
 
 function escapeHtml(s: string): string {
   return s
@@ -118,6 +130,23 @@ function collectOptions(data: CinnostiIndex): Map<string, Set<string>> {
   return out
 }
 
+function compareRowsByCol(a: Row, b: Row, col: string): number {
+  if (col === "file.name") {
+    return a.title.localeCompare(b.title, "cs")
+  }
+  if (col === "oznaceni") {
+    const ka = sortKeyForRow(a.meta, a.title)
+    const kb = sortKeyForRow(b.meta, b.title)
+    return ka.localeCompare(kb, undefined, { numeric: true })
+  }
+  const va = getMetaString(a.meta, col)
+  const vb = getMetaString(b.meta, col)
+  if (!va && !vb) return 0
+  if (!va) return 1
+  if (!vb) return -1
+  return va.localeCompare(vb, "cs", { numeric: true })
+}
+
 async function setupCinnosti(root: HTMLElement, currentSlug: FullSlug, data: CinnostiIndex) {
   const headRow = root.querySelector(".cinnosti-head-row") as HTMLElement
   const tbody = root.querySelector(".cinnosti-tbody") as HTMLElement
@@ -125,9 +154,14 @@ async function setupCinnosti(root: HTMLElement, currentSlug: FullSlug, data: Cin
   const viewSelect = root.querySelector(".cinnosti-view-select") as HTMLSelectElement
   const countEl = root.querySelector(".cinnosti-count") as HTMLElement
   const clearBtn = root.querySelector(".cinnosti-clear-filters") as HTMLButtonElement
+  const wideBtn = root.querySelector(".cinnosti-wide-toggle") as HTMLButtonElement | null
+  const colToggleBtn = root.querySelector(".cinnosti-column-toggle-btn") as HTMLButtonElement | null
+  const colTogglePanel = root.querySelector(
+    ".cinnosti-column-toggle-panel",
+  ) as HTMLElement | null
   if (!headRow || !tbody || !textInput || !countEl || !viewSelect) return
 
-  const rows: { slug: FullSlug; title: string; fp: string; meta?: Record<string, unknown> }[] = []
+  const rows: Row[] = []
   for (const [slug, details] of Object.entries(data)) {
     if (!isCinnostRow(details.filePath)) continue
     rows.push({
@@ -178,6 +212,136 @@ async function setupCinnosti(root: HTMLElement, currentSlug: FullSlug, data: Cin
     return cols.length > 0 ? cols : fallbackView.order!
   }
 
+  // ── Wide mode ──────────────────────────────────────────────────────────
+
+  const savedWide = localStorage.getItem(LS_WIDE_KEY)
+  if (savedWide === "on") document.body.dataset.cinnostiWide = "on"
+
+  function updateWideBtn() {
+    if (!wideBtn) return
+    const isWide = document.body.dataset.cinnostiWide === "on"
+    wideBtn.textContent = isWide
+      ? (wideBtn.dataset.labelOn ?? "Zúžit")
+      : (wideBtn.dataset.labelOff ?? "Rozšířit")
+  }
+  updateWideBtn()
+
+  if (wideBtn) {
+    const onWideToggle = () => {
+      const isWide = document.body.dataset.cinnostiWide === "on"
+      if (isWide) {
+        delete document.body.dataset.cinnostiWide
+        localStorage.setItem(LS_WIDE_KEY, "off")
+      } else {
+        document.body.dataset.cinnostiWide = "on"
+        localStorage.setItem(LS_WIDE_KEY, "on")
+      }
+      updateWideBtn()
+    }
+    wideBtn.addEventListener("click", onWideToggle)
+    window.addCleanup(() => wideBtn.removeEventListener("click", onWideToggle))
+  }
+
+  window.addCleanup(() => {
+    delete document.body.dataset.cinnostiWide
+  })
+
+  // ── Column toggle ─────────────────────────────────────────────────────
+
+  let hiddenCols = new Set<string>()
+
+  function hiddenColsKey(): string {
+    return LS_HIDDEN_COLS_PREFIX + (views[activeViewIdx]?.name ?? "default")
+  }
+
+  function loadHiddenCols() {
+    try {
+      const raw = localStorage.getItem(hiddenColsKey())
+      hiddenCols = raw ? new Set(JSON.parse(raw)) : new Set()
+    } catch {
+      hiddenCols = new Set()
+    }
+  }
+
+  function saveHiddenCols() {
+    localStorage.setItem(hiddenColsKey(), JSON.stringify([...hiddenCols]))
+  }
+
+  function getColLabel(col: string): string {
+    return col === "file.name"
+      ? "Činnost"
+      : (baseConfig.properties?.[col]?.displayName ?? prettyLabel(col))
+  }
+
+  function renderColumnPanel() {
+    if (!colTogglePanel) return
+    const allCols = getColumnsForView(views[activeViewIdx])
+    colTogglePanel.innerHTML = allCols
+      .map((col) => {
+        const label = getColLabel(col)
+        const checked = !hiddenCols.has(col) ? " checked" : ""
+        return `<label class="cinnosti-col-check"><input type="checkbox" value="${escapeHtml(col)}"${checked}><span>${escapeHtml(label)}</span></label>`
+      })
+      .join("")
+  }
+
+  loadHiddenCols()
+
+  if (colToggleBtn && colTogglePanel) {
+    const onColBtnClick = (e: Event) => {
+      e.stopPropagation()
+      colTogglePanel.classList.toggle("open")
+    }
+    colToggleBtn.addEventListener("click", onColBtnClick)
+
+    const onPanelClick = (e: Event) => e.stopPropagation()
+    colTogglePanel.addEventListener("click", onPanelClick)
+
+    const onColChange = (e: Event) => {
+      const input = e.target as HTMLInputElement
+      if (input.tagName !== "INPUT") return
+      const col = input.value
+      if (input.checked) {
+        hiddenCols.delete(col)
+      } else {
+        hiddenCols.add(col)
+      }
+      saveHiddenCols()
+      render()
+    }
+    colTogglePanel.addEventListener("change", onColChange)
+
+    const onDocClickClosePanel = () => colTogglePanel.classList.remove("open")
+    document.addEventListener("click", onDocClickClosePanel)
+
+    window.addCleanup(() => {
+      colToggleBtn.removeEventListener("click", onColBtnClick)
+      colTogglePanel.removeEventListener("click", onPanelClick)
+      colTogglePanel.removeEventListener("change", onColChange)
+      document.removeEventListener("click", onDocClickClosePanel)
+    })
+  }
+
+  // ── Sort ───────────────────────────────────────────────────────────────
+
+  let sortState: SortState = null
+
+  const onHeaderClick = (e: Event) => {
+    const th = (e.target as HTMLElement).closest("th[data-col]") as HTMLElement | null
+    if (!th) return
+    const col = th.dataset.col!
+    if (sortState?.col === col) {
+      sortState = sortState.dir === "asc" ? { col, dir: "desc" } : null
+    } else {
+      sortState = { col, dir: "asc" }
+    }
+    render()
+  }
+  headRow.addEventListener("click", onHeaderClick)
+  window.addCleanup(() => headRow.removeEventListener("click", onHeaderClick))
+
+  // ── Render ─────────────────────────────────────────────────────────────
+
   function resolveUrl(slug: FullSlug): string {
     return new URL(resolveRelative(currentSlug, slug), location.toString()).pathname
   }
@@ -185,16 +349,17 @@ async function setupCinnosti(root: HTMLElement, currentSlug: FullSlug, data: Cin
   function renderHeader(cols: string[]) {
     headRow.innerHTML = cols
       .map((col) => {
-        const label =
-          col === "file.name"
-            ? "Činnost"
-            : (baseConfig.properties?.[col]?.displayName ?? prettyLabel(col))
-        return `<th>${escapeHtml(label)}</th>`
+        const label = getColLabel(col)
+        let indicator = ""
+        if (sortState?.col === col) {
+          indicator = sortState.dir === "asc" ? " \u25B2" : " \u25BC"
+        }
+        return `<th data-col="${escapeHtml(col)}"><span class="cinnosti-th-label">${escapeHtml(label)}</span><span class="cinnosti-sort-indicator">${indicator}</span></th>`
       })
       .join("")
   }
 
-  function getCellHtml(row: (typeof rows)[number], col: string): string {
+  function getCellHtml(row: Row, col: string): string {
     if (col === "file.name") {
       return `<a href="${escapeHtml(resolveUrl(row.slug))}">${escapeHtml(row.title)}</a>`
     }
@@ -205,10 +370,22 @@ async function setupCinnosti(root: HTMLElement, currentSlug: FullSlug, data: Cin
     const textQ = textInput.value
     tbody.innerHTML = ""
     const activeView = views[activeViewIdx]
-    const cols = getColumnsForView(activeView)
+    const allCols = getColumnsForView(activeView)
+    const cols = allCols.filter((c) => !hiddenCols.has(c))
     renderHeader(cols)
+
+    let sortedRows: Row[]
+    if (sortState) {
+      sortedRows = [...rows].sort((a, b) => {
+        const cmp = compareRowsByCol(a, b, sortState!.col)
+        return sortState!.dir === "desc" ? -cmp : cmp
+      })
+    } else {
+      sortedRows = rows
+    }
+
     let n = 0
-    for (const row of rows) {
+    for (const row of sortedRows) {
       if (!rowMatchesFilters(row.meta, textQ, selected, row.title, activeView)) continue
       n++
       const tr = document.createElement("tr")
@@ -217,6 +394,8 @@ async function setupCinnosti(root: HTMLElement, currentSlug: FullSlug, data: Cin
     }
     countEl.textContent = String(n)
   }
+
+  // ── Dimension filters ──────────────────────────────────────────────────
 
   const dimLabels: Record<string, string> = {
     typ: ds.strTyp ?? "Typ",
@@ -260,6 +439,9 @@ async function setupCinnosti(root: HTMLElement, currentSlug: FullSlug, data: Cin
     .join("")
   const onViewChange = () => {
     activeViewIdx = Number.parseInt(viewSelect.value || "0", 10) || 0
+    loadHiddenCols()
+    sortState = null
+    renderColumnPanel()
     render()
   }
   viewSelect.addEventListener("change", onViewChange)
@@ -275,11 +457,13 @@ async function setupCinnosti(root: HTMLElement, currentSlug: FullSlug, data: Cin
       const sel = wrap?.querySelector("select") as HTMLSelectElement | null
       if (sel) sel.value = ""
     }
+    sortState = null
     render()
   }
   clearBtn?.addEventListener("click", onClear)
   window.addCleanup(() => clearBtn?.removeEventListener("click", onClear))
 
+  renderColumnPanel()
   render()
 }
 

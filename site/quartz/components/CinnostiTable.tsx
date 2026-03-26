@@ -23,6 +23,9 @@ const CinnostiTable: QuartzComponent = ({ cfg }: QuartzComponentProps) => {
       data-str-role={cs ? "Role" : "Role"}
       data-str-view={cs ? "Pohled" : "View"}
       data-str-view-all={cs ? "Vše" : "All"}
+      data-str-columns={cs ? "Sloupce" : "Columns"}
+      data-str-wide-on={cs ? "Zúžit" : "Narrow"}
+      data-str-wide-off={cs ? "Rozšířit" : "Expand"}
     >
       <div class="cinnosti-toolbar">
         <input
@@ -62,6 +65,20 @@ const CinnostiTable: QuartzComponent = ({ cfg }: QuartzComponentProps) => {
             <select aria-label={cs ? "Role" : "Role"} />
           </label>
         </div>
+        <div class="cinnosti-column-toggle">
+          <button type="button" class="cinnosti-column-toggle-btn">
+            {cs ? "Sloupce" : "Columns"}
+          </button>
+          <div class="cinnosti-column-toggle-panel" />
+        </div>
+        <button
+          type="button"
+          class="cinnosti-wide-toggle"
+          data-label-on={cs ? "Zúžit" : "Narrow"}
+          data-label-off={cs ? "Rozšířit" : "Expand"}
+        >
+          {cs ? "Rozšířit" : "Expand"}
+        </button>
         <button type="button" class="cinnosti-clear-filters">
           {cs ? "Zrušit filtry" : "Clear filters"}
         </button>
