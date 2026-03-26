@@ -38,9 +38,21 @@ export const sharedPageComponents: SharedLayout = {
     Component.ConditionalRender({
       component: Component.CinnostiTable(),
       condition: (page) => {
-        const slug = page.fileData.slug ?? ""
-        // Stránka může být v kořeni (Seznam-cinnosti) nebo ve složce (…/Seznam-cinnosti).
-        return slug === "Seznam-cinnosti" || slug.endsWith("/Seznam-cinnosti")
+        const slug = (page.fileData.slug ?? "").toLowerCase()
+        const permalink = String(page.fileData.frontmatter?.permalink ?? "")
+          .replace(/^\/+|\/+$/g, "")
+          .toLowerCase()
+        const title = String(page.fileData.frontmatter?.title ?? "").toLowerCase()
+
+        // Aktivuj tabulku činností podle permalinku i podle různých slug/title variant.
+        return (
+          permalink === "cinnosti" ||
+          title === "seznam činností" ||
+          slug === "seznam-cinnosti" ||
+          slug.endsWith("/seznam-cinnosti") ||
+          slug === "seznam-činností" ||
+          slug.endsWith("/seznam-činností")
+        )
       },
     }),
     Component.Backlinks(),

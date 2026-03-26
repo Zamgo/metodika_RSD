@@ -75,6 +75,10 @@ function isImageFile(fp: string): boolean {
   return /\.(png|jpg|jpeg|gif|svg|webp|avif|bmp|ico)$/i.test(fp)
 }
 
+function isHexColor(color: string): boolean {
+  return /^#(?:[0-9a-fA-F]{3}){1,2}$/.test(color)
+}
+
 function getAnchor(node: CanvasNode, side: string): Point {
   const cx = node.x + node.width / 2
   const cy = node.y + node.height / 2
@@ -119,6 +123,23 @@ function resolveToAbsolute(relativeUrl: string): string {
   } catch {
     return relativeUrl
   }
+}
+
+function slugifyAnchor(anchor: string): string {
+  return anchor
+    .trim()
+    .toLowerCase()
+    .replace(/[`~!@#$%^&*()+=\[\]{}\\|;:'",.<>/?]/g, "")
+    .replace(/\s+/g, "-")
+}
+
+function buildInternalLink(target: string, baseUrl: string): string {
+  const [rawPath, rawAnchor] = target.split("#", 2)
+  const pathPart = (rawPath || "").trim()
+  const anchorPart = (rawAnchor || "").trim()
+  const slug = pathPart ? slugifyPath(pathPart) : ""
+  const resolved = resolveToAbsolute(slug ? `${baseUrl}/${slug}` : baseUrl)
+  return resolved + (anchorPart ? `#${encodeURIComponent(slugifyAnchor(anchorPart))}` : "")
 }
 
 function buildFileNodeContent(node: CanvasNode, baseUrl: string): HTMLElement {
@@ -178,7 +199,11 @@ function buildFileNodeContent(node: CanvasNode, baseUrl: string): HTMLElement {
       if (!href.startsWith("http") && !href.startsWith("mailto:") && !href.startsWith("data:")) {
         a.classList.add("internal")
         try {
-          a.setAttribute("href", new URL(href, sourceFileUrl).pathname)
+          const resolvedHref = new URL(href, sourceFileUrl)
+          a.setAttribute(
+            "href",
+            `${resolvedHref.pathname}${resolvedHref.search}${resolvedHref.hash}`,
+          )
         } catch {
           a.setAttribute("href", resolveToAbsolute(href))
         }
@@ -190,14 +215,31 @@ function buildFileNodeContent(node: CanvasNode, baseUrl: string): HTMLElement {
   return container
 }
 
-function buildTextNodeContent(node: CanvasNode): HTMLElement {
+function renderTextMarkup(text: string, baseUrl: string): string {
+  const escaped = text.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;")
+
+  const withWikiLinks = escaped.replace(
+    /\[\[([^\]|#]+)?(?:#([^\]|]+))?(?:\|([^\]]+))?\]\]/g,
+    (_all, target, anchor, alias) => {
+      const linkTarget = `${target || ""}${anchor ? `#${anchor}` : ""}`
+      const href = buildInternalLink(linkTarget, baseUrl)
+      const label = (alias || target || anchor || "").trim() || "Odkaz"
+      return `<a class="internal" href="${href}">${label}</a>`
+    },
+  )
+
+  const withInline = withWikiLinks
+    .replace(/\*\*([^*]+)\*\*/g, "<strong>$1</strong>")
+    .replace(/\*([^*]+)\*/g, "<em>$1</em>")
+  const withHeading = withInline.replace(/^#{1,6}\s+(.+)$/gm, "<strong>$1</strong>")
+  return withHeading.replace(/\n/g, "<br/>")
+}
+
+function buildTextNodeContent(node: CanvasNode, baseUrl: string): HTMLElement {
   const div = document.createElement("div")
   div.className = "canvas-node-body canvas-text-node"
   const text = node.text || ""
-  div.innerHTML = text
-    .replace(/\*\*([^*]+)\*\*/g, "<strong>$1</strong>")
-    .replace(/\*([^*]+)\*/g, "<em>$1</em>")
-    .replace(/\n/g, "<br/>")
+  div.innerHTML = renderTextMarkup(text, baseUrl)
   return div
 }
 
@@ -314,8 +356,16 @@ function renderCanvas(container: HTMLElement, data: CanvasData, baseUrl: string)
 
   for (const node of data.nodes) {
     const g = svgEl("g")
-    const fill = (node.color && NODE_FILLS[node.color]) || "var(--light)"
-    const stroke = (node.color && NODE_STROKES[node.color]) || "var(--lightgray)"
+    const fill = node.color
+      ? isHexColor(node.color)
+        ? node.color
+        : (NODE_FILLS[node.color] ?? "var(--light)")
+      : "var(--light)"
+    const stroke = node.color
+      ? isHexColor(node.color)
+        ? node.color
+        : (NODE_STROKES[node.color] ?? "var(--lightgray)")
+      : "var(--lightgray)"
 
     g.appendChild(
       svgEl("rect", {
@@ -343,7 +393,7 @@ function renderCanvas(container: HTMLElement, data: CanvasData, baseUrl: string)
     } else if (node.type === "link" && node.url) {
       content = buildLinkNodeContent(node)
     } else {
-      content = buildTextNodeContent(node)
+      content = buildTextNodeContent(node, baseUrl)
     }
 
     fo.appendChild(content)

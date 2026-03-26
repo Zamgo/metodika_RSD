@@ -65,17 +65,14 @@
             "id": "4f99ed9496c5f578",
             "type": "leaf",
             "state": {
-              "type": "canvas",
+              "type": "markdown",
               "state": {
-                "file": "06_Diagramy/Tým_správce_stavby_hierachie.canvas",
-                "viewState": {
-                  "x": -276.6592089055014,
-                  "y": -1058.8676707899629,
-                  "zoom": -0.6666666666666667
-                }
+                "file": "02_Oblasti správy informací/7.1.1 - Predlozeni informaci vedouci pov strane.md",
+                "mode": "source",
+                "source": false
               },
-              "icon": "lucide-layout-dashboard",
-              "title": "Tým_správce_stavby_hierachie"
+              "icon": "lucide-file",
+              "title": "7.1.1 - Predlozeni informaci vedouci pov strane"
             }
           }
         ],
@@ -244,6 +241,17 @@
   },
   "active": "4f99ed9496c5f578",
   "lastOpenFiles": [
+    "02_Oblasti správy informací/4.1.3 - aktualizaci strategie předávání informací realizačního týmu (podle požadavků);.md",
+    "02_Oblasti správy informací/2.1.3 - Stanovení úrovně informačních potřeb požadovanou pro splnění jednotlivých požadavků na informace.md",
+    "02_Oblasti správy informací/1.2 - Stanovení projektových požadavků na informace (PIR).md",
+    "02_Oblasti správy informací/1.1 - Pověření jednotlivců k plnění funkcí při managementu informací.md",
+    "02_Oblasti správy informací/1 - Posouzení a zohlednění potřeb.md",
+    "02_Oblasti správy informací/6.2.3 - 6.2.3 - Prostorově koordinovat geometrické modely s dalšími geometrickými modely sdílenými s příslušnou vhodností použití, umístěnými v projektovém společném datovém prostředí.md",
+    "02_Oblasti správy informací/6.2.2 - Koordinace a krizove odkazy informaci.md",
+    "02_Oblasti správy informací/6.2.1 - Tvořit informace v souladu s příslušným TIDP.md",
+    "02_Oblasti správy informací/6.2.3 - Prostorova koordinace geometrickych modelu.md",
+    "02_Oblasti správy informací/6.3.1 - Kontrola prokazovani kvality kontejneru.md",
+    "06_Diagramy/Tým_správce_stavby_hierachie.canvas",
     "02_Oblasti správy informací/7.2.1 - prezkoumani informacniho modelu v souladu s projektovymi.md",
     "02_Oblasti správy informací/4.2.2 - sdileni podrobne matice odpovednosti pro kontrolu a.md",
     "02_Oblasti správy informací/1.1.3 - stanovit ukoly ktere maji byt poskytovany v.md",
@@ -261,17 +269,6 @@
     "02_Oblasti správy informací/4.6.3 - Standard obsazen v povereni.md",
     "02_Oblasti správy informací/4.6.4 - Metody a postupy obsazeny v povereni.md",
     "02_Oblasti správy informací/4.7.3 - Standard obsazen v povereni strany.md",
-    "02_Oblasti správy informací/4.7.4 - Metody a postupy obsazeny v povereni strany.md",
-    "02_Oblasti správy informací/5.1.3 - Vzdelavani clenu realizacniho tymu.md",
-    "02_Oblasti správy informací/5.2.2 - Obstarat a otestovat SW HW IT.md",
-    "02_Oblasti správy informací/5.2.4 - Konfigurace a test CDE konektivity.md",
-    "02_Oblasti správy informací/6.2.3 - Prostorova koordinace geometrickych modelu.md",
-    "02_Oblasti správy informací/6.3.1 - Kontrola prokazovani kvality kontejneru.md",
-    "02_Oblasti správy informací/6.4.1 - Prezkoumani informaci v kontejneru.md",
-    "02_Oblasti správy informací/7.1.1 - Predlozeni informaci vedouci pov strane.md",
-    "02_Oblasti správy informací/7.3.1 - Predlozit informace pov strane.md",
-    "02_Oblasti správy informací/7.4.1 - Prezkoumani informacniho modelu stavby.md",
-    "06_Diagramy/Tým_správce_stavby_hierachie.canvas",
     "_tmp_update_links.py",
     "_tmp_rename_long_names.py",
     "_tmp_fix_eol.py",
