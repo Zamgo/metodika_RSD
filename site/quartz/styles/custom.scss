@@ -136,6 +136,15 @@ body {
   }
 }
 
+/* Seznam činností (/cinnosti): prázdný stub článku + Quartz vždy vykreslí <hr> před page-footer — skrýt obojí, aby nebyla bílá mezera nad tabulkou */
+#quartz-body .center:has(#cinnosti-browser) > article.popover-hint:not(:has(> *)) {
+  display: none;
+}
+
+#quartz-body .center:has(#cinnosti-browser) > article.popover-hint:not(:has(> *)) + hr {
+  display: none;
+}
+
 /* ─── Left sidebar: Explorer title hidden on desktop ─────────────── */
 @media all and (min-width: 801px) {
   #quartz-body .sidebar.left .explorer button.desktop-explorer {

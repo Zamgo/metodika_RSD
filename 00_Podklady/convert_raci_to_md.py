@@ -152,7 +152,7 @@ def generate_base() -> str:
     """Generate the Cinnosti.base YAML content."""
     return """filters:
   or:
-    - file.inFolder("02_Oblasti správy informací")
+    - file.inFolder("03_Oblasti správy informací")
     - file.inFolder("07_RACI_cinnosti")
 properties:
   oznaceni:

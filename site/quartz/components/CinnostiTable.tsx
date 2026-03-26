@@ -7,12 +7,7 @@ import script from "./scripts/cinnosti.inline"
 
 const CinnostiTable: QuartzComponent = ({ cfg }: QuartzComponentProps) => {
   const cs = cfg.locale.startsWith("cs")
-  const basePath = path.resolve(
-    process.cwd(),
-    "..",
-    "02_Oblasti správy informací",
-    "0 - Seznam činností.base",
-  )
+  const basePath = path.resolve(process.cwd(), "..", "02 - Seznam činností.base")
   const baseText = fs.existsSync(basePath) ? fs.readFileSync(basePath, "utf8") : ""
   return (
     <div
@@ -24,8 +19,6 @@ const CinnostiTable: QuartzComponent = ({ cfg }: QuartzComponentProps) => {
       data-str-view={cs ? "Pohled" : "View"}
       data-str-view-all={cs ? "Vše" : "All"}
       data-str-columns={cs ? "Sloupce" : "Columns"}
-      data-str-wide-on={cs ? "Zobrazit panel" : "Show panel"}
-      data-str-wide-off={cs ? "Skrýt panel" : "Hide panel"}
     >
       <div class="cinnosti-toolbar">
         <input
@@ -71,14 +64,6 @@ const CinnostiTable: QuartzComponent = ({ cfg }: QuartzComponentProps) => {
           </button>
           <div class="cinnosti-column-toggle-panel" />
         </div>
-        <button
-          type="button"
-          class="cinnosti-wide-toggle"
-          data-label-on={cs ? "Zobrazit panel" : "Show panel"}
-          data-label-off={cs ? "Skrýt panel" : "Hide panel"}
-        >
-          {cs ? "Skrýt panel" : "Hide panel"}
-        </button>
         <button type="button" class="cinnosti-clear-filters">
           {cs ? "Zrušit filtry" : "Clear filters"}
         </button>

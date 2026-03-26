@@ -40,7 +40,6 @@
     color: var(--dark);
   }
 
-  .cinnosti-wide-toggle,
   .cinnosti-column-toggle-btn,
   .cinnosti-clear-filters {
     padding: 0.4rem 0.75rem;
@@ -53,15 +52,6 @@
 
     &:hover {
       background: var(--highlight);
-    }
-  }
-
-  body[data-sidebar-collapsed] & .cinnosti-wide-toggle {
-    background: var(--secondary);
-    color: var(--light);
-
-    &:hover {
-      opacity: 0.85;
     }
   }
 

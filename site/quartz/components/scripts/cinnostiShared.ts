@@ -3,7 +3,7 @@ import { ContentDetails } from "../../plugins/emitters/contentIndex"
 /** Index stránek z contentIndex.json (klíč = slug). */
 export type CinnostiIndex = Record<string, ContentDetails & { meta?: Record<string, unknown> }>
 
-export const FOLDER_MARKERS = ["02_Oblasti správy informací/", "07_RACI_cinnosti/"] as const
+export const FOLDER_MARKERS = ["03_Oblasti správy informací/", "07_RACI_cinnosti/"] as const
 
 export function normalizePath(fp: string): string {
   return fp.replace(/\\/g, "/")
@@ -45,7 +45,7 @@ export type CinnostSidebarGroup = "oblasti" | "raci"
 
 export function getCinnostGroup(fp: string): CinnostSidebarGroup | null {
   const p = normalizePath(fp)
-  if (p.includes("02_Oblasti správy informací/")) return "oblasti"
+  if (p.includes("03_Oblasti správy informací/")) return "oblasti"
   if (p.includes("07_RACI_cinnosti/")) return "raci"
   return null
 }

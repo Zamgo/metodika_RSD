@@ -11,7 +11,6 @@ import {
 const FILTER_DIMS = ["zdroj_typ", "typ"] as const
 const ARRAY_DIMS = ["faze", "role"] as const
 
-const LS_SIDEBAR_KEY = "sidebar-collapsed"
 const LS_HIDDEN_COLS_PREFIX = "cinnosti-hidden-cols:"
 
 type BaseConfig = {
@@ -154,7 +153,6 @@ async function setupCinnosti(root: HTMLElement, currentSlug: FullSlug, data: Cin
   const viewSelect = root.querySelector(".cinnosti-view-select") as HTMLSelectElement
   const countEl = root.querySelector(".cinnosti-count") as HTMLElement
   const clearBtn = root.querySelector(".cinnosti-clear-filters") as HTMLButtonElement
-  const wideBtn = root.querySelector(".cinnosti-wide-toggle") as HTMLButtonElement | null
   const colToggleBtn = root.querySelector(".cinnosti-column-toggle-btn") as HTMLButtonElement | null
   const colTogglePanel = root.querySelector(".cinnosti-column-toggle-panel") as HTMLElement | null
   if (!headRow || !tbody || !textInput || !countEl || !viewSelect) return
@@ -208,33 +206,6 @@ async function setupCinnosti(root: HTMLElement, currentSlug: FullSlug, data: Cin
   const getColumnsForView = (view?: BaseView): string[] => {
     const cols = Array.isArray(view?.order) ? view!.order!.filter(Boolean) : []
     return cols.length > 0 ? cols : fallbackView.order!
-  }
-
-  // ── Sidebar toggle (wide mode) ──────────────────────────────────────
-
-  function updateWideBtn() {
-    if (!wideBtn) return
-    const isCollapsed = "sidebarCollapsed" in document.body.dataset
-    wideBtn.textContent = isCollapsed
-      ? (wideBtn.dataset.labelOn ?? "Zobrazit panel")
-      : (wideBtn.dataset.labelOff ?? "Skrýt panel")
-  }
-  updateWideBtn()
-
-  if (wideBtn) {
-    const onWideToggle = () => {
-      const isCollapsed = "sidebarCollapsed" in document.body.dataset
-      if (isCollapsed) {
-        delete document.body.dataset.sidebarCollapsed
-        localStorage.setItem(LS_SIDEBAR_KEY, "false")
-      } else {
-        document.body.dataset.sidebarCollapsed = ""
-        localStorage.setItem(LS_SIDEBAR_KEY, "true")
-      }
-      updateWideBtn()
-    }
-    wideBtn.addEventListener("click", onWideToggle)
-    window.addCleanup(() => wideBtn.removeEventListener("click", onWideToggle))
   }
 
   // ── Column toggle ─────────────────────────────────────────────────────

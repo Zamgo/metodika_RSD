@@ -1,6 +1,6 @@
 filters:
   or:
-    - file.inFolder("02_Oblasti správy informací")
+    - file.inFolder("03_Oblasti správy informací")
     - file.inFolder("07_RACI_cinnosti")
 properties:
   typ:
