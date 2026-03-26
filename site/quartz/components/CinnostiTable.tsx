@@ -12,13 +12,7 @@ const CinnostiTable: QuartzComponent = ({ cfg }: QuartzComponentProps) => {
   return (
     <div
       id="cinnosti-browser"
-      data-str-typ={cs ? "Typ stránky" : "Page type"}
-      data-str-zdroj-typ={cs ? "Typ zdroje" : "Source type"}
-      data-str-faze={cs ? "Fáze" : "Phase"}
-      data-str-role={cs ? "Role" : "Role"}
-      data-str-view={cs ? "Pohled" : "View"}
       data-str-view-all={cs ? "Vše" : "All"}
-      data-str-columns={cs ? "Sloupce" : "Columns"}
     >
       <div class="cinnosti-toolbar">
         <input
@@ -34,30 +28,6 @@ const CinnostiTable: QuartzComponent = ({ cfg }: QuartzComponentProps) => {
             <select class="cinnosti-view-select" aria-label={cs ? "Pohled" : "View"} />
           </label>
         </div>
-        <div class="cinnosti-filter" data-dim="typ">
-          <label>
-            <span>{cs ? "Typ" : "Type"}</span>
-            <select aria-label={cs ? "Typ stránky" : "Page type"} />
-          </label>
-        </div>
-        <div class="cinnosti-filter" data-dim="zdroj_typ">
-          <label>
-            <span>{cs ? "Zdroj (typ)" : "Source (type)"}</span>
-            <select aria-label={cs ? "Typ zdroje" : "Source type"} />
-          </label>
-        </div>
-        <div class="cinnosti-filter" data-dim="faze">
-          <label>
-            <span>{cs ? "Fáze" : "Phase"}</span>
-            <select aria-label={cs ? "Fáze" : "Phase"} />
-          </label>
-        </div>
-        <div class="cinnosti-filter" data-dim="role">
-          <label>
-            <span>{cs ? "Role" : "Role"}</span>
-            <select aria-label={cs ? "Role" : "Role"} />
-          </label>
-        </div>
         <div class="cinnosti-column-toggle">
           <button type="button" class="cinnosti-column-toggle-btn">
             {cs ? "Sloupce" : "Columns"}
@@ -67,6 +37,7 @@ const CinnostiTable: QuartzComponent = ({ cfg }: QuartzComponentProps) => {
         <button type="button" class="cinnosti-clear-filters">
           {cs ? "Zrušit filtry" : "Clear filters"}
         </button>
+        <span class="cinnosti-active-filter-count" />
       </div>
       <p class="cinnosti-meta">
         {cs ? "Zobrazeno řádků: " : "Rows: "}

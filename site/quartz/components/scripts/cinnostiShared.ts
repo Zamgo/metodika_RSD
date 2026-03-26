@@ -159,7 +159,7 @@ export function metaStringToTableHtml(
       out += escapeHtml(full)
     } else {
       const href = noteHref(slug, anchor)
-      out += `<a href="${escapeHtml(href)}">${escapeHtml(display)}</a>`
+      out += `<a class="internal" href="${escapeHtml(href)}">${escapeHtml(display)}</a>`
     }
     return ""
   })
