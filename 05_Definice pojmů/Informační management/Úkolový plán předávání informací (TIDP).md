@@ -1,8 +1,7 @@
 ---
 title: Úkolový plán předávání informací (TIDP)
 typ: term
-faze: [priprava, realizace]
-role: []
+faze: [priprava]
 workflow: []
 stav: draft
 permalink: /pojem/cde/tidp

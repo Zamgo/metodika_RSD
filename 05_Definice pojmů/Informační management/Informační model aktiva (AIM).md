@@ -1,8 +1,7 @@
 ---
 title: Informační model aktiva (AIM)
 typ: term
-faze: [provoz a udrzba]
-role: []
+faze: [provoz]
 workflow: []
 stav: draft
 permalink: /pojem/cde/aim

@@ -2,7 +2,6 @@
 title: Zákon o správě informací o stavbě a vystavěném prostředí
 typ: term
 faze: []
-role: []
 workflow: []
 stav: draft
 permalink: /pojem/cde/zakon-330-2025

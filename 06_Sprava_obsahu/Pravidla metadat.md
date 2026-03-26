@@ -2,7 +2,6 @@
 title: Pravidla metadat
 typ: catalog
 faze: []
-role: []
 workflow: []
 stav: draft
 permalink: /sprava-obsahu/pravidla-metadat
@@ -20,7 +19,6 @@ Tato stránka definuje jednotná pravidla pro frontmatter ve všech stránkách 
 | `title` | Název stránky | text |
 | `typ` | Typ stránky (viz níže) | text |
 | `faze` | Fáze projektu, ve kterých je obsah relevantní | seznam |
-| `role` | Role, pro které je obsah relevantní | seznam |
 | `workflow` | Související workflow | seznam |
 | `stav` | Redakční stav | text |
 | `permalink` | Stabilní URL pro Quartz | text |
@@ -33,21 +31,17 @@ Tato stránka definuje jednotná pravidla pro frontmatter ve všech stránkách 
 | `aliases` | Alternativní názvy/zkratky (pro vyhledávání) |
 | `description` | Popis stránky (pro SEO/meta tagy) |
 | `zdroj` | Odkaz na zdroj požadavku (text, např. `ČSN EN ISO 19650-2; 5.1.1`) |
-| `zdroj_typ` | Typ zdroje pro filtrování (viz povolené hodnoty níže) |
 
 ## Klíče specifické pro typ `raci_cinnost`
 
 | Klíč | Popis | Typ |
 |------|-------|-----|
 | `oznaceni` | Hierarchické ID činnosti z RACI matice (např. `1.1.1`) | text |
-| `sekce` | Nadřazená sekce (např. `1.1`) | text |
-| `iso_faze` | Číslo ISO fáze (např. `5.1`) | text |
 | `popis` | Popis činnosti | text |
-| `raci_poverejici` | RACI hodnota pro Pověřující stranu (Objednatel) | text |
-| `raci_vedouci_poverena` | RACI hodnota pro Vedoucí pověřenou stranu (Zhotovitel) | text |
-| `raci_poverena` | RACI hodnota pro Pověřenou stranu (Podzhotovitel) | text |
-| `raci_spravce_stavby` | RACI hodnota pro Správce stavby | text |
-| `raci_bim_koordinator` | RACI hodnota pro BIM koordinátora | text |
+| `R - Odpovědnost za provádění činnosti` | Seznam rolí s odpovědností R | text |
+| `A - Právní odpovědnost za dokončení činnosti` | Seznam rolí s odpovědností A | text |
+| `C - Konzultace v průběhu činnosti` | Seznam rolí pro konzultaci C | text |
+| `I - Informování po dokončení činnosti` | Seznam rolí pro informování I | text |
 
 ## Povolené hodnoty `typ`
 
@@ -73,24 +67,16 @@ Následující pole se vždy zapisují jako seznamy (i když obsahují jen jednu
 
 ## Vazba na číselníky
 
-Hodnoty pro `faze`, `role` a `workflow` se berou **výhradně** z číselníků:
+Hodnoty pro `faze`, `workflow` a R/A/C/I klíče se berou **výhradně** z číselníků:
 
 - [[Ciselnik fazi]]
-- [[Ciselnik roli]]
 - [[Ciselnik workflow]]
+- [[Ciselnik_RACI_hodnot]]
 
 Pokud je potřeba nová hodnota:
 
 1. Nejprve ji doplnit do příslušného číselníku.
 2. Až poté ji použít ve stránkách.
-
-## Povolené hodnoty `zdroj_typ`
-
-- `iso_19650` – ČSN EN ISO 19650-2
-- `fidic` – FIDIC Červená kniha / P1b šablóna
-- `interni_metodika` – interní metodika ŘSD
-- `eir` – Požadavky objednatele na výměnu informací
-- `smlouva` – smluvní dokumentace
 
 ## Pravidla pro `permalink` (Quartz)
 
@@ -120,7 +106,6 @@ Používané hodnoty (v prvním průchodu):
 title: ZBV
 typ: workflow
 faze: [realizace]
-role: [spravce stavby, technicky dozor, zhotovitel]
 workflow: [zbv]
 stav: draft
 permalink: /workflow/zbv
@@ -135,18 +120,13 @@ tags: [workflow, cde]
 title: "Pověřit jednotlivce k plnění funkcí při managementu informací"
 typ: raci_cinnost
 oznaceni: "1.1.1"
-sekce: "1.1"
-iso_faze: "5.1"
 popis: "Stanovení osob pro jednotlivé role v rámci BIM."
 zdroj: "ČSN EN ISO 19650-2; 5.1.1"
-zdroj_typ: iso_19650
 faze: [priprava]
-role: [poverujici strana, spravce stavby]
-raci_poverejici: "A/R"
-raci_vedouci_poverena: ""
-raci_poverena: ""
-raci_spravce_stavby: "A/R"
-raci_bim_koordinator: ""
+"R - Odpovědnost za provádění činnosti": "Pověřující strana, Správce stavby (ŘSD)"
+"A - Právní odpovědnost za dokončení činnosti": "Pověřující strana, Správce stavby (ŘSD)"
+"C - Konzultace v průběhu činnosti": ""
+"I - Informování po dokončení činnosti": ""
 workflow: []
 stav: draft
 tags: [raci, iso_19650]

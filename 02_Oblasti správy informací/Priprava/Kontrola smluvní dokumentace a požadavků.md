@@ -1,14 +1,14 @@
 ---
 title: Kontrola smluvní dokumentace a požadavků (BIM, CDE, EIR)-P+S
-typ: process
+typ: "cinnost"
 faze: [priprava]
-role: [spravce cde, spravce stavby, zhotovitel]
 workflow: []
 stav: draft
 permalink: /proces/priprava/kontrola-smluvni-dokumentace-a-pozadavku-p-s
 tags: [proces, cde, dokumentace]
 zdroj: "Požadavky objednatele na výměnu informací (EIR)"
-zdroj_typ: eir
+procesni_oblast: ""
+pracovni_balicek: ""
 ---
 
 ## Účel

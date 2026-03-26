@@ -2,7 +2,6 @@
 title: Pravidla nazvu souboru
 typ: catalog
 faze: []
-role: []
 workflow: []
 stav: draft
 permalink: /sprava-obsahu/pravidla-nazvu-souboru

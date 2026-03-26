@@ -2,7 +2,6 @@
 title: Variace
 typ: workflow
 faze: []
-role: [spravce stavby, zhotovitel]
 workflow: [variace]
 stav: draft
 permalink: /workflow/variace

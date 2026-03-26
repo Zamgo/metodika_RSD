@@ -2,7 +2,6 @@
 title: Ciselnik fazi
 typ: catalog
 faze: []
-role: []
 workflow: []
 stav: draft
 permalink: /sprava-obsahu/ciselnik-fazi
@@ -18,7 +17,7 @@ Tento číselník je jediný zdroj hodnot pro metadata `faze` (a pro konzistentn
 
 - `priprava`
 - `realizace`
-- `provoz a udrzba`
+- `provoz`
 
 ## Odpovídající pojmové stránky (Obsidian)
 

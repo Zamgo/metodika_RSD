@@ -2,7 +2,6 @@
 title: Příprava
 typ: term
 faze: [priprava]
-role: []
 workflow: []
 stav: draft
 permalink: /pojem/faze/priprava

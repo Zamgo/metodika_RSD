@@ -2,7 +2,6 @@
 title: RDS
 typ: workflow
 faze: []
-role: [spravce stavby, technicky dozor, zhotovitel]
 workflow: [rds]
 stav: draft
 permalink: /workflow/rds

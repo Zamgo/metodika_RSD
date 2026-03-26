@@ -1,8 +1,7 @@
 ---
 title: Provoz a údržba
 typ: term
-faze: [provoz a udrzba]
-role: []
+faze: [provoz]
 workflow: []
 stav: draft
 permalink: /pojem/faze/provoz-a-udrzba

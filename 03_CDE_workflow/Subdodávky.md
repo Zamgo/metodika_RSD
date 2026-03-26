@@ -2,7 +2,6 @@
 title: Subdodávky
 typ: workflow
 faze: []
-role: [technicky dozor, zhotovitel]
 workflow: [subdodavky]
 stav: draft
 permalink: /workflow/subdodavky

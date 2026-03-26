@@ -2,7 +2,6 @@
 title: Realizace
 typ: term
 faze: [realizace]
-role: []
 workflow: []
 stav: draft
 permalink: /pojem/faze/realizace

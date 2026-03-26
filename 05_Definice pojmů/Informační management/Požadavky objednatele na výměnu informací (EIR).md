@@ -1,8 +1,7 @@
 ---
 title: Požadavky objednatele na výměnu informací (EIR)
 typ: term
-faze: [priprava, realizace]
-role: []
+faze: [priprava]
 workflow: [bep]
 stav: draft
 permalink: /pojem/cde/eir

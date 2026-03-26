@@ -1,8 +1,7 @@
 ---
 title: Správa informací o stavbě
 typ: term
-faze: [priprava, realizace, provoz a udrzba]
-role: []
+faze: [priprava]
 workflow: []
 stav: draft
 permalink: /pojem/cde/sprava-informaci-o-stavbe

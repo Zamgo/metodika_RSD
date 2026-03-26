@@ -1,8 +1,7 @@
 ---
 title: Správce CDE
 typ: term
-faze: [priprava, realizace, provoz a udrzba]
-role: [spravce cde]
+faze: [priprava]
 workflow: []
 stav: draft
 permalink: /pojem/role/spravce-cde

@@ -2,7 +2,6 @@
 title: Pravidla odkazovani
 typ: catalog
 faze: []
-role: []
 workflow: []
 stav: draft
 permalink: /sprava-obsahu/pravidla-odkazovani

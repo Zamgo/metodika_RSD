@@ -1,8 +1,7 @@
 ---
 title: Pověřující strana
 typ: term
-faze: [priprava, realizace, provoz a udrzba]
-role: [poverujici strana]
+faze: [priprava]
 workflow: []
 stav: draft
 permalink: /pojem/role/poverujici-strana

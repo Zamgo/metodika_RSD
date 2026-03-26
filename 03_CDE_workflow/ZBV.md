@@ -2,7 +2,6 @@
 title: ZBV
 typ: workflow
 faze: []
-role: [spravce stavby, technicky dozor, zhotovitel]
 workflow: [zbv]
 stav: draft
 permalink: /workflow/zbv

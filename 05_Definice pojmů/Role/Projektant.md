@@ -1,8 +1,7 @@
 ---
 title: Projektant
 typ: term
-faze: [priprava, realizace]
-role: [projektant]
+faze: [priprava]
 workflow: []
 stav: draft
 permalink: /pojem/role/projektant

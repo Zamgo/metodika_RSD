@@ -2,7 +2,6 @@
 title: Zdroje a editorska doplneni
 typ: catalog
 faze: []
-role: []
 workflow: []
 stav: draft
 permalink: /sprava-obsahu/zdroje-a-editorske-doplneni

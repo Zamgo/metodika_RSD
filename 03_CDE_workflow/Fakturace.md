@@ -2,7 +2,6 @@
 title: Fakturace
 typ: workflow
 faze: []
-role: [technicky dozor, zhotovitel]
 workflow: [fakturace]
 stav: draft
 permalink: /workflow/fakturace

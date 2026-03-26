@@ -1,14 +1,14 @@
 ---
 title: Prostorová koordinace v rámci DiMS – Sam
-typ: process
+typ: "cinnost"
 faze: [realizace]
-role: [spravce cde, spravce stavby, zhotovitel]
 workflow: []
 stav: draft
 permalink: /proces/realizace/prostorova-koordinace-v-ramci-dims-sam
 tags: [proces, cde, dokumentace]
 zdroj: "Interní metodika ŘSD"
-zdroj_typ: interni_metodika
+procesni_oblast: ""
+pracovni_balicek: ""
 ---
 
 ## Účel

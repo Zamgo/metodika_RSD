@@ -2,7 +2,6 @@
 title: Materiály, výrobny
 typ: workflow
 faze: []
-role: [spravce stavby, technicky dozor, zhotovitel]
 workflow: [materialy-a-vyrobny]
 stav: draft
 permalink: /workflow/materialy-vyrobny

@@ -2,7 +2,6 @@
 title: DiMS
 typ: workflow
 faze: []
-role: [spravce stavby, technicky dozor, zhotovitel]
 workflow: [dims]
 stav: draft
 permalink: /workflow/dims

@@ -1,8 +1,7 @@
 ---
 title: BIM-protokol
 typ: term
-faze: [priprava, realizace]
-role: []
+faze: [priprava]
 workflow: []
 stav: draft
 permalink: /pojem/cde/bim-protokol

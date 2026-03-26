@@ -2,7 +2,6 @@
 title: HMG
 typ: workflow
 faze: []
-role: [spravce stavby, technicky dozor, zhotovitel]
 workflow: [hmg]
 stav: draft
 permalink: /workflow/hmg

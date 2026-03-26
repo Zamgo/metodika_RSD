@@ -1,8 +1,7 @@
 ---
 title: Úkolový tým
 typ: term
-faze: [priprava, realizace]
-role: []
+faze: [priprava]
 workflow: []
 stav: draft
 permalink: /pojem/cde/ukolovy-tym

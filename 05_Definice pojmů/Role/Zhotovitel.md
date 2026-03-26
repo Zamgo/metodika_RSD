@@ -1,8 +1,7 @@
 ---
 title: Zhotovitel
 typ: term
-faze: [priprava, realizace, provoz a udrzba]
-role: [zhotovitel]
+faze: [priprava]
 workflow: []
 stav: draft
 permalink: /pojem/role/zhotovitel

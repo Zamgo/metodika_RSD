@@ -3,7 +3,6 @@ title: Úvod do metodiky ŘSD Plzeň
 description: Úvod do metodiky ŘSD Plzeň a její formy znalostní databáze
 typ: index
 faze: []
-role: []
 workflow: []
 stav: draft
 aliases: [Domů, Home]

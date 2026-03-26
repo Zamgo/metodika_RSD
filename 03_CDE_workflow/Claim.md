@@ -2,7 +2,6 @@
 title: Claim
 typ: workflow
 faze: []
-role: [zhotovitel]
 workflow: [claim]
 stav: draft
 permalink: /workflow/claim

@@ -1,8 +1,7 @@
 ---
 title: Workflow
 typ: term
-faze: [priprava, realizace, provoz a udrzba]
-role: []
+faze: [priprava]
 workflow: []
 stav: draft
 permalink: /pojem/rizeni/workflow

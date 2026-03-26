@@ -3,7 +3,6 @@ title: Sprava obsahu - index
 description: Pravidla pro metadata, odkazy a názvy souborů při správě obsahu metodiky a vaultu.
 typ: index
 faze: []
-role: []
 workflow: []
 stav: draft
 permalink: /sprava-obsahu

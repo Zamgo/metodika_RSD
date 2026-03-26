@@ -1,15 +1,16 @@
 ---
 title: Konfigurace projektového nástroje CDE - Pavlína + příloha
-typ: process
+typ: "cinnost"
 faze: [priprava]
-role: [spravce cde, spravce stavby, zhotovitel]
 workflow: []
 stav: draft
 permalink: /proces/priprava/konfigurace-projektoveho-nastroje-cde-pavlina-priloha
 tags: [proces, cde, dokumentace]
 zdroj: "Interní metodika ŘSD"
-zdroj_typ: interni_metodika
+procesni_oblast: ""
+pracovni_balicek: ""
 ---
+
 # Účel
 
 Účelem nastavení struktury společného datového prostředí ([[Společné datové prostředí (CDE)|CDE]]) je vytvořit přehledný, jednotný a dlouhodobě udržitelný rámec pro ukládání, správu a sdílení [[Informační kontejner|informačních kontejnerů]] v průběhu celého životního cyklu stavby. Správně navržená struktura [[Společné datové prostředí (CDE)|CDE]] představuje základní předpoklad pro zajištění dohledatelnosti informací, jednoznačné orientace uživatelů v projektové dokumentaci a minimalizaci rizika práce s neaktuálními nebo nesprávně zařazenými podklady.

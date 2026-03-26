@@ -1,8 +1,7 @@
 ---
 title: Pověřená strana
 typ: term
-faze: [priprava, realizace, provoz a udrzba]
-role: [poverena strana]
+faze: [priprava]
 workflow: []
 stav: draft
 permalink: /pojem/role/poverena-strana

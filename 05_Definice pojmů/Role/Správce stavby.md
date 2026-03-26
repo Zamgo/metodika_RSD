@@ -1,8 +1,7 @@
 ---
 title: Správce stavby
 typ: term
-faze: [priprava, realizace, provoz a udrzba]
-role: [spravce stavby]
+faze: [priprava]
 workflow: []
 stav: draft
 permalink: /pojem/role/spravce-stavby

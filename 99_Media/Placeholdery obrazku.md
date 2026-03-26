@@ -2,7 +2,6 @@
 title: Placeholdery obrazku
 typ: reference
 faze: []
-role: []
 workflow: []
 stav: draft
 permalink: /media/placeholdery-obrazku

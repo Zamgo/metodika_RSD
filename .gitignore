@@ -8,3 +8,6 @@ site/.cache/
 .DS_Store
 Thumbs.db
 
+# Large generated uploads
+RSD_Plzen_upload.zip
+

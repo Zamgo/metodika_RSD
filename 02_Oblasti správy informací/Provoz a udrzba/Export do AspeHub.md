@@ -1,14 +1,14 @@
 ---
 title: Export do AspeHub - Pavlína
-typ: process
-faze: [provoz a udrzba]
-role: [spravce stavby]
+typ: "cinnost"
+faze: [provoz]
 workflow: []
 stav: draft
 permalink: /proces/provoz-a-udrzba/export-do-aspehub-pavlina
 tags: [proces, cde, dokumentace]
 zdroj: "Interní metodika ŘSD"
-zdroj_typ: interni_metodika
+procesni_oblast: ""
+pracovni_balicek: ""
 ---
 
 ## Poznámka ze zdroje

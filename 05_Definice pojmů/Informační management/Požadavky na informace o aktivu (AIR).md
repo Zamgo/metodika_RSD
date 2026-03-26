@@ -1,8 +1,7 @@
 ---
 title: Požadavky na informace o aktivu (AIR)
 typ: term
-faze: [provoz a udrzba]
-role: []
+faze: [provoz]
 workflow: []
 stav: draft
 permalink: /pojem/cde/air

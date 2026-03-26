@@ -1,8 +1,7 @@
 ---
 title: Vedoucí pověřená strana
 typ: term
-faze: [priprava, realizace, provoz a udrzba]
-role: [vedouci poverena strana]
+faze: [priprava]
 workflow: []
 stav: draft
 permalink: /pojem/role/vedouci-poverena-strana

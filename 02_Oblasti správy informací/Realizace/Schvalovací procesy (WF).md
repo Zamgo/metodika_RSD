@@ -1,14 +1,14 @@
 ---
 title: Schvalovací procesy (WF) - Pavlína + příloha
-typ: process
+typ: "cinnost"
 faze: [realizace]
-role: [spravce cde, spravce stavby, zhotovitel]
 workflow: []
 stav: draft
 permalink: /proces/realizace/schvalovaci-procesy-pavlina-priloha
 tags: [proces, cde, dokumentace]
 zdroj: "Interní metodika ŘSD"
-zdroj_typ: interni_metodika
+procesni_oblast: ""
+pracovni_balicek: ""
 ---
 
 ## Účel

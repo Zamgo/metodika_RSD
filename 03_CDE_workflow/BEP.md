@@ -1,11 +1,7 @@
 ---
 title: BEP
 typ: workflow
-faze:
-  - priprava
-role:
-  - spravce stavby
-  - zhotovitel
+faze: [priprava]
 workflow: [bep]
 stav: draft
 permalink: /workflow/bep

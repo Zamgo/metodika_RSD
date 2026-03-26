@@ -2,7 +2,6 @@
 title: ZBV do 50 mil
 typ: workflow
 faze: []
-role: [spravce stavby, technicky dozor, zhotovitel]
 workflow: [zbv]
 stav: draft
 permalink: /workflow/zbv-do-50-mil

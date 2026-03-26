@@ -2,7 +2,6 @@
 title: Technický dozor
 typ: term
 faze: [realizace]
-role: [technicky dozor]
 workflow: []
 stav: draft
 permalink: /pojem/role/technicky-dozor

@@ -3,36 +3,96 @@ filters:
     - file.inFolder("02_Oblasti správy informací")
     - file.inFolder("07_RACI_cinnosti")
 properties:
+  typ:
+    displayName: Typ
+  procesni_oblast:
+    displayName: Procesní oblast
+  pracovni_balicek:
+    displayName: Pracovní balíček
   oznaceni:
-    displayName: ID
+    displayName: Označení
+  popis:
+    displayName: Popis
   zdroj:
     displayName: Zdroj
-  zdroj_typ:
-    displayName: Typ zdroje
-  raci_poverejici:
-    displayName: Objednatel
-  raci_vedouci_poverena:
-    displayName: Zhotovitel
-  raci_poverena:
-    displayName: Podzhotovitel
-  raci_spravce_stavby:
-    displayName: Správce stavby
-  raci_bim_koordinator:
-    displayName: BIM koord.
+  R - Odpovědnost za provádění činnosti:
+    displayName: R - Odpovědnost za provádění činnosti
+  A - Právní odpovědnost za dokončení činnosti:
+    displayName: A - Právní odpovědnost za dokončení činnosti
+  C - Konzultace v průběhu činnosti:
+    displayName: C - Konzultace v průběhu činnosti
+  I - Informování po dokončení činnosti:
+    displayName: I - Informování po dokončení činnosti
 views:
   - type: table
-    name: Všechny činnosti
+    name: Všechny činnosti (bez rozcestníků)
+    filters:
+      and:
+        - typ == "cinnost"
     order:
+      - procesni_oblast
+      - pracovni_balicek
+      - oznaceni
       - file.name
+      - popis
       - typ
       - faze
-      - role
-      - zdroj_typ
       - zdroj
-      - raci_poverejici
-      - raci_vedouci_poverena
-      - raci_spravce_stavby
-      - raci_bim_koordinator
+      - R - Odpovědnost za provádění činnosti
+      - A - Právní odpovědnost za dokončení činnosti
+      - C - Konzultace v průběhu činnosti
+      - I - Informování po dokončení činnosti
       - stav
+    sort:
+      - property: procesni_oblast
+        direction: ASC
+      - property: pracovni_balicek
+        direction: ASC
+      - property: oznaceni
+        direction: ASC
+      - property: faze
+        direction: ASC
     columnSize:
-      file.name: 578
+      note.oznaceni: 107
+      file.name: 650
+      note.popis: 332
+      note.typ: 163
+      note.R - Odpovědnost za provádění činnosti: 74
+  - type: table
+    name: Procesní oblasti
+    filters:
+      and:
+        - typ == "procesni_oblast"
+    order:
+      - oznaceni
+      - file.name
+      - typ
+      - procesni_oblast
+      - pracovni_balicek
+    sort:
+      - property: procesni_oblast
+        direction: ASC
+  - type: table
+    name: Všechny konkrétní činnosti
+    filters:
+      and:
+        - typ == "cinnost"
+    order:
+      - oznaceni
+      - procesni_oblast
+      - pracovni_balicek
+      - file.name
+      - popis
+      - zdroj
+    sort:
+      - property: procesni_oblast
+        direction: ASC
+      - property: pracovni_balicek
+        direction: ASC
+      - property: oznaceni
+        direction: ASC
+    columnSize:
+      note.oznaceni: 107
+      note.pracovni_balicek: 441
+      file.name: 650
+      note.popis: 332
