@@ -17,72 +17,43 @@ import { write } from "./helpers"
 import { i18n } from "../../i18n"
 
 export type ContentIndexMap = Map<FullSlug, ContentDetails>
-/** Frontmatter metadata used for search facets and the Činnosti web table. */
-export type PageMeta = {
-  faze?: string[]
-  role?: string[]
-  workflow?: string[]
-  typ?: string
-  zdroj?: string
-  zdroj_typ?: string
-  oznaceni?: string
-  iso_faze?: string
-  stav?: string
-  raci_poverejici?: string
-  raci_vedouci_poverena?: string
-  raci_poverena?: string
-  raci_spravce_stavby?: string
-  raci_bim_koordinator?: string
-}
+/**
+ * Frontmatter metadata – extracted dynamically from ALL frontmatter keys.
+ * This ensures any field added in Obsidian is automatically available
+ * on the web (činnosti table, search facets, etc.) without code changes.
+ */
+export type PageMeta = Record<string, unknown>
 
-function toStringArray(v: unknown): string[] {
-  if (v == null) return []
-  if (Array.isArray(v)) return [...new Set(v.map((x) => String(x).trim()).filter(Boolean))]
-  if (typeof v === "string" && v.trim()) return [v.trim()]
-  return []
-}
+const FM_SKIP_KEYS = new Set(["title", "tags", "aliases", "cssclasses", "publish", "permalink"])
+const FM_ARRAY_KEYS = new Set(["faze", "role", "workflow"])
 
-function optString(fm: Record<string, unknown>, key: string): string | undefined {
-  const v = fm[key]
+function normalizeFmValue(v: unknown): unknown {
   if (v == null) return undefined
-  const s = String(v).trim()
-  return s || undefined
+  if (Array.isArray(v)) {
+    const arr = [...new Set(v.map((x) => String(x).trim()).filter(Boolean))]
+    return arr.length > 0 ? arr : undefined
+  }
+  if (typeof v === "string") {
+    const s = v.trim()
+    return s || undefined
+  }
+  return v
 }
-
-const RACI_META_KEYS = [
-  "raci_poverejici",
-  "raci_vedouci_poverena",
-  "raci_poverena",
-  "raci_spravce_stavby",
-  "raci_bim_koordinator",
-] as const
 
 function metaFromFrontmatter(fm: Record<string, unknown> | undefined): PageMeta | undefined {
   if (!fm) return undefined
   const meta: PageMeta = {}
-  const faze = toStringArray(fm.faze)
-  const role = toStringArray(fm.role)
-  const workflow = toStringArray(fm.workflow)
-  if (faze.length) meta.faze = faze
-  if (role.length) meta.role = role
-  if (workflow.length) meta.workflow = workflow
 
-  const typ = optString(fm, "typ")
-  if (typ) meta.typ = typ
-  const zdroj = optString(fm, "zdroj")
-  if (zdroj) meta.zdroj = zdroj
-  const zdrojTyp = optString(fm, "zdroj_typ")
-  if (zdrojTyp) meta.zdroj_typ = zdrojTyp
-  const oznaceni = optString(fm, "oznaceni")
-  if (oznaceni) meta.oznaceni = oznaceni
-  const isoFaze = optString(fm, "iso_faze")
-  if (isoFaze) meta.iso_faze = isoFaze
-  const stav = optString(fm, "stav")
-  if (stav) meta.stav = stav
+  for (const [key, raw] of Object.entries(fm)) {
+    if (FM_SKIP_KEYS.has(key)) continue
 
-  for (const k of RACI_META_KEYS) {
-    const v = optString(fm, k)
-    if (v) meta[k] = v
+    if (FM_ARRAY_KEYS.has(key)) {
+      const arr = normalizeFmValue(Array.isArray(raw) ? raw : raw != null ? [raw] : [])
+      if (arr != null) meta[key] = arr
+    } else {
+      const val = normalizeFmValue(raw)
+      if (val != null) meta[key] = val
+    }
   }
 
   if (Object.keys(meta).length === 0) return undefined

@@ -11,17 +11,13 @@
             "id": "8a85b1291b635b4b",
             "type": "leaf",
             "state": {
-              "type": "canvas",
+              "type": "bases",
               "state": {
-                "file": "06_Diagramy/Tým_správce_stavby_hierachie.canvas",
-                "viewState": {
-                  "x": -355.56603773584914,
-                  "y": -1087.5471698113208,
-                  "zoom": -0.05343925896146061
-                }
+                "file": "02 - Seznam činností.base",
+                "viewName": "Všechny činnosti (bez rozcestníků)"
               },
-              "icon": "lucide-layout-dashboard",
-              "title": "Tým_správce_stavby_hierachie"
+              "icon": "lucide-table",
+              "title": "02 - Seznam činností"
             }
           }
         ]
@@ -81,7 +77,7 @@
       }
     ],
     "direction": "horizontal",
-    "width": 440.5
+    "width": 200
   },
   "right": {
     "id": "925f1fb0b98116e3",
@@ -189,29 +185,30 @@
   },
   "active": "8a85b1291b635b4b",
   "lastOpenFiles": [
-    "site/public/05_Definice-pojmů/Informační-management/Účel-užití.html",
-    "site/public/05_Definice-pojmů/Informační-management/Úroveň-informačních-potřeb-(LoIN).html",
-    "site/public/05_Definice-pojmů/Informační-management/Úkolový-tým.html",
-    "site/public/05_Definice-pojmů/Informační-management/Úkolový-plán-předávání-informací-(TIDP).html",
-    "site/public/05_Definice-pojmů/Informační-management/Zákon-o-správě-informací-o-stavbě-a-vystavěném-prostředí.html",
-    "site/public/05_Definice-pojmů/Informační-management/Workflow.html",
-    "site/public/05_Definice-pojmů/Informační-management/Výměna-informací.html",
-    "site/public/05_Definice-pojmů/Informační-management/Verifikace.html",
-    "site/public/05_Definice-pojmů/Informační-management/Validace.html",
+    "site/public/prescript.js",
+    "site/public/05_Definice-pojmů/Role/Koordinátor-BIM.html",
+    "site/public/05_Definice-pojmů/Role/Asistent-správce-stavby-–-Zástupce-vedoucího-Týmu-správce-stavby.html",
+    "site/public/05_Definice-pojmů/Role/Asistent-správce-stavby-–-Specialista-v-oboru.html",
     "site/public/05_Definice-pojmů/Informační-management/Strany.html",
     "site/public/05_Definice-pojmů/Informační-management/Správa-informací-o-stavbě.html",
-    "site/public/03_CDE_workflow/0_Diagram.canvas",
-    "site/public/06_Diagramy/Tým_správce_stavby_hierachie.canvas",
+    "site/public/05_Definice-pojmů/Informační-management/Projektový-informační-model-(PIM).html",
+    "site/public/05_Definice-pojmů/Informační-management/Informace.html",
+    "site/public/05_Definice-pojmů/Informační-management/Hlavní-plán-předávání-informací-(MIDP).html",
+    "site/public/03_Oblasti-správy-informací/6.2.3---Prostorova-koordinace-geometrickych-modelu.html",
+    "site/public/03_Oblasti-správy-informací/5.2.4---Konfigurace-a-test-CDE-konektivity.html",
+    "site/public/99_Media/obrazky/zaklady_bim/image98.png",
     "site/public/99_Media/obrazky/zaklady_bim/image99.png",
     "site/public/99_Media/obrazky/zaklady_bim/image97.jpeg",
-    "site/public/99_Media/obrazky/zaklady_bim/image98.png",
     "site/public/99_Media/obrazky/zaklady_bim/image96.jpeg",
-    "site/public/99_Media/obrazky/zaklady_bim/image93.png",
     "site/public/99_Media/obrazky/zaklady_bim/image95.jpeg",
-    "site/public/99_Media/obrazky/zaklady_bim/image91.png",
-    "site/public/99_Media/obrazky/zaklady_bim/image94.png",
     "site/public/99_Media/obrazky/zaklady_bim/image92.png",
+    "site/public/99_Media/obrazky/zaklady_bim/image94.png",
+    "site/public/99_Media/obrazky/zaklady_bim/image93.png",
+    "site/public/99_Media/obrazky/zaklady_bim/image91.png",
     "site/public/99_Media/obrazky/zaklady_bim/image90.png",
+    "site/public/06_Diagramy/Tým_správce_stavby_hierachie.canvas",
+    "06_Diagramy/Tým_správce_stavby_hierachie.canvas",
+    "site/public/03_CDE_workflow/0_Diagram.canvas",
     "03_Oblasti správy informací/Změny během výstavby pomocí nástrojů CDE.md",
     "03_Oblasti správy informací/8.2 - Zachycení ponaučení pro budoucí projekty.md",
     "03_Oblasti správy informací/Kontrola smluvní dokumentace a požadavků.md",
@@ -238,7 +235,6 @@
     "03_Oblasti správy informací/6.5.1 - Prezkoumani informacniho modelu stavby.md",
     "03_Oblasti správy informací/6.5 - Přezkoumání informačního modelu stavby.md",
     "03_CDE_workflow/0_Diagram.canvas",
-    "06_Diagramy/Tým_správce_stavby_hierachie.canvas",
     "site/public/Bez-názvu.canvas"
   ]
 }

@@ -80,9 +80,11 @@ const CinnostiTable: QuartzComponent = ({ cfg }: QuartzComponentProps) => {
           <tbody class="cinnosti-tbody" />
         </table>
       </div>
-      <script class="cinnosti-base-config" type="application/x-yaml">
-        {baseText}
-      </script>
+      <script
+        class="cinnosti-base-config"
+        type="application/x-yaml"
+        dangerouslySetInnerHTML={{ __html: baseText }}
+      />
     </div>
   )
 }
