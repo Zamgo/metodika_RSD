@@ -6,9 +6,24 @@ import {
   getMetaString,
   isCinnostRow,
   metaStringToTableHtml,
-  plainTextFromWikiMeta,
-  sortKeyForRow,
 } from "./cinnostiShared"
+
+interface DvColumn {
+  field: string
+  alias: string
+}
+
+interface DvSort {
+  field: string
+  dir: "ASC" | "DESC"
+}
+
+interface DvConfig {
+  columns: DvColumn[]
+  filterTyp: string
+  linkField: string
+  sort: DvSort[]
+}
 
 type Row = { slug: FullSlug; title: string; meta?: Record<string, unknown> }
 
@@ -16,33 +31,21 @@ function normalizeTyp(raw: string): string {
   return raw.trim().replace(/^["']|["']$/g, "")
 }
 
-function typMatches(row: Row, expected: "pracovni_balicek" | "cinnost"): boolean {
+function typMatches(row: Row, expected: string): boolean {
   const t = normalizeTyp(getMetaString(row.meta, "typ"))
   if (t === expected) return true
   if (expected === "cinnost" && t === "činnost") return true
+  if (expected === "pracovni_balicek" && t === "pracovní_balíček") return true
   return false
 }
 
-function rowMatchesOblast(
+function rowLinkFieldMatchesSlug(
   row: Row,
+  fieldName: string,
   currentSlug: FullSlug,
   resolve: ReturnType<typeof createNoteSlugResolver>,
 ): boolean {
-  const raw = getMetaString(row.meta, "procesni_oblast")
-  if (!raw || !raw.includes("[[")) return false
-  const m = raw.match(/\[\[([^\]]+)\]\]/)
-  if (!m) return false
-  const inner = m[1]
-  const pathOnly = inner.split("|")[0].split("#")[0].trim()
-  return resolve(pathOnly) === currentSlug
-}
-
-function rowMatchesBalicek(
-  row: Row,
-  currentSlug: FullSlug,
-  resolve: ReturnType<typeof createNoteSlugResolver>,
-): boolean {
-  const raw = getMetaString(row.meta, "pracovni_balicek")
+  const raw = getMetaString(row.meta, fieldName)
   if (!raw || !raw.includes("[[")) return false
   const m = raw.match(/\[\[([^\]]+)\]\]/)
   if (!m) return false
@@ -55,6 +58,38 @@ function noteHref(currentSlug: FullSlug, targetSlug: FullSlug): string {
   return new URL(resolveRelative(currentSlug, targetSlug), location.toString()).pathname
 }
 
+function renderCellValue(
+  field: string,
+  row: Row,
+  currentSlug: FullSlug,
+  resolve: ReturnType<typeof createNoteSlugResolver>,
+): string {
+  if (field === "file.link") {
+    const href = noteHref(currentSlug, row.slug)
+    return `<a class="internal" href="${escapeHtml(href)}">${escapeHtml(row.title)}</a>`
+  }
+  if (field === "file.name") {
+    return escapeHtml(row.title)
+  }
+  const raw = getMetaString(row.meta, field)
+  if (raw.includes("[[")) {
+    return metaStringToTableHtml(raw, currentSlug, resolve)
+  }
+  return escapeHtml(raw)
+}
+
+function getSortValue(field: string, row: Row): string {
+  if (field === "file.link" || field === "file.name") {
+    return row.title.toLowerCase()
+  }
+  const raw = getMetaString(row.meta, field)
+  const numParts = raw.split(".").map((x) => parseInt(x, 10))
+  if (numParts.length > 0 && numParts.every((n) => !isNaN(n))) {
+    return numParts.map((n) => n.toString().padStart(6, "0")).join(".")
+  }
+  return raw.toLowerCase()
+}
+
 function renderTable(headers: string[], bodyRows: string[][]): string {
   const thr = headers.map((h) => `<th>${escapeHtml(h)}</th>`).join("")
   const trs = bodyRows
@@ -64,7 +99,7 @@ function renderTable(headers: string[], bodyRows: string[][]): string {
 }
 
 async function fillTables(slug: FullSlug) {
-  const hosts = document.querySelectorAll<HTMLElement>("[data-oblast-dv]")
+  const hosts = document.querySelectorAll<HTMLElement>("[data-dv-config]")
   if (hosts.length === 0) return
 
   const data = (await fetchData) as CinnostiIndex
@@ -81,71 +116,41 @@ async function fillTables(slug: FullSlug) {
   }
 
   for (const host of hosts) {
-    const variant = host.dataset.oblastDv
-    const wantTyp =
-      variant === "balicky"
-        ? "pracovni_balicek"
-        : variant === "cinnosti" || variant === "balicek-cinnosti"
-          ? "cinnost"
-          : null
-    if (!wantTyp) continue
+    const configStr = host.dataset.dvConfig
+    if (!configStr) continue
+    let config: DvConfig
+    try {
+      config = JSON.parse(configStr)
+    } catch {
+      continue
+    }
 
     let rows = pool.filter((r) => {
-      if (!typMatches(r, wantTyp)) return false
-      if (variant === "balicek-cinnosti") return rowMatchesBalicek(r, slug, resolve)
-      return rowMatchesOblast(r, slug, resolve)
+      if (config.filterTyp && !typMatches(r, config.filterTyp)) return false
+      if (config.linkField && !rowLinkFieldMatchesSlug(r, config.linkField, slug, resolve))
+        return false
+      return true
     })
 
-    if (wantTyp === "pracovni_balicek") {
+    if (config.sort.length > 0) {
       rows.sort((a, b) => {
-        const ka = sortKeyForRow(a.meta, a.title)
-        const kb = sortKeyForRow(b.meta, b.title)
-        if (ka !== kb) return ka.localeCompare(kb, undefined, { numeric: true })
-        return a.title.localeCompare(b.title, "cs")
+        for (const s of config.sort) {
+          const va = getSortValue(s.field, a)
+          const vb = getSortValue(s.field, b)
+          const cmp = va.localeCompare(vb, "cs", { numeric: true })
+          if (cmp !== 0) return s.dir === "DESC" ? -cmp : cmp
+        }
+        return 0
       })
-      const bodyRows = rows.map((r) => {
-        const link = `<a class="internal" href="${escapeHtml(noteHref(slug, r.slug))}">${escapeHtml(r.title)}</a>`
-        const oz = escapeHtml(getMetaString(r.meta, "oznaceni"))
-        return [link, oz]
-      })
-      host.innerHTML = bodyRows.length
-        ? renderTable(["Pracovní balíček", "Označení"], bodyRows)
-        : `<p class="quartz-oblast-empty">Žádné záznamy.</p>`
-    } else if (variant === "balicek-cinnosti") {
-      rows.sort((a, b) => {
-        const ka = sortKeyForRow(a.meta, a.title)
-        const kb = sortKeyForRow(b.meta, b.title)
-        if (ka !== kb) return ka.localeCompare(kb, undefined, { numeric: true })
-        return a.title.localeCompare(b.title, "cs")
-      })
-      const bodyRows = rows.map((r) => {
-        const link = `<a class="internal" href="${escapeHtml(noteHref(slug, r.slug))}">${escapeHtml(r.title)}</a>`
-        const oz = escapeHtml(getMetaString(r.meta, "oznaceni"))
-        return [link, oz]
-      })
-      host.innerHTML = bodyRows.length
-        ? renderTable(["Činnost", "Označení"], bodyRows)
-        : `<p class="quartz-oblast-empty">Žádné záznamy.</p>`
-    } else {
-      rows.sort((a, b) => {
-        const pa = plainTextFromWikiMeta(getMetaString(a.meta, "pracovni_balicek"))
-        const pb = plainTextFromWikiMeta(getMetaString(b.meta, "pracovni_balicek"))
-        if (pa !== pb) return pa.localeCompare(pb, "cs")
-        const ka = sortKeyForRow(a.meta, a.title)
-        const kb = sortKeyForRow(b.meta, b.title)
-        if (ka !== kb) return ka.localeCompare(kb, undefined, { numeric: true })
-        return a.title.localeCompare(b.title, "cs")
-      })
-      const bodyRows = rows.map((r) => {
-        const link = `<a class="internal" href="${escapeHtml(noteHref(slug, r.slug))}">${escapeHtml(r.title)}</a>`
-        const oz = escapeHtml(getMetaString(r.meta, "oznaceni"))
-        const pb = metaStringToTableHtml(getMetaString(r.meta, "pracovni_balicek"), slug, resolve)
-        return [link, oz, pb]
-      })
-      host.innerHTML = bodyRows.length
-        ? renderTable(["Činnost", "Označení", "Pracovní balíček"], bodyRows)
-        : `<p class="quartz-oblast-empty">Žádné záznamy.</p>`
     }
+
+    const headers = config.columns.map((c) => c.alias)
+    const bodyRows = rows.map((r) =>
+      config.columns.map((c) => renderCellValue(c.field, r, slug, resolve)),
+    )
+    host.innerHTML = bodyRows.length
+      ? renderTable(headers, bodyRows)
+      : `<p class="quartz-oblast-empty">Žádné záznamy.</p>`
   }
 }
 
@@ -153,6 +158,6 @@ document.addEventListener("nav", async (e: CustomEventMap["nav"]) => {
   await fillTables(e.detail.url as FullSlug)
 })
 
-if (document.querySelector("[data-oblast-dv]")) {
+if (document.querySelector("[data-dv-config]")) {
   void fillTables(getFullSlug(window))
 }
