@@ -1,5 +1,5 @@
 ---
-title: Koordinátor BOZP
+title: Člen týmu správce stavby – Koordinátor BOZP
 typ: term
 faze:
   - priprava

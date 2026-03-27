@@ -3,9 +3,9 @@
 		{"id":"ac414d52b5b2a424","type":"text","text":"# [[Asistent správce stavby – Zástupce vedoucího Týmu správce stavby]]","x":-460,"y":-1300,"width":460,"height":80,"color":"#4db2ff"},
 		{"id":"31d990bcc0af2a7d","type":"text","text":"# [[Pomocný asistent Správce stavby]]","x":-460,"y":-1200,"width":441,"height":50},
 		{"id":"328209e939dbf69c","type":"text","text":"# [[Asistent správce stavby – Specialista v oboru]]","x":-460,"y":-1120,"width":580,"height":50},
-		{"id":"824ae533e66cd847","type":"text","text":"# [[Koordinátor BIM]]","x":-460,"y":-1040,"width":290,"height":50},
-		{"id":"f93bcf28bcd6e153","type":"text","text":"# [[Koordinátor CDE]]","x":-460,"y":-960,"width":290,"height":50},
-		{"id":"04f59ed1831a7f7b","type":"text","text":"# [[Koordinátor BOZP]]","x":-460,"y":-880,"width":290,"height":50},
+		{"id":"824ae533e66cd847","type":"text","text":"# [[Člen týmu správce stavby – Koordinátor BIM]]","x":-460,"y":-1040,"width":290,"height":50},
+		{"id":"f93bcf28bcd6e153","type":"text","text":"# [[Člen týmu správce stavby – Koordinátor CDE]]","x":-460,"y":-960,"width":290,"height":50},
+		{"id":"04f59ed1831a7f7b","type":"text","text":"# [[Člen týmu správce stavby – Koordinátor BOZP]]","x":-460,"y":-880,"width":290,"height":50},
 		{"id":"79c3daffb32f5009","type":"text","text":"# [[Správce stavby]]","x":-740,"y":-1410,"width":240,"height":50,"color":"#529dff"}
 	],
 	"edges":[

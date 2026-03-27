@@ -26,6 +26,7 @@ import Flex from "./Flex"
 import ConditionalRender from "./ConditionalRender"
 import SiteBranding from "./SiteBranding"
 import CinnostiTable from "./CinnostiTable"
+import ProcesniOblastRuntime from "./ProcesniOblastRuntime"
 import SidebarToggle from "./SidebarToggle"
 
 export {
@@ -57,5 +58,6 @@ export {
   ConditionalRender,
   SiteBranding,
   CinnostiTable,
+  ProcesniOblastRuntime,
   SidebarToggle,
 }

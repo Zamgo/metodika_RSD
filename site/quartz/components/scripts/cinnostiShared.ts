@@ -118,6 +118,11 @@ export function createNoteSlugResolver(
 
 const WIKI_RE = /\[\[([^\]]+)\]\]/g
 
+/** Plnotvárné Unicode závorky (někdy z copy-paste / jiného editoru) → ASCII pro parsování odkazů. */
+function normalizeWikiBracketChars(s: string): string {
+  return s.replace(/\uFF3B/g, "[").replace(/\uFF3D/g, "]")
+}
+
 /** Text u odkazu v buňce i ve filtru — stejné pravidlo jako u `[[cíl|alias]]` / `[[cíl#nadpis]]`. */
 function displayTextFromWikiInner(inner: string): string {
   const pipe = inner.indexOf("|")
@@ -133,19 +138,14 @@ function displayTextFromWikiInner(inner: string): string {
 
 /**
  * Čitelný řetězec pro popisky ve filtru sloupce (bez `[[` … `|` … `]]`).
+ * Nový `RegExp` na volání — bez sdíleného `/g` a `lastIndex` napříč voláními.
  */
-export function plainTextFromWikiMeta(raw: string): string {
-  if (!raw.includes("[[")) return raw
-  let out = ""
-  let last = 0
-  raw.replace(WIKI_RE, (full, inner: string, offset) => {
-    out += raw.slice(last, offset)
-    last = offset + full.length
-    out += displayTextFromWikiInner(inner)
-    return ""
-  })
-  out += raw.slice(last)
-  return out
+export function plainTextFromWikiMeta(raw: string | number | unknown): string {
+  const s = normalizeWikiBracketChars(String(raw ?? ""))
+  if (!s.includes("[[")) return s
+  return s.replace(new RegExp("\\[\\[([^\\]]+)\\]\\]", "g"), (_, inner: string) =>
+    displayTextFromWikiInner(inner),
+  )
 }
 
 /**
@@ -156,7 +156,8 @@ export function metaStringToTableHtml(
   currentSlug: FullSlug,
   resolveNote: (pathWithoutAnchor: string) => FullSlug | null,
 ): string {
-  if (!raw.includes("[[")) return escapeHtml(raw)
+  const normalized = normalizeWikiBracketChars(raw)
+  if (!normalized.includes("[[")) return escapeHtml(normalized)
 
   function noteHref(targetSlug: FullSlug, headingAnchor: string): string {
     const path = new URL(resolveRelative(currentSlug, targetSlug), location.toString()).pathname
@@ -167,8 +168,8 @@ export function metaStringToTableHtml(
 
   let out = ""
   let last = 0
-  raw.replace(WIKI_RE, (full, inner: string, offset) => {
-    out += escapeHtml(raw.slice(last, offset))
+  normalized.replace(WIKI_RE, (full, inner: string, offset) => {
+    out += escapeHtml(normalized.slice(last, offset))
     last = offset + full.length
 
     const pipe = inner.indexOf("|")
@@ -189,6 +190,6 @@ export function metaStringToTableHtml(
     }
     return ""
   })
-  out += escapeHtml(raw.slice(last))
+  out += escapeHtml(normalized.slice(last))
   return out
 }

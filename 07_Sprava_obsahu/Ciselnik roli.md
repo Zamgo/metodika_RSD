@@ -30,7 +30,7 @@ Tento číselník je jediný zdroj hodnot pro metadata `role` (a pro konzistentn
 - [[Správce stavby]]
 - [[Zhotovitel]]
 - [[Projektant v oboru]]
-- [[Koordinátor CDE]]
+- [[Člen týmu správce stavby – Koordinátor CDE]]
 - [[Technický dozor]]
 - [[Pověřující strana]]
 - [[Pověřená strana]]

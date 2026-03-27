@@ -1,5 +1,5 @@
 ---
-title: Koordinátor BIM
+title: Člen týmu správce stavby – Koordinátor CDE
 typ: term
 faze:
   - priprava

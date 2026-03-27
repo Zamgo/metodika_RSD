@@ -36,6 +36,12 @@ export const sharedPageComponents: SharedLayout = {
   header: [],
   afterBody: [
     Component.ConditionalRender({
+      component: Component.ProcesniOblastRuntime(),
+      condition: (page) =>
+        page.fileData.frontmatter?.typ === "procesni_oblast" ||
+        page.fileData.frontmatter?.typ === "pracovni_balicek",
+    }),
+    Component.ConditionalRender({
       component: Component.CinnostiTable(),
       condition: (page) => {
         const slug = (page.fileData.slug ?? "").toLowerCase()
