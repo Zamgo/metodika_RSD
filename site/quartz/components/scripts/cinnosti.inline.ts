@@ -10,6 +10,7 @@ import {
   getMetaString,
   isCinnostRow,
   metaStringToTableHtml,
+  plainTextFromWikiMeta,
   sortKeyForRow,
 } from "./cinnostiShared"
 
@@ -483,7 +484,7 @@ async function setupCinnosti(root: HTMLElement, currentSlug: FullSlug, data: Cin
             const isChecked =
               !selectedSet || selectedSet.size === 0 || selectedSet.has(val)
             const ck = isChecked ? " checked" : ""
-            const display = val || "(prázdné)"
+            const display = val ? plainTextFromWikiMeta(val) : "(prázdné)"
             return `<label class="cinnosti-filter-value"><input type="checkbox" value="${escapeHtml(val)}"${ck}><span>${escapeHtml(display)}</span></label>`
           })
           .join("")

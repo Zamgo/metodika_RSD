@@ -11,13 +11,14 @@
             "id": "8a85b1291b635b4b",
             "type": "leaf",
             "state": {
-              "type": "bases",
+              "type": "markdown",
               "state": {
-                "file": "02 - Seznam činností.base",
-                "viewName": "Všechny činnosti (bez rozcestníků)"
+                "file": "03_Oblasti správy informací/1 - Posouzení a zohlednění potřeb.md",
+                "mode": "source",
+                "source": false
               },
-              "icon": "lucide-table",
-              "title": "02 - Seznam činností"
+              "icon": "lucide-file",
+              "title": "1 - Posouzení a zohlednění potřeb"
             }
           }
         ]
@@ -77,7 +78,7 @@
       }
     ],
     "direction": "horizontal",
-    "width": 200
+    "width": 491.5
   },
   "right": {
     "id": "925f1fb0b98116e3",
@@ -185,6 +186,12 @@
   },
   "active": "8a85b1291b635b4b",
   "lastOpenFiles": [
+    "_tmp_dv_fix.py",
+    "02 - Seznam činností.md",
+    "02 - Seznam činností.base",
+    "03_Oblasti správy informací/1 - Posouzení a zohlednění potřeb.md",
+    "_tmp_fix_encoding.py",
+    "_tmp_fix_raci_paths.py",
     "site/public/99_Media/obrazky/zaklady_bim/image99.png",
     "site/public/99_Media/obrazky/zaklady_bim/image96.jpeg",
     "site/public/99_Media/obrazky/zaklady_bim/image97.jpeg",
@@ -195,7 +202,6 @@
     "site/public/99_Media/obrazky/zaklady_bim/image91.png",
     "site/public/99_Media/obrazky/zaklady_bim/image92.png",
     "site/public/99_Media/obrazky/zaklady_bim/image90.png",
-    "site/public/99_Media/obrazky/zaklady_bim/image89.jpeg",
     "site/public/99_Media/obrazky/zaklady_bim/hdphoto1.wdp",
     "site/public/99_Media/obrazky/controlis_implementace/hdphoto1.wdp",
     "site/public/99_Media/obrazky/controlis_cde/image76.emf",
@@ -203,9 +209,6 @@
     "site/public/05_Definice-pojmů/Smluvní-strany/ISO19650/Vedoucí-pověřená-strana.html",
     "site/public/99_Media/obrazky/controlis_cde/hdphoto1.wdp",
     "site/public/05_Definice-pojmů/Smluvní-strany/ISO19650/Pověřující-strana.html",
-    "site/public/05_Definice-pojmů/Smluvní-strany/ISO19650/Pověřená-strana.html",
-    "site/public/05_Definice-pojmů/Smluvní-strany/ISO19650/index.html",
-    "site/public/05_Definice-pojmů/Smluvní-strany/FIDIC/Zhotovitel.html",
     "site/public/06_Diagramy/Tým_správce_stavby_hierachie.canvas",
     "site/public/03_CDE_workflow/0_Diagram.canvas",
     "06_Diagramy/Tým_správce_stavby_hierachie.canvas",
@@ -232,8 +235,6 @@
     "03_Oblasti správy informací/7.1.1 - Predlozeni informaci vedouci pov strane.md",
     "03_Oblasti správy informací/7.1 - Předložení informačního modelu pro autorizování vedoucí pověřenou stranou.md",
     "03_Oblasti správy informací/7 - Proces managementu informací – Předání informačního modelu stavby.md",
-    "03_Oblasti správy informací/6.5.1 - Prezkoumani informacniho modelu stavby.md",
-    "03_Oblasti správy informací/6.5 - Přezkoumání informačního modelu stavby.md",
     "03_CDE_workflow/0_Diagram.canvas",
     "site/public/Bez-názvu.canvas"
   ]

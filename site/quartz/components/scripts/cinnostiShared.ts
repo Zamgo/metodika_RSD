@@ -118,6 +118,36 @@ export function createNoteSlugResolver(
 
 const WIKI_RE = /\[\[([^\]]+)\]\]/g
 
+/** Text u odkazu v buňce i ve filtru — stejné pravidlo jako u `[[cíl|alias]]` / `[[cíl#nadpis]]`. */
+function displayTextFromWikiInner(inner: string): string {
+  const pipe = inner.indexOf("|")
+  const targetPart = (pipe >= 0 ? inner.slice(0, pipe) : inner).trim()
+  const displayFromPipe = pipe >= 0 ? inner.slice(pipe + 1).trim() : ""
+  const hashIdx = targetPart.indexOf("#")
+  return (
+    displayFromPipe ||
+    (hashIdx >= 0 ? targetPart.slice(0, hashIdx) : targetPart).trim() ||
+    targetPart
+  )
+}
+
+/**
+ * Čitelný řetězec pro popisky ve filtru sloupce (bez `[[` … `|` … `]]`).
+ */
+export function plainTextFromWikiMeta(raw: string): string {
+  if (!raw.includes("[[")) return raw
+  let out = ""
+  let last = 0
+  raw.replace(WIKI_RE, (full, inner: string, offset) => {
+    out += raw.slice(last, offset)
+    last = offset + full.length
+    out += displayTextFromWikiInner(inner)
+    return ""
+  })
+  out += raw.slice(last)
+  return out
+}
+
 /**
  * Obsidian `[[cíl|alias]]` → klikatelné odkazy na stránky Quartz.
  */
@@ -143,17 +173,13 @@ export function metaStringToTableHtml(
 
     const pipe = inner.indexOf("|")
     const targetPart = (pipe >= 0 ? inner.slice(0, pipe) : inner).trim()
-    const displayFromPipe = pipe >= 0 ? inner.slice(pipe + 1).trim() : ""
 
     const hashIdx = targetPart.indexOf("#")
     const pathOnly = hashIdx >= 0 ? targetPart.slice(0, hashIdx) : targetPart
     const anchor = hashIdx >= 0 ? targetPart.slice(hashIdx + 1) : ""
 
     const slug = resolveNote(pathOnly)
-    const display =
-      displayFromPipe ||
-      (hashIdx >= 0 ? targetPart.slice(0, hashIdx) : targetPart).trim() ||
-      pathOnly
+    const display = displayTextFromWikiInner(inner)
 
     if (!slug) {
       out += escapeHtml(full)

@@ -7,5 +7,5 @@ workflow: []
 stav: draft
 permalink: /cinnosti
 tags: [cinnosti, raci, prehled, quartz]
-zdroj: "Agregace z vaultu (03_Oblasti + 07_RACI_cinnosti)"
+zdroj: "Agregace z vaultu (03_Oblasti správy informací; srov. 02 - Seznam činností.base)"
 ---

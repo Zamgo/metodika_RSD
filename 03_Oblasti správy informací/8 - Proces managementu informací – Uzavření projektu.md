@@ -23,21 +23,21 @@ pracovni_balicek: ""
 
 ČSN EN ISO 19650-2; 5.8
 
-## Pracovn? bal??ky v oblasti
+## Pracovní balíčky v oblasti
 
 ```dataview
-TABLE WITHOUT ID file.link AS "Pracovn? bal??ek", pracovni_balicek AS "Ozna?en?"
-FROM "07_RACI_cinnosti"
-WHERE typ = "pracovni_balicek" AND procesni_oblast = this.procesni_oblast
+TABLE WITHOUT ID file.link AS "Pracovní balíček", pracovni_balicek AS "Označení"
+FROM "03_Oblasti správy informací"
+WHERE typ = "pracovni_balicek" AND procesni_oblast = this.file.link
 SORT pracovni_balicek ASC, file.name ASC
 ```
 
-## Konkr?tn? ?innosti v oblasti
+## Konkrétní činnosti v oblasti
 
 ```dataview
-TABLE WITHOUT ID file.link AS "?innost", oznaceni AS "Ozna?en?", pracovni_balicek AS "Pracovn? bal??ek"
-FROM "07_RACI_cinnosti"
-WHERE typ = "cinnost" AND procesni_oblast = this.procesni_oblast
+TABLE WITHOUT ID file.link AS "Činnost", oznaceni AS "Označení", pracovni_balicek AS "Pracovní balíček"
+FROM "03_Oblasti správy informací"
+WHERE typ = "cinnost" AND procesni_oblast = this.file.link
 SORT pracovni_balicek ASC, oznaceni ASC, file.name ASC
 ```
 
