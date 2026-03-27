@@ -184,12 +184,14 @@
       "bases:Vytvořit novou základnu": false
     }
   },
-  "active": "6ed3e31a2ef3654b",
+  "active": "7b02233921117898",
   "lastOpenFiles": [
+    "03_Oblasti správy informací/1 - Posouzení a zohlednění potřeb.md",
     "03_Oblasti správy informací/1.1.1 - Pověřit jednotlivce k plnění funkcí při managementu informací.md",
     "03_Oblasti správy informací/1.1 - Pověření jednotlivců k plnění funkcí při managementu informací.md",
+    "03_Oblasti správy informací/1.7.2 - Nastavit projektové společné datové prostředí pro projekt.md",
+    "03_Oblasti správy informací/1.7.3 - Poskytovat podporu pro projektové společné datové prostředí.md",
     "03_Oblasti správy informací/1.1.2 - Stanovit rozsah služeb pro funkci správy informací (v případě pověření třetí strany).md",
-    "03_Oblasti správy informací/1 - Posouzení a zohlednění potřeb.md",
     "03_Oblasti správy informací/1.4 - Stanovení projektového informačního standardu.md",
     "site/public/99_Media/obrazky/zaklady_bim/image99.png",
     "site/public/99_Media/obrazky/zaklady_bim/image98.png",
@@ -233,8 +235,6 @@
     "03_Oblasti správy informací/8.2.2 - Zachycování ponaučení pro budoucí projekty v průběhu projektu.md",
     "03_Oblasti správy informací/8.1 - Archivování projektového informačního modelu (PIM).md",
     "03_Oblasti správy informací/7.4.2 - Zprava o prezkumu modelu stavby.md",
-    "03_Oblasti správy informací/6.3.1 - Kontrola prokazovani kvality kontejneru.md",
-    "03_Oblasti správy informací/7.4.1 - Prezkoumani informacniho modelu stavby.md",
     "03_CDE_workflow/0_Diagram.canvas",
     "site/public/Bez-názvu.canvas"
   ]

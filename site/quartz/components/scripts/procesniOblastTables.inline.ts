@@ -1,4 +1,6 @@
-import { FullSlug, getFullSlug, resolveRelative } from "../../util/path"
+import { FullSlug, getFullSlug, resolveRelative, normalizeRelativeURLs } from "../../util/path"
+import { computePosition, flip, inline, shift } from "@floating-ui/dom"
+import { fetchCanonical } from "./util"
 import type { CinnostiIndex } from "./cinnostiShared"
 import {
   createNoteSlugResolver,
@@ -26,6 +28,119 @@ interface DvConfig {
 }
 
 type Row = { slug: FullSlug; title: string; meta?: Record<string, unknown> }
+
+// ── Popover ──────────────────────────────────────────────────────────────
+
+const domParser = new DOMParser()
+let activePopoverLink: HTMLAnchorElement | null = null
+
+function clearActivePopovers() {
+  activePopoverLink = null
+  document.querySelectorAll(".popover.active-popover").forEach((el) => {
+    el.classList.remove("active-popover")
+  })
+}
+
+async function positionPopover(
+  anchor: HTMLElement,
+  popoverEl: HTMLElement,
+  cx: number,
+  cy: number,
+) {
+  const { x, y } = await computePosition(anchor, popoverEl, {
+    strategy: "fixed",
+    middleware: [inline({ x: cx, y: cy }), shift(), flip()],
+  })
+  popoverEl.style.transform = `translate(${x.toFixed()}px, ${y.toFixed()}px)`
+}
+
+function scrollPopoverToHash(popoverEl: HTMLElement, hash: string) {
+  const inner = popoverEl.querySelector(".popover-inner") as HTMLElement | null
+  if (!inner || !hash) return
+  const heading = inner.querySelector(`#popover-internal-${hash.slice(1)}`) as HTMLElement
+  if (heading) inner.scroll({ top: heading.offsetTop - 12, behavior: "instant" })
+}
+
+async function handlePopoverEnter(link: HTMLAnchorElement, ev: MouseEvent) {
+  activePopoverLink = link
+  const targetUrl = new URL(link.href)
+  const hash = decodeURIComponent(targetUrl.hash)
+  targetUrl.hash = ""
+  targetUrl.search = ""
+  const popoverId = `popover-${link.pathname}`
+
+  function showIt(el: HTMLElement) {
+    clearActivePopovers()
+    activePopoverLink = link
+    el.classList.add("active-popover")
+    positionPopover(link, el, ev.clientX, ev.clientY)
+    scrollPopoverToHash(el, hash)
+  }
+
+  const existing = document.getElementById(popoverId)
+  if (existing) {
+    showIt(existing)
+    return
+  }
+
+  const response = await fetchCanonical(targetUrl).catch(() => null)
+  if (!response?.ok || activePopoverLink !== link) return
+
+  const [contentType] = (response.headers.get("Content-Type") ?? "").split(";")
+  const [category, typeInfo] = contentType.split("/")
+
+  const popoverEl = document.createElement("div")
+  popoverEl.id = popoverId
+  popoverEl.classList.add("popover")
+  const inner = document.createElement("div")
+  inner.classList.add("popover-inner")
+  inner.dataset.contentType = contentType
+  popoverEl.appendChild(inner)
+
+  switch (category) {
+    case "image": {
+      const img = document.createElement("img")
+      img.src = targetUrl.toString()
+      inner.appendChild(img)
+      break
+    }
+    case "application":
+      if (typeInfo === "pdf") {
+        const pdf = document.createElement("iframe")
+        pdf.src = targetUrl.toString()
+        inner.appendChild(pdf)
+      }
+      break
+    default: {
+      const text = await response.text()
+      const doc = domParser.parseFromString(text, "text/html")
+      normalizeRelativeURLs(doc, targetUrl)
+      doc.querySelectorAll("[id]").forEach((el) => {
+        el.id = `popover-internal-${el.id}`
+      })
+      const hints = [...doc.getElementsByClassName("popover-hint")]
+      if (hints.length === 0) return
+      hints.forEach((h) => inner.appendChild(h))
+    }
+  }
+
+  if (document.getElementById(popoverId) || activePopoverLink !== link) return
+  document.body.appendChild(popoverEl)
+  showIt(popoverEl)
+}
+
+function attachTablePopovers(container: HTMLElement) {
+  const links = container.querySelectorAll("a.internal") as NodeListOf<HTMLAnchorElement>
+  for (const link of links) {
+    if ((link as any).__popoverBound) continue
+    ;(link as any).__popoverBound = true
+    const enterFn = (e: MouseEvent) => handlePopoverEnter(link, e)
+    link.addEventListener("mouseenter", enterFn)
+    link.addEventListener("mouseleave", clearActivePopovers)
+  }
+}
+
+// ── Table rendering ──────────────────────────────────────────────────────
 
 function normalizeTyp(raw: string): string {
   return raw.trim().replace(/^["']|["']$/g, "")
@@ -151,6 +266,7 @@ async function fillTables(slug: FullSlug) {
     host.innerHTML = bodyRows.length
       ? renderTable(headers, bodyRows)
       : `<p class="quartz-oblast-empty">Žádné záznamy.</p>`
+    attachTablePopovers(host)
   }
 }
 
