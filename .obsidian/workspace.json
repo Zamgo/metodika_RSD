@@ -4,11 +4,11 @@
     "type": "split",
     "children": [
       {
-        "id": "fedd6403d895927f",
+        "id": "e9947c2a6fc2c3a4",
         "type": "tabs",
         "children": [
           {
-            "id": "8a85b1291b635b4b",
+            "id": "7b02233921117898",
             "type": "leaf",
             "state": {
               "type": "markdown",
@@ -184,12 +184,13 @@
       "bases:Vytvořit novou základnu": false
     }
   },
-  "active": "8a85b1291b635b4b",
+  "active": "6ed3e31a2ef3654b",
   "lastOpenFiles": [
     "03_Oblasti správy informací/1.1.1 - Pověřit jednotlivce k plnění funkcí při managementu informací.md",
+    "03_Oblasti správy informací/1.1 - Pověření jednotlivců k plnění funkcí při managementu informací.md",
+    "03_Oblasti správy informací/1.1.2 - Stanovit rozsah služeb pro funkci správy informací (v případě pověření třetí strany).md",
     "03_Oblasti správy informací/1 - Posouzení a zohlednění potřeb.md",
     "03_Oblasti správy informací/1.4 - Stanovení projektového informačního standardu.md",
-    "03_Oblasti správy informací/1.1 - Pověření jednotlivců k plnění funkcí při managementu informací.md",
     "site/public/99_Media/obrazky/zaklady_bim/image99.png",
     "site/public/99_Media/obrazky/zaklady_bim/image98.png",
     "site/public/99_Media/obrazky/zaklady_bim/image97.jpeg",
@@ -234,7 +235,6 @@
     "03_Oblasti správy informací/7.4.2 - Zprava o prezkumu modelu stavby.md",
     "03_Oblasti správy informací/6.3.1 - Kontrola prokazovani kvality kontejneru.md",
     "03_Oblasti správy informací/7.4.1 - Prezkoumani informacniho modelu stavby.md",
-    "03_Oblasti správy informací/7.4 - Přezkoumání a akceptace informačního modelu stavby.md",
     "03_CDE_workflow/0_Diagram.canvas",
     "site/public/Bez-názvu.canvas"
   ]

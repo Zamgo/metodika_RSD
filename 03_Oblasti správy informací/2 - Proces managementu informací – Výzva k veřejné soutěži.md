@@ -28,7 +28,7 @@ pracovni_balicek: ""
 ```dataview
 TABLE WITHOUT ID file.link AS "Pracovní balíček", pracovni_balicek AS "Označení"
 FROM "03_Oblasti správy informací"
-WHERE typ = "pracovni_balicek" AND procesni_oblast.path = this.file.path
+WHERE typ = "pracovni_balicek" AND procesni_oblast = this.file.link
 SORT pracovni_balicek ASC, file.name ASC
 ```
 
@@ -37,7 +37,7 @@ SORT pracovni_balicek ASC, file.name ASC
 ```dataview
 TABLE WITHOUT ID file.link AS "Činnost", oznaceni AS "Označení", pracovni_balicek AS "Pracovní balíček"
 FROM "03_Oblasti správy informací"
-WHERE typ = "cinnost" AND procesni_oblast.path = this.file.path
+WHERE typ = "cinnost" AND procesni_oblast = this.file.link
 SORT pracovni_balicek ASC, oznaceni ASC, file.name ASC
 ```
 
