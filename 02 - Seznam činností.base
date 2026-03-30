@@ -54,7 +54,8 @@ views:
       - property: faze
         direction: ASC
     columnSize:
-      note.pracovni_balicek: 383
+      note.procesni_oblast: 372
+      note.pracovni_balicek: 508
       file.name: 650
       note.popis: 332
       note.typ: 163

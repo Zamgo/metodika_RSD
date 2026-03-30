@@ -1,4 +1,4 @@
----
+﻿---
 title: 8 - Proces managementu informací – Uzavření projektu
 typ: procesni_oblast
 oznaceni: "8"
@@ -16,31 +16,33 @@ tags:
   - raci
   - iso_19650
 procesni_oblast: "[[8 - Proces managementu informací – Uzavření projektu|8 - Proces managementu informací – Uzavření projektu]]"
-pracovni_balicek: ""
+cinnost: ""
 ---
 
 ## Popis
 
 ČSN EN ISO 19650-2; 5.8
 
-## Pracovní balíčky v oblasti
+## Činnosti v oblasti
 
 ```dataview
-TABLE WITHOUT ID file.link AS "Pracovní balíček", pracovni_balicek AS "Označení"
-FROM "03_Oblasti správy informací"
-WHERE typ = "pracovni_balicek" AND procesni_oblast = this.file.link
-SORT pracovni_balicek ASC, file.name ASC
-```
-
-## Konkrétní činnosti v oblasti
-
-```dataview
-TABLE WITHOUT ID file.link AS "Činnost", oznaceni AS "Označení", pracovni_balicek AS "Pracovní balíček"
+TABLE WITHOUT ID file.link AS "Činnost", oznaceni AS "Označení"
 FROM "03_Oblasti správy informací"
 WHERE typ = "cinnost" AND procesni_oblast = this.file.link
-SORT pracovni_balicek ASC, oznaceni ASC, file.name ASC
+SORT oznaceni ASC, file.name ASC
+```
+
+## Dílčí činnosti v oblasti
+
+```dataview
+TABLE WITHOUT ID file.link AS "Dílčí činnost", oznaceni AS "Označení", cinnost AS "Činnost"
+FROM "03_Oblasti správy informací"
+WHERE typ = "dilci_cinnost" AND procesni_oblast = this.file.link
+SORT cinnost ASC, oznaceni ASC, file.name ASC
 ```
 
 ## Zdroj
 
 A/R
+
+

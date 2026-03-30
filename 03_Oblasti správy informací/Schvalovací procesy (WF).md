@@ -1,6 +1,6 @@
----
+﻿---
 title: Schvalovací procesy (WF) - Pavlína + příloha
-typ: "cinnost"
+typ: "dilci_cinnost"
 faze: [realizace]
 workflow: []
 stav: draft
@@ -8,7 +8,7 @@ permalink: /proces/realizace/schvalovaci-procesy-pavlina-priloha
 tags: [proces, cde, dokumentace]
 zdroj: "Interní metodika ŘSD"
 procesni_oblast: ""
-pracovni_balicek: ""
+cinnost: ""
 ---
 
 ## Účel
@@ -117,3 +117,4 @@ Tyto výstupy slouží jako podklad pro další fáze realizace stavby a pro kon
 ## Související přílohy
 
 - (bude doplněno při převodu příloh)
+

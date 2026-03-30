@@ -1,6 +1,6 @@
----
+﻿---
 title: Změny během výstavby pomocí nástrojů CDE - Pavlína
-typ: "cinnost"
+typ: "dilci_cinnost"
 faze: [realizace]
 workflow: []
 stav: draft
@@ -8,7 +8,7 @@ permalink: /proces/realizace/zmeny-behem-vystavby-pomoci-nastroju-cde-pavlina
 tags: [proces, cde, dokumentace]
 zdroj: "Interní metodika ŘSD"
 procesni_oblast: ""
-pracovni_balicek: ""
+cinnost: ""
 ---
 
 ## Účel
@@ -93,3 +93,4 @@ Evidovaná změna s úplnou [[Auditní stopa|auditní stopou]]
 ## Související přílohy
 
 - (bude doplněno při převodu příloh)
+

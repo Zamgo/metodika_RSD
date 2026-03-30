@@ -1,4 +1,4 @@
----
+﻿---
 title: 1 - Posouzení a zohlednění potřeb
 typ: procesni_oblast
 oznaceni: "1"
@@ -18,7 +18,7 @@ tags:
   - raci
   - iso_19650
 procesni_oblast: "[[1 - Posouzení a zohlednění potřeb|1 - Posouzení a zohlednění potřeb]]"
-pracovni_balicek: ""
+cinnost: ""
 ---
 
 
@@ -27,9 +27,11 @@ pracovni_balicek: ""
 
 ## Pracovní balíčky jednotlivých činností v dané oblasti
 ```dataview
-TABLE WITHOUT ID file.link AS "Pracovní balíček"
+TABLE WITHOUT ID file.link AS "Činnost"
 FROM "03_Oblasti správy informací"
-WHERE typ = "pracovni_balicek" AND procesni_oblast = this.file.link
-SORT pracovni_balicek ASC, file.name ASC
+WHERE typ = "cinnost" AND procesni_oblast = this.file.link
+SORT oznaceni ASC, file.name ASC
 ```
+
+
 

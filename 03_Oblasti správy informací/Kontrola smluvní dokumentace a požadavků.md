@@ -1,6 +1,6 @@
----
+﻿---
 title: Kontrola smluvní dokumentace a požadavků (BIM, CDE, EIR)-P+S
-typ: cinnost
+typ: dilci_cinnost
 faze:
   - priprava
 workflow: []
@@ -12,7 +12,7 @@ tags:
   - dokumentace
 zdroj: Požadavky objednatele na výměnu informací (EIR)
 procesni_oblast: ""
-pracovni_balicek:
+cinnost:
 ---
 
 ## Účel
@@ -90,3 +90,4 @@ Zjištěné nesoulady správce stavby písemně zaznamená a předloží k řeš
 ## Související přílohy
 
 - (bude doplněno při převodu příloh)
+

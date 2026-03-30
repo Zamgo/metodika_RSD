@@ -1,6 +1,6 @@
----
+﻿---
 title: Konfigurace projektového nástroje CDE - Pavlína + příloha
-typ: "cinnost"
+typ: "dilci_cinnost"
 faze: [priprava]
 workflow: []
 stav: draft
@@ -8,7 +8,7 @@ permalink: /proces/priprava/konfigurace-projektoveho-nastroje-cde-pavlina-priloh
 tags: [proces, cde, dokumentace]
 zdroj: "Interní metodika ŘSD"
 procesni_oblast: ""
-pracovni_balicek: ""
+cinnost: ""
 ---
 
 # Účel
@@ -66,3 +66,4 @@ Správce stavby ověřuje, že tyto podklady jsou aktuální a že jejich požad
 ## Návaznosti
 
 - [[04_Šablony ke stažení]]
+
