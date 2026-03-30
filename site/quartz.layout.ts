@@ -17,19 +17,15 @@ function sortByNumericPrefix(a: FileTrieNode, b: FileTrieNode): number {
   })
 }
 
-/** První segment cesty ve stromu Exploreru (bez koncového `/index`). */
-function explorerPathParts(node: FileTrieNode): string[] {
-  const s = String(node.slug).replace(/\/index$/i, "")
-  return s.split("/").filter(Boolean)
-}
-
 /**
  * Levý panel: jen úvod (index), seznam činností, přehled CDE workflow, složky Definice pojmů a Diagramy.
  * Ikony (vyhledávání, režimy) zůstávají v layoutu — nejsou součástí Exploreru.
+ * (filterFn se do klienta posílá přes .toString() — nesmí volat jiné funkce z tohoto souboru.)
  */
 function explorerFilter(node: FileTrieNode): boolean {
   if (node.slugSegment === "tags") return false
-  const parts = explorerPathParts(node)
+  const s = String(node.slug).replace(/\/index$/i, "")
+  const parts = s.split("/").filter(Boolean)
   if (parts.length === 0) return false
 
   const rootSeg = parts[0]
@@ -97,7 +93,6 @@ export const sharedPageComponents: SharedLayout = {
         )
       },
     }),
-    Component.Backlinks(),
     Component.ConditionalRender({
       component: Component.RaciBacklinks(),
       condition: (page) => {

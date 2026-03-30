@@ -1,8 +1,6 @@
 filters:
   or:
     - file.inFolder("03_CDE_workflow")
-formulas:
-  Bez názvu: ""
 properties:
   typ:
     displayName: Typ
@@ -30,7 +28,6 @@ views:
       - permalink
       - navazane_cinnosti
       - aliases
-      - formula.Bez názvu
     sort:
       - property: file.name
         direction: ASC

@@ -38,7 +38,12 @@ body {
   }
 
   // Střed: jemně modrošedý podklad (soulad s CI)
+  // Flex column: buňka mřížky je často vysoká kvůli postranním panelům (100vh); bílé article
+  // nesmí vizuálně „vyplnit“ zbytek výšky — pod obsahem zůstane vidět tento podklad.
   & .center {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
     background: linear-gradient(
       180deg,
       color-mix(in srgb, $rsd-blue-dark 4%, #f0f4fa) 0%,
@@ -61,6 +66,7 @@ body {
 
   // Vnitřní kontejner: čistší bílá, jemný modrý lem a stín
   & article {
+    flex: 0 0 auto;
     background: linear-gradient(
       180deg,
       #ffffff 0%,
@@ -152,6 +158,16 @@ body {
 
 #quartz-body .center:has(#cde-workflow-browser) > article.popover-hint:not(:has(> *)) + hr {
   display: none;
+}
+
+/* Žádný obsah v afterBody (např. prázdné RACI propojení): skrýt oddělovač i prázdný footer — bez zbytečné „bílé“ mezery */
+#quartz-body .center > hr:has(+ .page-footer:not(:has(*))) {
+  display: none;
+}
+
+#quartz-body .center > .page-footer:not(:has(*)) {
+  display: none;
+  margin-top: 0;
 }
 
 /* ─── Left sidebar: Explorer title hidden on desktop ─────────────── */

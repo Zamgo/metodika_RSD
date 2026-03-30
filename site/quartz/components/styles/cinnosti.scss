@@ -1,4 +1,5 @@
-#cinnosti-browser {
+/* Společné styly pro Seznam činností i CDE workflow (oba rooty mají tuto třídu). */
+.cinnosti-table-root {
   margin: 1.5rem 0;
   padding: 1rem;
   border: 1px solid var(--lightgray);
@@ -379,7 +380,7 @@
 
 // ── Dark mode overrides ──────────────────────────────────────────────────
 
-:root[saved-theme="dark"] #cinnosti-browser {
+:root[saved-theme="dark"] .cinnosti-table-root {
   background: var(--light);
 }
 

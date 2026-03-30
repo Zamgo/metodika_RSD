@@ -9,13 +9,40 @@ type FieldDef = {
   label: string
 }
 
+/** Společná pole + pořadí jako v Obsidianu / Pravidla metadat */
 const FIELDS: FieldDef[] = [
+  { key: "oznaceni", label: "Označení" },
   { key: "procesni_oblast", label: "Metadata procesní oblasti" },
   { key: "cinnost", label: "Činnost" },
-  { key: "R - Odpovědnost za provádění činnosti", label: "R" },
-  { key: "A - Právní odpovědnost za dokončení činnosti", label: "A" },
-  { key: "C - Konzultace v průběhu činnosti", label: "C" },
-  { key: "I - Informování po dokončení činnosti", label: "I" },
+  {
+    key: "R - Odpovědnost za provádění činnosti",
+    label: "R - Odpovědnost za provádění činnosti",
+  },
+  {
+    key: "A - Právní odpovědnost za dokončení činnosti",
+    label: "A - Právní odpovědnost za dokončení činnosti",
+  },
+  {
+    key: "C - Konzultace v průběhu činnosti",
+    label: "C - Konzultace v průběhu činnosti",
+  },
+  {
+    key: "I - Informování po dokončení činnosti",
+    label: "I - Informování po dokončení činnosti",
+  },
+  { key: "zdroj", label: "Zdroj" },
+  { key: "faze", label: "Fáze" },
+  { key: "workflow", label: "Workflow" },
+  { key: "stav", label: "Stav" },
+  { key: "permalink", label: "Permalink" },
+  { key: "vstupy", label: "Vstupy" },
+  { key: "vystupy", label: "Výstupy" },
+  { key: "navazane_workflow", label: "Navázané workflow" },
+  { key: "predchozi_cinnost", label: "Předchozí činnost" },
+  { key: "nasledujici_cinnost", label: "Následující činnost" },
+  { key: "nastroj", label: "Nástroj" },
+  { key: "frekvence", label: "Frekvence" },
+  { key: "popis", label: "Popis (frontmatter)" },
 ]
 
 const ACTIVITY_TYPES = new Set(["cinnost", "dilci_cinnost", "raci_cinnost"])
@@ -70,7 +97,7 @@ const MetadataPanel: QuartzComponent = ({ fileData, displayClass }: QuartzCompon
           Skrýt
         </button>
       </div>
-      <dl id="metadata-panel-fields" class="metadata-panel-body">
+      <dl class="metadata-panel-body" id="metadata-panel-fields">
         {displayRows.map((row) => (
           <Fragment key={row.key}>
             <dt>{row.label}</dt>
@@ -126,13 +153,16 @@ MetadataPanel.css = `
 .metadata-panel dl {
   margin: 0;
   display: grid;
-  grid-template-columns: max-content 1fr;
+  grid-template-columns: minmax(0, min(100%, 26rem)) 1fr;
   gap: 0.35rem 0.75rem;
+  align-items: start;
 }
 
 .metadata-panel dt {
   font-weight: 600;
   color: var(--darkgray);
+  padding-right: 0.25rem;
+  word-break: break-word;
 }
 
 .metadata-panel dd {
@@ -143,18 +173,25 @@ MetadataPanel.css = `
 `
 
 MetadataPanel.afterDOMLoaded = `
-  document.querySelectorAll("[data-metadata-panel]").forEach((panel) => {
-    const btn = panel.querySelector(".metadata-panel-toggle");
-    const body = panel.querySelector(".metadata-panel-body");
-    if (!btn || !body || !(btn instanceof HTMLButtonElement)) return;
+  function initMetadataPanels() {
+    document.querySelectorAll("[data-metadata-panel]").forEach((panel) => {
+      const btn = panel.querySelector(".metadata-panel-toggle");
+      const body = panel.querySelector(".metadata-panel-body");
+      if (!btn || !body || !(btn instanceof HTMLButtonElement)) return;
 
-    btn.addEventListener("click", () => {
-      const nextHidden = !body.hidden;
-      body.hidden = nextHidden;
-      btn.setAttribute("aria-expanded", String(!nextHidden));
-      btn.textContent = nextHidden ? "Zobrazit" : "Skrýt";
+      function onClick() {
+        const nextHidden = !body.hidden;
+        body.hidden = nextHidden;
+        btn.setAttribute("aria-expanded", String(!nextHidden));
+        btn.textContent = nextHidden ? "Zobrazit" : "Skrýt";
+      }
+
+      btn.addEventListener("click", onClick);
+      window.addCleanup(() => btn.removeEventListener("click", onClick));
     });
-  });
+  }
+
+  document.addEventListener("nav", initMetadataPanels);
 `
 
 export default (() => MetadataPanel) satisfies QuartzComponentConstructor

@@ -3,7 +3,7 @@ filters:
     - file.inFolder("03_Oblasti správy informací")
 formulas:
   Bez názvu: ""
-  dilci_cinnost: 'if(typ == "dilci_cinnost", title, "")'
+  dilci_cinnost: if(typ == "dilci_cinnost", title, "")
 properties:
   typ:
     displayName: Úroveň
@@ -29,16 +29,14 @@ properties:
     displayName: I - Informování po dokončení činnosti
 views:
   - type: table
-    name: Činnosti a dílčí činnosti (bez rozcestníků)
+    name: Dílčí činnosti (bez rozcestníků)
     filters:
-      or:
-        - typ == "cinnost"
+      and:
         - typ == "dilci_cinnost"
     order:
       - procesni_oblast
       - cinnost
       - formula.dilci_cinnost
-      - typ
       - oznaceni
       - popis
       - R - Odpovědnost za provádění činnosti
@@ -59,7 +57,6 @@ views:
       note.procesni_oblast: 320
       note.cinnost: 400
       formula.dilci_cinnost: 380
-      note.typ: 120
       note.oznaceni: 90
       note.popis: 300
       note.R - Odpovědnost za provádění činnosti: 240
@@ -105,30 +102,3 @@ views:
       formula.dilci_cinnost: 360
       note.typ: 100
       note.popis: 332
-  - type: table
-    name: Pouze dílčí činnosti
-    filters:
-      and:
-        - typ == "dilci_cinnost"
-    order:
-      - procesni_oblast
-      - cinnost
-      - formula.dilci_cinnost
-      - oznaceni
-      - popis
-      - zdroj
-      - faze
-      - stav
-    sort:
-      - property: procesni_oblast
-        direction: ASC
-      - property: cinnost
-        direction: ASC
-      - property: oznaceni
-        direction: ASC
-    columnSize:
-      note.procesni_oblast: 340
-      note.cinnost: 340
-      formula.dilci_cinnost: 420
-      note.oznaceni: 100
-      note.popis: 340
