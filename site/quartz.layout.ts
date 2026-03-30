@@ -62,6 +62,19 @@ export const sharedPageComponents: SharedLayout = {
       },
     }),
     Component.Backlinks(),
+    Component.ConditionalRender({
+      component: Component.RaciBacklinks(),
+      condition: (page) => {
+        const typ = page.fileData.frontmatter?.typ
+        return (
+          typ === "term" ||
+          typ === "cinnost" ||
+          typ === "dilci_cinnost" ||
+          typ === "procesni_oblast" ||
+          typ === "raci_cinnost"
+        )
+      },
+    }),
   ],
   footer: Component.Footer({
     links: {

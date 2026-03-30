@@ -29,6 +29,7 @@ import CinnostiTable from "./CinnostiTable"
 import ProcesniOblastRuntime from "./ProcesniOblastRuntime"
 import SidebarToggle from "./SidebarToggle"
 import MetadataPanel from "./MetadataPanel"
+import RaciBacklinks from "./RaciBacklinks"
 
 export {
   ArticleTitle,
@@ -62,4 +63,5 @@ export {
   ProcesniOblastRuntime,
   SidebarToggle,
   MetadataPanel,
+  RaciBacklinks,
 }
