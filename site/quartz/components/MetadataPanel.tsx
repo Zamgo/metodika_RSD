@@ -132,7 +132,7 @@ MetadataPanel.css = `
 .metadata-panel-header {
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  justify-content: flex-start;
   gap: 0.75rem;
   margin-bottom: 0.6rem;
 }
