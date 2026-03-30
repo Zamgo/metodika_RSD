@@ -2,7 +2,6 @@
 title: Claim
 typ: workflow
 faze: []
-workflow: [claim]
 stav: draft
 permalink: /workflow/claim
 navazane_cinnosti: []

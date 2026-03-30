@@ -5,16 +5,16 @@ import path from "node:path"
 // @ts-ignore
 import script from "./scripts/cinnosti.inline"
 
-const CinnostiTable: QuartzComponent = ({ cfg }: QuartzComponentProps) => {
+const CdeWorkflowTable: QuartzComponent = ({ cfg }: QuartzComponentProps) => {
   const cs = cfg.locale.startsWith("cs")
-  const basePath = path.resolve(process.cwd(), "..", "02 - Seznam činností.base")
+  const basePath = path.resolve(process.cwd(), "..", "03 - CDE workflow.base")
   const baseText = fs.existsSync(basePath) ? fs.readFileSync(basePath, "utf8") : ""
   return (
     <div
-      id="cinnosti-browser"
+      id="cde-workflow-browser"
       class="cinnosti-table-root"
-      data-cinnosti-ls-id="cinnosti"
-      data-cinnosti-rows="oblasti"
+      data-cinnosti-ls-id="cde-workflow"
+      data-cinnosti-rows="workflow"
       data-str-view-all={cs ? "Vše" : "All"}
     >
       <div class="cinnosti-toolbar">
@@ -63,7 +63,7 @@ const CinnostiTable: QuartzComponent = ({ cfg }: QuartzComponentProps) => {
   )
 }
 
-CinnostiTable.afterDOMLoaded = script
-CinnostiTable.css = style
+CdeWorkflowTable.afterDOMLoaded = script
+CdeWorkflowTable.css = style
 
-export default (() => CinnostiTable) satisfies QuartzComponentConstructor
+export default (() => CdeWorkflowTable) satisfies QuartzComponentConstructor

@@ -2,7 +2,6 @@
 title: Subdodávky
 typ: workflow
 faze: []
-workflow: [subdodavky]
 stav: draft
 permalink: /workflow/subdodavky
 navazane_cinnosti: []

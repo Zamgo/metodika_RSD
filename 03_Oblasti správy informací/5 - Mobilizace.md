@@ -32,10 +32,9 @@ V praxi mobilizace zahrnuje tři hlavní okruhy:
 
 ---
 # Činnosti v dané oblasti
-```dataview
-TABLE WITHOUT ID file.link AS "Činnost"
-FROM "03_Oblasti správy informací"
-WHERE typ = "cinnost" AND procesni_oblast = this.file.link
-SORT oznaceni ASC
-```
+| Činnost |
+| --- |
+| [[5.1 - Mobilizace zdrojů\|5.1 - Mobilizace zdrojů]] |
+| [[5.2 - Mobilizace informačních technologií\|5.2 - Mobilizace informačních technologií]] |
+| [[5.3 - Testování projektových metod a postupů pro vytváření informací\|5.3 - Testování projektových metod a postupů pro vytváření informací]] |
 ---

@@ -34,10 +34,13 @@ Cílem celé této fáze je, aby všichni účastníci projektu přesně věděl
 
 ---
 # Činnosti v dané oblasti
-```dataview
-TABLE WITHOUT ID file.link AS "Činnost"
-FROM "03_Oblasti správy informací"
-WHERE typ = "cinnost" AND procesni_oblast = this.file.link
-SORT oznaceni ASC
-```
+| Činnost |
+| --- |
+| [[4.1 - Potvrzení plánu realizace BIM realizačního týmu\|4.1 - Potvrzení plánu realizace BIM realizačního týmu]] |
+| [[4.2 - Stanovení podrobné matice odpovědnosti realizačního týmu\|4.2 - Stanovení podrobné matice odpovědnosti realizačního týmu]] |
+| [[4.3 - Stanovení požadavků vedoucí pověřené strany na výměnu informací\|4.3 - Stanovení požadavků vedoucí pověřené strany na výměnu informací]] |
+| [[4.4 - Stanovení úkolového plánu (plánů) předávání informací (TIDP)\|4.4 - Stanovení úkolového plánu (plánů) předávání informací (TIDP)]] |
+| [[4.5 - Stanovení hlavního plánu předávání informací (MIDP)\|4.5 - Stanovení hlavního plánu předávání informací (MIDP)]] |
+| [[4.6 - Vyhotovení pověřovacích dokumentů vedoucí pověřené strany\|4.6 - Vyhotovení pověřovacích dokumentů vedoucí pověřené strany]] |
+| [[4.7 - Vyhotovení pověřovacích dokumentů pověřené strany\|4.7 - Vyhotovení pověřovacích dokumentů pověřené strany]] |
 ---

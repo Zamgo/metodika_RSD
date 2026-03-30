@@ -1,0 +1,48 @@
+filters:
+  or:
+    - file.inFolder("03_CDE_workflow")
+formulas:
+  Bez názvu: ""
+properties:
+  typ:
+    displayName: Typ
+  faze:
+    displayName: Fáze
+  stav:
+    displayName: Stav
+  permalink:
+    displayName: Permalink
+  navazane_cinnosti:
+    displayName: Navázané činnosti
+  aliases:
+    displayName: Aliasy
+views:
+  - type: table
+    name: Workflow
+    filters:
+      and:
+        - typ == "workflow"
+    order:
+      - file.name
+      - typ
+      - faze
+      - stav
+      - permalink
+      - navazane_cinnosti
+      - aliases
+      - formula.Bez názvu
+    sort:
+      - property: file.name
+        direction: ASC
+  - type: table
+    name: Všechny soubory ve složce
+    order:
+      - file.name
+      - typ
+      - faze
+      - stav
+      - permalink
+      - navazane_cinnosti
+    sort:
+      - property: file.name
+        direction: ASC

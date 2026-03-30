@@ -26,6 +26,7 @@ import Flex from "./Flex"
 import ConditionalRender from "./ConditionalRender"
 import SiteBranding from "./SiteBranding"
 import CinnostiTable from "./CinnostiTable"
+import CdeWorkflowTable from "./CdeWorkflowTable"
 import ProcesniOblastRuntime from "./ProcesniOblastRuntime"
 import SidebarToggle from "./SidebarToggle"
 import MetadataPanel from "./MetadataPanel"
@@ -60,6 +61,7 @@ export {
   ConditionalRender,
   SiteBranding,
   CinnostiTable,
+  CdeWorkflowTable,
   ProcesniOblastRuntime,
   SidebarToggle,
   MetadataPanel,

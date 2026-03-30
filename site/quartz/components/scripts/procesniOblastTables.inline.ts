@@ -150,7 +150,6 @@ function typMatches(row: Row, expected: string): boolean {
   const t = normalizeTyp(getMetaString(row.meta, "typ"))
   if (t === expected) return true
   if (expected === "cinnost" && t === "činnost") return true
-  if (expected === "pracovni_balicek" && t === "pracovní_balíček") return true
   return false
 }
 

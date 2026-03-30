@@ -31,10 +31,8 @@ Proces zahrnuje dvě hlavní činnosti:
 
 ---
 # Činnosti v dané oblasti
-```dataview
-TABLE WITHOUT ID file.link AS "Činnost"
-FROM "03_Oblasti správy informací"
-WHERE typ = "cinnost" AND procesni_oblast = this.file.link
-SORT oznaceni ASC
-```
+| Činnost |
+| --- |
+| [[8.1 - Archivování projektového informačního modelu (PIM)\|8.1 - Archivování projektového informačního modelu (PIM)]] |
+| [[8.2 - Zachycení ponaučení pro budoucí projekty\|8.2 - Zachycení ponaučení pro budoucí projekty]] |
 ---

@@ -2,7 +2,6 @@
 title: Fakturace
 typ: workflow
 faze: []
-workflow: [fakturace]
 stav: draft
 permalink: /workflow/fakturace
 navazane_cinnosti: []

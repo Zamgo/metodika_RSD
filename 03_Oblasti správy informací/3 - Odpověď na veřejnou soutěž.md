@@ -34,10 +34,13 @@ Klíčové činnosti:
 
 ---
 # Činnosti v dané oblasti
-```dataview
-TABLE WITHOUT ID file.link AS "Činnost"
-FROM "03_Oblasti správy informací"
-WHERE typ = "cinnost" AND procesni_oblast = this.file.link
-SORT oznaceni ASC
-```
+| Činnost |
+| --- |
+| [[3.1 - Nominování jednotlivců pro plnění funkcí při managementu informací\|3.1 - Nominování jednotlivců pro plnění funkcí při managementu informací]] |
+| [[3.2 - Stanovení Předběžného plánu realizace BIM realizačního týmu (Pre-BEP)\|3.2 - Stanovení Předběžného plánu realizace BIM realizačního týmu (Pre-BEP)]] |
+| [[3.3 - Posouzení způsobilosti a kapacity úkolového týmu\|3.3 - Posouzení způsobilosti a kapacity úkolového týmu]] |
+| [[3.4 - Stanovení způsobilosti a kapacity realizačního týmu\|3.4 - Stanovení způsobilosti a kapacity realizačního týmu]] |
+| [[3.5 - Stanovení plánu mobilizace realizačního týmu\|3.5 - Stanovení plánu mobilizace realizačního týmu]] |
+| [[3.6 - Stanovení registru rizik realizačního týmu\|3.6 - Stanovení registru rizik realizačního týmu]] |
+| [[3.7 - Sestavení odpovědi realizačního týmu na veřejnou soutěž\|3.7 - Sestavení odpovědi realizačního týmu na veřejnou soutěž]] |
 ---

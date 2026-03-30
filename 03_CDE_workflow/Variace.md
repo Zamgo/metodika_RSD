@@ -2,7 +2,6 @@
 title: Variace
 typ: workflow
 faze: []
-workflow: [variace]
 stav: draft
 permalink: /workflow/variace
 navazane_cinnosti: []

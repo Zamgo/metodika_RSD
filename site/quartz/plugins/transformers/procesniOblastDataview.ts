@@ -102,7 +102,7 @@ export const ProcesniOblastDataview: QuartzTransformerPlugin = () => ({
       () => {
         return (tree: Root, file) => {
           const typ = file.data.frontmatter?.typ
-          if (typ !== "procesni_oblast" && typ !== "pracovni_balicek") return
+          if (typ !== "procesni_oblast") return
           visit(tree, "code", (node: Code, index, parent) => {
             if (node.lang !== "dataview" || parent == null || index == null) return
             const config = parseDQL(node.value ?? "")

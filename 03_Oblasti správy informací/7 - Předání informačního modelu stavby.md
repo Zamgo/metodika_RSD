@@ -31,10 +31,10 @@ Proces má dvě úrovně:
 
 ---
 # Činnosti v dané oblasti
-```dataview
-TABLE WITHOUT ID file.link AS "Činnost"
-FROM "03_Oblasti správy informací"
-WHERE typ = "cinnost" AND procesni_oblast = this.file.link
-SORT oznaceni ASC
-```
+| Činnost |
+| --- |
+| [[7.1 - Předložení informačního modelu pro autorizování vedoucí pověřenou stranou\|7.1 - Předložení informačního modelu pro autorizování vedoucí pověřenou stranou]] |
+| [[7.2 - Přezkoumání a autorizování informačního modelu stavby\|7.2 - Přezkoumání a autorizování informačního modelu stavby]] |
+| [[7.3 - Předložení informačního modelu stavby pro akceptaci pověřující stranou\|7.3 - Předložení informačního modelu stavby pro akceptaci pověřující stranou]] |
+| [[7.4 - Přezkoumání a akceptace informačního modelu stavby\|7.4 - Přezkoumání a akceptace informačního modelu stavby]] |
 ---

@@ -145,6 +145,15 @@ body {
   display: none;
 }
 
+/* Přehled CDE workflow (/cde-workflow): stejné jako Seznam činností */
+#quartz-body .center:has(#cde-workflow-browser) > article.popover-hint:not(:has(> *)) {
+  display: none;
+}
+
+#quartz-body .center:has(#cde-workflow-browser) > article.popover-hint:not(:has(> *)) + hr {
+  display: none;
+}
+
 /* ─── Left sidebar: Explorer title hidden on desktop ─────────────── */
 @media all and (min-width: 801px) {
   #quartz-body .sidebar.left .explorer button.desktop-explorer {

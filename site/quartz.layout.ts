@@ -17,13 +17,34 @@ function sortByNumericPrefix(a: FileTrieNode, b: FileTrieNode): number {
   })
 }
 
+/** První segment cesty ve stromu Exploreru (bez koncového `/index`). */
+function explorerPathParts(node: FileTrieNode): string[] {
+  const s = String(node.slug).replace(/\/index$/i, "")
+  return s.split("/").filter(Boolean)
+}
+
+/**
+ * Levý panel: jen úvod (index), seznam činností, přehled CDE workflow, složky Definice pojmů a Diagramy.
+ * Ikony (vyhledávání, režimy) zůstávají v layoutu — nejsou součástí Exploreru.
+ */
 function explorerFilter(node: FileTrieNode): boolean {
   if (node.slugSegment === "tags") return false
-  const normalizedSegment = (node.slugSegment ?? "").toLowerCase().replace(/^\d+_+/, "")
-  if (normalizedSegment === "sprava_obsahu") return false
-  if (normalizedSegment === "sorava_obsahu") return false
-  if (normalizedSegment === "media") return false
-  return true
+  const parts = explorerPathParts(node)
+  if (parts.length === 0) return false
+
+  const rootSeg = parts[0]
+  const allowedRoot = new Set([
+    "index",
+    "02---Seznam-činností",
+    "03---CDE-workflow",
+    "05_Definice-pojmů",
+    "06_Diagramy",
+  ])
+
+  if (parts.length === 1) {
+    return allowedRoot.has(rootSeg)
+  }
+  return rootSeg === "05_Definice-pojmů" || rootSeg === "06_Diagramy"
 }
 
 function hideOrderingPrefix(node: FileTrieNode): void {
@@ -38,8 +59,7 @@ export const sharedPageComponents: SharedLayout = {
     Component.ConditionalRender({
       component: Component.ProcesniOblastRuntime(),
       condition: (page) =>
-        page.fileData.frontmatter?.typ === "procesni_oblast" ||
-        page.fileData.frontmatter?.typ === "pracovni_balicek",
+        page.fileData.frontmatter?.typ === "procesni_oblast",
     }),
     Component.ConditionalRender({
       component: Component.CinnostiTable(),
@@ -61,6 +81,22 @@ export const sharedPageComponents: SharedLayout = {
         )
       },
     }),
+    Component.ConditionalRender({
+      component: Component.CdeWorkflowTable(),
+      condition: (page) => {
+        const slug = (page.fileData.slug ?? "").toLowerCase()
+        const permalink = String(page.fileData.frontmatter?.permalink ?? "")
+          .replace(/^\/+|\/+$/g, "")
+          .toLowerCase()
+        const title = String(page.fileData.frontmatter?.title ?? "").toLowerCase()
+        return (
+          permalink === "cde-workflow" ||
+          title === "cde workflow" ||
+          slug === "03---cde-workflow" ||
+          slug.endsWith("/03---cde-workflow")
+        )
+      },
+    }),
     Component.Backlinks(),
     Component.ConditionalRender({
       component: Component.RaciBacklinks(),
@@ -76,12 +112,7 @@ export const sharedPageComponents: SharedLayout = {
       },
     }),
   ],
-  footer: Component.Footer({
-    links: {
-      "ŘSD.cz": "https://www.rsd.cz",
-      Dokumenty: "https://www.rsd.cz/cs/dokumenty",
-    },
-  }),
+  footer: Component.Footer(),
 }
 
 // components for pages that display a single page (e.g. a single note)
@@ -99,7 +130,6 @@ export const defaultContentPageLayout: PageLayout = {
   left: [
     Component.SidebarToggle(),
     Component.SiteBranding(),
-    Component.Graph(),
     Component.MobileOnly(Component.Spacer()),
     Component.Flex({
       components: [

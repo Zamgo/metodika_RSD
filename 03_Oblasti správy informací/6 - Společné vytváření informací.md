@@ -34,10 +34,11 @@ Proces zahrnuje pět hlavních činností:
 
 ---
 # Činnosti v dané oblasti
-```dataview
-TABLE WITHOUT ID file.link AS "Činnost"
-FROM "03_Oblasti správy informací"
-WHERE typ = "cinnost" AND procesni_oblast = this.file.link
-SORT oznaceni ASC
-```
+| Činnost |
+| --- |
+| [[6.1 - Kontrola dostupnosti referenčních informací a sdílených zdrojů\|6.1 - Kontrola dostupnosti referenčních informací a sdílených zdrojů]] |
+| [[6.2 - Tvorba informací\|6.2 - Tvorba informací]] |
+| [[6.3 - Provedení kontroly prokazování kvality\|6.3 - Provedení kontroly prokazování kvality]] |
+| [[6.4 - Přezkoumávání informací a schvalování\|6.4 - Přezkoumávání informací a schvalování]] |
+| [[6.5 - Přezkoumání informačního modelu stavby\|6.5 - Přezkoumání informačního modelu stavby]] |
 ---

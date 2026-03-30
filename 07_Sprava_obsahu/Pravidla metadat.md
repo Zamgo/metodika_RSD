@@ -18,7 +18,7 @@ Tato stránka definuje jednotná pravidla pro frontmatter ve všech stránkách 
 | `title` | Název stránky | text |
 | `typ` | Typ stránky (viz níže) | text |
 | `faze` | Fáze projektu, ve kterých je obsah relevantní | seznam |
-| `workflow` | Související workflow | seznam |
+| `workflow` | Související workflow (u stránek s `typ: workflow` se **neuvádí** — je nadbytečné) | seznam |
 | `stav` | Redakční stav | text |
 | `permalink` | Stabilní URL pro Quartz | text |
 | `tags` | Volné štítky pro vyhledávání | seznam |
@@ -56,6 +56,8 @@ Tato stránka definuje jednotná pravidla pro frontmatter ve všech stránkách 
 | Klíč | Popis | Typ |
 |------|-------|-----|
 | `navazane_cinnosti` | Zpětné wikilinky na činnosti, které workflow využívají | seznam wikilinků |
+
+Klíč `workflow` z obecné sady se u těchto stránek nepoužívá (identita workflow je daná souborem a `permalink`).
 
 ## Povolené hodnoty `typ`
 

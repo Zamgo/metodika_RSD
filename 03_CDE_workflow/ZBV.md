@@ -2,7 +2,6 @@
 title: ZBV
 typ: workflow
 faze: []
-workflow: [zbv]
 stav: draft
 permalink: /workflow/zbv
 navazane_cinnosti: []

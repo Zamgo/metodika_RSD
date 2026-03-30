@@ -6,6 +6,7 @@ import { resolveRelative, type FullSlug } from "../../util/path"
 export type CinnostiIndex = Record<string, ContentDetails & { meta?: Record<string, unknown> }>
 
 export const FOLDER_MARKERS = ["03_Oblasti správy informací/"] as const
+export const CDE_WORKFLOW_FOLDER = "03_CDE_workflow/"
 
 export function normalizePath(fp: string): string {
   return fp.replace(/\\/g, "/")
@@ -16,6 +17,13 @@ export function isCinnostRow(fp: string): boolean {
   const p = normalizePath(fp)
   if (p.includes("Seznam-cinnosti.md")) return false
   return FOLDER_MARKERS.some((m) => p.includes(m)) && p.endsWith(".md")
+}
+
+/** Řádky pro přehled CDE workflow (srov. `03 - CDE workflow.base`). */
+export function isCdeWorkflowRow(fp: string): boolean {
+  const p = normalizePath(fp)
+  if (p.includes("03 - CDE workflow.md")) return false
+  return p.includes(CDE_WORKFLOW_FOLDER) && p.endsWith(".md")
 }
 
 export function getMetaString(meta: Record<string, unknown> | undefined, key: string): string {

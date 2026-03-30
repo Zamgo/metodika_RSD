@@ -8,6 +8,7 @@ import {
   escapeHtml,
   getMetaArray,
   getMetaString,
+  isCdeWorkflowRow,
   isCinnostRow,
   metaStringToTableHtml,
   plainTextFromWikiMeta,
@@ -21,6 +22,7 @@ const LS_ORDER = "cinnosti-col-order:"
 const LS_WIDTHS = "cinnosti-col-widths:"
 
 type BaseConfig = {
+  formulas?: Record<string, string>
   properties?: Record<string, { displayName?: string }>
   views?: {
     name?: string
@@ -42,7 +44,8 @@ type Row = {
 const FILTER_ICON = `<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46"/></svg>`
 
 function prettyLabel(key: string): string {
-  if (key === "file.name") return "Činnost"
+  if (key === "file.name") return "Název záznamu"
+  if (key === "formula.dilci_cinnost") return "Dílčí činnost"
   return key
 }
 
@@ -97,8 +100,18 @@ function rowMatchesViewFilters(
   return true
 }
 
+/** Stejné chování jako formule v 02 - Seznam činností.base: dilci_cinnost. */
+function dilciCinnostDisplay(row: Row): string {
+  if (getMetaString(row.meta, "typ") !== "dilci_cinnost") return ""
+  return row.title.trim()
+}
+
 function getCellValues(row: Row, col: string): string[] {
   if (col === "file.name") return [row.title]
+  if (col === "formula.dilci_cinnost") {
+    const s = dilciCinnostDisplay(row)
+    return s ? [s] : []
+  }
   if (ARRAY_COLS.has(col)) return getMetaArray(row.meta, col)
   const v = getMetaString(row.meta, col)
   return v ? [v] : []
@@ -126,6 +139,14 @@ function collectColumnUniqueValues(rows: Row[], col: string, view?: BaseView): s
 
 function compareRowsByCol(a: Row, b: Row, col: string): number {
   if (col === "file.name") return a.title.localeCompare(b.title, "cs")
+  if (col === "formula.dilci_cinnost") {
+    const va = dilciCinnostDisplay(a)
+    const vb = dilciCinnostDisplay(b)
+    if (!va && !vb) return 0
+    if (!va) return 1
+    if (!vb) return -1
+    return va.localeCompare(vb, "cs", { numeric: true })
+  }
   if (col === "oznaceni") {
     const ka = sortKeyForRow(a.meta, a.title)
     const kb = sortKeyForRow(b.meta, b.title)
@@ -268,9 +289,13 @@ async function setupCinnosti(root: HTMLElement, currentSlug: FullSlug, data: Cin
   ) as HTMLElement | null
   if (!headRow || !tbody || !textInput || !countEl || !viewSelect) return
 
+  const lsScope = root.dataset.cinnostiLsId ?? "cinnosti"
+  const workflowTable = root.dataset.cinnostiRows === "workflow"
+  const rowFilter = workflowTable ? isCdeWorkflowRow : isCinnostRow
+
   const rows: Row[] = []
   for (const [slug, details] of Object.entries(data)) {
-    if (!isCinnostRow(details.filePath)) continue
+    if (!rowFilter(details.filePath)) continue
     rows.push({
       slug: slug as FullSlug,
       title: details.title ?? slug,
@@ -331,19 +356,19 @@ async function setupCinnosti(root: HTMLElement, currentSlug: FullSlug, data: Cin
 
   function loadHiddenCols() {
     try {
-      const raw = localStorage.getItem(LS_HIDDEN + viewKey())
+      const raw = localStorage.getItem(lsScope + ":" + LS_HIDDEN + viewKey())
       hiddenCols = raw ? new Set(JSON.parse(raw)) : new Set()
     } catch {
       hiddenCols = new Set()
     }
   }
   function saveHiddenCols() {
-    localStorage.setItem(LS_HIDDEN + viewKey(), JSON.stringify([...hiddenCols]))
+    localStorage.setItem(lsScope + ":" + LS_HIDDEN + viewKey(), JSON.stringify([...hiddenCols]))
   }
 
   function loadColumnOrder() {
     try {
-      const raw = localStorage.getItem(LS_ORDER + viewKey())
+      const raw = localStorage.getItem(lsScope + ":" + LS_ORDER + viewKey())
       if (raw) {
         const saved: string[] = JSON.parse(raw)
         const defaults = getDefaultCols(views[activeViewIdx])
@@ -362,12 +387,12 @@ async function setupCinnosti(root: HTMLElement, currentSlug: FullSlug, data: Cin
     }
   }
   function saveColumnOrder() {
-    localStorage.setItem(LS_ORDER + viewKey(), JSON.stringify(columnOrder))
+    localStorage.setItem(lsScope + ":" + LS_ORDER + viewKey(), JSON.stringify(columnOrder))
   }
 
   function loadColumnWidths() {
     try {
-      const raw = localStorage.getItem(LS_WIDTHS + viewKey())
+      const raw = localStorage.getItem(lsScope + ":" + LS_WIDTHS + viewKey())
       columnWidths.clear()
       if (raw) {
         for (const [k, v] of Object.entries(JSON.parse(raw))) {
@@ -380,7 +405,7 @@ async function setupCinnosti(root: HTMLElement, currentSlug: FullSlug, data: Cin
   }
   function saveColumnWidths() {
     localStorage.setItem(
-      LS_WIDTHS + viewKey(),
+      lsScope + ":" + LS_WIDTHS + viewKey(),
       JSON.stringify(Object.fromEntries(columnWidths)),
     )
   }
@@ -390,9 +415,12 @@ async function setupCinnosti(root: HTMLElement, currentSlug: FullSlug, data: Cin
   loadColumnWidths()
 
   function getColLabel(col: string): string {
-    return col === "file.name"
-      ? "Činnost"
-      : (baseConfig.properties?.[col]?.displayName ?? prettyLabel(col))
+    const fromFm = baseConfig.properties?.[col]?.displayName
+    if (fromFm) return fromFm
+    if (col === "file.name") {
+      return workflowTable ? "Workflow / dokument" : "Činnost / dílčí činnost"
+    }
+    return prettyLabel(col)
   }
 
   function getVisibleCols(): string[] {
@@ -455,6 +483,11 @@ async function setupCinnosti(root: HTMLElement, currentSlug: FullSlug, data: Cin
   function getCellHtml(row: Row, col: string): string {
     if (col === "file.name") {
       return `<a class="internal" href="${escapeHtml(resolveUrl(row.slug))}">${escapeHtml(row.title)}</a>`
+    }
+    if (col === "formula.dilci_cinnost") {
+      const s = dilciCinnostDisplay(row)
+      if (!s) return ""
+      return `<a class="internal" href="${escapeHtml(resolveUrl(row.slug))}">${escapeHtml(s)}</a>`
     }
     return metaStringToTableHtml(getMetaString(row.meta, col), currentSlug, resolveNote)
   }
@@ -893,9 +926,11 @@ async function setupCinnosti(root: HTMLElement, currentSlug: FullSlug, data: Cin
 }
 
 document.addEventListener("nav", async (e: CustomEventMap["nav"]) => {
-  const root = document.getElementById("cinnosti-browser")
-  if (!root) return
+  const roots = document.querySelectorAll(".cinnosti-table-root")
+  if (roots.length === 0) return
   const currentSlug = e.detail.url as FullSlug
   const data = (await fetchData) as CinnostiIndex
-  await setupCinnosti(root, currentSlug, data)
+  for (const root of roots) {
+    await setupCinnosti(root as HTMLElement, currentSlug, data)
+  }
 })

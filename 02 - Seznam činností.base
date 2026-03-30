@@ -1,13 +1,18 @@
 filters:
   or:
     - file.inFolder("03_Oblasti správy informací")
+formulas:
+  Bez názvu: ""
+  dilci_cinnost: 'if(typ == "dilci_cinnost", title, "")'
 properties:
   typ:
-    displayName: Typ
+    displayName: Úroveň
   procesni_oblast:
-    displayName: Procesní oblast
-  pracovni_balicek:
-    displayName: Pracovní balíček
+    displayName: Metadata procesní oblasti
+  cinnost:
+    displayName: Činnost
+  formula.dilci_cinnost:
+    displayName: Dílčí činnost
   oznaceni:
     displayName: Označení
   popis:
@@ -24,17 +29,18 @@ properties:
     displayName: I - Informování po dokončení činnosti
 views:
   - type: table
-    name: Všechny činnosti (bez rozcestníků)
+    name: Činnosti a dílčí činnosti (bez rozcestníků)
     filters:
-      and:
+      or:
         - typ == "cinnost"
+        - typ == "dilci_cinnost"
     order:
       - procesni_oblast
-      - pracovni_balicek
-      - file.name
-      - popis
+      - cinnost
+      - formula.dilci_cinnost
       - typ
       - oznaceni
+      - popis
       - R - Odpovědnost za provádění činnosti
       - A - Právní odpovědnost za dokončení činnosti
       - C - Konzultace v průběhu činnosti
@@ -43,22 +49,20 @@ views:
       - zdroj
       - stav
     sort:
-      - property: R - Odpovědnost za provádění činnosti
-        direction: DESC
       - property: procesni_oblast
+        direction: ASC
+      - property: cinnost
         direction: ASC
       - property: oznaceni
         direction: ASC
-      - property: faze
-        direction: ASC
     columnSize:
-      note.procesni_oblast: 372
-      note.pracovni_balicek: 508
-      file.name: 650
-      note.popis: 332
-      note.typ: 163
-      note.oznaceni: 107
-      note.R - Odpovědnost za provádění činnosti: 262
+      note.procesni_oblast: 320
+      note.cinnost: 400
+      formula.dilci_cinnost: 380
+      note.typ: 120
+      note.oznaceni: 90
+      note.popis: 300
+      note.R - Odpovědnost za provádění činnosti: 240
   - type: table
     name: Procesní oblasti
     filters:
@@ -69,32 +73,62 @@ views:
       - file.name
       - typ
       - procesni_oblast
-      - pracovni_balicek
+      - cinnost
     sort:
       - property: procesni_oblast
         direction: ASC
   - type: table
-    name: Všechny konkrétní činnosti
+    name: Všechny konkrétní činnosti včetně dílčích
     filters:
-      and:
+      or:
         - typ == "cinnost"
+        - typ == "dilci_cinnost"
     order:
       - procesni_oblast
-      - pracovni_balicek
+      - cinnost
+      - formula.dilci_cinnost
+      - typ
       - oznaceni
-      - file.name
       - popis
       - zdroj
     sort:
       - property: procesni_oblast
         direction: ASC
-      - property: pracovni_balicek
+      - property: cinnost
         direction: ASC
       - property: oznaceni
         direction: ASC
     columnSize:
       note.oznaceni: 107
-      note.procesni_oblast: 456
-      note.pracovni_balicek: 441
-      file.name: 650
+      note.procesni_oblast: 380
+      note.cinnost: 360
+      formula.dilci_cinnost: 360
+      note.typ: 100
       note.popis: 332
+  - type: table
+    name: Pouze dílčí činnosti
+    filters:
+      and:
+        - typ == "dilci_cinnost"
+    order:
+      - procesni_oblast
+      - cinnost
+      - formula.dilci_cinnost
+      - oznaceni
+      - popis
+      - zdroj
+      - faze
+      - stav
+    sort:
+      - property: procesni_oblast
+        direction: ASC
+      - property: cinnost
+        direction: ASC
+      - property: oznaceni
+        direction: ASC
+    columnSize:
+      note.procesni_oblast: 340
+      note.cinnost: 340
+      formula.dilci_cinnost: 420
+      note.oznaceni: 100
+      note.popis: 340

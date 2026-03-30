@@ -2,7 +2,6 @@
 title: HMG
 typ: workflow
 faze: []
-workflow: [hmg]
 stav: draft
 permalink: /workflow/hmg
 navazane_cinnosti: []

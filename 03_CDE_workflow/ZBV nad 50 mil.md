@@ -2,7 +2,6 @@
 title: ZBV nad 50 mil
 typ: workflow
 faze: []
-workflow: [zbv]
 stav: draft
 permalink: /workflow/zbv-nad-50-mil
 navazane_cinnosti: []

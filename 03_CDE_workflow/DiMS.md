@@ -2,7 +2,6 @@
 title: DiMS
 typ: workflow
 faze: []
-workflow: [dims]
 stav: draft
 permalink: /workflow/dims
 navazane_cinnosti: []

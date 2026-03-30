@@ -2,7 +2,6 @@
 title: Materiály, výrobny
 typ: workflow
 faze: []
-workflow: [materialy-a-vyrobny]
 stav: draft
 permalink: /workflow/materialy-vyrobny
 navazane_cinnosti: []

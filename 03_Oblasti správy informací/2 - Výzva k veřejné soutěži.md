@@ -33,10 +33,10 @@ Klíčové činnosti:
 
 ---
 # Činnosti v dané oblasti
-```dataview
-TABLE WITHOUT ID file.link AS "Činnost"
-FROM "03_Oblasti správy informací"
-WHERE typ = "cinnost" AND procesni_oblast = this.file.link
-SORT oznaceni ASC
-```
+| Činnost |
+| --- |
+| [[2.1 - Stanovení požadavků pověřující strany na výměnu informací (EIR)\|2.1 - Stanovení požadavků pověřující strany na výměnu informací (EIR)]] |
+| [[2.2 - Shromáždění referenčních informací a sdílených zdrojů\|2.2 - Shromáždění referenčních informací a sdílených zdrojů]] |
+| [[2.3 - Stanovení požadavků na odpověď na veřejnou soutěž a hodnoticích kritérií\|2.3 - Stanovení požadavků na odpověď na veřejnou soutěž a hodnoticích kritérií]] |
+| [[2.4 - Sestavení informací pro výzvu k veřejné soutěži\|2.4 - Sestavení informací pro výzvu k veřejné soutěži]] |
 ---

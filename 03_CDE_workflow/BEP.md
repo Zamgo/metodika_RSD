@@ -2,7 +2,6 @@
 title: BEP
 typ: workflow
 faze: [priprava]
-workflow: [bep]
 stav: draft
 permalink: /workflow/bep
 aliases: [BEP]

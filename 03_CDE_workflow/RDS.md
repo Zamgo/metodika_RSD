@@ -2,7 +2,6 @@
 title: RDS
 typ: workflow
 faze: []
-workflow: [rds]
 stav: draft
 permalink: /workflow/rds
 navazane_cinnosti: []
