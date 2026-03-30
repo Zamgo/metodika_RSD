@@ -13,30 +13,14 @@ const defaultOptions: SearchOptions = {
   enablePreview: true,
 }
 
-const FACET_DIMS = ["faze", "role", "workflow"] as const
-
 export default ((userOpts?: Partial<SearchOptions>) => {
   const Search: QuartzComponent = ({ displayClass, cfg }: QuartzComponentProps) => {
     const opts = { ...defaultOptions, ...userOpts }
     const s = i18n(cfg.locale).components.search
     const searchPlaceholder = s.searchBarPlaceholder
     const cs = cfg.locale.startsWith("cs")
-    const dimLabel: Record<string, string> = cs
-      ? {
-          faze: "Fáze",
-          role: "Role",
-          workflow: "Workflow",
-        }
-      : {
-          faze: "Phase",
-          role: "Role",
-          workflow: "Workflow",
-        }
     const panelTitle = cs ? "Hledání v metodice" : "Search the site"
     const closeLabel = cs ? "Zavřít" : "Close"
-    const multiHint = cs
-      ? "Filtrujte podle fáze, role nebo workflow. V každém poli stačí shoda s jednou z vybraných hodnot."
-      : "Filter by phase, role or workflow. Within each field, a match with any selected value is sufficient."
 
     return (
       <div class={classNames(displayClass, "search")}>
@@ -55,10 +39,6 @@ export default ((userOpts?: Partial<SearchOptions>) => {
           data-search-no-results-title={s.noResultsTitle}
           data-search-no-results-hint={s.noResultsHint}
           data-search-locale={cfg.locale}
-          data-str-active-filters={cs ? "Aktivní filtry" : "Active filters"}
-          data-str-clear-all={cs ? "Zrušit filtry" : "Clear filters"}
-          data-str-dd-placeholder={cs ? "Vyberte…" : "Choose…"}
-          data-str-dd-n={cs ? "{n} vybráno" : "{n} selected"}
         >
           <div class="search-space">
             <div class="search-top-card">
@@ -76,43 +56,6 @@ export default ((userOpts?: Partial<SearchOptions>) => {
                 aria-label={searchPlaceholder}
                 placeholder={searchPlaceholder}
               />
-              <div class="search-filters-ui">
-                <div class="search-active-filters-wrap" hidden>
-                  <span class="search-active-filters-label" />
-                  <div class="search-active-filters" />
-                  <button type="button" class="search-clear-all-filters">
-                    {s.clearTagFilters}
-                  </button>
-                </div>
-                <p class="search-facet-multi-hint">{multiHint}</p>
-                <div class="search-facet-dd-grid">
-                  {FACET_DIMS.map((dim) => {
-                    const label = dimLabel[dim] ?? dim
-                    return (
-                      <div key={dim} class="search-facet-dd" data-dim={dim}>
-                        <span class="search-facet-dd-caption" id={`search-dd-cap-${dim}`}>
-                          {label}
-                        </span>
-                        <button
-                          type="button"
-                          class="search-facet-dd-trigger"
-                          aria-expanded="false"
-                          aria-haspopup="listbox"
-                          aria-labelledby={`search-dd-cap-${dim} search-dd-val-${dim}`}
-                        >
-                          <span class="search-facet-dd-text" id={`search-dd-val-${dim}`} />
-                          <span class="search-facet-dd-chevron" aria-hidden="true">
-                            ▾
-                          </span>
-                        </button>
-                        <div class="search-facet-dd-panel" hidden>
-                          <div class="search-facet-dd-list" />
-                        </div>
-                      </div>
-                    )
-                  })}
-                </div>
-              </div>
             </div>
             <div class="search-layout" data-preview={opts.enablePreview}></div>
           </div>

@@ -42,7 +42,16 @@ type BuildData = {
   lastBuildMs: number
 }
 
-async function buildQuartz(argv: Argv, mut: Mutex, clientRefresh: () => void) {
+type BuildQuartzOpts = { callerHoldsInitialLock?: boolean }
+
+async function buildQuartz(
+  argv: Argv,
+  mut: Mutex,
+  clientRefresh: () => void,
+  opts?: BuildQuartzOpts,
+) {
+  const callerHoldsInitialLock = opts?.callerHoldsInitialLock === true
+
   const ctx: BuildCtx = {
     buildId: randomIdNonSecure(),
     argv,
@@ -65,30 +74,38 @@ async function buildQuartz(argv: Argv, mut: Mutex, clientRefresh: () => void) {
     console.log(`  Emitters: ${pluginNames("emitters").join(", ")}`)
   }
 
-  const release = await mut.acquire()
-  perf.addEvent("clean")
-  await rm(output, { recursive: true, force: true })
-  console.log(`Cleaned output directory \`${output}\` in ${perf.timeSince("clean")}`)
+  let releaseInitial: (() => void) | undefined
+  if (!callerHoldsInitialLock) {
+    releaseInitial = await mut.acquire()
+  }
 
-  perf.addEvent("glob")
-  const allFiles = await glob("**/*.*", argv.directory, cfg.configuration.ignorePatterns)
-  const markdownPaths = allFiles.filter((fp) => fp.endsWith(".md")).sort()
-  console.log(
-    `Found ${markdownPaths.length} input files from \`${argv.directory}\` in ${perf.timeSince("glob")}`,
-  )
+  let parsedFiles: ProcessedContent[] = []
+  try {
+    perf.addEvent("clean")
+    await rm(output, { recursive: true, force: true })
+    console.log(`Cleaned output directory \`${output}\` in ${perf.timeSince("clean")}`)
 
-  const filePaths = markdownPaths.map((fp) => joinSegments(argv.directory, fp) as FilePath)
-  ctx.allFiles = allFiles
-  ctx.allSlugs = allFiles.map((fp) => slugifyFilePath(fp as FilePath))
+    perf.addEvent("glob")
+    const allFiles = await glob("**/*.*", argv.directory, cfg.configuration.ignorePatterns)
+    const markdownPaths = allFiles.filter((fp) => fp.endsWith(".md")).sort()
+    console.log(
+      `Found ${markdownPaths.length} input files from \`${argv.directory}\` in ${perf.timeSince("glob")}`,
+    )
 
-  const parsedFiles = await parseMarkdown(ctx, filePaths)
-  const filteredContent = filterContent(ctx, parsedFiles)
+    const filePaths = markdownPaths.map((fp) => joinSegments(argv.directory, fp) as FilePath)
+    ctx.allFiles = allFiles
+    ctx.allSlugs = allFiles.map((fp) => slugifyFilePath(fp as FilePath))
 
-  await emitContent(ctx, filteredContent)
-  console.log(
-    styleText("green", `Done processing ${markdownPaths.length} files in ${perf.timeSince()}`),
-  )
-  release()
+    parsedFiles = await parseMarkdown(ctx, filePaths)
+    const filteredContent = filterContent(ctx, parsedFiles)
+
+    await emitContent(ctx, filteredContent)
+    console.log(
+      styleText("green", `Done processing ${markdownPaths.length} files in ${perf.timeSince()}`),
+    )
+  } finally {
+    releaseInitial?.()
+  }
 
   if (argv.watch) {
     ctx.incremental = true
@@ -297,9 +314,14 @@ async function rebuild(changes: ChangeEvent[], clientRefresh: () => void, buildD
   release()
 }
 
-export default async (argv: Argv, mut: Mutex, clientRefresh: () => void) => {
+export default async (
+  argv: Argv,
+  mut: Mutex,
+  clientRefresh: () => void,
+  opts?: BuildQuartzOpts,
+) => {
   try {
-    return await buildQuartz(argv, mut, clientRefresh)
+    return await buildQuartz(argv, mut, clientRefresh, opts)
   } catch (err) {
     trace("\nExiting Quartz due to a fatal error", err as Error)
   }

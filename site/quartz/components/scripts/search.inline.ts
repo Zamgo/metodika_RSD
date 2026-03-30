@@ -383,84 +383,86 @@ async function setupSearch(searchElement: Element, currentSlug: FullSlug, data: 
 
   if (!host.dataset.searchFacetsBuilt) {
     host.dataset.searchFacetsBuilt = "1"
-    const options = buildFacetOptions(data)
-    for (const dim of META_DIMS) {
-      const dd = searchElement.querySelector(
-        `.search-facet-dd[data-dim="${dim}"]`,
-      ) as HTMLElement | null
-      if (!dd) continue
-      const list = dd.querySelector(".search-facet-dd-list") as HTMLElement | null
-      const filterIn = dd.querySelector(".search-facet-dd-filter") as HTMLInputElement | null
-      const trig = dd.querySelector(".search-facet-dd-trigger") as HTMLButtonElement | null
-      const panel = dd.querySelector(".search-facet-dd-panel") as HTMLElement | null
-      if (!list || !trig || !panel) continue
+    if (searchElement.querySelector(".search-facet-dd")) {
+      const options = buildFacetOptions(data)
+      for (const dim of META_DIMS) {
+        const dd = searchElement.querySelector(
+          `.search-facet-dd[data-dim="${dim}"]`,
+        ) as HTMLElement | null
+        if (!dd) continue
+        const list = dd.querySelector(".search-facet-dd-list") as HTMLElement | null
+        const filterIn = dd.querySelector(".search-facet-dd-filter") as HTMLInputElement | null
+        const trig = dd.querySelector(".search-facet-dd-trigger") as HTMLButtonElement | null
+        const panel = dd.querySelector(".search-facet-dd-panel") as HTMLElement | null
+        if (!list || !trig || !panel) continue
 
-      const valuesMap = options.get(dim)!
-      const entries = [...valuesMap.entries()].sort((a, b) =>
-        a[0].localeCompare(b[0], undefined, { sensitivity: "base" }),
-      )
+        const valuesMap = options.get(dim)!
+        const entries = [...valuesMap.entries()].sort((a, b) =>
+          a[0].localeCompare(b[0], undefined, { sensitivity: "base" }),
+        )
 
-      if (entries.length === 0) {
-        dd.classList.add("is-empty")
-        updateDdTriggerText(dim)
-        continue
-      }
-      dd.classList.remove("is-empty")
-
-      removeAllChildren(list)
-      for (const [value, count] of entries) {
-        const display = count > 1 ? `${value} (${count})` : value
-        const searchText = value.toLowerCase()
-        const row = document.createElement("label")
-        row.className = "search-facet-dd-row"
-        row.setAttribute("data-searchable", searchText)
-        const cb = document.createElement("input")
-        cb.type = "checkbox"
-        cb.className = "search-facet-dd-cb"
-        cb.dataset.dim = dim
-        cb.dataset.value = value
-        const span = document.createElement("span")
-        span.className = "search-facet-dd-row-text"
-        span.textContent = display
-        row.appendChild(cb)
-        row.appendChild(span)
-        cb.addEventListener("change", () => {
+        if (entries.length === 0) {
+          dd.classList.add("is-empty")
           updateDdTriggerText(dim)
-          syncActiveFiltersBar()
-          runSearch()
-        })
-        list.appendChild(row)
-      }
+          continue
+        }
+        dd.classList.remove("is-empty")
 
-      if (filterIn) {
-        filterIn.addEventListener("input", () => {
-          const q = filterIn.value.trim().toLowerCase()
-          for (const row of list.querySelectorAll<HTMLElement>(".search-facet-dd-row")) {
-            const s = row.getAttribute("data-searchable") ?? ""
-            row.classList.toggle("is-hidden", q !== "" && !s.includes(q))
+        removeAllChildren(list)
+        for (const [value, count] of entries) {
+          const display = count > 1 ? `${value} (${count})` : value
+          const searchText = value.toLowerCase()
+          const row = document.createElement("label")
+          row.className = "search-facet-dd-row"
+          row.setAttribute("data-searchable", searchText)
+          const cb = document.createElement("input")
+          cb.type = "checkbox"
+          cb.className = "search-facet-dd-cb"
+          cb.dataset.dim = dim
+          cb.dataset.value = value
+          const span = document.createElement("span")
+          span.className = "search-facet-dd-row-text"
+          span.textContent = display
+          row.appendChild(cb)
+          row.appendChild(span)
+          cb.addEventListener("change", () => {
+            updateDdTriggerText(dim)
+            syncActiveFiltersBar()
+            runSearch()
+          })
+          list.appendChild(row)
+        }
+
+        if (filterIn) {
+          filterIn.addEventListener("input", () => {
+            const q = filterIn.value.trim().toLowerCase()
+            for (const row of list.querySelectorAll<HTMLElement>(".search-facet-dd-row")) {
+              const s = row.getAttribute("data-searchable") ?? ""
+              row.classList.toggle("is-hidden", q !== "" && !s.includes(q))
+            }
+          })
+        }
+
+        trig.addEventListener("click", (e) => {
+          e.stopPropagation()
+          const isOpen = !panel.hasAttribute("hidden")
+          if (isOpen) {
+            panel.setAttribute("hidden", "")
+            trig.setAttribute("aria-expanded", "false")
+          } else {
+            closeAllDdPanels()
+            panel.removeAttribute("hidden")
+            trig.setAttribute("aria-expanded", "true")
+            filterIn?.focus()
           }
         })
+
+        updateDdTriggerText(dim)
       }
 
-      trig.addEventListener("click", (e) => {
-        e.stopPropagation()
-        const isOpen = !panel.hasAttribute("hidden")
-        if (isOpen) {
-          panel.setAttribute("hidden", "")
-          trig.setAttribute("aria-expanded", "false")
-        } else {
-          closeAllDdPanels()
-          panel.removeAttribute("hidden")
-          trig.setAttribute("aria-expanded", "true")
-          filterIn?.focus()
-        }
-      })
-
-      updateDdTriggerText(dim)
+      document.addEventListener("pointerdown", onDocPointerCloseDd)
+      window.addCleanup(() => document.removeEventListener("pointerdown", onDocPointerCloseDd))
     }
-
-    document.addEventListener("pointerdown", onDocPointerCloseDd)
-    window.addCleanup(() => document.removeEventListener("pointerdown", onDocPointerCloseDd))
   }
 
   const appendLayout = (el: HTMLElement) => {

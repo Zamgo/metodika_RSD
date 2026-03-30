@@ -64,9 +64,32 @@ body {
     padding-right: 0;
   }
 
-  // Vnitřní kontejner: čistší bílá, jemný modrý lem a stín
+  // Vnitřní kontejner: čistší bílá, jemný modrý lem a stín (seznamy tagů/složek: article uvnitř .popover-hint)
   & article {
     flex: 0 0 auto;
+    background: linear-gradient(
+      180deg,
+      #ffffff 0%,
+      color-mix(in srgb, $rsd-blue-light 2.5%, #ffffff) 100%
+    );
+    border: 1px solid color-mix(in srgb, $rsd-blue-dark 10%, #d4dce6);
+    border-radius: 10px;
+    padding: 1.35rem 1.65rem 2.25rem;
+    box-shadow:
+      0 1px 2px rgba(9, 65, 122, 0.04),
+      0 8px 28px -8px color-mix(in srgb, $rsd-blue-dark 12%, transparent);
+  }
+
+  // Běžná stránka: <article class="popover-hint"> je sémantický obal bez boxu — bílá karta jen kolem skutečného obsahu
+  // (jinak mřížka + dřívější grid-area roztahovaly article na výšku buňky a vznikala prázdná bílá plocha).
+  & .center > article.popover-hint {
+    display: contents;
+  }
+
+  & .center > article.popover-hint .article-surface {
+    flex: 0 0 auto;
+    width: 100%;
+    box-sizing: border-box;
     background: linear-gradient(
       180deg,
       #ffffff 0%,
@@ -102,6 +125,13 @@ body {
       box-shadow: none;
       padding: 0;
     }
+
+    & .center > article.popover-hint .article-surface {
+      background: transparent;
+      border: none;
+      box-shadow: none;
+      padding: 0;
+    }
   }
 }
 
@@ -131,9 +161,21 @@ body {
       box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
     }
 
+    & .center > article.popover-hint .article-surface {
+      background: color-mix(in srgb, var(--lightgray) 15%, var(--light));
+      border-color: var(--lightgray);
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+    }
+
     @media all and (max-width: 800px) {
       & .center,
       & article {
+        background-color: transparent;
+        border: none;
+        box-shadow: none;
+      }
+
+      & .center > article.popover-hint .article-surface {
         background-color: transparent;
         border: none;
         box-shadow: none;
@@ -143,20 +185,26 @@ body {
 }
 
 /* Seznam činností (/cinnosti): prázdný stub článku + Quartz vždy vykreslí <hr> před page-footer — skrýt obojí, aby nebyla bílá mezera nad tabulkou */
-#quartz-body .center:has(#cinnosti-browser) > article.popover-hint:not(:has(> *)) {
+#quartz-body .center:has(#cinnosti-browser) > article.popover-hint:not(:has(> .article-surface > *)) {
   display: none;
 }
 
-#quartz-body .center:has(#cinnosti-browser) > article.popover-hint:not(:has(> *)) + hr {
+#quartz-body
+  .center:has(#cinnosti-browser)
+  > article.popover-hint:not(:has(> .article-surface > *))
+  + hr {
   display: none;
 }
 
 /* Přehled CDE workflow (/cde-workflow): stejné jako Seznam činností */
-#quartz-body .center:has(#cde-workflow-browser) > article.popover-hint:not(:has(> *)) {
+#quartz-body .center:has(#cde-workflow-browser) > article.popover-hint:not(:has(> .article-surface > *)) {
   display: none;
 }
 
-#quartz-body .center:has(#cde-workflow-browser) > article.popover-hint:not(:has(> *)) + hr {
+#quartz-body
+  .center:has(#cde-workflow-browser)
+  > article.popover-hint:not(:has(> .article-surface > *))
+  + hr {
   display: none;
 }
 
@@ -487,7 +535,7 @@ body[data-sidebar-collapsed] {
     flex-wrap: wrap;
   }
 
-  // Place the graph directly under the logo (book icon toggles visibility via `reader-mode`).
+  // Place the graph directly under the logo when the Graph component is in the left sidebar.
   #quartz-body .sidebar.left .graph {
     display: block;
     width: 100%;

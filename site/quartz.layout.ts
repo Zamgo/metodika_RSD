@@ -1,6 +1,44 @@
 import { PageLayout, SharedLayout } from "./quartz/cfg"
 import * as Component from "./quartz/components"
+import type { QuartzPluginData } from "./quartz/plugins/vfile"
 import { FileTrieNode } from "./quartz/util/fileTrie"
+
+function isSeznamCinnostiPage(fileData: QuartzPluginData): boolean {
+  const slug = (fileData.slug ?? "").toLowerCase()
+  const permalink = String(fileData.frontmatter?.permalink ?? "")
+    .replace(/^\/+|\/+$/g, "")
+    .toLowerCase()
+  const title = String(fileData.frontmatter?.title ?? "").toLowerCase()
+  return (
+    permalink === "cinnosti" ||
+    title === "seznam činností" ||
+    slug === "seznam-cinnosti" ||
+    slug.endsWith("/seznam-cinnosti") ||
+    slug === "seznam-činností" ||
+    slug.endsWith("/seznam-činností")
+  )
+}
+
+function isCdeWorkflowPage(fileData: QuartzPluginData): boolean {
+  const slug = (fileData.slug ?? "").toLowerCase()
+  const permalink = String(fileData.frontmatter?.permalink ?? "")
+    .replace(/^\/+|\/+$/g, "")
+    .toLowerCase()
+  const title = String(fileData.frontmatter?.title ?? "").toLowerCase()
+  return (
+    permalink === "cde-workflow" ||
+    title === "cde workflow" ||
+    slug === "03---cde-workflow" ||
+    slug.endsWith("/03---cde-workflow")
+  )
+}
+
+/** Domovská stránka a duplicitní úvodní poznámka v Exploreru — bez panelu Metadata. */
+function isMetodikaUvodPage(fileData: QuartzPluginData): boolean {
+  if (fileData.slug === "index") return true
+  const fp = String(fileData.filePath ?? "").replace(/\\/g, "/")
+  return fp.endsWith("01_Úvod do metodiky ŘSD Plzeň.md")
+}
 
 /** Řazení: 1) podle číselného prefixu (01_, 02_, …), 2) složky před soubory, 3) podle názvu. Používá slugSegment (segment cesty), ne displayName (může být z frontmatter). */
 function sortByNumericPrefix(a: FileTrieNode, b: FileTrieNode): number {
@@ -18,8 +56,8 @@ function sortByNumericPrefix(a: FileTrieNode, b: FileTrieNode): number {
 }
 
 /**
- * Levý panel: jen úvod (index), seznam činností, přehled CDE workflow, složky Definice pojmů a Diagramy.
- * Ikony (vyhledávání, režimy) zůstávají v layoutu — nejsou součástí Exploreru.
+ * Levý panel: úvod (index + stránka Úvod do metodiky), seznam činností, CDE workflow, Definice pojmů, Diagramy.
+ * Ikony (vyhledávání, tmavý režim) zůstávají v layoutu — nejsou součástí Exploreru.
  * (filterFn se do klienta posílá přes .toString() — nesmí volat jiné funkce z tohoto souboru.)
  */
 function explorerFilter(node: FileTrieNode): boolean {
@@ -31,6 +69,7 @@ function explorerFilter(node: FileTrieNode): boolean {
   const rootSeg = parts[0]
   const allowedRoot = new Set([
     "index",
+    "01_Úvod-do-metodiky-ŘSD-Plzeň",
     "02---Seznam-činností",
     "03---CDE-workflow",
     "05_Definice-pojmů",
@@ -59,39 +98,11 @@ export const sharedPageComponents: SharedLayout = {
     }),
     Component.ConditionalRender({
       component: Component.CinnostiTable(),
-      condition: (page) => {
-        const slug = (page.fileData.slug ?? "").toLowerCase()
-        const permalink = String(page.fileData.frontmatter?.permalink ?? "")
-          .replace(/^\/+|\/+$/g, "")
-          .toLowerCase()
-        const title = String(page.fileData.frontmatter?.title ?? "").toLowerCase()
-
-        // Aktivuj tabulku činností podle permalinku i podle různých slug/title variant.
-        return (
-          permalink === "cinnosti" ||
-          title === "seznam činností" ||
-          slug === "seznam-cinnosti" ||
-          slug.endsWith("/seznam-cinnosti") ||
-          slug === "seznam-činností" ||
-          slug.endsWith("/seznam-činností")
-        )
-      },
+      condition: (page) => isSeznamCinnostiPage(page.fileData),
     }),
     Component.ConditionalRender({
       component: Component.CdeWorkflowTable(),
-      condition: (page) => {
-        const slug = (page.fileData.slug ?? "").toLowerCase()
-        const permalink = String(page.fileData.frontmatter?.permalink ?? "")
-          .replace(/^\/+|\/+$/g, "")
-          .toLowerCase()
-        const title = String(page.fileData.frontmatter?.title ?? "").toLowerCase()
-        return (
-          permalink === "cde-workflow" ||
-          title === "cde workflow" ||
-          slug === "03---cde-workflow" ||
-          slug.endsWith("/03---cde-workflow")
-        )
-      },
+      condition: (page) => isCdeWorkflowPage(page.fileData),
     }),
     Component.ConditionalRender({
       component: Component.RaciBacklinks(),
@@ -101,8 +112,7 @@ export const sharedPageComponents: SharedLayout = {
           typ === "term" ||
           typ === "cinnost" ||
           typ === "dilci_cinnost" ||
-          typ === "procesni_oblast" ||
-          typ === "raci_cinnost"
+          typ === "procesni_oblast"
         )
       },
     }),
@@ -119,7 +129,13 @@ export const defaultContentPageLayout: PageLayout = {
     }),
     Component.ArticleTitle(),
     Component.ContentMeta(),
-    Component.MetadataPanel(),
+    Component.ConditionalRender({
+      component: Component.MetadataPanel(),
+      condition: (page) =>
+        !isSeznamCinnostiPage(page.fileData) &&
+        !isCdeWorkflowPage(page.fileData) &&
+        !isMetodikaUvodPage(page.fileData),
+    }),
     Component.TagList(),
   ],
   left: [
@@ -130,7 +146,6 @@ export const defaultContentPageLayout: PageLayout = {
       components: [
         { Component: Component.Search() },
         { Component: Component.Darkmode() },
-        { Component: Component.ReaderMode() },
       ],
     }),
     Component.Explorer({

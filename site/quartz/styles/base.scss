@@ -281,9 +281,8 @@ a {
       }
     }
 
-    & .center > article {
-      grid-area: grid-center;
-    }
+    /* .center > article už nemá grid-area: grid-center — u vnořeného article vede k roztahování
+       bílé karty na celou výšku buňky mřížky (postranní panely 100vh). */
 
     & footer {
       grid-area: grid-footer;

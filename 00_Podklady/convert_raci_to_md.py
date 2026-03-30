@@ -104,7 +104,7 @@ def generate_md(row_data: dict, subsections: dict) -> str:
     """Generate full MD file content for a single RACI activity."""
     fm_lines = ["---"]
     fm_lines.append(f"title: {yaml_str(row_data['title'])}")
-    fm_lines.append("typ: raci_cinnost")
+    fm_lines.append("typ: dilci_cinnost")
     fm_lines.append(f"oznaceni: {yaml_str(row_data['id'])}")
     fm_lines.append(f"sekce: {yaml_str(row_data['parent_id'])}")
     fm_lines.append(f"iso_faze: {yaml_str(row_data['iso_faze'])}")

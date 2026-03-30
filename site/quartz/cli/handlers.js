@@ -306,41 +306,47 @@ export async function handleBuild(argv) {
     const buildStart = new Date().getTime()
     lastBuildMs = buildStart
     const release = await buildMutex.acquire()
-    if (lastBuildMs > buildStart) {
+    try {
+      if (lastBuildMs > buildStart) {
+        return
+      }
+
+      if (cleanupBuild) {
+        console.log(styleText("yellow", "Detected a source code change, doing a hard rebuild..."))
+        await cleanupBuild()
+      }
+
+      const result = await ctx.rebuild().catch((err) => {
+        console.error(`${styleText("red", "Couldn't parse Quartz configuration:")} ${fp}`)
+        console.log(`Reason: ${styleText("gray", err)}`)
+        process.exit(1)
+      })
+
+      if (argv.bundleInfo) {
+        const outputFileName = "quartz/.quartz-cache/transpiled-build.mjs"
+        const meta = result.metafile.outputs[outputFileName]
+        console.log(
+          `Successfully transpiled ${Object.keys(meta.inputs).length} files (${prettyBytes(
+            meta.bytes,
+          )})`,
+        )
+        console.log(await esbuild.analyzeMetafile(result.metafile, { color: true }))
+      }
+
+      // bypass module cache
+      // https://github.com/nodejs/modules/issues/307
+      const { default: buildQuartz } = await import(`../../${cacheFile}?update=${randomUUID()}`)
+      // ^ this import is relative, so base "cacheFile" path can't be used
+
+      // Hold the mutex until the full site emit finishes so incremental content rebuilds
+      // cannot delete `public` or race with emitters (avoids ENOENT / partial output).
+      cleanupBuild = await buildQuartz(argv, buildMutex, clientRefresh, {
+        callerHoldsInitialLock: true,
+      })
+      clientRefresh()
+    } finally {
       release()
-      return
     }
-
-    if (cleanupBuild) {
-      console.log(styleText("yellow", "Detected a source code change, doing a hard rebuild..."))
-      await cleanupBuild()
-    }
-
-    const result = await ctx.rebuild().catch((err) => {
-      console.error(`${styleText("red", "Couldn't parse Quartz configuration:")} ${fp}`)
-      console.log(`Reason: ${styleText("gray", err)}`)
-      process.exit(1)
-    })
-    release()
-
-    if (argv.bundleInfo) {
-      const outputFileName = "quartz/.quartz-cache/transpiled-build.mjs"
-      const meta = result.metafile.outputs[outputFileName]
-      console.log(
-        `Successfully transpiled ${Object.keys(meta.inputs).length} files (${prettyBytes(
-          meta.bytes,
-        )})`,
-      )
-      console.log(await esbuild.analyzeMetafile(result.metafile, { color: true }))
-    }
-
-    // bypass module cache
-    // https://github.com/nodejs/modules/issues/307
-    const { default: buildQuartz } = await import(`../../${cacheFile}?update=${randomUUID()}`)
-    // ^ this import is relative, so base "cacheFile" path can't be used
-
-    cleanupBuild = await buildQuartz(argv, buildMutex, clientRefresh)
-    clientRefresh()
   }
 
   let clientRefresh = () => {}
@@ -477,7 +483,10 @@ export async function handleBuild(argv) {
       "package.json",
     ])
     chokidar
-      .watch(paths, { ignoreInitial: true })
+      .watch(paths, {
+        ignoreInitial: true,
+        awaitWriteFinish: { stabilityThreshold: 300 },
+      })
       .on("add", () => build(clientRefresh))
       .on("change", () => build(clientRefresh))
       .on("unlink", () => build(clientRefresh))

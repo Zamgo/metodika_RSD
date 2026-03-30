@@ -1,6 +1,11 @@
 import { Fragment } from "preact"
 import { QuartzComponent, QuartzComponentConstructor, QuartzComponentProps } from "./types"
 import { classNames } from "../util/lang"
+import { FullSlug } from "../util/path"
+import {
+  createSlugResolverFromAllFiles,
+  wikiStringToMetadataHtml,
+} from "../util/metadataWikilinks"
 
 type FrontmatterLike = Record<string, unknown>
 
@@ -9,11 +14,12 @@ type FieldDef = {
   label: string
 }
 
-/** Společná pole + pořadí jako v Obsidianu / Pravidla metadat */
+/** Pořadí polí jako ve frontmatteru dílčí činnosti (např. 1.1.3) */
 const FIELDS: FieldDef[] = [
   { key: "oznaceni", label: "Označení" },
-  { key: "procesni_oblast", label: "Metadata procesní oblasti" },
-  { key: "cinnost", label: "Činnost" },
+  { key: "popis", label: "Popis" },
+  { key: "zdroj", label: "Zdroj" },
+  { key: "faze", label: "Fáze" },
   {
     key: "R - Odpovědnost za provádění činnosti",
     label: "R - Odpovědnost za provádění činnosti",
@@ -30,11 +36,10 @@ const FIELDS: FieldDef[] = [
     key: "I - Informování po dokončení činnosti",
     label: "I - Informování po dokončení činnosti",
   },
-  { key: "zdroj", label: "Zdroj" },
-  { key: "faze", label: "Fáze" },
   { key: "workflow", label: "Workflow" },
   { key: "stav", label: "Stav" },
-  { key: "permalink", label: "Permalink" },
+  { key: "procesni_oblast", label: "Metadata procesní oblasti" },
+  { key: "cinnost", label: "Činnost" },
   { key: "vstupy", label: "Vstupy" },
   { key: "vystupy", label: "Výstupy" },
   { key: "navazane_workflow", label: "Navázané workflow" },
@@ -42,10 +47,9 @@ const FIELDS: FieldDef[] = [
   { key: "nasledujici_cinnost", label: "Následující činnost" },
   { key: "nastroj", label: "Nástroj" },
   { key: "frekvence", label: "Frekvence" },
-  { key: "popis", label: "Popis (frontmatter)" },
 ]
 
-const ACTIVITY_TYPES = new Set(["cinnost", "dilci_cinnost", "raci_cinnost"])
+const ACTIVITY_TYPES = new Set(["cinnost", "dilci_cinnost"])
 
 function normalizeValue(v: unknown): string[] {
   if (v == null) return []
@@ -60,23 +64,15 @@ function normalizeValue(v: unknown): string[] {
   return [raw]
 }
 
-function prettifyItem(value: string): string {
-  const wikiMatch = value.match(/^\[\[([^\]|]+)(?:\|([^\]]+))?\]\]$/)
-  if (!wikiMatch) return value
-  const alias = (wikiMatch[2] ?? "").trim()
-  if (alias) return alias
-  const target = wikiMatch[1].split("#")[0]
-  const segs = target.split("/")
-  return (segs[segs.length - 1] ?? target).trim()
-}
-
-const MetadataPanel: QuartzComponent = ({ fileData, displayClass }: QuartzComponentProps) => {
+const MetadataPanel: QuartzComponent = ({ fileData, displayClass, allFiles }: QuartzComponentProps) => {
   const fm = (fileData.frontmatter ?? {}) as FrontmatterLike
   const typ = String(fm.typ ?? "")
   const showAllFields = ACTIVITY_TYPES.has(typ)
+  const pageSlug = fileData.slug as FullSlug | undefined
+  const resolveNote = createSlugResolverFromAllFiles(allFiles)
 
   const rows = FIELDS.map(({ key, label }) => {
-    const values = normalizeValue(fm[key]).map(prettifyItem)
+    const values = normalizeValue(fm[key])
     return { key, label, values }
   })
 
@@ -101,7 +97,22 @@ const MetadataPanel: QuartzComponent = ({ fileData, displayClass }: QuartzCompon
         {displayRows.map((row) => (
           <Fragment key={row.key}>
             <dt>{row.label}</dt>
-            <dd>{row.values.length > 0 ? row.values.join(", ") : "—"}</dd>
+            <dd>
+              {row.values.length === 0 ? (
+                "—"
+              ) : (
+                row.values.map((v, i) => (
+                  <Fragment key={i}>
+                    {i > 0 ? ", " : null}
+                    <span
+                      dangerouslySetInnerHTML={{
+                        __html: wikiStringToMetadataHtml(pageSlug, resolveNote, v),
+                      }}
+                    />
+                  </Fragment>
+                ))
+              )}
+            </dd>
           </Fragment>
         ))}
       </dl>
@@ -169,6 +180,15 @@ MetadataPanel.css = `
   margin: 0;
   color: var(--dark);
   word-break: break-word;
+}
+
+.metadata-panel dd a.internal {
+  font-weight: inherit;
+}
+
+/* beforeBody is inside .popover-hint; previews clone that node into .popover */
+.popover .metadata-panel {
+  display: none;
 }
 `
 

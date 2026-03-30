@@ -73,7 +73,6 @@ Klíč `workflow` z obecné sady se u těchto stránek nepoužívá (identita wo
 - `reference`
 - `appendix`
 - `catalog`
-- `raci_cinnost`
 
 ## Zápis seznamů
 
@@ -133,25 +132,6 @@ faze: [realizace]
 workflow: [zbv]
 stav: draft
 permalink: /workflow/zbv
----
-```
-
-### RACI činnost (z matice informačního managementu)
-
-```yaml
----
-title: "Pověřit jednotlivce k plnění funkcí při managementu informací"
-typ: raci_cinnost
-oznaceni: "1.1.1"
-popis: "Stanovení osob pro jednotlivé role v rámci BIM."
-zdroj: "ČSN EN ISO 19650-2; 5.1.1"
-faze: [priprava]
-"R - Odpovědnost za provádění činnosti": "Pověřující strana, Správce stavby (ŘSD)"
-"A - Právní odpovědnost za dokončení činnosti": "Pověřující strana, Správce stavby (ŘSD)"
-"C - Konzultace v průběhu činnosti": ""
-"I - Informování po dokončení činnosti": ""
-workflow: []
-stav: draft
 ---
 ```
 

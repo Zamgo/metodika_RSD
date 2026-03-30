@@ -1,5 +1,5 @@
 import { QuartzComponent, QuartzComponentConstructor, QuartzComponentProps } from "./types"
-import { resolveRelative, simplifySlug } from "../util/path"
+import { FullSlug, resolveRelative, simplifySlug } from "../util/path"
 import { classNames } from "../util/lang"
 import style from "./styles/raciBacklinks.scss"
 
@@ -64,7 +64,7 @@ const defaultOptions: RaciBacklinksOptions = {
 }
 
 type RaciMatch = {
-  slug: string
+  slug: FullSlug
   title: string
   oznaceni?: string
 }
