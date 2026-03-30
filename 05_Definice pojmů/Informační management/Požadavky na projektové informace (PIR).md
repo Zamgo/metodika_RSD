@@ -6,7 +6,6 @@ workflow: []
 stav: draft
 permalink: /pojem/cde/pir
 aliases: [PIR]
-tags: [pojem, dokumentace]
 ---
 
 # Definice

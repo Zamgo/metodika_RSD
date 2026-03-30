@@ -5,7 +5,6 @@ faze: [priprava]
 workflow: []
 stav: draft
 permalink: /pojem/cde/informacni-model
-tags: [pojem, informacni kontejnery]
 ---
 
 # Definice

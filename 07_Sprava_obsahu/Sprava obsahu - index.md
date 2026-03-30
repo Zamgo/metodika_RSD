@@ -7,7 +7,6 @@ workflow: []
 stav: draft
 permalink: /sprava-obsahu
 aliases: [Správa obsahu - index]
-tags: [index, sprava_obsahu, metadata, odkazy, soubory]
 ---
 
 ## Pravidla

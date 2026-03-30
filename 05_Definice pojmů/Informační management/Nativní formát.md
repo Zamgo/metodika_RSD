@@ -5,7 +5,6 @@ faze: [priprava]
 workflow: []
 stav: draft
 permalink: /pojem/cde/nativni-format
-tags: [pojem, dokumentace]
 ---
 
 # Definice

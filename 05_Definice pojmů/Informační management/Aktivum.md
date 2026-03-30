@@ -5,7 +5,6 @@ faze: [priprava]
 workflow: []
 stav: draft
 permalink: /pojem/cde/aktivum
-tags: [pojem, dokumentace, informacni kontejnery]
 ---
 
 # Definice

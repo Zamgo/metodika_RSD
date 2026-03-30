@@ -6,7 +6,6 @@ workflow: []
 stav: draft
 permalink: /pojem/cde/tidp
 aliases: [TIDP]
-tags: [pojem, dokumentace]
 ---
 
 # Definice

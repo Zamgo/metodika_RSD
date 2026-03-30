@@ -6,7 +6,6 @@ workflow: []
 stav: draft
 permalink: /pojem/rizeni/pristupova-opravneni
 aliases: [Pristupova opravneni]
-tags: [pojem, opravneni, cde]
 ---
 
 # Definice

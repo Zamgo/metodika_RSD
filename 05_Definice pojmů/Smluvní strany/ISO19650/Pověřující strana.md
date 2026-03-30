@@ -5,7 +5,6 @@ faze: [priprava]
 workflow: []
 stav: draft
 permalink: /pojem/role/poverujici-strana
-tags: [pojem, role, cde, dokumentace]
 ---
 
 # Definice

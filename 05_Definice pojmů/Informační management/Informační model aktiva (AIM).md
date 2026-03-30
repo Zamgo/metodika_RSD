@@ -6,7 +6,6 @@ workflow: []
 stav: draft
 permalink: /pojem/cde/aim
 aliases: [AIM]
-tags: [pojem, aim, informacni kontejnery, predani dat]
 ---
 
 # Definice

@@ -5,7 +5,6 @@ faze: [priprava]
 workflow: []
 stav: draft
 permalink: /pojem/cde/bim-protokol
-tags: [pojem, bim, dokumentace]
 ---
 
 # Definice

@@ -6,7 +6,6 @@ workflow: []
 stav: draft
 permalink: /pojem/cde/dss
 aliases: [DSS]
-tags: [pojem, dss, dokumentace, metadata]
 ---
 
 # Definice

@@ -7,11 +7,6 @@ stav: draft
 permalink: /sprava-obsahu/ciselnik-fazi
 aliases:
   - Číselník fází
-tags:
-  - sprava_obsahu
-  - ciselnik
-  - faze
-  - dokumentace
 ---
 
 ## Použití

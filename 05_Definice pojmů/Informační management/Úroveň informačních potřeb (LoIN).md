@@ -6,7 +6,6 @@ workflow: []
 stav: draft
 permalink: /pojem/cde/loin
 aliases: [LoIN]
-tags: [pojem, dokumentace]
 ---
 
 # Definice

@@ -6,7 +6,6 @@ workflow: []
 stav: draft
 permalink: /pojem/cde/bim
 aliases: [BIM]
-tags: [pojem, bim, dokumentace, informacni kontejnery]
 ---
 
 # Definice

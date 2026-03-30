@@ -5,7 +5,6 @@ faze: []
 workflow: []
 stav: draft
 permalink: /pojem/cde/organizace
-tags: [pojem]
 ---
 
 # Definice

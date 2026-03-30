@@ -6,7 +6,6 @@ workflow: []
 stav: draft
 permalink: /sprava-obsahu/pravidla-nazvu-souboru
 aliases: [Pravidla názvu souboru]
-tags: [sprava_obsahu, nazvy_souboru, quartz, dokumentace]
 ---
 
 ## Zásady

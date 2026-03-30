@@ -5,7 +5,7 @@ faze: []
 workflow: [zbv]
 stav: draft
 permalink: /workflow/zbv
-tags: [workflow, cde]
+navazane_cinnosti: []
 ---
 
 ## Účel workflow

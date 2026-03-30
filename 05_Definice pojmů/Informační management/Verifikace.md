@@ -5,7 +5,6 @@ faze: [priprava]
 workflow: []
 stav: draft
 permalink: /pojem/rizeni/verifikace
-tags: [pojem, kontrola, dokumentace]
 ---
 
 # Definice

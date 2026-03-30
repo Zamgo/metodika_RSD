@@ -6,7 +6,7 @@ workflow: [bep]
 stav: draft
 permalink: /workflow/bep
 aliases: [BEP]
-tags: [workflow, cde]
+navazane_cinnosti: []
 ---
 
 ## Účel workflow

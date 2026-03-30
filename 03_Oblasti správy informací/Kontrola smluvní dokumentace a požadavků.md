@@ -1,93 +1,68 @@
-﻿---
-title: Kontrola smluvní dokumentace a požadavků (BIM, CDE, EIR)-P+S
+---
+title: Kontrola smluvní dokumentace a požadavků (BIM, CDE, EIR)
 typ: dilci_cinnost
+oznaceni: 4.6+
+popis: Systematická kontrola, zda smluvní dokumentace obsahuje jednoznačné a konzistentní požadavky na správu informací, BIM, DiMS a CDE.
 faze:
   - priprava
 workflow: []
 stav: draft
-permalink: /proces/priprava/kontrola-smluvni-dokumentace-a-pozadavku-p-s
-tags:
-  - proces
-  - cde
-  - dokumentace
-zdroj: Požadavky objednatele na výměnu informací (EIR)
-procesni_oblast: ""
-cinnost:
+zdroj: ČSN EN ISO 19650-2; 5.4.6–5.4.7 / EIR
+procesni_oblast: "[[4 - Pověření|4 - Proces managementu informací – Pověření]]"
+cinnost: "[[4.6 - Vyhotovení pověřovacích dokumentů vedoucí pověřené strany|4.6 - Vyhotovení pověřovacích dokumentů vedoucí pověřené strany]]"
+vstupy: []
+vystupy: []
+navazane_workflow: []
+predchozi_cinnost: ""
+nasledujici_cinnost: ""
+nastroj: []
+frekvence: ""
+R - Odpovědnost za provádění činnosti: []
+A - Právní odpovědnost za dokončení činnosti: []
+C - Konzultace v průběhu činnosti: []
+I - Informování po dokončení činnosti: []
 ---
-
-## Účel
+# Popis
 
 Účelem činnosti je ověřit, že smluvní dokumentace a zadávací podklady obsahují jednoznačně definované, vzájemně konzistentní a kontrolovatelné požadavky na správu informací o stavbě, využití metody BIM, digitálního informačního modelu stavby ([[Digitální model stavby (DiMS)|DiMS]]) a nástroje společného datového prostředí ([[Společné datové prostředí (CDE)|CDE]]).
-Tato kontrola je základním předpokladem pro správné nastavení projektových procesů a minimalizaci rizik v průběhu realizace stavby.
 
-## Vstupy
+Tato kontrola navazuje na požadavky ISO 19650-2 týkající se vyhotovení pověřovacích dokumentů (čl. 5.4.6 a 5.4.7) -- jde o praktickou realizaci ověření, že [[Pověření|pověření]] obsahuje všechny potřebné náležitosti.
 
+# Vstupy
 - Smlouva o dílo
 - Zadávací dokumentace
-- Požadavky objednatele na výměnu informací ([[Požadavky objednatele na výměnu informací (EIR)|EIR]])
-- Návrh nebo finální verze [[BIM Execution Plan (BEP)|BEP]] (pokud existuje)
+- Požadavky [[Objednatel|Objednatele]] na výměnu informací ([[Požadavky objednatele na výměnu informací (EIR)|EIR]])
+- Návrh nebo finální verze [[BIM Execution Plan (BEP)|BEP]]
 - Interní metodické dokumenty ŘSD
 
-## Postup
+# Postup
 
-Správce stavby provede systematickou kontrolu dokumentace v následujícím rozsahu:
-- Kontrola vymezení povinnosti využívat [[Společné datové prostředí (CDE)|CDE]]
-  - Ověřit, zda je ve smlouvě jednoznačně stanoveno, že projekt bude řízen prostřednictvím CDE.
-  - Ověřit, zda jsou definovány základní požadavky na stavy [[Informační kontejner|informačních kontejnerů]], verzování a archivaci.
-- Kontrola požadavků na [[Digitální model stavby (DiMS)|DiMS]]
-  - Ověřit, zda je definován rozsah modelování.
-  - Ověřit požadovaný formát (např. IFC).
-  - Ověřit požadovanou úroveň podrobnosti a informací.
-- Kontrola odpovědností
-  - Ověřit, kdo odpovídá za tvorbu, kontrolu a schvalování jednotlivých výstupů.
-  - Ověřit, zda jsou jednoznačně určeny schvalovací pravomoci.
-- Kontrola návaznosti [[Požadavky objednatele na výměnu informací (EIR)|EIR]] a smlouvy
-  - Porovnat [[Požadavky objednatele na výměnu informací (EIR)|EIR]] s rozsahem plnění zhotovitele.
-  - Identifikovat rozpory nebo nesoulad.
-- Identifikace rizik
-  - Nejednoznačné definice.
-  - Nerealistické požadavky.
-  - Chybějící kontrolní mechanismy.
-Zjištěné nesoulady správce stavby písemně zaznamená a předloží k řešení objednateli.
+[[Správce stavby|Správce stavby]] provede systematickou kontrolu dokumentace:
+- **Kontrola povinnosti využívat CDE**
+  - Ověřit jednoznačné stanovení řízení projektu prostřednictvím CDE
+  - Ověřit definici požadavků na stavy [[Informační kontejner|informačních kontejnerů]], verzování a archivaci
+- **Kontrola požadavků na DiMS**
+  - Ověřit rozsah modelování, požadovaný formát (IFC) a úroveň podrobnosti
+- **Kontrola odpovědností**
+  - Ověřit jednoznačné určení odpovědností za tvorbu, kontrolu a schvalování výstupů
+- **Kontrola návaznosti EIR a smlouvy**
+  - Porovnat EIR s rozsahem plnění [[Zhotovitel|Zhotovitele]], identifikovat rozpory
+- **Identifikace rizik**
+  - Nejednoznačné definice, nerealistické požadavky, chybějící kontrolní mechanismy
 
-## Role a odpovědnosti
+Zjištěné nesoulady Správce stavby písemně zaznamená a předloží k řešení Objednateli.
 
-- Správce stavby:
-    - provádí kontrolu,
-    - vypracovává přehled nesouladů.
-- ŘSD:
-    - rozhoduje o způsobu úpravy nebo doplnění požadavků.
-- Zhotovitel:
-    - poskytuje součinnost při objasňování požadavků.
+# Role a odpovědnosti
+- **Správce stavby** (Engineer dle FIDIC): provádí kontrolu, vypracovává přehled nesouladů
+- **Objednatel** ([[Pověřující strana|pověřující strana]] / ŘSD): rozhoduje o způsobu úpravy nebo doplnění požadavků
+- **Zhotovitel** ([[Vedoucí pověřená strana|vedoucí pověřená strana]]): poskytuje součinnost při objasňování požadavků
 
-## Výstupy
+# Výstupy
+- Zápis o provedené kontrole
+- Seznam identifikovaných nesouladů a rizik
+- Návrh opatření
 
-  - Zápis o provedené kontrole
-  - Seznam identifikovaných nesouladů a rizik
-  - Návrh opatření
-
-## Kontrolní body pro správce stavby
-
-**Editorske doplneni:** V podkladu není explicitní sekce; doplnit pokud je uvedeno jinde.
-
-## Související role
-
-- [[Správce stavby]]
-- [[Zhotovitel]]
-
-## Související fáze
-
-- [[Příprava]]
-
-## Související workflow
-
-- (bude doplněno při převodu workflow šablon)
-
-## Související pojmy
-
-- (bude doplněno po založení pojmových stránek)
-
-## Související přílohy
-
-- (bude doplněno při převodu příloh)
-
+# Kontrolní body pro správce stavby
+- Ověřit kompletnost smluvní dokumentace z hlediska BIM/CDE požadavků
+- Zkontrolovat konzistenci EIR se smlouvou o dílo
+- Identifikovat a eskalovat nesoulady před zahájením realizace

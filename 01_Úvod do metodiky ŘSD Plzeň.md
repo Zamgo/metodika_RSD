@@ -6,7 +6,6 @@ faze: []
 workflow: []
 stav: draft
 aliases: [Domů, Home]
-tags: [index, uvod, dokumentace, bim, cde]
 ---
 
 # Cíl metodiky

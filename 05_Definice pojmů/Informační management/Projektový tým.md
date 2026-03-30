@@ -5,7 +5,6 @@ faze: [priprava]
 workflow: []
 stav: draft
 permalink: /pojem/cde/projektovy-tym
-tags: [pojem, cde, dokumentace]
 ---
 
 # Definice

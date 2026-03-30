@@ -5,7 +5,7 @@ faze: []
 workflow: [claim]
 stav: draft
 permalink: /workflow/claim
-tags: [workflow, cde]
+navazane_cinnosti: []
 ---
 
 ## Účel workflow

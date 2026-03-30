@@ -6,7 +6,6 @@ workflow: [bep]
 stav: draft
 permalink: /pojem/cde/eir
 aliases: [EIR]
-tags: [pojem, eir, dokumentace, metadata]
 ---
 
 # Definice

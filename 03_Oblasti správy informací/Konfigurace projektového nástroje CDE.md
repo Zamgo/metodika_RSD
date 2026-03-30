@@ -1,69 +1,82 @@
-﻿---
-title: Konfigurace projektového nástroje CDE - Pavlína + příloha
-typ: "dilci_cinnost"
-faze: [priprava]
+---
+title: Konfigurace projektového nástroje CDE
+typ: dilci_cinnost
+oznaceni: "5.2.3+"
+popis: "Nastavení struktury CDE, stavů informačních kontejnerů, přístupových oprávnění a pravidel ukládání pro potřeby projektu."
+faze:
+  - priprava
 workflow: []
 stav: draft
-permalink: /proces/priprava/konfigurace-projektoveho-nastroje-cde-pavlina-priloha
-tags: [proces, cde, dokumentace]
-zdroj: "Interní metodika ŘSD"
-procesni_oblast: ""
-cinnost: ""
+zdroj: "ČSN EN ISO 19650-2; 5.5.2 / Interní metodika ŘSD"
+procesni_oblast: "[[5 - Proces managementu informací – Mobilizace|5 - Proces managementu informací – Mobilizace]]"
+cinnost: "[[5.2 - Mobilizace informačních technologií|5.2 - Mobilizace informačních technologií]]"
+vstupy: []
+vystupy: []
+navazane_workflow: []
+predchozi_cinnost: ""
+nasledujici_cinnost: ""
+nastroj: []
+frekvence: ""
+R - Odpovědnost za provádění činnosti: []
+A - Právní odpovědnost za dokončení činnosti: []
+C - Konzultace v průběhu činnosti: []
+I - Informování po dokončení činnosti: []
 ---
+# Popis
 
-# Účel
+Účelem nastavení struktury společného datového prostředí ([[Společné datové prostředí (CDE)|CDE]]) je vytvořit přehledný, jednotný a dlouhodobě udržitelný rámec pro ukládání, správu a sdílení [[Informační kontejner|informačních kontejnerů]] v průběhu celého životního cyklu stavby. Správně navržená struktura CDE je základním předpokladem pro dohledatelnost informací, jednoznačnou orientaci uživatelů a minimalizaci rizika práce s neaktuálními podklady.
 
-Účelem nastavení struktury společného datového prostředí ([[Společné datové prostředí (CDE)|CDE]]) je vytvořit přehledný, jednotný a dlouhodobě udržitelný rámec pro ukládání, správu a sdílení [[Informační kontejner|informačních kontejnerů]] v průběhu celého životního cyklu stavby. Správně navržená struktura [[Společné datové prostředí (CDE)|CDE]] představuje základní předpoklad pro zajištění dohledatelnosti informací, jednoznačné orientace uživatelů v projektové dokumentaci a minimalizaci rizika práce s neaktuálními nebo nesprávně zařazenými podklady.
-Struktura [[Společné datové prostředí (CDE)|CDE]] musí podporovat řízení stavů [[Informační kontejner|informačních kontejnerů]] (např. rozpracováno, sdíleno, schváleno, uchováno), umožňovat jednoznačné přiřazení dokumentů ke stavebním objektům, profesím a typům výstupů a současně respektovat budoucí potřeby archivace a exportu dat do navazujících systémů objednatele.
-## Vstupy
+Struktura CDE musí podporovat řízení stavů informačních kontejnerů (rozpracováno, sdíleno, schváleno, uchováno), umožňovat jednoznačné přiřazení dokumentů ke stavebním objektům, profesím a typům výstupů a respektovat budoucí potřeby archivace a exportu dat.
 
-Pro konfiguraci projektového nástroje CDE musí být k dispozici zejména následující podklady:
-  - požadavky objednatele na výměnu informací ([[Požadavky objednatele na výměnu informací (EIR)|EIR]]),
-  - návrh nebo finální verze plánu realizace BIM ([[BIM Execution Plan (BEP)|BEP]]), pokud je zpracován,
-  - smluvní dokumentace projektu,
-  - interní metodické dokumenty ŘSD,
-  - seznam stavebních objektů a provozních souborů (SO/PS),
-  - požadavky na strukturu a klasifikaci [[Informační kontejner|informačních kontejnerů]],
-  - požadavky na názvosloví a verzování dokumentů.
-Správce stavby ověřuje, že tyto podklady jsou aktuální a že jejich požadavky jsou při konfiguraci [[Společné datové prostředí (CDE)|CDE]] zohledněny.
-## Postup
+Tato činnost navazuje na požadavky normy ČSN EN ISO 19650-2, čl. 5.1.7 (stanovení projektového CDE) a čl. 5.5.2 (mobilizace IT), kde se CDE konfiguruje a testuje v rámci mobilizace [[Realizační tým|realizačního týmu]].
 
-- Správce stavby:
+# Vstupy
+- Požadavky [[Objednatel|Objednatele]] na výměnu informací ([[Požadavky objednatele na výměnu informací (EIR)|EIR]])
+- Plán realizace BIM ([[BIM Execution Plan (BEP)|BEP]])
+- Smluvní dokumentace projektu
+- Interní metodické dokumenty ŘSD
+- Seznam stavebních objektů a provozních souborů (SO/PS)
+- Požadavky na strukturu a klasifikaci informačních kontejnerů
+- Požadavky na názvosloví a verzování dokumentů
+
+# Postup
+- [[Správce stavby|Správce stavby]]:
   - Nastaví základní členění dle stavů:
-	  - Rozpracováno
-	  - Sdíleno
-	  - Schváleno
-	  - Uchováno
+    - Rozpracováno
+    - Sdíleno
+    - Schváleno
+    - Uchováno
   - Vytvoří logickou strukturu dle:
-	  - stavebních objektů (SO/PS),
-	  - profesí,
-	  - typu výstupu.
+    - stavebních objektů (SO/PS),
+    - profesí,
+    - typu výstupu.
   - Ověří, že struktura:
-	  - umožňuje jednoznačné zařazení dokumentů,
-	  - podporuje budoucí archivaci,
-	  - umožňuje export dat.
-## Role a odpovědnosti
+    - umožňuje jednoznačné zařazení dokumentů,
+    - podporuje budoucí archivaci,
+    - umožňuje export dat.
 
-- Správce stavby:
-    - navrhuje strukturu projektového CDE, (Příloha Návrh struktury CDE)
+# Role a odpovědnosti
+- **Správce stavby** (Engineer dle FIDIC):
+    - navrhuje strukturu projektového CDE (Příloha Návrh struktury CDE),
     - zajišťuje její nastavení v používaném nástroji,
     - dokumentuje nastavení a seznamuje s ním účastníky projektu.
-- Zhotovitel:
+- **[[Zhotovitel|Zhotovitel]]** ([[Vedoucí pověřená strana|vedoucí pověřená strana]]):
     - používá nastavenou strukturu CDE při ukládání projektových výstupů,
     - respektuje pravidla názvosloví, verzování a stavů informačních kontejnerů,
     - upozorňuje na případné praktické problémy při používání struktury.
-- ŘSD:
+- **Objednatel** ([[Pověřující strana|pověřující strana]] / ŘSD):
     - schvaluje základní principy nastavení CDE,
     - rozhoduje o případných zásadních změnách struktury během projektu.
-## Výstupy
 
-  - Aktivní struktura CDE
-  - Dokumentace nastavení
-## Kontrolní body pro správce stavby
+# Výstupy
+- Aktivní struktura CDE
+- Dokumentace nastavení
 
+# Kontrolní body pro správce stavby
+- Ověřit, že struktura CDE odpovídá požadavkům EIR
+- Zkontrolovat, že všichni uživatelé mají správná přístupová oprávnění
+- Otestovat průchod informačního kontejneru všemi stavy
+- Ověřit funkčnost exportu dat
 
-
-## Návaznosti
-
+# Návaznosti
 - [[04_Šablony ke stažení]]
-

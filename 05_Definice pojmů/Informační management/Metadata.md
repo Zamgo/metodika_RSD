@@ -5,7 +5,6 @@ faze: [priprava]
 workflow: []
 stav: draft
 permalink: /pojem/cde/metadata
-tags: [pojem, metadata, vyhledavani]
 ---
 
 # Definice

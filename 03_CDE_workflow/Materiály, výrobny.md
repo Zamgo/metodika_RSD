@@ -5,7 +5,7 @@ faze: []
 workflow: [materialy-a-vyrobny]
 stav: draft
 permalink: /workflow/materialy-vyrobny
-tags: [workflow, cde]
+navazane_cinnosti: []
 ---
 
 ## Účel workflow

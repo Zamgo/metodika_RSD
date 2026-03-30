@@ -6,7 +6,6 @@ workflow: []
 stav: draft
 permalink: /pojem/cde/oir
 aliases: [OIR]
-tags: [pojem, dokumentace]
 ---
 
 # Definice

@@ -1,0 +1,40 @@
+---
+title: 7 - Proces managementu informací – Předání informačního modelu stavby
+typ: procesni_oblast
+oznaceni: "7"
+popis: Formální předložení informačního modelu stavby k autorizování vedoucí pověřenou stranou a následně k akceptaci pověřující stranou (Objednatelem).
+zdroj: ČSN EN ISO 19650-2; 5.7
+faze:
+  - realizace
+R - Odpovědnost za provádění činnosti: []
+A - Právní odpovědnost za dokončení činnosti: []
+C - Konzultace v průběhu činnosti: []
+I - Informování po dokončení činnosti: []
+workflow: []
+stav: draft
+procesni_oblast: "[[7 - Předání informačního modelu stavby|7 - Proces managementu informací – Předání informačního modelu stavby]]"
+cinnost: ""
+vstupy: []
+vystupy: []
+navazane_workflow: []
+---
+# Obecný popis
+
+Předání informačního modelu stavby je formální proces, při kterém se kompletní informační model předkládá nejprve [[Vedoucí pověřená strana|vedoucí pověřené straně]] (hlavnímu [[Zhotovitel|Zhotoviteli]]) k autorizování a poté [[Pověřující strana|pověřující straně]] ([[Objednatel|Objednateli]], ŘSD) k akceptaci.
+
+Proces má dvě úrovně:
+
+- **Autorizování vedoucí pověřenou stranou** -- [[Úkolový tým|úkolové týmy]] předloží své informace přes [[Společné datové prostředí (CDE)|CDE]] vedoucí pověřené straně, která je přezkoumá v souladu s [[Požadavky objednatele na výměnu informací (EIR)|EIR]], [[Hlavní plán předávání informací (MIDP)|MIDP]] a akceptačními kritérii. Vedoucí pověřená strana buď autorizuje model, nebo ho odmítne s instrukcemi k nápravě.
+- **Akceptace pověřující stranou** -- autorizovaný model se předloží pověřující straně (Objednateli) k finálnímu přezkoumání a akceptaci. Objednatel posuzuje soulad s EIR a rozhodne o přijetí nebo odmítnutí.
+
+[[Správce stavby|Správce stavby]] hraje klíčovou roli v celém procesu -- koordinuje přezkoumání, dohlíží na dodržení lhůt a zajišťuje, že případné nedostatky jsou řešeny.
+
+---
+# Činnosti v dané oblasti
+```dataview
+TABLE WITHOUT ID file.link AS "Činnost"
+FROM "03_Oblasti správy informací"
+WHERE typ = "cinnost" AND procesni_oblast = this.file.link
+SORT oznaceni ASC
+```
+---

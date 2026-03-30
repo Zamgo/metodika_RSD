@@ -6,8 +6,4 @@ faze:
 workflow: []
 stav: draft
 permalink: /pojem/faze/priprava
-tags:
-  - pojem
-  - faze
-  - dokumentace
 ---

@@ -8,11 +8,6 @@ stav: draft
 permalink: /pojem/role/spravce-cde
 aliases:
   - Spravce CDE
-tags:
-  - pojem
-  - role
-  - cde
-  - opravneni
 ---
 
 # Definice

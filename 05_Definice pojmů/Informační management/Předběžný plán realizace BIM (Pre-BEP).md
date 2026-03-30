@@ -6,7 +6,6 @@ workflow: [bep]
 stav: draft
 permalink: /pojem/cde/pre-bep
 aliases: [Pre-BEP, Předběžný BEP]
-tags: [pojem, bep, dokumentace]
 ---
 
 # Definice

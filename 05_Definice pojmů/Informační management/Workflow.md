@@ -6,7 +6,6 @@ workflow: []
 stav: draft
 permalink: /pojem/rizeni/workflow
 aliases: [Pracovní postup]
-tags: [pojem, workflow, cde]
 ---
 
 # Definice

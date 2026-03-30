@@ -5,7 +5,7 @@ faze: []
 workflow: [rds]
 stav: draft
 permalink: /workflow/rds
-tags: [workflow, cde]
+navazane_cinnosti: []
 ---
 
 ## Účel workflow

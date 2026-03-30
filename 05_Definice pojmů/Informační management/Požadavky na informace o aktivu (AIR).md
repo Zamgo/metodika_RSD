@@ -6,7 +6,6 @@ workflow: []
 stav: draft
 permalink: /pojem/cde/air
 aliases: [AIR]
-tags: [pojem, dokumentace]
 ---
 
 # Definice

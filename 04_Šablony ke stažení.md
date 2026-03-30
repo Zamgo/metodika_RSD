@@ -9,7 +9,6 @@ permalink: /reference/sablony-ke-stazeni
 aliases:
   - Šablony
   - Stažení šablon
-tags: [sablony, cde, workflow, reference, dokumentace]
 ---
 
 # Šablony ke stažení

@@ -6,7 +6,6 @@ workflow: []
 stav: draft
 permalink: /pojem/cde/spolecne-datove-prostredi
 aliases: [CDE, Common Data Environment, Spolecne datove prostredi]
-tags: [pojem, cde, workflow, auditni stopa, opravneni, vyhledavani]
 ---
 
 # Definice

@@ -5,7 +5,6 @@ faze: [priprava]
 workflow: []
 stav: draft
 permalink: /pojem/cde/sprava-informaci-o-stavbe
-tags: [pojem, cde, dokumentace]
 ---
 
 # Definice

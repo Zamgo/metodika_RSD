@@ -5,7 +5,6 @@ faze: [priprava]
 workflow: []
 stav: draft
 permalink: /pojem/cde/vymena-informaci
-tags: [pojem, dokumentace, informacni kontejnery]
 ---
 
 # Definice

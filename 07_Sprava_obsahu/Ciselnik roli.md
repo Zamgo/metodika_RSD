@@ -6,7 +6,6 @@ workflow: []
 stav: draft
 permalink: /sprava-obsahu/ciselnik-roli
 aliases: [Číselník rolí]
-tags: [sprava_obsahu, ciselnik, role, cde, dokumentace]
 ---
 
 ## Použití

@@ -5,7 +5,7 @@ faze: []
 workflow: [subdodavky]
 stav: draft
 permalink: /workflow/subdodavky
-tags: [workflow, cde]
+navazane_cinnosti: []
 ---
 
 ## Účel workflow

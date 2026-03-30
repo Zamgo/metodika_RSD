@@ -6,7 +6,4 @@ faze:
 workflow: []
 stav: draft
 permalink: /pojem/faze/provoz-a-udrzba
-tags:
-  - pojem
-  - faze
 ---

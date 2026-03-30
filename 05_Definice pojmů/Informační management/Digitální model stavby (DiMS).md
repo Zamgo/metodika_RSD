@@ -6,7 +6,6 @@ workflow: []
 stav: draft
 permalink: /pojem/cde/dims
 aliases: [DiMS, Digitální model stavby]
-tags: [pojem, informacni_kontejner, dokumentace]
 ---
 
 # Definice

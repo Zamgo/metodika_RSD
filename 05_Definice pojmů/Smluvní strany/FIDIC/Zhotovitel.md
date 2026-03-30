@@ -5,7 +5,6 @@ faze: [priprava]
 workflow: []
 stav: draft
 permalink: /pojem/role/zhotovitel
-tags: [pojem, role, cde, dokumentace]
 ---
 
 # Definice

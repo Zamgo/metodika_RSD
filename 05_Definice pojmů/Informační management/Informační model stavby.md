@@ -6,7 +6,6 @@ workflow: []
 stav: draft
 permalink: /pojem/cde/informacni-model-stavby
 aliases: [IMS]
-tags: [pojem, ims, informacni kontejnery, predani dat]
 ---
 
 # Definice

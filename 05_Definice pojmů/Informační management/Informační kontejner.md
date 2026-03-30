@@ -5,7 +5,6 @@ faze: [priprava]
 workflow: []
 stav: draft
 permalink: /pojem/cde/informacni-kontejner
-tags: [pojem, informacni_kontejner, informacni kontejnery, metadata]
 ---
 
 # Definice

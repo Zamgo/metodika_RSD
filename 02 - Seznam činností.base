@@ -47,8 +47,6 @@ views:
         direction: DESC
       - property: procesni_oblast
         direction: ASC
-      - property: pracovni_balicek
-        direction: ASC
       - property: oznaceni
         direction: ASC
       - property: faze

@@ -6,7 +6,6 @@ workflow: []
 stav: draft
 permalink: /pojem/cde/cde-nastroj
 aliases: [CDE nástroj]
-tags: [pojem, cde, workflow]
 ---
 
 # Definice

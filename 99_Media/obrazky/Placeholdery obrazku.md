@@ -6,7 +6,6 @@ workflow: []
 stav: draft
 permalink: /media/placeholdery-obrazku
 aliases: [Placeholdery obrázků]
-tags: [media, obrazky, placeholder, dokumentace]
 ---
 
 ## Účel

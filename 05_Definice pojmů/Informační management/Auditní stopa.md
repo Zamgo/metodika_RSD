@@ -6,7 +6,6 @@ workflow: []
 stav: draft
 permalink: /pojem/rizeni/auditni-stopa
 aliases: [Auditni stopa]
-tags: [pojem, audit, auditni stopa, cde, workflow]
 ---
 
 # Definice

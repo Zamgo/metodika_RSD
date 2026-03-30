@@ -6,7 +6,6 @@ workflow: []
 stav: draft
 permalink: /pojem/cde/pim
 aliases: [PIM]
-tags: [pojem, pim, informacni kontejnery, predani dat]
 ---
 
 # Definice

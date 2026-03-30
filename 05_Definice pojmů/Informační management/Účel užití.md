@@ -6,7 +6,6 @@ workflow: []
 stav: draft
 permalink: /pojem/rizeni/ucel-uziti
 aliases: [Ucel uziti]
-tags: [pojem, dokumentace]
 ---
 
 # Definice

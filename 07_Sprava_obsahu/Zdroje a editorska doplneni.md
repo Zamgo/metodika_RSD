@@ -6,7 +6,6 @@ workflow: []
 stav: draft
 permalink: /sprava-obsahu/zdroje-a-editorske-doplneni
 aliases: [Zdroje a editorské doplnění]
-tags: [sprava_obsahu, zdroje, editorske_doplneni, dokumentace]
 ---
 
 ## Primární zdroje (podklady)

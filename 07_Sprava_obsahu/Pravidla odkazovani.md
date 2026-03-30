@@ -6,7 +6,6 @@ workflow: []
 stav: draft
 permalink: /sprava-obsahu/pravidla-odkazovani
 aliases: [Pravidla odkazování]
-tags: [sprava_obsahu, odkazy, obsidian, cde, workflow]
 ---
 
 ## Základní pravidlo

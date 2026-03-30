@@ -5,7 +5,6 @@ faze: [priprava]
 workflow: []
 stav: draft
 permalink: /pojem/cde/datovy-soubor
-tags: [pojem, informacni kontejnery, metadata]
 ---
 
 # Definice

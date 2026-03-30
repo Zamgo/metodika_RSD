@@ -1,96 +1,63 @@
-﻿---
-title: Změny během výstavby pomocí nástrojů CDE - Pavlína
-typ: "dilci_cinnost"
-faze: [realizace]
+---
+title: Změny během výstavby pomocí nástrojů CDE
+typ: dilci_cinnost
+oznaceni: "6.2+"
+popis: "Transparentní a auditovatelné řízení změn projektové dokumentace a DiMS v průběhu realizace stavby."
+faze:
+  - realizace
 workflow: []
 stav: draft
-permalink: /proces/realizace/zmeny-behem-vystavby-pomoci-nastroju-cde-pavlina
-tags: [proces, cde, dokumentace]
-zdroj: "Interní metodika ŘSD"
-procesni_oblast: ""
-cinnost: ""
+zdroj: "ČSN EN ISO 19650-2; 5.6.2 / Interní metodika ŘSD"
+procesni_oblast: "[[6 - Proces managementu informací – Společné vytváření informací|6 - Proces managementu informací – Společné vytváření informací]]"
+cinnost: "[[6.2 - Tvorba informací|6.2 - Tvorba informací]]"
+vstupy: []
+vystupy: []
+navazane_workflow: []
+predchozi_cinnost: ""
+nasledujici_cinnost: ""
+nastroj: []
+frekvence: ""
+R - Odpovědnost za provádění činnosti: []
+A - Právní odpovědnost za dokončení činnosti: []
+C - Konzultace v průběhu činnosti: []
+I - Informování po dokončení činnosti: []
 ---
+# Popis
 
-## Účel
+Účelem evidence změn během výstavby je zajistit transparentní, systematické a auditovatelné řízení všech úprav projektové dokumentace, digitálního informačního modelu stavby ([[Digitální model stavby (DiMS)|DiMS]]) a souvisejících výstupů v průběhu realizace.
 
-Účelem evidence změn během výstavby je zajistit transparentní, systematické a auditovatelné řízení všech úprav projektové dokumentace, digitálního informačního modelu stavby ([[Digitální model stavby (DiMS)|DiMS]]) a souvisejících výstupů, které vznikají v průběhu realizace stavby.
-V průběhu výstavby dochází ke změnám z technických, organizačních, majetkoprávních nebo ekonomických důvodů. Každá taková změna může mít dopad na rozsah díla, cenu, harmonogram nebo budoucí provoz stavby. Bez jednoznačné evidence změn hrozí riziko ztráty přehledu o platné dokumentaci, vznik sporů mezi účastníky projektu nebo nemožnost doložit rozhodovací proces.
+V průběhu výstavby dochází ke změnám z technických, organizačních, majetkoprávních nebo ekonomických důvodů. Bez jednoznačné evidence hrozí ztráta přehledu o platné dokumentaci, vznik sporů nebo nemožnost doložit rozhodovací proces. Tato činnost navazuje na požadavky ISO 19650-2, čl. 5.6.2, které stanovují, že [[Úkolový tým|úkolové týmy]] musí tvořit informace v souladu s [[Úkolový plán předávání informací (TIDP)|TIDP]] a koordinovat je v rámci [[Společné datové prostředí (CDE)|CDE]].
 
-## Kdy se používá
+# Vstupy
+- Aktuální projektová dokumentace
+- Aktuální DiMS
+- Evidence změnových řízení ([[ZBV]])
+- Zápisy z kontrolních dnů stavby
+- Technické návrhy změn nebo požadavky na úpravy
 
-**Editorske doplneni:** V podkladu není explicitní sekce; doplnit podle kontextu projektu.
+# Postup
 
-## Vstupy
+[[Správce stavby|Správce stavby]] zajistí, aby:
+1. **Každá změna byla evidována v CDE** s:
+   - jednoznačným identifikátorem,
+   - popisem důvodu,
+   - označením dotčené části stavby,
+   - datem vzniku,
+   - odpovědnou osobou.
+2. **Změna byla provázána** s aktualizovaným DiMS, výkresovou dokumentací a změnovým řízením (ZBV), je-li relevantní.
+3. **Před uzavřením změny bylo ověřeno** zapracování do všech dotčených výstupů, aktualizace verzí a správné nastavení stavů v CDE.
 
-Pro evidenci změn během výstavby musí být k dispozici zejména:
-  - aktuální projektová dokumentace,
-  - aktuální digitální informační model stavby ([[Digitální model stavby (DiMS)|DiMS]]),
-  - evidence změnových řízení ([[ZBV]]),
-  - zápisy z kontrolních dnů stavby,
-  - technické návrhy změn nebo požadavky na úpravy projektu,
-  - informace o schválených nebo projednávaných změnách projektu.
-Správce stavby ověřuje, že všechny podklady jsou uloženy v nástroji [[Společné datové prostředí (CDE)|CDE]] a že jejich verze odpovídají aktuálnímu stavu projektu.
+# Role a odpovědnosti
+- **[[Zhotovitel|Zhotovitel]]** ([[Vedoucí pověřená strana|vedoucí pověřená strana]]): identifikuje změny, předkládá návrhy a aktualizované výstupy
+- **Správce stavby** (Engineer dle FIDIC): kontroluje evidenci změn v CDE, sleduje provázání s dokumentací a modelem, ověřuje zapracování
+- **[[Objednatel|Objednatel]]** ([[Pověřující strana|pověřující strana]] / ŘSD): schvaluje změny s dopadem na rozsah, cenu nebo harmonogram
 
-## Postup
+# Výstupy
+- Evidovaná změna s úplnou [[Auditní stopa|auditní stopou]]
+- Aktualizovaná dokumentace a DiMS
 
-Správce stavby zajistí, aby:
-  - Každá změna byla evidována v [[Společné datové prostředí (CDE)|CDE]].
-  - Změna obsahovala:
-  - jednoznačný identifikátor,
-  - popis důvodu,
-  - označení dotčené části stavby,
-  - datum vzniku,
-  - odpovědnou osobu.
-  - Změna byla provázána s:
-  - aktualizovaným [[Digitální model stavby (DiMS)|DiMS]],
-  - výkresovou dokumentací,
-  - změnovým řízením ([[ZBV]]), je-li relevantní.
-  - Před uzavřením změny bylo ověřeno:
-  - zapracování do všech dotčených výstupů,
-  - aktualizace verzí,
-  - správné nastavení stavu v CDE.
-  - správné nastavení stavu v [[Společné datové prostředí (CDE)|CDE]].
-
-## Role a odpovědnosti
-
-- Zhotovitel:
-    - identifikuje změny vznikající během realizace stavby,
-    - předkládá návrhy změn a aktualizované projektové výstupy,
-    - aktualizuje projektovou dokumentaci a [[Digitální model stavby (DiMS)|DiMS]] v návaznosti na schválené změny.
-- Správce stavby:
-    - kontroluje evidenci změn v nástroji [[Společné datové prostředí (CDE)|CDE]],
-    - sleduje provázání změn s dokumentací, modelem a změnovým řízením,
-    - ověřuje zapracování schválených změn do projektových výstupů.
-- ŘSD:
-    - rozhoduje o schválení změn s dopadem na rozsah, cenu nebo harmonogram stavby,
-    - schvaluje postup řešení významných změn projektu.
-
-## Výstupy
-
-Evidovaná změna s úplnou [[Auditní stopa|auditní stopou]]
-
-## Kontrolní body pro správce stavby
-
-**Editorske doplneni:** V podkladu není explicitní sekce; doplnit pokud je uvedeno jinde.
-
-## Související role
-
-- [[Správce stavby]]
-- [[Zhotovitel]]
-
-## Související fáze
-
-- [[Realizace]]
-
-## Související workflow
-
-- (bude doplněno při převodu workflow šablon)
-
-## Související pojmy
-
-- (bude doplněno po založení pojmových stránek)
-
-## Související přílohy
-
-- (bude doplněno při převodu příloh)
-
+# Kontrolní body pro správce stavby
+- Ověřit, že každá změna je řádně evidována v CDE
+- Zkontrolovat provázání změn s DiMS a dokumentací
+- Sledovat, zda jsou všechny změny uzavřeny (zapracovány do výstupů)
+- Ověřit vazbu na změnové řízení (ZBV) tam, kde je relevantní

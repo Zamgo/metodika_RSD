@@ -5,7 +5,7 @@ faze: []
 workflow: [hmg]
 stav: draft
 permalink: /workflow/hmg
-tags: [workflow, cde]
+navazane_cinnosti: []
 ---
 
 ## Účel workflow

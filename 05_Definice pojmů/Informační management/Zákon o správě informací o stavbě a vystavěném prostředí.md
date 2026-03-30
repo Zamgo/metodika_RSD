@@ -7,7 +7,6 @@ stav: draft
 permalink: /pojem/cde/zakon-330-2025
 aliases:
   - Zákon
-tags: [pojem, legislativa]
 ---
 
 # Definice
