@@ -1,11 +1,15 @@
 ---
 title: Příprava
 typ: term
-faze: [priprava]
+faze:
+  - priprava
 workflow: []
 stav: draft
 permalink: /pojem/faze/priprava
-tags: [pojem, faze, dokumentace]
+tags:
+  - pojem
+  - faze
+  - dokumentace
 ---
 
 # Definice

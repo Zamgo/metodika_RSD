@@ -1,0 +1,15 @@
+{
+  "types": {
+    "workflow": "multitext",
+    "faze": "multitext",
+    "stav": "text",
+    "tags": "tags",
+    "aliases": "aliases",
+    "R - Odpovědnost za provádění činnosti": "multitext",
+    "A - Právní odpovědnost za dokončení činnosti": "multitext",
+    "C - Konzultace v průběhu činnosti": "multitext",
+    "I - Informování po dokončení činnosti": "multitext",
+    "cssclasses": "multitext",
+    "jzj": "multitext"
+  }
+}

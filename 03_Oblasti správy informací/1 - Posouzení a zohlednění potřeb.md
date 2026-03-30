@@ -3,13 +3,13 @@ title: 1 - Posouzení a zohlednění potřeb
 typ: procesni_oblast
 oznaceni: "1"
 popis: ""
-zdroj: A/R
+zdroj: ČSN EN ISO 19650-2; 5.1.1
 faze:
   - priprava
-R - Odpovědnost za provádění činnosti: ""
-A - Právní odpovědnost za dokončení činnosti: ""
-C - Konzultace v průběhu činnosti: ""
-I - Informování po dokončení činnosti: ""
+R - Odpovědnost za provádění činnosti: []
+A - Právní odpovědnost za dokončení činnosti: []
+C - Konzultace v průběhu činnosti: []
+I - Informování po dokončení činnosti: []
 workflow: []
 stav: draft
 tags:
@@ -18,29 +18,17 @@ tags:
 procesni_oblast: "[[1 - Posouzení a zohlednění potřeb|1 - Posouzení a zohlednění potřeb]]"
 pracovni_balicek: ""
 ---
+# Popis
 
-## Popis
 
-ČSN EN ISO 19650-2; 5.1 & ČSN EN ISO 19650-5
 
-## Pracovní balíčky v oblasti
 
+
+## Pracovní balíčky jednotlivých činností v dané oblasti
 ```dataview
-TABLE WITHOUT ID file.link AS "Pracovní balíček", pracovni_balicek AS "Označení"
+TABLE WITHOUT ID file.link AS "Pracovní balíček"
 FROM "03_Oblasti správy informací"
 WHERE typ = "pracovni_balicek" AND procesni_oblast = this.file.link
 SORT pracovni_balicek ASC, file.name ASC
 ```
 
-## Konkrétní činnosti v oblasti
-
-```dataview
-TABLE WITHOUT ID file.link AS "Činnost", oznaceni AS "Označení", pracovni_balicek AS "Pracovní balíček"
-FROM "03_Oblasti správy informací"
-WHERE typ = "cinnost" AND procesni_oblast = this.file.link
-SORT pracovni_balicek ASC, oznaceni ASC, file.name ASC
-```
-
-## Zdroj
-
-A/R

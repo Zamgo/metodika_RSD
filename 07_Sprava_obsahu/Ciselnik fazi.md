@@ -2,11 +2,16 @@
 title: Ciselnik fazi
 typ: catalog
 faze: []
-workflow: []
+workflow:
 stav: draft
 permalink: /sprava-obsahu/ciselnik-fazi
-aliases: [Číselník fází]
-tags: [sprava_obsahu, ciselnik, faze, dokumentace]
+aliases:
+  - Číselník fází
+tags:
+  - sprava_obsahu
+  - ciselnik
+  - faze
+  - dokumentace
 ---
 
 ## Použití

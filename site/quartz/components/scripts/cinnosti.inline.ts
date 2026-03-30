@@ -46,6 +46,23 @@ function prettyLabel(key: string): string {
   return key
 }
 
+function getRaciHelpText(col: string, label: string): string | null {
+  const key = `${col} ${label}`.toLowerCase()
+  if (key.includes("r - ")) {
+    return "R - Činnost strana/role sama nebo ve spolupráci vykonává"
+  }
+  if (key.includes("a - ")) {
+    return "A - Strana/role je odpodvědná za úkol jako celek včetně schvalování"
+  }
+  if (key.includes("c - ")) {
+    return "C - Činnost je konzultována se stranou/rolí"
+  }
+  if (key.includes("i - ")) {
+    return "I - Strana/role je o průběhu činnosti a řešení informována"
+  }
+  return null
+}
+
 function readBaseConfig(root: HTMLElement): BaseConfig {
   const script = root.querySelector(".cinnosti-base-config") as HTMLScriptElement | null
   const raw = script?.textContent?.trim() ?? ""
@@ -467,6 +484,8 @@ async function setupCinnosti(root: HTMLElement, currentSlug: FullSlug, data: Cin
     headRow.innerHTML = cols
       .map((col) => {
         const label = getColLabel(col)
+        const raciHelp = getRaciHelpText(col, label)
+        const labelTitleAttr = raciHelp ? ` title="${escapeHtml(raciHelp)}"` : ""
         const w = columnWidths.get(col)
         const wStyle = w ? ` style="width:${w}px;min-width:${w}px"` : ""
         let sortInd = ""
@@ -489,7 +508,7 @@ async function setupCinnosti(root: HTMLElement, currentSlug: FullSlug, data: Cin
           })
           .join("")
 
-        return `<th data-col="${escapeHtml(col)}" draggable="true"${wStyle}><div class="cinnosti-th-content"><span class="cinnosti-th-label">${escapeHtml(label)}</span><span class="cinnosti-sort-indicator">${sortInd}</span><button type="button" class="cinnosti-col-filter-btn${filterBtnCls}" title="Filtrovat sloupec">${FILTER_ICON}</button></div><div class="cinnosti-col-filter-dropdown"><div class="cinnosti-col-filter-sort-btns"><button type="button" class="cinnosti-col-sort-btn" data-dir="asc">\u2191 Vzestupn\u011B</button><button type="button" class="cinnosti-col-sort-btn" data-dir="desc">\u2193 Sestupn\u011B</button></div><hr><input type="search" class="cinnosti-col-filter-search" placeholder="Hledat hodnoty\u2026" autocomplete="off"><div class="cinnosti-col-filter-actions"><button type="button" class="cinnosti-col-filter-all">Vybrat v\u0161e</button><button type="button" class="cinnosti-col-filter-none">Zru\u0161it v\u00FDb\u011Br</button></div><div class="cinnosti-col-filter-list">${checkboxes}</div></div><div class="cinnosti-resize-handle"></div></th>`
+        return `<th data-col="${escapeHtml(col)}" draggable="true"${wStyle}><div class="cinnosti-th-content"><span class="cinnosti-th-label"${labelTitleAttr}>${escapeHtml(label)}</span><span class="cinnosti-sort-indicator">${sortInd}</span><button type="button" class="cinnosti-col-filter-btn${filterBtnCls}" title="Filtrovat sloupec">${FILTER_ICON}</button></div><div class="cinnosti-col-filter-dropdown"><div class="cinnosti-col-filter-sort-btns"><button type="button" class="cinnosti-col-sort-btn" data-dir="asc">\u2191 Vzestupn\u011B</button><button type="button" class="cinnosti-col-sort-btn" data-dir="desc">\u2193 Sestupn\u011B</button></div><hr><input type="search" class="cinnosti-col-filter-search" placeholder="Hledat hodnoty\u2026" autocomplete="off"><div class="cinnosti-col-filter-actions"><button type="button" class="cinnosti-col-filter-all">Vybrat v\u0161e</button><button type="button" class="cinnosti-col-filter-none">Zru\u0161it v\u00FDb\u011Br</button></div><div class="cinnosti-col-filter-list">${checkboxes}</div></div><div class="cinnosti-resize-handle"></div></th>`
       })
       .join("")
   }
