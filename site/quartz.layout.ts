@@ -80,6 +80,7 @@ export const defaultContentPageLayout: PageLayout = {
     }),
     Component.ArticleTitle(),
     Component.ContentMeta(),
+    Component.MetadataPanel(),
     Component.TagList(),
   ],
   left: [

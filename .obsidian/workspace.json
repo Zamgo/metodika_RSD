@@ -13,12 +13,12 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "03_Oblasti správy informací/1.1.1 - Pověřit jednotlivce k plnění funkcí při managementu informací.md",
+                "file": "03_Oblasti správy informací/1.2 - Stanovení projektových požadavků na informace (PIR).md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "1.1.1 - Pověřit jednotlivce k plnění funkcí při managementu informací"
+              "title": "1.2 - Stanovení projektových požadavků na informace (PIR)"
             }
           }
         ]
@@ -78,7 +78,7 @@
       }
     ],
     "direction": "horizontal",
-    "width": 670.5
+    "width": 628.5
   },
   "right": {
     "id": "925f1fb0b98116e3",
@@ -186,12 +186,24 @@
   },
   "active": "7b02233921117898",
   "lastOpenFiles": [
+    "03_Oblasti správy informací/1.1.5 - Stanovit kompetence pro funkci.md",
+    "03_Oblasti správy informací/1.1.4 - Stanovit pravomoce delegovani.md",
+    "03_Oblasti správy informací/1.1.3 - Stanovit úkoly v rámci rozsahu služeb.md",
+    "03_Oblasti správy informací/1.1.2 - Stanovit rozsah služeb pro funkci správy informací.md",
+    "03_Oblasti správy informací/1.1.1 - Pověřit jednotlivce k plnění funkcí při managementu informací.md",
+    "site/quartz/components/MetadataPanel.tsx",
+    "05_Definice pojmů/Role/Správce stavby.md",
+    "05_Definice pojmů/Role/Asistent správce stavby – Zástupce vedoucího Týmu správce stavby.md",
+    "05_Definice pojmů/Role/Asistent správce stavby – Specialista v oboru.md",
+    "05_Definice pojmů/Faze/Realizace.md",
+    "05_Definice pojmů/Faze/Příprava.md",
+    "05_Definice pojmů/Faze/Provoz a údržba.md",
     "03_Oblasti správy informací/1.1 - Pověření jednotlivců k plnění funkcí při managementu informací.md",
+    "03_Oblasti správy informací/1 - Posouzení a zohlednění potřeb.md",
     "00_Podklady/~$NUKIB_Matice_MI.tmp",
     "Bez názvu.base",
     "07_Sprava_obsahu/_seed_workflow_property_suggestions.md",
     "07_Sprava_obsahu/_seed_RACI_actor_property_suggestions.md",
-    "05_Definice pojmů/Faze/Příprava.md",
     "07_Sprava_obsahu/Ciselnik fazi.md",
     "07_Sprava_obsahu/Ciselnik RACI aktéri.md",
     "04_Šablony ke stažení.md",
@@ -204,18 +216,13 @@
     "scripts/build_raci_property_types.py",
     "scripts",
     "site/public/_tmp_raci_replace.py",
-    "_tmp_raci_replace.py",
     "03_Oblasti správy informací/Kontrola smluvní dokumentace a požadavků.md",
     "05_Definice pojmů/Role/Člen týmu správce stavby – Koordinátor BIM.md",
     "07_Sprava_obsahu/Ciselnik roli.md",
     "03_Oblasti správy informací/7.3.1 - Predlozit informace pov strane.md",
     "07_Sprava_obsahu/Ciselnik workflow.md",
-    "03_Oblasti správy informací/1.1.1 - Pověřit jednotlivce k plnění funkcí při managementu informací.md",
-    "03_Oblasti správy informací/1 - Posouzení a zohlednění potřeb.md",
     "03_Oblasti správy informací/Schvalovací procesy (WF).md",
     "site/public/03_CDE_workflow/0_Diagram.canvas",
-    "03_Oblasti správy informací/6.2.3 - Prostorova koordinace geometrickych modelu.md",
-    "03_Oblasti správy informací/6.2.2 - Koordinace a krizove odkazy informaci.md",
     "site/public/06_Diagramy/Tým_správce_stavby_hierachie.canvas",
     "site/public/00_Podklady/rsd-logo-sirkove-2c-barevne-rgb.svg",
     "site/public/99_Media/obrazky/controlis_cde/image9.png",
@@ -227,12 +234,6 @@
     "site/public/99_Media/obrazky/controlis_cde/image75.png",
     "site/public/99_Media/obrazky/controlis_cde/image74.png",
     "site/public/99_Media/obrazky/controlis_cde/image73.jpeg",
-    "03_Oblasti správy informací/1.7.2 - Nastavit projektové společné datové prostředí pro projekt.md",
-    "03_Oblasti správy informací/1.7.3 - Poskytovat podporu pro projektové společné datové prostředí.md",
-    "03_Oblasti správy informací/1.1.2 - Stanovit rozsah služeb pro funkci správy informací (v případě pověření třetí strany).md",
-    "03_Oblasti správy informací/1.4 - Stanovení projektového informačního standardu.md",
-    "03_Oblasti správy informací/8 - Proces managementu informací – Uzavření projektu.md",
-    "05_Definice pojmů/Role/Pomocný asistent Správce stavby.md",
     "06_Diagramy/Tým_správce_stavby_hierachie.canvas",
     "03_CDE_workflow/0_Diagram.canvas",
     "site/public/Bez-názvu.canvas"

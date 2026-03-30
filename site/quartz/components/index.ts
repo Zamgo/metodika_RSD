@@ -28,6 +28,7 @@ import SiteBranding from "./SiteBranding"
 import CinnostiTable from "./CinnostiTable"
 import ProcesniOblastRuntime from "./ProcesniOblastRuntime"
 import SidebarToggle from "./SidebarToggle"
+import MetadataPanel from "./MetadataPanel"
 
 export {
   ArticleTitle,
@@ -60,4 +61,5 @@ export {
   CinnostiTable,
   ProcesniOblastRuntime,
   SidebarToggle,
+  MetadataPanel,
 }

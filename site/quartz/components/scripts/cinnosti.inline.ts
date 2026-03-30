@@ -52,7 +52,7 @@ function getRaciHelpText(col: string, label: string): string | null {
     return "R - Činnost strana/role sama nebo ve spolupráci vykonává"
   }
   if (key.includes("a - ")) {
-    return "A - Strana/role je odpodvědná za úkol jako celek včetně schvalování"
+    return "A - Strana/role je odpovědná za úkol jako celek včetně schvalování"
   }
   if (key.includes("c - ")) {
     return "C - Činnost je konzultována se stranou/rolí"

@@ -8,7 +8,6 @@ permalink: /pojem/role/spravce-stavby
 aliases: [Spravce stavby]
 tags: [pojem, role, cde, dokumentace]
 ---
-
 # Definice
 
 Správce stavby zajišťuje průběžnou kontrolu a koordinaci správy informací o stavbě v průběhu celého projektu.
