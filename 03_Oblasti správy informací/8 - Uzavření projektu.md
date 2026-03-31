@@ -1,5 +1,5 @@
 ---
-title: 8 - Proces managementu informací – Uzavření projektu
+title: 8 - Uzavření projektu
 typ: procesni_oblast
 oznaceni: "8"
 popis: Archivování projektového informačního modelu (PIM) a zachycení ponaučení pro budoucí projekty -- uzavření digitální stopy stavby.

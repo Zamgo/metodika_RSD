@@ -17,4 +17,4 @@ Koordinátor CDE [[Pověřující strana|Pověřující strany]] ([[Objednatel|O
 - doplnění BEP o kapitolu týkající se CDE;
 - procesy dodání, přenosu a uchování informací v rámci CDE minimálně po dobu stanovenou Smlouvou.
 
-Koordinátor CDE je součástí [[Tým_správce_stavby_hierachie.canvas|týmu správce stavby]].
+Koordinátor CDE je součástí [[Hierarchie týmu správce stavby.canvas|týmu správce stavby]].

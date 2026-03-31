@@ -1,5 +1,5 @@
 ---
-title: 4 - Proces managementu informací – Pověření
+title: 4 - Pověření
 typ: procesni_oblast
 oznaceni: "4"
 popis: Po výběru zhotovitele se formalizují pravidla managementu informací – potvrdí se BEP, rozdělí odpovědnosti, nastaví plány předávání a vyhotoví pověřovací dokumenty.

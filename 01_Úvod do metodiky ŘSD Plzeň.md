@@ -38,4 +38,4 @@ Metodika není závazným smluvním dokumentem, ale praktickým nástrojem, kter
 - **`Definice pojmů`** — definice rolí, smluvních stran, fází a klíčových konceptů informačního managementu.
 - **`Diagramy`** — grafické přehledy a diagramy.
 
-Stránky jsou vzájemně provázány interními odkazy. V dolní části každé stránky se zobrazuje graf souvisejících stránek.
+Stránky jsou vzájemně provázány interními odkazy. 

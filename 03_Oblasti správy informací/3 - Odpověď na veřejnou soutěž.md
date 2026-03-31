@@ -1,5 +1,5 @@
 ---
-title: 3 - Proces managementu informací – Odpověď na veřejnou soutěž
+title: 3 - Odpověď na veřejnou soutěž
 typ: procesni_oblast
 oznaceni: "3"
 popis: Uchazeč (budoucí vedoucí pověřená strana) připraví odpověď -- nominuje osoby, vypracuje Pre-BEP, posoudí způsobilost, připraví plán mobilizace a registr rizik.

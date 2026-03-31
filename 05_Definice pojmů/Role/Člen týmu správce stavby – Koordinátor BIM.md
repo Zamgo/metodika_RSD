@@ -12,4 +12,4 @@ Koordinátor BIM [[Pověřující strana|Pověřující strany]] ([[Objednatel|O
 - schvalování, rozhodování, kontrolu a přebírání dat v IMS včetně dokumentů týkajících se metody BIM;
  - koordinaci procesu plnění pověření metodou BIM.
 
-Koordinátor BIM je součástí [[Tým_správce_stavby_hierachie.canvas|týmu správce stavby]].
+Koordinátor BIM je součástí [[Hierarchie týmu správce stavby.canvas|týmu správce stavby]].

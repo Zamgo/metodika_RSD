@@ -1,5 +1,5 @@
 ---
-title: 2 - Proces managementu informací – Výzva k veřejné soutěži
+title: 2 - Výzva k veřejné soutěži
 typ: procesni_oblast
 oznaceni: "2"
 popis: Objednatel připraví výzvu k veřejné soutěži -- stanoví EIR, shromáždí referenční informace, definuje požadavky na odpověď a sestaví kompletní zadání.

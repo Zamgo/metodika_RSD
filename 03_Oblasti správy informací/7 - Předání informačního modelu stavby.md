@@ -1,5 +1,5 @@
 ---
-title: 7 - Proces managementu informací – Předání informačního modelu stavby
+title: 7 - Předání informačního modelu stavby
 typ: procesni_oblast
 oznaceni: "7"
 popis: Formální předložení informačního modelu stavby k autorizování vedoucí pověřenou stranou a následně k akceptaci pověřující stranou (Objednatelem).

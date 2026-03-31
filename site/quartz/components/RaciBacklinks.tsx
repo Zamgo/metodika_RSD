@@ -128,13 +128,13 @@ export default ((opts?: Partial<RaciBacklinksOptions>) => {
             const entries = sortEntries(groups[rk.letter])
             if (entries.length === 0) return null
             return (
-              <div class={`raci-group ${rk.colorClass}`}>
-                <div class="raci-group-header">
+              <details class={`raci-group ${rk.colorClass}`} open>
+                <summary class="raci-group-header">
                   <span class={`raci-badge ${rk.colorClass}`}>{rk.letter}</span>
                   <span class="raci-group-label">
                     {rk.label} ({entries.length})
                   </span>
-                </div>
+                </summary>
                 <ul>
                   {entries.map((entry) => (
                     <li>
@@ -145,7 +145,7 @@ export default ((opts?: Partial<RaciBacklinksOptions>) => {
                     </li>
                   ))}
                 </ul>
-              </div>
+              </details>
             )
           })}
         </div>

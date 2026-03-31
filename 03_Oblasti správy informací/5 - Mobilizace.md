@@ -1,5 +1,5 @@
 ---
-title: 5 - Proces managementu informací – Mobilizace
+title: 5 - Mobilizace
 typ: procesni_oblast
 oznaceni: "5"
 popis: Po pověření realizační tým mobilizuje zdroje, IT infrastrukturu a CDE, testuje metody a postupy pro vytváření informací a připravuje se na zahájení společné tvorby.
