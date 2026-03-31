@@ -6,9 +6,14 @@ popis: Uchazeč (budoucí vedoucí pověřená strana) připraví odpověď -- n
 zdroj: ČSN EN ISO 19650-2; 5.3
 faze:
   - priprava
-R - Odpovědnost za provádění činnosti: []
-A - Právní odpovědnost za dokončení činnosti: []
-C - Konzultace v průběhu činnosti: []
+R - Odpovědnost za provádění činnosti:
+  - "[[Vedoucí pověřená strana]]"
+  - "[[Pověřená strana]]"
+A - Právní odpovědnost za dokončení činnosti:
+  - "[[Vedoucí pověřená strana]]"
+  - "[[Pověřená strana]]"
+C - Konzultace v průběhu činnosti:
+  - "[[Pověřená strana]]"
 I - Informování po dokončení činnosti: []
 workflow: []
 stav: draft

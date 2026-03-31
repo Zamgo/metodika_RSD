@@ -1,21 +1,15 @@
 ---
 title: Člen týmu správce stavby – Koordinátor BIM
 typ: term
-faze:
-  - priprava
-workflow: []
 stav: draft
-permalink: /pojem/role/spravce-cde
 aliases:
-  - Spravce CDE
+  - BIM koordinátor
 ---
+# Popis
 
-# Definice
+Koordinátor BIM [[Pověřující strana|Pověřující strany]] ([[Objednatel|Objednatele]] - ŘSD) zajišťuje a odpovídá na konkrétním projektu za:
+- aplikaci nastavených procesů a pravidel metody BIM;
+- schvalování, rozhodování, kontrolu a přebírání dat v IMS včetně dokumentů týkajících se metody BIM;
+ - koordinaci procesu plnění pověření metodou BIM.
 
-V primárním podkladu není role „Správce CDE“ explicitně definována jako samostatná kapitola. V rámci metodiky ŘSD je role Správce CDE chápána jako osoba/role zajišťující konfiguraci, správu přístupů a provoz CDE řešení včetně podpory workflow.
-
-## Praktický význam pro správu informací o stavbě / ŘSD
-
-- Konfigurace struktury CDE a pravidel ukládání.
-- Správa oprávnění a přístupů (role-based access).
-- Podpora a dohled nad workflow v CDE (schvalování, auditní stopa, stavy).
+Koordinátor BIM je součástí [[Tým_správce_stavby_hierachie.canvas|týmu správce stavby]].

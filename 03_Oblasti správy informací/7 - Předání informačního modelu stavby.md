@@ -6,10 +6,19 @@ popis: Formální předložení informačního modelu stavby k autorizování ve
 zdroj: ČSN EN ISO 19650-2; 5.7
 faze:
   - realizace
-R - Odpovědnost za provádění činnosti: []
-A - Právní odpovědnost za dokončení činnosti: []
+R - Odpovědnost za provádění činnosti:
+  - "[[Pověřující strana]]"
+  - "[[Vedoucí pověřená strana]]"
+  - "[[Pověřená strana]]"
+A - Právní odpovědnost za dokončení činnosti:
+  - "[[Pověřující strana]]"
+  - "[[Vedoucí pověřená strana]]"
+  - "[[Pověřená strana]]"
 C - Konzultace v průběhu činnosti: []
-I - Informování po dokončení činnosti: []
+I - Informování po dokončení činnosti:
+  - "[[Pověřující strana]]"
+  - "[[Vedoucí pověřená strana]]"
+  - "[[Pověřená strana]]"
 workflow: []
 stav: draft
 procesni_oblast: "[[7 - Předání informačního modelu stavby|7 - Proces managementu informací – Předání informačního modelu stavby]]"

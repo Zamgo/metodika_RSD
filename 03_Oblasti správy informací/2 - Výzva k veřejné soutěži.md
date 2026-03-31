@@ -6,8 +6,10 @@ popis: Objednatel připraví výzvu k veřejné soutěži -- stanoví EIR, shrom
 zdroj: ČSN EN ISO 19650-2; 5.2
 faze:
   - priprava
-R - Odpovědnost za provádění činnosti: []
-A - Právní odpovědnost za dokončení činnosti: []
+R - Odpovědnost za provádění činnosti:
+  - "[[Pověřující strana]]"
+A - Právní odpovědnost za dokončení činnosti:
+  - "[[Pověřující strana]]"
 C - Konzultace v průběhu činnosti: []
 I - Informování po dokončení činnosti: []
 workflow: []

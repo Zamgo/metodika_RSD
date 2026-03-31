@@ -1,11 +1,5 @@
 ---
-title: Asistent správce stavby – zástupce vedoucího Týmu správce stavby
+title: Asistent správce stavby – Specialista v oboru
 typ: term
-faze:
-  - priprava
-workflow: []
 stav: draft
-permalink: /pojem/role/spravce-stavby
-aliases:
-  - Spravce stavby
 ---

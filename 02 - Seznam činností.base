@@ -57,9 +57,11 @@ views:
       note.procesni_oblast: 320
       note.cinnost: 400
       formula.dilci_cinnost: 380
-      note.oznaceni: 90
+      note.oznaceni: 262
       note.popis: 300
-      note.R - Odpovědnost za provádění činnosti: 240
+      note.R - Odpovědnost za provádění činnosti: 457
+      note.A - Právní odpovědnost za dokončení činnosti: 486
+      note.C - Konzultace v průběhu činnosti: 254
   - type: table
     name: Procesní oblasti
     filters:

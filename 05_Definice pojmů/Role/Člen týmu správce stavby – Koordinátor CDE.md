@@ -1,21 +1,20 @@
 ---
 title: Člen týmu správce stavby – Koordinátor CDE
 typ: term
-faze:
-  - priprava
-workflow: []
 stav: draft
-permalink: /pojem/role/spravce-cde
 aliases:
-  - Spravce CDE
+  - CDE koordinátor
+  - Administrátor CDE
+  - Správce informací
 ---
+# Popis
 
-# Definice
+Koordinátor CDE [[Pověřující strana|Pověřující strany]] ([[Objednatel|Objednatele]] - ŘSD) zajišťuje a odpovídá na konkrétním projektu za:
+- nastavení procesů výměny informací;
+- správu struktury a nastavení nástrojů CDE včetně nastavení přístupových práv;
+- zajištění technické podpory a zaškolení členů Projektového týmu pro nástroje CDE;
+- doplnění a případnou změnu či aktualizaci pracovních částí BEP, které jsou předmětem jeho plnění;
+- doplnění BEP o kapitolu týkající se CDE;
+- procesy dodání, přenosu a uchování informací v rámci CDE minimálně po dobu stanovenou Smlouvou.
 
-V primárním podkladu není role „Správce CDE“ explicitně definována jako samostatná kapitola. V rámci metodiky ŘSD je role Správce CDE chápána jako osoba/role zajišťující konfiguraci, správu přístupů a provoz CDE řešení včetně podpory workflow.
-
-## Praktický význam pro správu informací o stavbě / ŘSD
-
-- Konfigurace struktury CDE a pravidel ukládání.
-- Správa oprávnění a přístupů (role-based access).
-- Podpora a dohled nad workflow v CDE (schvalování, auditní stopa, stavy).
+Koordinátor CDE je součástí [[Tým_správce_stavby_hierachie.canvas|týmu správce stavby]].
