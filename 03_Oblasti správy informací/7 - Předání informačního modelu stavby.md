@@ -5,7 +5,7 @@ oznaceni: "7"
 popis: Formální předložení informačního modelu stavby k autorizování vedoucí pověřenou stranou a následně k akceptaci pověřující stranou (Objednatelem).
 zdroj: ČSN EN ISO 19650-2; 5.7
 faze:
-  - realizace
+  - "[[Realizace]]"
 R - Odpovědnost za provádění činnosti:
   - "[[Pověřující strana]]"
   - "[[Vedoucí pověřená strana]]"

@@ -14,7 +14,7 @@
               "type": "bases",
               "state": {
                 "file": "02 - Seznam činností.base",
-                "viewName": "Dílčí činnosti (bez rozcestníků)"
+                "viewName": "Procesní oblasti činností"
               },
               "icon": "lucide-table",
               "title": "02 - Seznam činností"
@@ -202,6 +202,8 @@
   "lastOpenFiles": [
     "03_Oblasti správy informací/4.6 - Vyhotovení pověřovacích dokumentů vedoucí pověřené strany.md",
     "02 - Seznam činností.base",
+    "03_Oblasti správy informací/Bez názvu.md",
+    "update_faze.py",
     "update_raci.py",
     "05_Definice pojmů/Role/Člen týmu správce stavby – Koordinátor CDE.md",
     "05_Definice pojmů/Role/Člen týmu správce stavby – Koordinátor BIM.md",
@@ -227,7 +229,6 @@
     "site/public/99_Media/obrazky/controlis_implementace/hdphoto1.wdp",
     "site/public/99_Media/obrazky/controlis_cde/image76.emf",
     "site/public/99_Media/obrazky/controlis_cde/image69.emf",
-    "site/public/99_Media/obrazky/controlis_cde/hdphoto1.wdp",
     "site/public/06_Diagramy/Tým_správce_stavby_hierachie.canvas",
     "site/public/03_CDE_workflow/0_Diagram.canvas",
     "05_Definice pojmů/Smluvní strany/ISO19650/Pověřující strana.md",
@@ -237,7 +238,6 @@
     "03_Oblasti správy informací/4.6.1 - Vyhotoveni dokumentu vedouci strany.md",
     "03_CDE_workflow/BEP.md",
     "02 - Seznam činností.md",
-    "03_Oblasti správy informací/Bez názvu.md",
     "4 - Proces managementu informací – Pověření.md",
     "03_Oblasti správy informací/4 - Pověření.md",
     "03_Oblasti správy informací/8.2.2 - Zachycovani ponauceni.md",

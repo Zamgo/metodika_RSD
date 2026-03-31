@@ -29,7 +29,7 @@ properties:
     displayName: I - Informování po dokončení činnosti
 views:
   - type: table
-    name: Dílčí činnosti (bez rozcestníků)
+    name: Všechny dílčí činnosti
     filters:
       and:
         - typ == "dilci_cinnost"
@@ -62,45 +62,22 @@ views:
       note.R - Odpovědnost za provádění činnosti: 457
       note.A - Právní odpovědnost za dokončení činnosti: 486
       note.C - Konzultace v průběhu činnosti: 254
+      note.faze: 303
   - type: table
-    name: Procesní oblasti
+    name: Procesní oblasti činností
     filters:
       and:
         - typ == "procesni_oblast"
     order:
       - oznaceni
       - file.name
-      - typ
-      - procesni_oblast
-      - cinnost
+      - faze
     sort:
       - property: procesni_oblast
-        direction: ASC
-  - type: table
-    name: Všechny konkrétní činnosti včetně dílčích
-    filters:
-      or:
-        - typ == "cinnost"
-        - typ == "dilci_cinnost"
-    order:
-      - procesni_oblast
-      - cinnost
-      - formula.dilci_cinnost
-      - typ
-      - oznaceni
-      - popis
-      - zdroj
-    sort:
-      - property: procesni_oblast
-        direction: ASC
-      - property: cinnost
-        direction: ASC
-      - property: oznaceni
         direction: ASC
     columnSize:
       note.oznaceni: 107
+      file.name: 383
+      note.typ: 350
       note.procesni_oblast: 380
       note.cinnost: 360
-      formula.dilci_cinnost: 360
-      note.typ: 100
-      note.popis: 332

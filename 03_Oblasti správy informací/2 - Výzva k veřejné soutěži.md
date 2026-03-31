@@ -5,7 +5,7 @@ oznaceni: "2"
 popis: Objednatel připraví výzvu k veřejné soutěži -- stanoví EIR, shromáždí referenční informace, definuje požadavky na odpověď a sestaví kompletní zadání.
 zdroj: ČSN EN ISO 19650-2; 5.2
 faze:
-  - priprava
+  - "[[Příprava]]"
 R - Odpovědnost za provádění činnosti:
   - "[[Pověřující strana]]"
 A - Právní odpovědnost za dokončení činnosti:
