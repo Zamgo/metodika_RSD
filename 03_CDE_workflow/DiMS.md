@@ -1,7 +1,10 @@
 ---
 title: DiMS
 typ: workflow
-faze: []
+faze:
+  - "[[Realizace]]"
+  - "[[Příprava]]"
+  - "[[Provoz a údržba]]"
 stav: draft
 permalink: /workflow/dims
 navazane_cinnosti: []
@@ -13,11 +16,11 @@ Schválení aktualizace [[Digitální model stavby (DiMS)|DiMS]]
 
 ## Kdy se spouští
 
-**Editorske doplneni:** V Excel šabloně není explicitně uvedeno; doplnit dle metodiky projektu.
+Workflow se spouští, když [[Zhotovitel|zhotovitel]] předkládá [[Digitální informační model stavby (DiMS)|digitální informační model stavby]] k odsouhlasení nebo po jeho aktualizaci.
 
 ## Vstupy
 
-**Editorske doplneni:** Dle šablony nejsou explicitně uvedeny; doplnit dle metodiky projektu.
+- [[Digitální informační model stavby (DiMS)|Digitální informační model stavby (DiMS)]] připravený k odsouhlasení
 
 ## Role
 
@@ -35,7 +38,7 @@ Schválení aktualizace [[Digitální model stavby (DiMS)|DiMS]]
 
 ## Výstupy
 
-**Editorske doplneni:** Odvodit z posledního kroku workflow a vazby na [[Společné datové prostředí (CDE)|CDE]] (např. schválený dokument ve stavu Schváleno).
+- Schválený a elektronicky podepsaný [[Digitální informační model stavby (DiMS)|DiMS]] uložený v [[Společné datové prostředí (CDE)|CDE]] ve stavu „Schváleno"
 
 ## Vazba na CDE
 
@@ -44,6 +47,7 @@ Workflow je realizováno prostřednictvím [[Společné datové prostředí (CDE
 ## Vazba na příslušnou přílohu nebo šablonu
 
 - [[Šablony workflow (P1b)]]
+- Ke stažení: [[00_Podklady/P1b_Šablony Workflow_Červený Fidic_prázdné.xlsx|P1b – Šablony workflow (Excel)]]
 
 ## Související role
 

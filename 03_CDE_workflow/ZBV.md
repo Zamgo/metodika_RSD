@@ -1,7 +1,8 @@
 ---
 title: ZBV
 typ: workflow
-faze: []
+faze:
+  - "[[Realizace]]"
 stav: draft
 permalink: /workflow/zbv
 navazane_cinnosti: []
@@ -13,11 +14,11 @@ Schválení ZBV
 
 ## Kdy se spouští
 
-**Editorske doplneni:** V Excel šabloně není explicitně uvedeno; doplnit dle metodiky projektu.
+Workflow se spouští, když [[Zhotovitel|zhotovitel]] předkládá koncept změny během výstavby (ZBV) ke schválení. Dle hodnoty ZBV se použije odpovídající varianta workflow (viz [[ZBV do 20 mil]], [[ZBV do 50 mil]], [[ZBV nad 50 mil]]).
 
 ## Vstupy
 
-**Editorske doplneni:** Dle šablony nejsou explicitně uvedeny; doplnit dle metodiky projektu.
+- Koncept ZBV včetně potřebných dokumentů (předložený zhotovitelem)
 
 ## Role
 
@@ -43,7 +44,7 @@ Schválení ZBV
 
 ## Výstupy
 
-**Editorske doplneni:** Odvodit z posledního kroku workflow a vazby na [[Společné datové prostředí (CDE)|CDE]] (např. schválený dokument ve stavu Schváleno).
+- Podepsané ZBV nahrané v AspeHub a uložené v [[Společné datové prostředí (CDE)|CDE]] ve stavu „Schváleno"
 
 ## Vazba na CDE
 
@@ -52,6 +53,7 @@ Workflow je realizováno prostřednictvím [[Společné datové prostředí (CDE
 ## Vazba na příslušnou přílohu nebo šablonu
 
 - [[Šablony workflow (P1b)]]
+- Ke stažení: [[00_Podklady/P1b_Šablony Workflow_Červený Fidic_prázdné.xlsx|P1b – Šablony workflow (Excel)]]
 
 ## Související role
 

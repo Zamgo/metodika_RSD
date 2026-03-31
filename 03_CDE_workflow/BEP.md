@@ -1,10 +1,12 @@
 ---
 title: BEP
 typ: workflow
-faze: [priprava]
+faze:
+  - "[[Příprava]]"
 stav: draft
 permalink: /workflow/bep
-aliases: [BEP]
+aliases:
+  - BEP
 navazane_cinnosti: []
 ---
 
@@ -14,11 +16,11 @@ Schválení a aktualizace [[BIM Execution Plan (BEP)|BEP]]
 
 ## Kdy se spouští
 
-**Editorske doplneni:** V Excel šabloně není explicitně uvedeno; doplnit dle metodiky projektu.
+Workflow se spouští při zahájení projektu nebo při aktualizaci BEP v průběhu projektu. Zhotovitel předkládá koncept BEP ke schválení zástupci objednatele.
 
 ## Vstupy
 
-**Editorske doplneni:** Dle šablony nejsou explicitně uvedeny; doplnit dle metodiky projektu.
+- Koncept [[BIM Execution Plan (BEP)|BEP]] připravený zhotovitelem
 
 ## Role
 
@@ -35,7 +37,7 @@ Schválení a aktualizace [[BIM Execution Plan (BEP)|BEP]]
 
 ## Výstupy
 
-**Editorske doplneni:** Odvodit z posledního kroku workflow a vazby na [[Společné datové prostředí (CDE)|CDE]] (např. schválený dokument ve stavu Schváleno).
+- Schválený a podepsaný [[BIM Execution Plan (BEP)|BEP]] uložený v [[Společné datové prostředí (CDE)|CDE]] ve stavu „Schváleno"
 
 ## Vazba na CDE
 
@@ -44,6 +46,7 @@ Workflow je realizováno prostřednictvím [[Společné datové prostředí (CDE
 ## Vazba na příslušnou přílohu nebo šablonu
 
 - [[Šablony workflow (P1b)]]
+- Ke stažení: [[00_Podklady/P1b_Šablony Workflow_Červený Fidic_prázdné.xlsx|P1b – Šablony workflow (Excel)]]
 
 ## Související role
 

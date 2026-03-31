@@ -25,12 +25,13 @@ views:
       - typ
       - faze
       - stav
-      - permalink
-      - navazane_cinnosti
-      - aliases
     sort:
       - property: file.name
         direction: ASC
+    columnSize:
+      file.name: 234
+      note.typ: 308
+      note.faze: 321
   - type: table
     name: Všechny soubory ve složce
     order:

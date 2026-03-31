@@ -10,7 +10,7 @@ aliases: [Auditni stopa]
 
 # Definice
 
-V doprovodné CDE metodice je auditní stopa používána jako požadavek na zachování dohledatelnosti a nemožnosti zpětných změn záznamů. Legislativní kontext se váže na požadavek, aby CDE umožňovalo „tvorbu transakčních protokolů a dalších systematicky uspořádaných záznamů chráněných proti zpětným změnám“.
+ Auditní stopa je používána jako požadavek na zachování dohledatelnosti a nemožnosti zpětných změn záznamů. Legislativní kontext se váže na požadavek, aby CDE umožňovalo „tvorbu transakčních protokolů a dalších systematicky uspořádaných záznamů chráněných proti zpětným změnám“.
 
 ## Praktický význam pro správu informací o stavbě / ŘSD
 

@@ -15,33 +15,43 @@ Tato metodika slouží jako praktický návod pro správu informací o stavbě, 
 Cílem metodiky je stanovit jednotný a prakticky použitelný rámec pro správu informací o stavbě na projektech ŘSD, s využitím metody BIM a nástrojů CDE, a to zejména za účelem:
 
 - sjednocení základních postupů správy informací napříč projekty a správami ŘSD
-- u  zjednodušení orientace v pojmech a procesech souvisejících s metodou BIM a nástroji CDE,
+- zjednodušení orientace v pojmech a procesech souvisejících s metodou BIM a nástroji CDE,
 - podpory efektivní práce týmu správce stavby,
 - zajištění přehlednosti, dohledatelnosti a aktuálnosti projektových informací,
 - umožnění předání využitelných digitálních výstupů do navazujících systémů.
 
 Metodika je koncipována jako realistický a udržitelný minimální standard praktické správy informací o stavbě.
 
-Zároveň si zpracování metodiky v podobě provázané znalostní databáze klade za cíl zjednodušit rutinní práci se získáváním potřebných informací. 
-## Použití metodiky a její formy znalostní databáze
+Zpracování metodiky v podobě provázané znalostní databáze zjednodušuje rutinní práci se získáváním potřebných informací.
+
+## Použití metodiky
 
 Metodika je určena k použití na projektech ŘSD ve fázi přípravy, realizace i předání stavby do provozu. Slouží jako:
 
 - podpůrný manuál pro každodenní práci správce stavby,
-- referenční dokument při nastavování, provoz a kontrolu nástrojů CDE,
-- opora při řešení změn a aktualizací informací,
+- referenční dokument při nastavování, provozu a kontrole nástrojů CDE,
+- opora při řešení změn a aktualizací informací.
 
-Metodika není ze své podstaty závazným smluvním dokumentem, ale praktickým nástrojem, který lze přiměřeně přizpůsobit specifikům konkrétního projektu.
-### Jak se znalostní databází pracovat (doplnit)
+Metodika není závazným smluvním dokumentem, ale praktickým nástrojem, který lze přizpůsobit specifikům konkrétního projektu.
 
-- Procesní stránky jsou členěny podle fází projektu: [[Příprava]], [[Realizace]], [[Provoz a údržba]].
-- Každý workflow má vlastní stránku ve `03_Workflow/` (např. [[BEP]], [[DiMS]], [[ZBV]]).
-- Role, fáze a klíčové koncepty mají vlastní pojmové stránky v `04_Pojmy/`.
+## Jak se znalostní databází pracovat
 
-Pokud je v textu něco nejasné nebo chybí v podkladech, doplňuje se to jako `**Editorske doplneni:**`.
-### Jak vyhledávat
+Znalostní databáze je webová aplikace postavená na nástroji [Quartz](https://quartz.jzhao.xyz). Obsah se spravuje v Obsidianu a po uložení na hlavní větev (`main`) se automaticky publikuje na web.
 
-- **V postranním panelu** klikněte na tlačítko **Hledat** (ikona lupy vlevo nahoře).
-- **Ctrl+K** (Windows/Linux) nebo **Cmd+K** (Mac): otevře vyhledávání v textu stránek (nadpisy i obsah).
-- **Ctrl+Shift+K** / **Cmd+Shift+K**: vyhledávání podle **štítků** (do pole se doplní `#` – můžete psát název štítku).
-- **Procházení štítků:** stránka se seznamem všech štítků je na adrese **`/tags`** (nebo odkaz níže v sekci Štítky).
+### Struktura obsahu
+
+- **`03_Oblasti správy informací/`** — hlavní procesní obsah metodiky členěný podle oblastí správy informací (dle ISO 19650). Fáze projektu: [[Příprava]], [[Realizace]], [[Provoz a údržba]].
+- **`03_CDE_workflow/`** — popisy konkrétních workflow v CDE (např. [[BEP]], [[DiMS]], [[ZBV]]).
+- **`05_Definice pojmů/`** — definice rolí, smluvních stran, fází a klíčových konceptů informačního managementu.
+- **`06_Diagramy/`** — grafické přehledy a diagramy.
+
+Stránky jsou vzájemně provázány interními odkazy. V dolní části každé stránky se zobrazuje graf souvisejících stránek.
+
+### Vyhledávání
+
+- Na webu použijte **pole Hledat** v záhlaví stránky — vyhledává v nadpisech i obsahu.
+- Procházet lze také přes **postranní navigaci** nebo přes **graf propojení** na jednotlivých stránkách.
+
+### Editorské poznámky
+
+Pokud v textu něco chybí nebo je nejasné, je to označeno jako `**Editorské doplnění:**`.

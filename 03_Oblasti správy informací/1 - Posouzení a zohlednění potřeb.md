@@ -39,14 +39,14 @@ Tato fáze je kritická, protože kvalita zadání přímo ovlivňuje kvalitu in
 
 ---
 # Činnosti v dané oblasti
-| Činnost |
-| --- |
-| [[1.1 - Pověření jednotlivců k plnění funkcí při managementu informací\|1.1 - Pověření jednotlivců k plnění funkcí při managementu informací]] |
-| [[1.2 - Stanovení projektových požadavků na informace (PIR)\|1.2 - Stanovení projektových požadavků na informace (PIR)]] |
-| [[1.3 - Stanovení projektových milníků pro předání informací\|1.3 - Stanovení projektových milníků pro předání informací]] |
-| [[1.4 - Stanovení projektového informačního standardu\|1.4 - Stanovení projektového informačního standardu]] |
-| [[1.5 - Stanovení projektových metod a postupů pro vytváření informací\|1.5 - Stanovení projektových metod a postupů pro vytváření informací]] |
+| Činnost                                                                                                                                            |
+| -------------------------------------------------------------------------------------------------------------------------------------------------- |
+| [[1.1 - Pověření jednotlivců k plnění funkcí při managementu informací\|1.1 - Pověření jednotlivců k plnění funkcí při managementu informací]]     |
+| [[1.2 - Stanovení projektových požadavků na informace (PIR)\|1.2 - Stanovení projektových požadavků na informace (PIR)]]                           |
+| [[1.3 - Stanovení projektových milníků pro předání informací\|1.3 - Stanovení projektových milníků pro předání informací]]                         |
+| [[1.4 - Stanovení projektového informačního standardu\|1.4 - Stanovení projektového informačního standardu]]                                       |
+| [[1.5 - Stanovení projektových metod a postupů pro vytváření informací\|1.5 - Stanovení projektových metod a postupů pro vytváření informací]]     |
 | [[1.6 - Stanovení projektových referenčních informací a sdílených zdrojů\|1.6 - Stanovení projektových referenčních informací a sdílených zdrojů]] |
-| [[1.7 - Stanovení projektového společného datového prostředí (CDE)\|1.7 - Stanovení projektového společného datového prostředí (CDE)]] |
+| [[1.7 - Stanovení projektového společného datového prostředí (CDE)\|1.7 - Stanovení projektového společného datového prostředí (CDE)]]             |
 | [[1.8 - Stanovení projektového informačního protokolu\|1.8 - Stanovení projektového informačního protokolu]] |
 ---
