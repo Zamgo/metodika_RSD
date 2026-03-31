@@ -15,8 +15,6 @@ import {
   sortKeyForRow,
 } from "./cinnostiShared"
 
-const ARRAY_COLS = new Set(["faze", "role"])
-
 const LS_HIDDEN = "cinnosti-hidden-cols:"
 const LS_ORDER = "cinnosti-col-order:"
 const LS_WIDTHS = "cinnosti-col-widths:"
@@ -112,9 +110,7 @@ function getCellValues(row: Row, col: string): string[] {
     const s = dilciCinnostDisplay(row)
     return s ? [s] : []
   }
-  if (ARRAY_COLS.has(col)) return getMetaArray(row.meta, col)
-  const v = getMetaString(row.meta, col)
-  return v ? [v] : []
+  return getMetaArray(row.meta, col)
 }
 
 function collectColumnUniqueValues(rows: Row[], col: string, view?: BaseView): string[] {

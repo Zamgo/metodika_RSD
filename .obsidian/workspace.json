@@ -11,14 +11,13 @@
             "id": "7b02233921117898",
             "type": "leaf",
             "state": {
-              "type": "markdown",
+              "type": "bases",
               "state": {
-                "file": "01_Úvod do metodiky ŘSD Plzeň.md",
-                "mode": "source",
-                "source": false
+                "file": "02 - Seznam činností.base",
+                "viewName": "Všechny dílčí činnosti"
               },
-              "icon": "lucide-file",
-              "title": "01_Úvod do metodiky ŘSD Plzeň"
+              "icon": "lucide-table",
+              "title": "02 - Seznam činností"
             }
           },
           {
@@ -200,6 +199,10 @@
   },
   "active": "7b02233921117898",
   "lastOpenFiles": [
+    "03_Oblasti správy informací/1.4 - Stanovení projektového informačního standardu.md",
+    "02 - Seznam činností.base",
+    "03_Oblasti správy informací/1.1 - Pověření jednotlivců k plnění funkcí při managementu informací.md",
+    "01_Úvod do metodiky ŘSD Plzeň.md",
     "05_Definice pojmů/Role/Správce stavby.md",
     "06_Diagramy/Hierarchie týmu správce stavby.canvas",
     "05_Definice pojmů/Role/Člen týmu správce stavby – Koordinátor CDE.md",
@@ -211,7 +214,6 @@
     "03_Oblasti správy informací/3 - Odpověď na veřejnou soutěž.md",
     "03_Oblasti správy informací/2 - Výzva k veřejné soutěži.md",
     "03_Oblasti správy informací/1 - Posouzení a zohlednění potřeb.md",
-    "01_Úvod do metodiky ŘSD Plzeň.md",
     "03 - CDE workflow.base",
     "03_CDE_workflow/RDS.md",
     "03_CDE_workflow/Fakturace.md",
@@ -226,9 +228,7 @@
     "05_Definice pojmů/Smluvní strany/ISO19650/Pověřující strana.md",
     "05_Definice pojmů/Informační management/Informační model stavby.md",
     "05_Definice pojmů/Informační management/Metadata.md",
-    "05_Definice pojmů/Informační management/Pověření.md",
     "03_CDE_workflow/0_Diagram.canvas",
-    "02 - Seznam činností.base",
     "update_faze.py",
     "update_raci.py",
     "site/public/static/giscus/light.css",

@@ -103,11 +103,32 @@
   &:not([open]) > .raci-group-header {
     margin-bottom: 0;
   }
+}
+
+.raci-group-content {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+  margin-left: 2.25rem;
+}
+
+.raci-typ-section {
+  & > .raci-typ-label {
+    display: block;
+    font-size: 0.78rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    color: var(--gray);
+    margin-bottom: 0.25rem;
+    padding-bottom: 0.15rem;
+    border-bottom: 1px solid color-mix(in srgb, var(--lightgray) 80%, transparent);
+  }
 
   & > ul {
     list-style: none;
     padding: 0;
-    margin: 0 0 0 2.25rem;
+    margin: 0;
     display: flex;
     flex-direction: column;
     gap: 0.2rem;
@@ -132,8 +153,10 @@
       }
     }
   }
+}
 
-  &.raci-r > ul > li > a::before {
+.raci-group {
+  &.raci-r ul > li > a::before {
     content: "";
     display: inline-block;
     width: 6px;
@@ -143,7 +166,7 @@
     margin-right: 0.5rem;
     vertical-align: middle;
   }
-  &.raci-a > ul > li > a::before {
+  &.raci-a ul > li > a::before {
     content: "";
     display: inline-block;
     width: 6px;
@@ -153,7 +176,7 @@
     margin-right: 0.5rem;
     vertical-align: middle;
   }
-  &.raci-c > ul > li > a::before {
+  &.raci-c ul > li > a::before {
     content: "";
     display: inline-block;
     width: 6px;
@@ -163,7 +186,7 @@
     margin-right: 0.5rem;
     vertical-align: middle;
   }
-  &.raci-i > ul > li > a::before {
+  &.raci-i ul > li > a::before {
     content: "";
     display: inline-block;
     width: 6px;

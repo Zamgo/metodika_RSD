@@ -67,7 +67,13 @@ type RaciMatch = {
   slug: FullSlug
   title: string
   oznaceni?: string
+  typ?: string
 }
+
+const TYP_SECTIONS = [
+  { typ: "cinnost", label: "Činnosti" },
+  { typ: "dilci_cinnost", label: "Dílčí činnosti" },
+] as const
 
 export default ((opts?: Partial<RaciBacklinksOptions>) => {
   const options: RaciBacklinksOptions = { ...defaultOptions, ...opts }
@@ -103,6 +109,7 @@ export default ((opts?: Partial<RaciBacklinksOptions>) => {
             slug: file.slug!,
             title: file.frontmatter?.title ?? simplifySlug(file.slug!),
             oznaceni: fm["oznaceni"] as string | undefined,
+            typ: fm["typ"] as string | undefined,
           })
         }
       }
@@ -135,16 +142,48 @@ export default ((opts?: Partial<RaciBacklinksOptions>) => {
                     {rk.label} ({entries.length})
                   </span>
                 </summary>
-                <ul>
-                  {entries.map((entry) => (
-                    <li>
-                      <a href={resolveRelative(fileData.slug!, entry.slug)} class="internal">
-                        {entry.oznaceni ? `${entry.oznaceni} – ` : ""}
-                        {entry.title}
-                      </a>
-                    </li>
-                  ))}
-                </ul>
+                <div class="raci-group-content">
+                  {TYP_SECTIONS.map((section) => {
+                    const sectionEntries = entries.filter((e) => e.typ === section.typ)
+                    if (sectionEntries.length === 0) return null
+                    return (
+                      <div class="raci-typ-section">
+                        <span class="raci-typ-label">{section.label}</span>
+                        <ul>
+                          {sectionEntries.map((entry) => (
+                            <li>
+                              <a href={resolveRelative(fileData.slug!, entry.slug)} class="internal">
+                                {entry.oznaceni ? `${entry.oznaceni} – ` : ""}
+                                {entry.title}
+                              </a>
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
+                    )
+                  })}
+                  {(() => {
+                    const other = entries.filter(
+                      (e) => !TYP_SECTIONS.some((s) => s.typ === e.typ),
+                    )
+                    if (other.length === 0) return null
+                    return (
+                      <div class="raci-typ-section">
+                        <span class="raci-typ-label">Ostatní</span>
+                        <ul>
+                          {other.map((entry) => (
+                            <li>
+                              <a href={resolveRelative(fileData.slug!, entry.slug)} class="internal">
+                                {entry.oznaceni ? `${entry.oznaceni} – ` : ""}
+                                {entry.title}
+                              </a>
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
+                    )
+                  })()}
+                </div>
               </details>
             )
           })}
