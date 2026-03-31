@@ -127,6 +127,12 @@
   .cinnosti-table-scroll {
     overflow-x: auto;
     -webkit-overflow-scrolling: touch;
+    /* overflow-x: auto vynutí i vertikální ořez — při prázdném tbody nebo otevřeném filtru
+       by se dropdown pod hlavičkou usekl; min-height zajistí místo pro seznam hodnot. */
+    &:has(.cinnosti-tbody:empty),
+    &:has(.cinnosti-col-filter-dropdown.open) {
+      min-height: 22rem;
+    }
   }
 
   table.cinnosti-table {
