@@ -298,6 +298,7 @@
 
   .cinnosti-col-filter-actions {
     display: flex;
+    flex-wrap: wrap;
     gap: 0.25rem;
 
     button {
@@ -313,6 +314,20 @@
 
       &:hover {
         text-decoration: underline;
+      }
+    }
+
+    .cinnosti-col-filter-only-visible {
+      flex-basis: 100%;
+      background: var(--secondary);
+      color: var(--light);
+      border-radius: 4px;
+      padding: 0.3rem 0.5rem;
+      font-weight: 600;
+
+      &:hover {
+        text-decoration: none;
+        filter: brightness(1.1);
       }
     }
   }

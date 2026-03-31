@@ -541,7 +541,7 @@ async function setupCinnosti(root: HTMLElement, currentSlug: FullSlug, data: Cin
           })
           .join("")
 
-        return `<th data-col="${escapeHtml(col)}" draggable="true"${wStyle}><div class="cinnosti-th-content"><span class="cinnosti-th-label"${labelTitleAttr}>${escapeHtml(label)}</span><span class="cinnosti-sort-indicator">${sortInd}</span><button type="button" class="cinnosti-col-filter-btn${filterBtnCls}" title="Filtrovat sloupec">${FILTER_ICON}</button></div><div class="cinnosti-col-filter-dropdown"><div class="cinnosti-col-filter-sort-btns"><button type="button" class="cinnosti-col-sort-btn" data-dir="asc">\u2191 Vzestupn\u011B</button><button type="button" class="cinnosti-col-sort-btn" data-dir="desc">\u2193 Sestupn\u011B</button></div><hr><input type="search" class="cinnosti-col-filter-search" placeholder="Hledat hodnoty\u2026" autocomplete="off"><div class="cinnosti-col-filter-actions"><button type="button" class="cinnosti-col-filter-all">Vybrat v\u0161e</button><button type="button" class="cinnosti-col-filter-none">Zru\u0161it v\u00FDb\u011Br</button></div><div class="cinnosti-col-filter-list">${checkboxes}</div></div><div class="cinnosti-resize-handle"></div></th>`
+        return `<th data-col="${escapeHtml(col)}" draggable="true"${wStyle}><div class="cinnosti-th-content"><span class="cinnosti-th-label"${labelTitleAttr}>${escapeHtml(label)}</span><span class="cinnosti-sort-indicator">${sortInd}</span><button type="button" class="cinnosti-col-filter-btn${filterBtnCls}" title="Filtrovat sloupec">${FILTER_ICON}</button></div><div class="cinnosti-col-filter-dropdown"><div class="cinnosti-col-filter-sort-btns"><button type="button" class="cinnosti-col-sort-btn" data-dir="asc">\u2191 Vzestupn\u011B</button><button type="button" class="cinnosti-col-sort-btn" data-dir="desc">\u2193 Sestupn\u011B</button></div><hr><input type="search" class="cinnosti-col-filter-search" placeholder="Hledat hodnoty\u2026" autocomplete="off"><div class="cinnosti-col-filter-actions"><button type="button" class="cinnosti-col-filter-all">Vybrat v\u0161e</button><button type="button" class="cinnosti-col-filter-none">Zru\u0161it v\u00FDb\u011Br</button><button type="button" class="cinnosti-col-filter-only-visible" style="display:none">Pouze filtrov\u00E1n\u00E9</button></div><div class="cinnosti-col-filter-list">${checkboxes}</div></div><div class="cinnosti-resize-handle"></div></th>`
       })
       .join("")
   }
@@ -654,25 +654,34 @@ async function setupCinnosti(root: HTMLElement, currentSlug: FullSlug, data: Cin
       return
     }
 
-    // Select all (only visible/filtered checkboxes)
+    // Select all
     if (target.closest(".cinnosti-col-filter-all")) {
       e.stopPropagation()
       const th = target.closest("th[data-col]") as HTMLElement
       if (!th) return
-      const col = th.dataset.col!
-      th.querySelectorAll<HTMLElement>(
-        ".cinnosti-col-filter-list .cinnosti-filter-value",
-      ).forEach((label) => {
-        const cb = label.querySelector("input[type=checkbox]") as HTMLInputElement
-        if (cb && label.style.display !== "none") cb.checked = true
-      })
-      syncFilterFromCheckboxes(th, col)
+      columnFilters.delete(th.dataset.col!)
+      th.querySelectorAll<HTMLInputElement>(
+        ".cinnosti-col-filter-list input[type=checkbox]",
+      ).forEach((cb) => (cb.checked = true))
       renderBodyOnly()
       return
     }
 
-    // Deselect all (only visible/filtered checkboxes)
+    // Deselect all
     if (target.closest(".cinnosti-col-filter-none")) {
+      e.stopPropagation()
+      const th = target.closest("th[data-col]") as HTMLElement
+      if (!th) return
+      columnFilters.set(th.dataset.col!, new Set())
+      th.querySelectorAll<HTMLInputElement>(
+        ".cinnosti-col-filter-list input[type=checkbox]",
+      ).forEach((cb) => (cb.checked = false))
+      renderBodyOnly()
+      return
+    }
+
+    // Select only visible (filtered) checkboxes, deselect all hidden
+    if (target.closest(".cinnosti-col-filter-only-visible")) {
       e.stopPropagation()
       const th = target.closest("th[data-col]") as HTMLElement
       if (!th) return
@@ -681,7 +690,8 @@ async function setupCinnosti(root: HTMLElement, currentSlug: FullSlug, data: Cin
         ".cinnosti-col-filter-list .cinnosti-filter-value",
       ).forEach((label) => {
         const cb = label.querySelector("input[type=checkbox]") as HTMLInputElement
-        if (cb && label.style.display !== "none") cb.checked = false
+        if (!cb) return
+        cb.checked = label.style.display !== "none"
       })
       syncFilterFromCheckboxes(th, col)
       renderBodyOnly()
@@ -744,14 +754,17 @@ async function setupCinnosti(root: HTMLElement, currentSlug: FullSlug, data: Cin
     const target = e.target as HTMLInputElement
     if (!target.classList.contains("cinnosti-col-filter-search")) return
     const q = target.value.trim().toLowerCase()
-    const list = target
-      .closest(".cinnosti-col-filter-dropdown")
-      ?.querySelector(".cinnosti-col-filter-list")
+    const dropdown = target.closest(".cinnosti-col-filter-dropdown")
+    const list = dropdown?.querySelector(".cinnosti-col-filter-list")
     if (!list) return
     list.querySelectorAll<HTMLElement>(".cinnosti-filter-value").forEach((label) => {
       const text = label.querySelector("span")?.textContent?.toLowerCase() ?? ""
       label.style.display = text.includes(q) ? "" : "none"
     })
+    const onlyVisBtn = dropdown?.querySelector(
+      ".cinnosti-col-filter-only-visible",
+    ) as HTMLElement | null
+    if (onlyVisBtn) onlyVisBtn.style.display = q ? "" : "none"
   }
   headRow.addEventListener("input", onHeadInput)
   window.addCleanup(() => headRow.removeEventListener("input", onHeadInput))

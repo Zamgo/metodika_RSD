@@ -128,7 +128,7 @@ export default ((opts?: Partial<RaciBacklinksOptions>) => {
             const entries = sortEntries(groups[rk.letter])
             if (entries.length === 0) return null
             return (
-              <details class={`raci-group ${rk.colorClass}`} open>
+              <details class={`raci-group ${rk.colorClass}`}>
                 <summary class="raci-group-header">
                   <span class={`raci-badge ${rk.colorClass}`}>{rk.letter}</span>
                   <span class="raci-group-label">
