@@ -605,6 +605,20 @@ async function setupCinnosti(root: HTMLElement, currentSlug: FullSlug, data: Cin
     updateActiveFilterCount()
   }
 
+  function syncFilterFromCheckboxes(th: HTMLElement, col: string) {
+    const activeView = views[activeViewIdx]
+    const allValues = collectColumnUniqueValues(rows, col, activeView)
+    const checked = new Set<string>()
+    th.querySelectorAll<HTMLInputElement>(
+      ".cinnosti-col-filter-list input[type=checkbox]:checked",
+    ).forEach((cb) => checked.add(cb.value))
+    if (checked.size >= allValues.length) {
+      columnFilters.delete(col)
+    } else {
+      columnFilters.set(col, checked)
+    }
+  }
+
   // ── Header click delegation ──────────────────────────────────────────
 
   const onHeadClick = (e: Event) => {
@@ -640,28 +654,36 @@ async function setupCinnosti(root: HTMLElement, currentSlug: FullSlug, data: Cin
       return
     }
 
-    // Select all
+    // Select all (only visible/filtered checkboxes)
     if (target.closest(".cinnosti-col-filter-all")) {
       e.stopPropagation()
       const th = target.closest("th[data-col]") as HTMLElement
       if (!th) return
-      columnFilters.delete(th.dataset.col!)
-      th.querySelectorAll<HTMLInputElement>(
-        ".cinnosti-col-filter-list input[type=checkbox]",
-      ).forEach((cb) => (cb.checked = true))
+      const col = th.dataset.col!
+      th.querySelectorAll<HTMLElement>(
+        ".cinnosti-col-filter-list .cinnosti-filter-value",
+      ).forEach((label) => {
+        const cb = label.querySelector("input[type=checkbox]") as HTMLInputElement
+        if (cb && label.style.display !== "none") cb.checked = true
+      })
+      syncFilterFromCheckboxes(th, col)
       renderBodyOnly()
       return
     }
 
-    // Deselect all
+    // Deselect all (only visible/filtered checkboxes)
     if (target.closest(".cinnosti-col-filter-none")) {
       e.stopPropagation()
       const th = target.closest("th[data-col]") as HTMLElement
       if (!th) return
-      columnFilters.set(th.dataset.col!, new Set())
-      th.querySelectorAll<HTMLInputElement>(
-        ".cinnosti-col-filter-list input[type=checkbox]",
-      ).forEach((cb) => (cb.checked = false))
+      const col = th.dataset.col!
+      th.querySelectorAll<HTMLElement>(
+        ".cinnosti-col-filter-list .cinnosti-filter-value",
+      ).forEach((label) => {
+        const cb = label.querySelector("input[type=checkbox]") as HTMLInputElement
+        if (cb && label.style.display !== "none") cb.checked = false
+      })
+      syncFilterFromCheckboxes(th, col)
       renderBodyOnly()
       return
     }

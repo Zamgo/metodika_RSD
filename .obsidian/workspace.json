@@ -27,12 +27,12 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "03_CDE_workflow/BEP.md",
+                "file": "01_Úvod do metodiky ŘSD Plzeň.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "BEP"
+              "title": "01_Úvod do metodiky ŘSD Plzeň"
             }
           }
         ],
@@ -201,6 +201,12 @@
   },
   "active": "92f2624a194ec940",
   "lastOpenFiles": [
+    "03 - CDE workflow.base",
+    "03_CDE_workflow/RDS.md",
+    "03_CDE_workflow/Fakturace.md",
+    "03_CDE_workflow/Ciselnik_RACI_hodnot.md",
+    "03_CDE_workflow/Claim.md",
+    "03_CDE_workflow/BEP.md",
     "04_Šablony ke stažení.md",
     "05_Definice pojmů/Smluvní strany/FIDIC/Objednatel.md",
     "05_Definice pojmů/Smluvní strany/FIDIC/Zhotovitel.md",
@@ -221,13 +227,6 @@
     "05_Definice pojmů/Informační management/CDE nástroj.md",
     "05_Definice pojmů/Informační management/BIM-protokol.md",
     "05_Definice pojmů/Informační management/BIM Execution Plan (BEP).md",
-    "05_Definice pojmů/Informační management/BIM (Informační modelování staveb).md",
-    "05_Definice pojmů/Informační management/Auditní stopa.md",
-    "05_Definice pojmů/Informační management/Aktivum.md",
-    "05_Definice pojmů/Role/Pomocný asistent Správce stavby.md",
-    "05_Definice pojmů/Role/Člen týmu správce stavby – Koordinátor CDE.md",
-    "05_Definice pojmů/Role/Člen týmu správce stavby – Koordinátor BOZP.md",
-    "03 - CDE workflow.base",
     "03_CDE_workflow/0_Diagram.canvas",
     "02 - Seznam činností.base",
     "update_faze.py",

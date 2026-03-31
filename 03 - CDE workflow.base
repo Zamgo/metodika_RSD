@@ -32,15 +32,3 @@ views:
       file.name: 234
       note.typ: 308
       note.faze: 321
-  - type: table
-    name: Všechny soubory ve složce
-    order:
-      - file.name
-      - typ
-      - faze
-      - stav
-      - permalink
-      - navazane_cinnosti
-    sort:
-      - property: file.name
-        direction: ASC
