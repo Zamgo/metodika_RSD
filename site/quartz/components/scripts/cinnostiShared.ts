@@ -147,6 +147,61 @@ export function groupRows<T extends { meta?: Record<string, unknown>; title?: st
   return empty ? [...nonEmpty, empty] : nonEmpty
 }
 
+/**
+ * Uzel stromu víceúrovňového seskupení.
+ * - `rows` jsou vyplněné jen v listových uzlech (tj. na poslední úrovni cols).
+ * - `children` jsou jen v non-listových.
+ */
+export type RowGroupNode<T> = {
+  /** Cestou sestavený stabilní identifikátor (parentId/ownId) pro `data-group`. */
+  id: string
+  label: string
+  /** Sloupec podle kterého je tato úroveň seskupena. */
+  col: string
+  empty: boolean
+  /** 0-indexovaná hloubka (0 = kořenová skupina). */
+  depth: number
+  rows?: T[]
+  children?: RowGroupNode<T>[]
+}
+
+/**
+ * Víceúrovňové seskupení. Vstupem je pole sloupců (první = nejvnější).
+ * Respektuje pořadí ze vstupu (po setřídění volajícím) v každé úrovni a
+ * "(prázdné)" skupina je vždy jako poslední v dané úrovni.
+ */
+export function groupRowsNested<T extends { meta?: Record<string, unknown>; title?: string }>(
+  rows: T[],
+  cols: string[],
+  depth = 0,
+  parentId = "",
+): RowGroupNode<T>[] {
+  if (cols.length === 0) return []
+  const [first, ...rest] = cols
+  const top = groupRows(rows, first)
+  return top.map((g) => {
+    const id = parentId ? `${parentId}/${g.id}` : g.id
+    if (rest.length === 0) {
+      return {
+        id,
+        label: g.label,
+        col: first,
+        empty: g.empty,
+        depth,
+        rows: g.rows,
+      }
+    }
+    return {
+      id,
+      label: g.label,
+      col: first,
+      empty: g.empty,
+      depth,
+      children: groupRowsNested(g.rows, rest, depth + 1, id),
+    }
+  })
+}
+
 function normalizeWikiPathPart(s: string): string {
   return s
     .trim()

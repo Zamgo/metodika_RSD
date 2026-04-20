@@ -1,12 +1,12 @@
 import { FullSlug, getFullSlug, resolveRelative, normalizeRelativeURLs } from "../../util/path"
 import { computePosition, flip, inline, shift } from "@floating-ui/dom"
 import { fetchCanonical } from "./util"
-import type { CinnostiIndex } from "./cinnostiShared"
+import type { CinnostiIndex, RowGroupNode } from "./cinnostiShared"
 import {
   createNoteSlugResolver,
   escapeHtml,
   getMetaString,
-  groupRows,
+  groupRowsNested,
   isCinnostRow,
   metaStringToTableHtml,
 } from "./cinnostiShared"
@@ -218,27 +218,43 @@ function storageKey(prefix: string, slug: FullSlug, idx: number): string {
   return prefix + String(slug) + ":" + idx
 }
 
-function loadGroupBy(slug: FullSlug, idx: number, fallback: string): string {
+function loadGroupBy(slug: FullSlug, idx: number, fallback: string[]): string[] {
   try {
     const raw = localStorage.getItem(storageKey(LS_OBLAST_GROUP_BY, slug, idx))
-    return raw === null ? fallback : raw
+    if (raw === null) return fallback
+    const parsed = JSON.parse(raw)
+    if (Array.isArray(parsed)) {
+      return parsed.filter((x: unknown): x is string => typeof x === "string" && !!x.trim())
+    }
+    if (typeof parsed === "string") return parsed ? [parsed] : []
+    return []
   } catch {
-    return fallback
+    try {
+      // Zpětná kompatibilita: dřívější verze ukládala holý řetězec.
+      const raw = localStorage.getItem(storageKey(LS_OBLAST_GROUP_BY, slug, idx))
+      return raw ? [raw] : fallback
+    } catch {
+      return fallback
+    }
   }
 }
 
-function saveGroupBy(slug: FullSlug, idx: number, value: string) {
+function saveGroupBy(slug: FullSlug, idx: number, value: string[]) {
   try {
-    localStorage.setItem(storageKey(LS_OBLAST_GROUP_BY, slug, idx), value)
+    localStorage.setItem(storageKey(LS_OBLAST_GROUP_BY, slug, idx), JSON.stringify(value))
   } catch {
     // ignore
   }
 }
 
-function loadCollapsed(slug: FullSlug, idx: number, groupBy: string): Set<string> {
+function collapsedSuffix(groupBy: string[]): string {
+  return groupBy.length ? groupBy.join("|") : "_none_"
+}
+
+function loadCollapsed(slug: FullSlug, idx: number, groupBy: string[]): Set<string> {
   try {
     const raw = localStorage.getItem(
-      storageKey(LS_OBLAST_GROUP_COLLAPSED, slug, idx) + ":" + (groupBy || "_none_"),
+      storageKey(LS_OBLAST_GROUP_COLLAPSED, slug, idx) + ":" + collapsedSuffix(groupBy),
     )
     return raw ? new Set(JSON.parse(raw)) : new Set()
   } catch {
@@ -246,10 +262,10 @@ function loadCollapsed(slug: FullSlug, idx: number, groupBy: string): Set<string
   }
 }
 
-function saveCollapsed(slug: FullSlug, idx: number, groupBy: string, set: Set<string>) {
+function saveCollapsed(slug: FullSlug, idx: number, groupBy: string[], set: Set<string>) {
   try {
     localStorage.setItem(
-      storageKey(LS_OBLAST_GROUP_COLLAPSED, slug, idx) + ":" + (groupBy || "_none_"),
+      storageKey(LS_OBLAST_GROUP_COLLAPSED, slug, idx) + ":" + collapsedSuffix(groupBy),
       JSON.stringify([...set]),
     )
   } catch {
@@ -259,60 +275,105 @@ function saveCollapsed(slug: FullSlug, idx: number, groupBy: string, set: Set<st
 
 function renderToolbar(
   columns: OblastColumn[],
-  groupBy: string,
+  groupBy: string[],
   hostIdx: number,
 ): string {
-  const noneOpt = `<option value="">(žádné seskupení)</option>`
-  const opts = columns
-    .filter((c) => c.field !== "file.link" && c.field !== "file.name")
-    .map((c) => {
-      const sel = c.field === groupBy ? " selected" : ""
-      return `<option value="${escapeHtml(c.field)}"${sel}>${escapeHtml(c.alias)}</option>`
+  const addPlaceholder = `<option value="">+ Přidat skupinu</option>`
+  const inUse = new Set(groupBy)
+  const addOpts = columns
+    .filter((c) => c.field !== "file.link" && c.field !== "file.name" && !inUse.has(c.field))
+    .map((c) => `<option value="${escapeHtml(c.field)}">${escapeHtml(c.alias)}</option>`)
+    .join("")
+  const chips = groupBy
+    .map((field, i) => {
+      const label = labelForField(columns, field)
+      return `<span class="quartz-oblast-group-chip" data-col="${escapeHtml(field)}"><span class="quartz-oblast-group-chip-idx">${i + 1}</span><span class="quartz-oblast-group-chip-label">${escapeHtml(label)}</span><button type="button" class="quartz-oblast-group-chip-remove" title="Odebrat" aria-label="Odebrat úroveň seskupení">\u2715</button></span>`
     })
     .join("")
   const showHostIdx = escapeHtml(String(hostIdx))
-  return `<div class="quartz-oblast-toolbar" data-host-idx="${showHostIdx}"><label><span>Seskupit podle</span><select class="quartz-oblast-group-select">${noneOpt}${opts}</select></label><button type="button" class="quartz-oblast-expand-all">Rozbalit vše</button><button type="button" class="quartz-oblast-collapse-all">Sbalit vše</button></div>`
+  return `<div class="quartz-oblast-toolbar" data-host-idx="${showHostIdx}"><span class="quartz-oblast-group-filter-title">Seskupit podle</span><div class="quartz-oblast-group-chain"><div class="quartz-oblast-group-chips">${chips}</div><select class="quartz-oblast-group-add" aria-label="Přidat úroveň seskupení">${addPlaceholder}${addOpts}</select></div><button type="button" class="quartz-oblast-expand-all">Rozbalit vše</button><button type="button" class="quartz-oblast-collapse-all">Sbalit vše</button></div>`
 }
 
 function renderTableNoGroup(
   headers: string[],
+  visibleIdx: number[],
   rows: OblastRenderRow[],
 ): string {
-  const thr = headers.map((h) => `<th>${escapeHtml(h)}</th>`).join("")
+  const thr = visibleIdx.map((i) => `<th>${escapeHtml(headers[i])}</th>`).join("")
   const trs = rows
-    .map(({ cells }) => `<tr>${cells.map((c) => `<td>${c}</td>`).join("")}</tr>`)
+    .map(({ cells }) => `<tr>${visibleIdx.map((i) => `<td>${cells[i]}</td>`).join("")}</tr>`)
     .join("")
   return `<div class="quartz-oblast-table-wrap"><table class="quartz-oblast-table"><thead><tr>${thr}</tr></thead><tbody>${trs}</tbody></table></div>`
 }
 
+function countLeaves<T>(n: RowGroupNode<T>): number {
+  if (n.rows) return n.rows.length
+  if (n.children) return n.children.reduce((s, c) => s + countLeaves(c), 0)
+  return 0
+}
+
+function emitGroupNodesHtml(
+  nodes: RowGroupNode<Row & { __cells: string[] }>[],
+  visibleIdx: number[],
+  colspan: number,
+  columns: OblastColumn[],
+  collapsed: Set<string>,
+  parentHidden: boolean,
+): string {
+  let html = ""
+  for (const node of nodes) {
+    const isCollapsed = collapsed.has(node.id)
+    const hiddenByParent = parentHidden
+    const collapsedAttr = isCollapsed ? ` data-collapsed="true"` : ""
+    const hideStyle = hiddenByParent ? ` style="display:none"` : ""
+    const ariaExp = isCollapsed ? "false" : "true"
+    const groupLabel = labelForField(columns, node.col)
+    const count = countLeaves(node)
+    html += `<tr class="quartz-oblast-group-row" data-group="${escapeHtml(node.id)}" data-depth="${node.depth}"${collapsedAttr}${hideStyle}><td colspan="${colspan}" style="--quartz-oblast-group-depth:${node.depth}"><button type="button" class="quartz-oblast-group-toggle" aria-expanded="${ariaExp}"><span class="quartz-oblast-group-chevron" aria-hidden="true">▾</span><span class="quartz-oblast-group-label"><span class="quartz-oblast-group-col-label">${escapeHtml(groupLabel)}:</span> <strong>${escapeHtml(node.label)}</strong></span><span class="quartz-oblast-group-count">${count}</span></button></td></tr>`
+
+    const childHidden = hiddenByParent || isCollapsed
+
+    if (node.rows && node.rows.length > 0) {
+      for (const r of node.rows) {
+        const hs = childHidden ? ` style="display:none"` : ""
+        const tds = visibleIdx
+          .map((i, pos) => {
+            const styleAttr =
+              pos === 0 ? ` style="--quartz-oblast-detail-depth:${node.depth + 1}"` : ""
+            return `<td${styleAttr}>${r.__cells[i]}</td>`
+          })
+          .join("")
+        html += `<tr class="quartz-oblast-detail-row" data-group="${escapeHtml(node.id)}" data-depth="${node.depth + 1}"${hs}>${tds}</tr>`
+      }
+    } else if (node.children) {
+      html += emitGroupNodesHtml(
+        node.children,
+        visibleIdx,
+        colspan,
+        columns,
+        collapsed,
+        childHidden,
+      )
+    }
+  }
+  return html
+}
+
 function renderTableWithGroups(
   headers: string[],
+  visibleIdx: number[],
   rows: OblastRenderRow[],
-  groupBy: string,
-  groupLabel: string,
+  groupBy: string[],
+  columns: OblastColumn[],
   collapsed: Set<string>,
 ): string {
-  const groups = groupRows(rows.map((r) => ({ ...r.row, __cells: r.cells })), groupBy) as {
-    id: string
-    label: string
-    rows: (Row & { __cells: string[] })[]
-  }[]
-  const thr = headers.map((h) => `<th>${escapeHtml(h)}</th>`).join("")
-  const groupChunks: string[] = []
-  for (const g of groups) {
-    const isCollapsed = collapsed.has(g.id)
-    const collapsedAttr = isCollapsed ? ` data-collapsed="true"` : ""
-    const ariaExp = isCollapsed ? "false" : "true"
-    const headerTr = `<tr class="quartz-oblast-group-row" data-group="${escapeHtml(g.id)}"${collapsedAttr}><td colspan="${headers.length}"><button type="button" class="quartz-oblast-group-toggle" aria-expanded="${ariaExp}"><span class="quartz-oblast-group-chevron" aria-hidden="true">▾</span><span class="quartz-oblast-group-label"><span class="quartz-oblast-group-col-label">${escapeHtml(groupLabel)}:</span> <strong>${escapeHtml(g.label)}</strong></span><span class="quartz-oblast-group-count">${g.rows.length}</span></button></td></tr>`
-    const bodyTrs = g.rows
-      .map((r) => {
-        const style = isCollapsed ? ` style="display:none"` : ""
-        return `<tr class="quartz-oblast-detail-row" data-group="${escapeHtml(g.id)}"${style}>${r.__cells.map((c) => `<td>${c}</td>`).join("")}</tr>`
-      })
-      .join("")
-    groupChunks.push(headerTr + bodyTrs)
-  }
-  return `<div class="quartz-oblast-table-wrap"><table class="quartz-oblast-table"><thead><tr>${thr}</tr></thead><tbody>${groupChunks.join("")}</tbody></table></div>`
+  const tree = groupRowsNested(
+    rows.map((r) => ({ ...r.row, __cells: r.cells })),
+    groupBy,
+  )
+  const thr = visibleIdx.map((i) => `<th>${escapeHtml(headers[i])}</th>`).join("")
+  const body = emitGroupNodesHtml(tree, visibleIdx, visibleIdx.length, columns, collapsed, false)
+  return `<div class="quartz-oblast-table-wrap"><table class="quartz-oblast-table"><thead><tr>${thr}</tr></thead><tbody>${body}</tbody></table></div>`
 }
 
 function labelForField(columns: OblastColumn[], field: string): string {
@@ -377,20 +438,31 @@ async function fillTables(slug: FullSlug) {
       return
     }
 
-    // Výchozí groupBy: akceptujeme jen pokud existuje mezi sloupci; jinak prázdný string.
+    // Výchozí groupBy: akceptujeme jen pokud existuje mezi sloupci; jinak prázdné pole.
     const hasDefaultGroupCol = config.columns.some((c) => c.field === DEFAULT_OBLAST_GROUP_BY)
-    const fallback = hasDefaultGroupCol ? DEFAULT_OBLAST_GROUP_BY : ""
+    const fallback: string[] = hasDefaultGroupCol ? [DEFAULT_OBLAST_GROUP_BY] : []
     let groupBy = loadGroupBy(slug, hostIdx, fallback)
+
+    function visibleColIdx(): number[] {
+      const groupSet = new Set(groupBy)
+      const idx: number[] = []
+      config.columns.forEach((c, i) => {
+        if (!groupSet.has(c.field)) idx.push(i)
+      })
+      // Garance že alespoň jeden sloupec zůstane viditelný (fallback: první)
+      return idx.length > 0 ? idx : [0]
+    }
 
     function paint() {
       const toolbar = renderToolbar(config.columns, groupBy, hostIdx)
-      if (!groupBy) {
-        host.innerHTML = toolbar + renderTableNoGroup(headers, renderRows)
+      const vIdx = visibleColIdx()
+      if (groupBy.length === 0) {
+        host.innerHTML = toolbar + renderTableNoGroup(headers, vIdx, renderRows)
       } else {
         const collapsed = loadCollapsed(slug, hostIdx, groupBy)
-        const groupLabel = labelForField(config.columns, groupBy)
         host.innerHTML =
-          toolbar + renderTableWithGroups(headers, renderRows, groupBy, groupLabel, collapsed)
+          toolbar +
+          renderTableWithGroups(headers, vIdx, renderRows, groupBy, config.columns, collapsed)
       }
       attachTablePopovers(host)
     }
@@ -400,8 +472,14 @@ async function fillTables(slug: FullSlug) {
     // ── Delegované handlery na hostu ───────────────────────────────────
     host.addEventListener("change", (e) => {
       const target = e.target as HTMLElement
-      if (!target.classList.contains("quartz-oblast-group-select")) return
-      groupBy = (target as HTMLSelectElement).value || ""
+      if (!target.classList.contains("quartz-oblast-group-add")) return
+      const sel = target as HTMLSelectElement
+      const col = sel.value
+      if (!col || groupBy.includes(col)) {
+        sel.value = ""
+        return
+      }
+      groupBy = [...groupBy, col]
       saveGroupBy(slug, hostIdx, groupBy)
       paint()
     })
@@ -409,40 +487,38 @@ async function fillTables(slug: FullSlug) {
     host.addEventListener("click", (e) => {
       const target = e.target as HTMLElement
 
+      const chipRemove = target.closest(".quartz-oblast-group-chip-remove")
+      if (chipRemove) {
+        const chip = chipRemove.closest(".quartz-oblast-group-chip") as HTMLElement | null
+        if (!chip) return
+        const col = chip.dataset.col
+        if (!col) return
+        groupBy = groupBy.filter((c) => c !== col)
+        saveGroupBy(slug, hostIdx, groupBy)
+        paint()
+        return
+      }
+
       const expandAll = target.closest(".quartz-oblast-expand-all")
       if (expandAll) {
-        if (!groupBy) return
+        if (groupBy.length === 0) return
         saveCollapsed(slug, hostIdx, groupBy, new Set())
-        host
-          .querySelectorAll<HTMLElement>("tr.quartz-oblast-group-row")
-          .forEach((tr) => {
-            delete tr.dataset.collapsed
-            const btn = tr.querySelector(".quartz-oblast-group-toggle") as HTMLElement | null
-            btn?.setAttribute("aria-expanded", "true")
-          })
-        host
-          .querySelectorAll<HTMLElement>("tr.quartz-oblast-detail-row")
-          .forEach((tr) => (tr.style.display = ""))
+        paint()
         return
       }
 
       const collapseAll = target.closest(".quartz-oblast-collapse-all")
       if (collapseAll) {
-        if (!groupBy) return
+        if (groupBy.length === 0) return
         const all = new Set<string>()
         host
           .querySelectorAll<HTMLElement>("tr.quartz-oblast-group-row")
           .forEach((tr) => {
             const gid = tr.dataset.group
             if (gid) all.add(gid)
-            tr.dataset.collapsed = "true"
-            const btn = tr.querySelector(".quartz-oblast-group-toggle") as HTMLElement | null
-            btn?.setAttribute("aria-expanded", "false")
           })
-        host
-          .querySelectorAll<HTMLElement>("tr.quartz-oblast-detail-row")
-          .forEach((tr) => (tr.style.display = "none"))
         saveCollapsed(slug, hostIdx, groupBy, all)
+        paint()
         return
       }
 
@@ -452,19 +528,11 @@ async function fillTables(slug: FullSlug) {
       if (!tr) return
       const gid = tr.dataset.group
       if (!gid) return
-      const willCollapse = tr.dataset.collapsed !== "true"
-      if (willCollapse) tr.dataset.collapsed = "true"
-      else delete tr.dataset.collapsed
-      toggle.setAttribute("aria-expanded", willCollapse ? "false" : "true")
-      host
-        .querySelectorAll<HTMLElement>(
-          `tr.quartz-oblast-detail-row[data-group="${CSS.escape(gid)}"]`,
-        )
-        .forEach((r) => (r.style.display = willCollapse ? "none" : ""))
       const collapsed = loadCollapsed(slug, hostIdx, groupBy)
-      if (willCollapse) collapsed.add(gid)
-      else collapsed.delete(gid)
+      if (collapsed.has(gid)) collapsed.delete(gid)
+      else collapsed.add(gid)
       saveCollapsed(slug, hostIdx, groupBy, collapsed)
+      paint()
     })
   })
 }

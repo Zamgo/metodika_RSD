@@ -14,9 +14,9 @@
               "type": "bases",
               "state": {
                 "file": "02 - Seznam činností.base",
-                "viewName": "Všechny dílčí činnosti"
+                "viewName": ""
               },
-              "icon": "lucide-table",
+              "icon": "lucide-layout-list",
               "title": "02 - Seznam činností"
             }
           },
@@ -199,6 +199,10 @@
   },
   "active": "7b02233921117898",
   "lastOpenFiles": [
+    "01_Úvod do metodiky ŘSD Plzeň.md",
+    "02 - Seznam činností.base",
+    "02 - Seznam činností.md",
+    "03 - CDE workflow.base",
     "site/public/scripts/pack-for-ftp.ps1",
     "site/public/scripts/deploy-ftp.ps1",
     "site/public/scripts/MONSTA-JAK-NAHRAT.txt",
@@ -207,9 +211,6 @@
     "site/public/00_Podklady/(šablona)-Příloha_1_Matice_informačního_managementu_(RACI).xlsx",
     "site/public/00_Podklady/Controlis_skoleni_ČEZ_CDE.pptx",
     "site/public/00_Podklady/Controlis_skoleni_ČEZ_Implementace_BIM_CDE.pptx",
-    "site/public/00_Podklady/glosar_pojmy.txt",
-    "site/public/00_Podklady/Matice_MI.xlsx",
-    "site/public/00_Podklady/Metodika-ŘSD-Plzeň---Správa-informací-o-stavbě-(3)-(1).docx",
     "site/public/00_Podklady/rsd-logo-sirkove-2c-barevne-rgb.svg",
     "site/public/06_Diagramy/Hierarchie-týmu-správce-stavby.canvas",
     "site/public/99_Media/obrazky/zaklady_bim/image99.png",
@@ -228,7 +229,6 @@
     "site/public_ftp/06_Diagramy/Hierarchie-týmu-správce-stavby.canvas",
     "03_Oblasti správy informací/1.4 - Stanovení projektového informačního standardu.md",
     "03_Oblasti správy informací/1.1 - Pověření jednotlivců k plnění funkcí při managementu informací.md",
-    "01_Úvod do metodiky ŘSD Plzeň.md",
     "05_Definice pojmů/Role/Správce stavby.md",
     "06_Diagramy/Hierarchie týmu správce stavby.canvas",
     "05_Definice pojmů/Role/Člen týmu správce stavby – Koordinátor CDE.md",
@@ -248,7 +248,6 @@
     "05_Definice pojmů/Smluvní strany/FIDIC/Objednatel.md",
     "05_Definice pojmů/Smluvní strany/FIDIC/Zhotovitel.md",
     "05_Definice pojmů/Smluvní strany/ISO19650/Vedoucí pověřená strana.md",
-    "05_Definice pojmů/Smluvní strany/ISO19650/Pověřená strana.md",
     "03_CDE_workflow/0_Diagram.canvas",
     "site/public/06_Diagramy/Tým_správce_stavby_hierachie.canvas",
     "site/public/03_CDE_workflow/0_Diagram.canvas",

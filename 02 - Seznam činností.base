@@ -30,7 +30,9 @@ properties:
 views:
   - type: table
     name: Všechny dílčí činnosti
-    groupBy: procesni_oblast
+    groupBy:
+      - procesni_oblast
+      - cinnost
     filters:
       and:
         - typ == "dilci_cinnost"

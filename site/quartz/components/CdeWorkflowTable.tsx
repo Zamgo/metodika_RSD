@@ -38,13 +38,14 @@ const CdeWorkflowTable: QuartzComponent = ({ cfg }: QuartzComponentProps) => {
           <div class="cinnosti-column-toggle-panel" />
         </div>
         <div class="cinnosti-filter cinnosti-group-filter">
-          <label>
-            <span>{cs ? "Seskupit podle" : "Group by"}</span>
+          <span class="cinnosti-group-filter-title">{cs ? "Seskupit podle" : "Group by"}</span>
+          <div class="cinnosti-group-chain">
+            <div class="cinnosti-group-chips" aria-live="polite" />
             <select
-              class="cinnosti-group-select"
-              aria-label={cs ? "Seskupit podle" : "Group by"}
+              class="cinnosti-group-add"
+              aria-label={cs ? "Přidat úroveň seskupení" : "Add grouping level"}
             />
-          </label>
+          </div>
         </div>
         <div class="cinnosti-group-actions">
           <button

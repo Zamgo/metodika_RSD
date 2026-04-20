@@ -8,11 +8,12 @@ import {
   escapeHtml,
   getMetaArray,
   getMetaString,
-  groupRows,
+  groupRowsNested,
   isCdeWorkflowRow,
   isCinnostRow,
   metaStringToTableHtml,
   plainTextFromWikiMeta,
+  RowGroupNode,
   sortKeyForRow,
 } from "./cinnostiShared"
 
@@ -40,8 +41,11 @@ type BaseConfig = {
     name?: string
     filters?: { and?: string[]; or?: string[] }
     order?: string[]
-    /** Volitelný override defaultního groupBy (spätně kompatibilní - chybí → použije se fallback). */
-    groupBy?: string
+    /**
+     * Volitelný override defaultního groupBy (spätně kompatibilní - chybí → použije se fallback).
+     * Přijímá řetězec nebo pole řetězců pro víceúrovňové seskupení.
+     */
+    groupBy?: string | string[]
   }[]
 }
 
@@ -299,9 +303,12 @@ async function setupCinnosti(root: HTMLElement, currentSlug: FullSlug, data: Cin
   const filterCountEl = root.querySelector(
     ".cinnosti-active-filter-count",
   ) as HTMLElement | null
-  const groupSelect = root.querySelector(
-    ".cinnosti-group-select",
+  const groupAddSelect = root.querySelector(
+    ".cinnosti-group-add",
   ) as HTMLSelectElement | null
+  const groupChipsEl = root.querySelector(
+    ".cinnosti-group-chips",
+  ) as HTMLElement | null
   const groupExpandAllBtn = root.querySelector(
     ".cinnosti-group-expand-all",
   ) as HTMLButtonElement | null
@@ -370,23 +377,29 @@ async function setupCinnosti(root: HTMLElement, currentSlug: FullSlug, data: Cin
   let columnOrder: string[] = []
   const columnWidths = new Map<string, number>()
   const columnFilters = new Map<string, Set<string>>()
-  /** "" = žádné seskupení (fallback / explicitní volba). */
-  let groupBy: string = ""
-  /** Sada `data-group` (hash) u sbalených skupin v aktuálním view. */
+  /** Pořadí úrovní seskupení (prázdné pole = žádné seskupení). */
+  let groupBy: string[] = []
+  /** Sada `data-group` (path-based hash) u sbalených skupin v aktuálním view. */
   let collapsedGroups = new Set<string>()
 
   function viewKey(): string {
     return views[activeViewIdx]?.name ?? "default"
   }
 
-  function defaultGroupByForView(view: BaseView | undefined): string {
-    if (!view) return ""
-    const fromFm = typeof view.groupBy === "string" ? view.groupBy.trim() : ""
-    if (fromFm) return fromFm
+  function defaultGroupByForView(view: BaseView | undefined): string[] {
+    if (!view) return []
+    const fromFm = view.groupBy
+    if (Array.isArray(fromFm)) {
+      const filtered = fromFm.filter((x): x is string => typeof x === "string" && !!x.trim())
+      if (filtered.length > 0) return filtered.map((s) => s.trim())
+    } else if (typeof fromFm === "string" && fromFm.trim()) {
+      return [fromFm.trim()]
+    }
     const byName = view.name ? DEFAULT_GROUP_BY_BY_VIEW[view.name] : undefined
-    if (byName) return byName
+    if (byName) return [byName]
     const scope = root.dataset.cinnostiLsId ?? ""
-    return DEFAULT_GROUP_BY_BY_SCOPE[scope] ?? ""
+    const byScope = DEFAULT_GROUP_BY_BY_SCOPE[scope]
+    return byScope ? [byScope] : []
   }
 
   function loadHiddenCols() {
@@ -446,25 +459,60 @@ async function setupCinnosti(root: HTMLElement, currentSlug: FullSlug, data: Cin
   }
 
   function loadGroupBy() {
+    let fromDefault = false
     try {
       const raw = localStorage.getItem(lsScope + ":" + LS_GROUP_BY + viewKey())
       if (raw === null) {
         groupBy = defaultGroupByForView(views[activeViewIdx])
+        fromDefault = true
       } else {
-        groupBy = raw
+        // Zpětná kompatibilita: dřívější verze ukládala holý řetězec.
+        const parsed = JSON.parse(raw)
+        if (Array.isArray(parsed)) {
+          groupBy = parsed.filter((x: unknown): x is string => typeof x === "string" && !!x.trim())
+        } else if (typeof parsed === "string") {
+          groupBy = parsed ? [parsed] : []
+        } else {
+          groupBy = []
+        }
       }
     } catch {
-      groupBy = defaultGroupByForView(views[activeViewIdx])
+      // Mohl se tam nacházet i starý plain string → zkusíme načíst přímo.
+      try {
+        const raw = localStorage.getItem(lsScope + ":" + LS_GROUP_BY + viewKey())
+        groupBy = raw ? [raw] : defaultGroupByForView(views[activeViewIdx])
+      } catch {
+        groupBy = defaultGroupByForView(views[activeViewIdx])
+        fromDefault = true
+      }
+    }
+
+    // Auto-hide sloupců použitých pro default seskupení (jen při prvním načtení view).
+    if (fromDefault && groupBy.length > 0) {
+      let changed = false
+      for (const c of groupBy) {
+        if (!hiddenCols.has(c)) {
+          hiddenCols.add(c)
+          changed = true
+        }
+      }
+      if (changed) saveHiddenCols()
+      // Uložíme ihned aby se defaultní auto-hide neaplikovalo znovu při dalším načtení.
+      saveGroupBy()
     }
   }
   function saveGroupBy() {
-    localStorage.setItem(lsScope + ":" + LS_GROUP_BY + viewKey(), groupBy)
+    localStorage.setItem(lsScope + ":" + LS_GROUP_BY + viewKey(), JSON.stringify(groupBy))
+  }
+
+  function collapsedKeySuffix(): string {
+    return groupBy.length ? groupBy.join("|") : "_none_"
   }
 
   function loadCollapsedGroups() {
     try {
       const raw = localStorage.getItem(
-        lsScope + ":" + LS_GROUP_COLLAPSED + viewKey() + ":" + (groupBy || "_none_"),
+        lsScope + ":" + LS_GROUP_COLLAPSED + viewKey() + ":" + collapsedKeySuffix(),
       )
       collapsedGroups = raw ? new Set(JSON.parse(raw)) : new Set()
     } catch {
@@ -473,7 +521,7 @@ async function setupCinnosti(root: HTMLElement, currentSlug: FullSlug, data: Cin
   }
   function saveCollapsedGroups() {
     localStorage.setItem(
-      lsScope + ":" + LS_GROUP_COLLAPSED + viewKey() + ":" + (groupBy || "_none_"),
+      lsScope + ":" + LS_GROUP_COLLAPSED + viewKey() + ":" + collapsedKeySuffix(),
       JSON.stringify([...collapsedGroups]),
     )
   }
@@ -632,7 +680,7 @@ async function setupCinnosti(root: HTMLElement, currentSlug: FullSlug, data: Cin
     countEl.textContent = String(visibleRows.length)
 
     // Bez seskupení - jednoduchý render jako dříve.
-    if (!groupBy) {
+    if (groupBy.length === 0) {
       for (const row of visibleRows) {
         const tr = document.createElement("tr")
         tr.innerHTML = cols.map((col) => `<td>${getCellHtml(row, col)}</td>`).join("")
@@ -641,24 +689,50 @@ async function setupCinnosti(root: HTMLElement, currentSlug: FullSlug, data: Cin
       return
     }
 
-    const groups = groupRows(visibleRows, groupBy)
-    const groupLabel = getColLabel(groupBy)
-    for (const g of groups) {
-      const isCollapsed = collapsedGroups.has(g.id)
+    const tree = groupRowsNested(visibleRows, groupBy)
+    emitGroupNodes(tree, cols, false)
+  }
+
+  function countLeafRows(node: RowGroupNode<Row>): number {
+    if (node.rows) return node.rows.length
+    if (node.children) return node.children.reduce((sum, c) => sum + countLeafRows(c), 0)
+    return 0
+  }
+
+  function emitGroupNodes(nodes: RowGroupNode<Row>[], cols: string[], parentHidden: boolean) {
+    for (const node of nodes) {
+      const isCollapsed = collapsedGroups.has(node.id)
       const headerTr = document.createElement("tr")
       headerTr.className = "cinnosti-group-row"
-      headerTr.dataset.group = g.id
+      headerTr.dataset.group = node.id
+      headerTr.dataset.depth = String(node.depth)
       if (isCollapsed) headerTr.dataset.collapsed = "true"
-      headerTr.innerHTML = `<td colspan="${cols.length}"><button type="button" class="cinnosti-group-toggle" aria-expanded="${isCollapsed ? "false" : "true"}"><span class="cinnosti-group-chevron" aria-hidden="true">▾</span><span class="cinnosti-group-label"><span class="cinnosti-group-col-label">${escapeHtml(groupLabel)}:</span> <strong>${escapeHtml(g.label)}</strong></span><span class="cinnosti-group-count">${g.rows.length}</span></button></td>`
+      if (parentHidden) headerTr.style.display = "none"
+      const groupColLabel = getColLabel(node.col)
+      const count = countLeafRows(node)
+      headerTr.innerHTML = `<td colspan="${cols.length}" style="--cinnosti-group-depth:${node.depth}"><button type="button" class="cinnosti-group-toggle" aria-expanded="${isCollapsed ? "false" : "true"}"><span class="cinnosti-group-chevron" aria-hidden="true">▾</span><span class="cinnosti-group-label"><span class="cinnosti-group-col-label">${escapeHtml(groupColLabel)}:</span> <strong>${escapeHtml(node.label)}</strong></span><span class="cinnosti-group-count">${count}</span></button></td>`
       tbody.appendChild(headerTr)
 
-      for (const row of g.rows) {
-        const tr = document.createElement("tr")
-        tr.className = "cinnosti-detail-row"
-        tr.dataset.group = g.id
-        if (isCollapsed) tr.style.display = "none"
-        tr.innerHTML = cols.map((col) => `<td>${getCellHtml(row, col)}</td>`).join("")
-        tbody.appendChild(tr)
+      const childrenHidden = parentHidden || isCollapsed
+
+      if (node.rows && node.rows.length > 0) {
+        for (const row of node.rows) {
+          const tr = document.createElement("tr")
+          tr.className = "cinnosti-detail-row"
+          tr.dataset.group = node.id
+          tr.dataset.depth = String(node.depth + 1)
+          if (childrenHidden) tr.style.display = "none"
+          tr.innerHTML = cols
+            .map((col, idx) => {
+              const style =
+                idx === 0 ? ` style="--cinnosti-detail-depth:${node.depth + 1}"` : ""
+              return `<td${style}>${getCellHtml(row, col)}</td>`
+            })
+            .join("")
+          tbody.appendChild(tr)
+        }
+      } else if (node.children) {
+        emitGroupNodes(node.children, cols, childrenHidden)
       }
     }
   }
@@ -690,7 +764,7 @@ async function setupCinnosti(root: HTMLElement, currentSlug: FullSlug, data: Cin
     renderBody(cols, textInput.value, views[activeViewIdx])
     attachTablePopovers(tbody)
     updateActiveFilterCount()
-    populateGroupSelect()
+    renderGroupUI()
   }
 
   function renderBodyOnly() {
@@ -1033,62 +1107,87 @@ async function setupCinnosti(root: HTMLElement, currentSlug: FullSlug, data: Cin
     if (!tr) return
     const gid = tr.dataset.group
     if (!gid) return
-    const willCollapse = tr.dataset.collapsed !== "true"
-    if (willCollapse) {
-      tr.dataset.collapsed = "true"
-      collapsedGroups.add(gid)
-    } else {
-      delete tr.dataset.collapsed
-      collapsedGroups.delete(gid)
-    }
-    btn.setAttribute("aria-expanded", willCollapse ? "false" : "true")
-    tbody.querySelectorAll<HTMLElement>(
-      `tr.cinnosti-detail-row[data-group="${CSS.escape(gid)}"]`,
-    ).forEach((r) => {
-      r.style.display = willCollapse ? "none" : ""
-    })
+    if (collapsedGroups.has(gid)) collapsedGroups.delete(gid)
+    else collapsedGroups.add(gid)
     saveCollapsedGroups()
+    // Re-render tbody aby se správně propsalo skrytí na všechny vnořené úrovně.
+    renderBodyOnly()
   }
   tbody.addEventListener("click", onTbodyClick)
   window.addCleanup(() => tbody.removeEventListener("click", onTbodyClick))
 
-  // ── Group select ──────────────────────────────────────────────────────
+  // ── Group chips + "přidat skupinu" select ──────────────────────────────
 
-  function populateGroupSelect() {
-    if (!groupSelect) return
-    const noneLabel = ds.strGroupNone ?? "(žádné seskupení)"
-    const opts = [`<option value="">${escapeHtml(noneLabel)}</option>`]
-    const seen = new Set<string>()
-    // Primární zdroj: pořadí sloupců aktuálního view.
+  function renderGroupUI() {
+    renderGroupChips()
+    populateGroupAddSelect()
+  }
+
+  function renderGroupChips() {
+    if (!groupChipsEl) return
+    if (groupBy.length === 0) {
+      groupChipsEl.innerHTML = ""
+      return
+    }
+    groupChipsEl.innerHTML = groupBy
+      .map(
+        (col, idx) =>
+          `<span class="cinnosti-group-chip" data-col="${escapeHtml(col)}" data-idx="${idx}"><span class="cinnosti-group-chip-idx">${idx + 1}</span><span class="cinnosti-group-chip-label">${escapeHtml(getColLabel(col))}</span><button type="button" class="cinnosti-group-chip-remove" title="Odebrat" aria-label="Odebrat úroveň seskupení">\u2715</button></span>`,
+      )
+      .join("")
+  }
+
+  function populateGroupAddSelect() {
+    if (!groupAddSelect) return
+    const placeholder = ds.strGroupAdd ?? "+ Přidat skupinu"
+    const opts = [`<option value="">${escapeHtml(placeholder)}</option>`]
+    const seen = new Set<string>(groupBy)
     for (const col of columnOrder) {
       if (seen.has(col)) continue
       seen.add(col)
-      const label = getColLabel(col)
-      const selAttr = col === groupBy ? " selected" : ""
       opts.push(
-        `<option value="${escapeHtml(col)}"${selAttr}>${escapeHtml(label)}</option>`,
+        `<option value="${escapeHtml(col)}">${escapeHtml(getColLabel(col))}</option>`,
       )
     }
-    // Pokud je aktuální groupBy mimo columnOrder (např. default z .base),
-    // přidáme jej do výběru, aby zůstal vidět jako aktivní.
-    if (groupBy && !seen.has(groupBy)) {
-      opts.push(
-        `<option value="${escapeHtml(groupBy)}" selected>${escapeHtml(getColLabel(groupBy))}</option>`,
-      )
-    }
-    groupSelect.innerHTML = opts.join("")
-    groupSelect.value = groupBy
+    groupAddSelect.innerHTML = opts.join("")
+    groupAddSelect.value = ""
   }
 
-  const onGroupChange = () => {
-    if (!groupSelect) return
-    groupBy = groupSelect.value || ""
+  const onGroupAdd = () => {
+    if (!groupAddSelect) return
+    const col = groupAddSelect.value
+    if (!col || groupBy.includes(col)) {
+      groupAddSelect.value = ""
+      return
+    }
+    groupBy = [...groupBy, col]
+    // Auto-hide přidaného sloupce (user si ho může zpět zapnout v panelu Sloupce).
+    if (!hiddenCols.has(col)) {
+      hiddenCols.add(col)
+      saveHiddenCols()
+    }
     saveGroupBy()
     loadCollapsedGroups()
     render()
   }
-  groupSelect?.addEventListener("change", onGroupChange)
-  window.addCleanup(() => groupSelect?.removeEventListener("change", onGroupChange))
+  groupAddSelect?.addEventListener("change", onGroupAdd)
+  window.addCleanup(() => groupAddSelect?.removeEventListener("change", onGroupAdd))
+
+  const onChipClick = (e: Event) => {
+    const target = e.target as HTMLElement
+    const removeBtn = target.closest(".cinnosti-group-chip-remove") as HTMLElement | null
+    if (!removeBtn) return
+    const chip = removeBtn.closest(".cinnosti-group-chip") as HTMLElement | null
+    if (!chip) return
+    const col = chip.dataset.col
+    if (!col) return
+    groupBy = groupBy.filter((c) => c !== col)
+    saveGroupBy()
+    loadCollapsedGroups()
+    render()
+  }
+  groupChipsEl?.addEventListener("click", onChipClick)
+  window.addCleanup(() => groupChipsEl?.removeEventListener("click", onChipClick))
 
   const onExpandAll = () => {
     collapsedGroups.clear()
@@ -1099,7 +1198,7 @@ async function setupCinnosti(root: HTMLElement, currentSlug: FullSlug, data: Cin
   window.addCleanup(() => groupExpandAllBtn?.removeEventListener("click", onExpandAll))
 
   const onCollapseAll = () => {
-    if (!groupBy) return
+    if (groupBy.length === 0) return
     tbody.querySelectorAll<HTMLElement>("tr.cinnosti-group-row").forEach((tr) => {
       const gid = tr.dataset.group
       if (gid) collapsedGroups.add(gid)

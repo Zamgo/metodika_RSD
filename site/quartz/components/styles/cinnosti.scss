@@ -400,8 +400,87 @@
 
   // ── Grouping (group header row + collapsed detail rows) ──────────────
 
-  .cinnosti-group-filter select {
-    min-width: 160px;
+  .cinnosti-group-filter {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+  }
+
+  .cinnosti-group-filter-title {
+    font-size: 0.85rem;
+    color: var(--darkgray);
+  }
+
+  .cinnosti-group-chain {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.35rem;
+    min-height: 2rem;
+  }
+
+  .cinnosti-group-chips {
+    display: contents;
+  }
+
+  .cinnosti-group-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.3rem;
+    padding: 0.2rem 0.35rem 0.2rem 0.4rem;
+    border-radius: 999px;
+    background: color-mix(in srgb, var(--secondary) 18%, var(--light));
+    border: 1px solid color-mix(in srgb, var(--secondary) 35%, var(--lightgray));
+    color: var(--dark);
+    font-size: 0.82rem;
+    line-height: 1;
+  }
+
+  .cinnosti-group-chip-idx {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 1.1rem;
+    height: 1.1rem;
+    padding: 0 0.3rem;
+    border-radius: 999px;
+    background: var(--secondary);
+    color: var(--light);
+    font-size: 0.7rem;
+    font-weight: 700;
+  }
+
+  .cinnosti-group-chip-label {
+    white-space: nowrap;
+  }
+
+  .cinnosti-group-chip-remove {
+    appearance: none;
+    background: transparent;
+    border: none;
+    color: var(--darkgray);
+    cursor: pointer;
+    padding: 0 0.15rem;
+    line-height: 1;
+    font-size: 0.9rem;
+    border-radius: 999px;
+
+    &:hover {
+      color: var(--dark);
+      background: color-mix(in srgb, var(--secondary) 25%, transparent);
+    }
+  }
+
+  .cinnosti-group-add {
+    padding: 0.3rem 0.5rem;
+    border-radius: 5px;
+    border: 1px dashed var(--secondary);
+    background: transparent;
+    color: var(--secondary);
+    font: inherit;
+    font-size: 0.82rem;
+    cursor: pointer;
+    min-width: 9rem;
   }
 
   .cinnosti-group-actions {
@@ -428,9 +507,22 @@
     background: color-mix(in srgb, var(--secondary) 10%, var(--lightgray));
   }
 
+  /* Další úrovně: trochu světlejší aby byla hierarchie čitelná. */
+  tr.cinnosti-group-row[data-depth="1"] {
+    background: color-mix(in srgb, var(--secondary) 7%, var(--lightgray));
+  }
+  tr.cinnosti-group-row[data-depth="2"] {
+    background: color-mix(in srgb, var(--secondary) 4%, var(--lightgray));
+  }
+  tr.cinnosti-group-row[data-depth="3"] {
+    background: color-mix(in srgb, var(--secondary) 2%, var(--lightgray));
+  }
+
   tr.cinnosti-group-row > td {
     padding: 0;
     border-color: var(--lightgray);
+    /* Odsazení dle hloubky (vnořené skupiny). */
+    padding-left: calc(var(--cinnosti-group-depth, 0) * 1.25rem);
   }
 
   .cinnosti-group-toggle {
@@ -496,7 +588,8 @@
   }
 
   tr.cinnosti-detail-row > td:first-child {
-    padding-left: 1.5rem;
+    /* 1.5rem za první úroveň + 1.25rem za každou další */
+    padding-left: calc(0.5rem + var(--cinnosti-detail-depth, 1) * 1rem);
   }
 }
 
