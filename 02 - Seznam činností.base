@@ -8,7 +8,7 @@ properties:
   typ:
     displayName: Úroveň
   procesni_oblast:
-    displayName: Metadata procesní oblasti
+    displayName: Procesní oblast
   cinnost:
     displayName: Činnost
   formula.dilci_cinnost:
@@ -30,9 +30,6 @@ properties:
 views:
   - type: table
     name: Všechny dílčí činnosti
-    groupBy:
-      - procesni_oblast
-      - cinnost
     filters:
       and:
         - typ == "dilci_cinnost"

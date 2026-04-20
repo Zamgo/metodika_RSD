@@ -11,13 +11,14 @@
             "id": "7b02233921117898",
             "type": "leaf",
             "state": {
-              "type": "bases",
+              "type": "markdown",
               "state": {
-                "file": "02 - Seznam činností.base",
-                "viewName": ""
+                "file": "03_Oblasti správy informací/1 - Posouzení a zohlednění potřeb.md",
+                "mode": "source",
+                "source": false
               },
-              "icon": "lucide-layout-list",
-              "title": "02 - Seznam činností"
+              "icon": "lucide-file",
+              "title": "1 - Posouzení a zohlednění potřeb"
             }
           },
           {
@@ -34,7 +35,8 @@
               "title": "01_Úvod do metodiky ŘSD Plzeň"
             }
           }
-        ]
+        ],
+        "currentTab": 1
       }
     ],
     "direction": "vertical"
@@ -197,32 +199,33 @@
       "bases:Vytvořit novou základnu": false
     }
   },
-  "active": "7b02233921117898",
+  "active": "92f2624a194ec940",
   "lastOpenFiles": [
-    "site/public/static/icon.png",
-    "site/public/scripts/apache-quartz.htaccess",
-    "site/public/scripts/MONSTA-JAK-NAHRAT.txt",
-    "site/public/06_Diagramy/Hierarchie-týmu-správce-stavby.canvas",
-    "site/public/03_CDE_workflow/_report_migrace_metadat.txt",
-    "site/public/00_Podklady/Controlis_skoleni_ČEZ_Implementace_BIM_CDE.pptx",
-    "site/public/00_Podklady/convert_raci_to_md.py",
-    "site/public/00_Podklady/glosar_pojmy.txt",
-    "site/public/00_Podklady/Matice_MI.xlsx",
-    "site/public/00_Podklady/Metodika-ŘSD-Plzeň---Správa-informací-o-stavbě-(3)-(1).docx",
-    "site/public/00_Podklady/migrate_add_metadata.py",
-    "site/public/00_Podklady/NUKIB_Matice_MI.xlsx",
-    "site/public/00_Podklady/rsd-logo-sirkove-2c-barevne-rgb.svg",
-    "01_Úvod do metodiky ŘSD Plzeň.md",
-    "02 - Seznam činností.md",
+    "site/public/03---CDE-workflow.base",
+    "site/public/fix_popis_truncation.py",
+    "site/public/Pripravit-zip-pro-FTP.cmd",
+    "site/public/_tmp_fix_eol.py",
+    "site/public/02---Seznam-činností.base",
+    "site/public/03---CDE-workflow.html",
+    "site/public/02---Seznam-činností.html",
+    "site/public/01_Úvod-do-metodiky-ŘSD-Plzeň.html",
+    "site/public/04_Šablony-ke-stažení.html",
+    "site/public/404.html",
+    "site/public/Administrátor-CDE.html",
     "site/public/99_Media/obrazky/zaklady_bim/image99.png",
     "site/public/99_Media/obrazky/zaklady_bim/image98.png",
     "site/public/99_Media/obrazky/zaklady_bim/image97.jpeg",
     "site/public/99_Media/obrazky/zaklady_bim/image96.jpeg",
     "site/public/99_Media/obrazky/zaklady_bim/image95.jpeg",
-    "site/public/99_Media/obrazky/zaklady_bim/image92.png",
-    "site/public/99_Media/obrazky/zaklady_bim/image94.png",
     "site/public/99_Media/obrazky/zaklady_bim/image93.png",
+    "site/public/99_Media/obrazky/zaklady_bim/image94.png",
     "site/public/99_Media/obrazky/zaklady_bim/image91.png",
+    "site/public/99_Media/obrazky/zaklady_bim/image92.png",
+    "site/public/99_Media/obrazky/zaklady_bim/image90.png",
+    "03_Oblasti správy informací/1 - Posouzení a zohlednění potřeb.md",
+    "02 - Seznam činností.md",
+    "site/public/06_Diagramy/Hierarchie-týmu-správce-stavby.canvas",
+    "01_Úvod do metodiky ŘSD Plzeň.md",
     "03_Oblasti správy informací/1.1.1 - Poverit jednotlivce pro management informaci.md",
     "03_Oblasti správy informací/Bez názvu.md",
     "03_Oblasti správy informací/8 - Uzavření projektu.md",
@@ -239,7 +242,6 @@
     "03_Oblasti správy informací/4 - Pověření.md",
     "03_Oblasti správy informací/3 - Odpověď na veřejnou soutěž.md",
     "03_Oblasti správy informací/2 - Výzva k veřejné soutěži.md",
-    "03_Oblasti správy informací/1 - Posouzení a zohlednění potřeb.md",
     "03_CDE_workflow/RDS.md",
     "03_CDE_workflow/Fakturace.md",
     "03_CDE_workflow/Ciselnik_RACI_hodnot.md",
