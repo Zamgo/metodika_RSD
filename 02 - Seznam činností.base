@@ -27,6 +27,10 @@ properties:
     displayName: C - Konzultace v průběhu činnosti
   I - Informování po dokončení činnosti:
     displayName: I - Informování po dokončení činnosti
+  faze:
+    displayName: Fáze
+  stav:
+    displayName: Stav
 views:
   - type: table
     name: Všechny dílčí činnosti
@@ -37,7 +41,6 @@ views:
       - procesni_oblast
       - cinnost
       - formula.dilci_cinnost
-      - oznaceni
       - popis
       - R - Odpovědnost za provádění činnosti
       - A - Právní odpovědnost za dokončení činnosti
@@ -47,6 +50,8 @@ views:
       - zdroj
       - stav
     sort:
+      - property: faze
+        direction: DESC
       - property: cinnost
         direction: ASC
       - property: oznaceni
@@ -67,15 +72,14 @@ views:
       and:
         - typ == "procesni_oblast"
     order:
-      - oznaceni
       - file.name
       - faze
+      - popis
     sort:
       - property: procesni_oblast
         direction: ASC
     columnSize:
       note.oznaceni: 107
       file.name: 383
-      note.typ: 350
-      note.procesni_oblast: 380
-      note.cinnost: 360
+      note.faze: 179
+      note.popis: 825

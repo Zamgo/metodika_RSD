@@ -645,16 +645,13 @@ async function setupCinnosti(root: HTMLElement, currentSlug: FullSlug, data: Cin
 
   function loadGroupBy() {
     const sv = viewsUiEnabled ? getActiveSavedView() : null
-    let fromDefault = false
     try {
       const raw = localStorage.getItem(lsScope + ":" + LS_GROUP_BY + viewKey())
       if (raw === null) {
         if (sv && sv.kind !== "base" && Array.isArray(sv.groupBy)) {
           groupBy = [...sv.groupBy]
-          fromDefault = true
         } else {
           groupBy = defaultGroupByForView(views[activeViewIdx])
-          fromDefault = true
         }
       } else {
         const parsed = JSON.parse(raw)
@@ -672,24 +669,19 @@ async function setupCinnosti(root: HTMLElement, currentSlug: FullSlug, data: Cin
         groupBy = raw ? [raw] : defaultGroupByForView(views[activeViewIdx])
       } catch {
         groupBy = defaultGroupByForView(views[activeViewIdx])
-        fromDefault = true
       }
-    }
-
-    if (fromDefault && groupBy.length > 0) {
-      let changed = false
-      for (const c of groupBy) {
-        if (!hiddenCols.has(c)) {
-          hiddenCols.add(c)
-          changed = true
-        }
-      }
-      if (changed) saveHiddenCols()
-      saveGroupBy()
     }
   }
   function saveGroupBy() {
     localStorage.setItem(lsScope + ":" + LS_GROUP_BY + viewKey(), JSON.stringify(groupBy))
+  }
+
+  function dropGroupedColsFromHidden() {
+    let changed = false
+    for (const col of groupBy) {
+      if (hiddenCols.delete(col)) changed = true
+    }
+    if (changed) saveHiddenCols()
   }
 
   function collapsedKeySuffix(): string {
@@ -760,6 +752,7 @@ async function setupCinnosti(root: HTMLElement, currentSlug: FullSlug, data: Cin
   loadColumnOrder()
   loadColumnWidths()
   loadGroupBy()
+  dropGroupedColsFromHidden()
   loadCollapsedGroups()
 
   // Případná podkladová overlay přes ?state= z URL (např. sdílený link).
@@ -812,7 +805,8 @@ async function setupCinnosti(root: HTMLElement, currentSlug: FullSlug, data: Cin
   }
 
   function getVisibleCols(): string[] {
-    const cols = columnOrder.filter((c) => !hiddenCols.has(c))
+    const groupedCols = new Set(groupBy)
+    const cols = columnOrder.filter((c) => !hiddenCols.has(c) && !groupedCols.has(c))
     return cols.length > 0 ? cols : [columnOrder[0] ?? "file.name"]
   }
 
@@ -823,8 +817,11 @@ async function setupCinnosti(root: HTMLElement, currentSlug: FullSlug, data: Cin
     colTogglePanel.innerHTML = columnOrder
       .map((col) => {
         const label = getColLabel(col)
-        const checked = !hiddenCols.has(col) ? " checked" : ""
-        return `<label class="cinnosti-col-check"><input type="checkbox" value="${escapeHtml(col)}"${checked}><span>${escapeHtml(label)}</span></label>`
+        const grouped = groupBy.includes(col)
+        const checked = !hiddenCols.has(col) && !grouped ? " checked" : ""
+        const disabled = grouped ? " disabled" : ""
+        const title = grouped ? ` title="Skryto kvůli aktivnímu seskupení"` : ""
+        return `<label class="cinnosti-col-check${grouped ? " is-grouped" : ""}"${title}><input type="checkbox" value="${escapeHtml(col)}"${checked}${disabled}><span>${escapeHtml(label)}</span></label>`
       })
       .join("")
   }
@@ -1438,12 +1435,8 @@ async function setupCinnosti(root: HTMLElement, currentSlug: FullSlug, data: Cin
       return
     }
     groupBy = [...groupBy, col]
-    // Auto-hide přidaného sloupce (user si ho může zpět zapnout v panelu Sloupce).
-    if (!hiddenCols.has(col)) {
-      hiddenCols.add(col)
-      saveHiddenCols()
-    }
     saveGroupBy()
+    dropGroupedColsFromHidden()
     loadCollapsedGroups()
     render()
   }
@@ -1460,6 +1453,7 @@ async function setupCinnosti(root: HTMLElement, currentSlug: FullSlug, data: Cin
     if (!col) return
     groupBy = groupBy.filter((c) => c !== col)
     saveGroupBy()
+    dropGroupedColsFromHidden()
     loadCollapsedGroups()
     render()
   }
@@ -1536,6 +1530,7 @@ async function setupCinnosti(root: HTMLElement, currentSlug: FullSlug, data: Cin
       loadColumnOrder()
       loadColumnWidths()
       loadGroupBy()
+      dropGroupedColsFromHidden()
       loadCollapsedGroups()
       sortState = null
       columnFilters.clear()
@@ -1549,6 +1544,7 @@ async function setupCinnosti(root: HTMLElement, currentSlug: FullSlug, data: Cin
     loadColumnOrder()
     loadColumnWidths()
     loadGroupBy()
+    dropGroupedColsFromHidden()
     loadCollapsedGroups()
     sortState = null
     columnFilters.clear()
@@ -1662,6 +1658,7 @@ async function setupCinnosti(root: HTMLElement, currentSlug: FullSlug, data: Cin
     loadColumnOrder()
     loadColumnWidths()
     loadGroupBy()
+    dropGroupedColsFromHidden()
     loadCollapsedGroups()
     populateViewSelect()
     renderColumnPanel()
@@ -1694,6 +1691,7 @@ async function setupCinnosti(root: HTMLElement, currentSlug: FullSlug, data: Cin
       loadColumnOrder()
       loadColumnWidths()
       loadGroupBy()
+      dropGroupedColsFromHidden()
       loadCollapsedGroups()
       sortState = null
       columnFilters.clear()
@@ -1732,6 +1730,7 @@ async function setupCinnosti(root: HTMLElement, currentSlug: FullSlug, data: Cin
     loadColumnOrder()
     loadColumnWidths()
     loadGroupBy()
+    dropGroupedColsFromHidden()
     loadCollapsedGroups()
     renderColumnPanel()
     render()

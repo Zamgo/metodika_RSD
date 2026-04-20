@@ -6,21 +6,6 @@ popis: Archivování projektového informačního modelu (PIM) a zachycení pona
 zdroj: ČSN EN ISO 19650-2; 5.8
 faze:
   - "[[Provoz a údržba]]"
-R - Odpovědnost za provádění činnosti:
-  - "[[Pověřující strana]]"
-A - Právní odpovědnost za dokončení činnosti:
-  - "[[Pověřující strana]]"
-C - Konzultace v průběhu činnosti:
-  - "[[Vedoucí pověřená strana]]"
-  - "[[Pověřená strana]]"
-I - Informování po dokončení činnosti: []
-workflow: []
-stav: draft
-procesni_oblast: "[[8 - Uzavření projektu|8 - Proces managementu informací – Uzavření projektu]]"
-cinnost: ""
-vstupy: []
-vystupy: []
-navazane_workflow: []
 ---
 # Obecný popis
 

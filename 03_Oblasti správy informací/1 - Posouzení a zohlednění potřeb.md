@@ -6,19 +6,6 @@ popis: "Pověřující strana (Objednatel) stanoví základní rámec management
 zdroj: "ČSN EN ISO 19650-2; 5.1"
 faze:
   - "[[Příprava]]"
-R - Odpovědnost za provádění činnosti:
-  - "[[Pověřující strana]]"
-A - Právní odpovědnost za dokončení činnosti:
-  - "[[Pověřující strana]]"
-C - Konzultace v průběhu činnosti: []
-I - Informování po dokončení činnosti: []
-workflow: []
-stav: draft
-procesni_oblast: "[[1 - Posouzení a zohlednění potřeb|1 - Posouzení a zohlednění potřeb]]"
-cinnost: ""
-vstupy: []
-vystupy: []
-navazane_workflow: []
 ---
 # Obecný popis
 

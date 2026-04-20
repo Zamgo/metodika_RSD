@@ -6,20 +6,6 @@ popis: Realizační tým společně vytváří informace dle TIDP, provádí kon
 zdroj: ČSN EN ISO 19650-2; 5.6
 faze:
   - "[[Realizace]]"
-R - Odpovědnost za provádění činnosti:
-  - "[[Pověřená strana]]"
-A - Právní odpovědnost za dokončení činnosti:
-  - "[[Pověřená strana]]"
-C - Konzultace v průběhu činnosti: []
-I - Informování po dokončení činnosti:
-  - "[[Vedoucí pověřená strana]]"
-workflow: []
-stav: draft
-procesni_oblast: "[[6 - Společné vytváření informací|6 - Proces managementu informací – Společné vytváření informací]]"
-cinnost: ""
-vstupy: []
-vystupy: []
-navazane_workflow: []
 ---
 # Obecný popis
 

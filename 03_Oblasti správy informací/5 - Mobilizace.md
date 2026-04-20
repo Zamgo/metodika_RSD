@@ -6,20 +6,6 @@ popis: Po pověření realizační tým mobilizuje zdroje, IT infrastrukturu a C
 zdroj: ČSN EN ISO 19650-2; 5.5
 faze:
   - "[[Příprava]]"
-R - Odpovědnost za provádění činnosti:
-  - "[[Vedoucí pověřená strana]]"
-A - Právní odpovědnost za dokončení činnosti:
-  - "[[Vedoucí pověřená strana]]"
-C - Konzultace v průběhu činnosti: []
-I - Informování po dokončení činnosti:
-  - "[[Pověřená strana]]"
-workflow: []
-stav: draft
-procesni_oblast: "[[5 - Mobilizace|5 - Proces managementu informací – Mobilizace]]"
-cinnost: ""
-vstupy: []
-vystupy: []
-navazane_workflow: []
 ---
 # Obecný popis
 
