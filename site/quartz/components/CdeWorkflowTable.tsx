@@ -37,6 +37,31 @@ const CdeWorkflowTable: QuartzComponent = ({ cfg }: QuartzComponentProps) => {
           </button>
           <div class="cinnosti-column-toggle-panel" />
         </div>
+        <div class="cinnosti-filter cinnosti-group-filter">
+          <label>
+            <span>{cs ? "Seskupit podle" : "Group by"}</span>
+            <select
+              class="cinnosti-group-select"
+              aria-label={cs ? "Seskupit podle" : "Group by"}
+            />
+          </label>
+        </div>
+        <div class="cinnosti-group-actions">
+          <button
+            type="button"
+            class="cinnosti-group-expand-all"
+            title={cs ? "Rozbalit všechny skupiny" : "Expand all groups"}
+          >
+            {cs ? "Rozbalit vše" : "Expand all"}
+          </button>
+          <button
+            type="button"
+            class="cinnosti-group-collapse-all"
+            title={cs ? "Sbalit všechny skupiny" : "Collapse all groups"}
+          >
+            {cs ? "Sbalit vše" : "Collapse all"}
+          </button>
+        </div>
         <button type="button" class="cinnosti-clear-filters">
           {cs ? "Zrušit filtry" : "Clear filters"}
         </button>

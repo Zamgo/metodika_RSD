@@ -68,6 +68,85 @@ export function escapeHtml(s: string): string {
     .replace(/"/g, "&quot;")
 }
 
+/** Placeholder pro prázdnou hodnotu skupiny. */
+export const EMPTY_GROUP_LABEL = "(prázdné)"
+
+/** Bezpečný klíč pro `data-group` atribut (stabilní napříč render voláními). */
+export function hashGroupKey(key: string): string {
+  let h = 2166136261
+  for (let i = 0; i < key.length; i++) {
+    h ^= key.charCodeAt(i)
+    h = Math.imul(h, 16777619)
+  }
+  return (h >>> 0).toString(36)
+}
+
+/**
+ * Vrátí řetězec použitý pro zařazení řádku do skupiny.
+ * Pro wikilinky vytáhne zobrazovaný text (bez [[]] a |aliasu),
+ * u multihodnotových polí bere první neprázdnou hodnotu.
+ */
+export function getGroupValue<T extends { meta?: Record<string, unknown>; title?: string }>(
+  row: T,
+  col: string,
+): string {
+  if (col === "file.name") return (row.title ?? "").trim()
+  if (col === "formula.dilci_cinnost") {
+    const typ = getMetaString(row.meta, "typ")
+    if (typ !== "dilci_cinnost") return ""
+    return (row.title ?? "").trim()
+  }
+  const arr = getMetaArray(row.meta, col)
+  if (arr.length > 0) {
+    const first = plainTextFromWikiMeta(arr[0]).trim()
+    return first
+  }
+  const single = getMetaString(row.meta, col)
+  if (!single) return ""
+  return plainTextFromWikiMeta(single).trim()
+}
+
+export type RowGroup<T> = {
+  /** Hash-bezpečný identifikátor do DOM (data-group). */
+  id: string
+  /** Raw label (prázdné → EMPTY_GROUP_LABEL). */
+  label: string
+  /** Zda jde o fallback "(prázdné)" skupinu (řadí se vždy dolů). */
+  empty: boolean
+  rows: T[]
+}
+
+/**
+ * Rozdělí již setříděné řádky do skupin podle `col`.
+ * Pořadí skupin respektuje pořadí prvního výskytu ve vstupu (to umožňuje řídit ho existujícím sortem),
+ * fallback "(prázdné)" skupina se umístí vždy na konec.
+ */
+export function groupRows<T extends { meta?: Record<string, unknown>; title?: string }>(
+  rows: T[],
+  col: string,
+): RowGroup<T>[] {
+  const order: string[] = []
+  const map = new Map<string, RowGroup<T>>()
+  for (const row of rows) {
+    const raw = getGroupValue(row, col)
+    const isEmpty = !raw
+    const label = isEmpty ? EMPTY_GROUP_LABEL : raw
+    if (!map.has(label)) {
+      order.push(label)
+      map.set(label, { id: hashGroupKey(label), label, empty: isEmpty, rows: [] })
+    }
+    map.get(label)!.rows.push(row)
+  }
+  const nonEmpty: RowGroup<T>[] = []
+  let empty: RowGroup<T> | null = null
+  for (const l of order) {
+    const g = map.get(l)!
+    if (g.empty) empty = g
+    else nonEmpty.push(g)
+  }
+  return empty ? [...nonEmpty, empty] : nonEmpty
+}
+
 function normalizeWikiPathPart(s: string): string {
   return s
     .trim()

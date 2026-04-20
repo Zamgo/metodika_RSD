@@ -6,9 +6,16 @@ import {
   createNoteSlugResolver,
   escapeHtml,
   getMetaString,
+  groupRows,
   isCinnostRow,
   metaStringToTableHtml,
 } from "./cinnostiShared"
+
+const LS_OBLAST_GROUP_BY = "oblast-group-by:"
+const LS_OBLAST_GROUP_COLLAPSED = "oblast-group-collapsed:"
+
+/** Výchozí seskupení na stránkách procesních oblastí. */
+const DEFAULT_OBLAST_GROUP_BY = "cinnost"
 
 interface DvColumn {
   field: string
@@ -204,12 +211,113 @@ function getSortValue(field: string, row: Row): string {
   return raw.toLowerCase()
 }
 
-function renderTable(headers: string[], bodyRows: string[][]): string {
+type OblastRenderRow = { cells: string[]; row: Row }
+type OblastColumn = { field: string; alias: string }
+
+function storageKey(prefix: string, slug: FullSlug, idx: number): string {
+  return prefix + String(slug) + ":" + idx
+}
+
+function loadGroupBy(slug: FullSlug, idx: number, fallback: string): string {
+  try {
+    const raw = localStorage.getItem(storageKey(LS_OBLAST_GROUP_BY, slug, idx))
+    return raw === null ? fallback : raw
+  } catch {
+    return fallback
+  }
+}
+
+function saveGroupBy(slug: FullSlug, idx: number, value: string) {
+  try {
+    localStorage.setItem(storageKey(LS_OBLAST_GROUP_BY, slug, idx), value)
+  } catch {
+    // ignore
+  }
+}
+
+function loadCollapsed(slug: FullSlug, idx: number, groupBy: string): Set<string> {
+  try {
+    const raw = localStorage.getItem(
+      storageKey(LS_OBLAST_GROUP_COLLAPSED, slug, idx) + ":" + (groupBy || "_none_"),
+    )
+    return raw ? new Set(JSON.parse(raw)) : new Set()
+  } catch {
+    return new Set()
+  }
+}
+
+function saveCollapsed(slug: FullSlug, idx: number, groupBy: string, set: Set<string>) {
+  try {
+    localStorage.setItem(
+      storageKey(LS_OBLAST_GROUP_COLLAPSED, slug, idx) + ":" + (groupBy || "_none_"),
+      JSON.stringify([...set]),
+    )
+  } catch {
+    // ignore
+  }
+}
+
+function renderToolbar(
+  columns: OblastColumn[],
+  groupBy: string,
+  hostIdx: number,
+): string {
+  const noneOpt = `<option value="">(žádné seskupení)</option>`
+  const opts = columns
+    .filter((c) => c.field !== "file.link" && c.field !== "file.name")
+    .map((c) => {
+      const sel = c.field === groupBy ? " selected" : ""
+      return `<option value="${escapeHtml(c.field)}"${sel}>${escapeHtml(c.alias)}</option>`
+    })
+    .join("")
+  const showHostIdx = escapeHtml(String(hostIdx))
+  return `<div class="quartz-oblast-toolbar" data-host-idx="${showHostIdx}"><label><span>Seskupit podle</span><select class="quartz-oblast-group-select">${noneOpt}${opts}</select></label><button type="button" class="quartz-oblast-expand-all">Rozbalit vše</button><button type="button" class="quartz-oblast-collapse-all">Sbalit vše</button></div>`
+}
+
+function renderTableNoGroup(
+  headers: string[],
+  rows: OblastRenderRow[],
+): string {
   const thr = headers.map((h) => `<th>${escapeHtml(h)}</th>`).join("")
-  const trs = bodyRows
-    .map((cells) => `<tr>${cells.map((c) => `<td>${c}</td>`).join("")}</tr>`)
+  const trs = rows
+    .map(({ cells }) => `<tr>${cells.map((c) => `<td>${c}</td>`).join("")}</tr>`)
     .join("")
   return `<div class="quartz-oblast-table-wrap"><table class="quartz-oblast-table"><thead><tr>${thr}</tr></thead><tbody>${trs}</tbody></table></div>`
+}
+
+function renderTableWithGroups(
+  headers: string[],
+  rows: OblastRenderRow[],
+  groupBy: string,
+  groupLabel: string,
+  collapsed: Set<string>,
+): string {
+  const groups = groupRows(rows.map((r) => ({ ...r.row, __cells: r.cells })), groupBy) as {
+    id: string
+    label: string
+    rows: (Row & { __cells: string[] })[]
+  }[]
+  const thr = headers.map((h) => `<th>${escapeHtml(h)}</th>`).join("")
+  const groupChunks: string[] = []
+  for (const g of groups) {
+    const isCollapsed = collapsed.has(g.id)
+    const collapsedAttr = isCollapsed ? ` data-collapsed="true"` : ""
+    const ariaExp = isCollapsed ? "false" : "true"
+    const headerTr = `<tr class="quartz-oblast-group-row" data-group="${escapeHtml(g.id)}"${collapsedAttr}><td colspan="${headers.length}"><button type="button" class="quartz-oblast-group-toggle" aria-expanded="${ariaExp}"><span class="quartz-oblast-group-chevron" aria-hidden="true">▾</span><span class="quartz-oblast-group-label"><span class="quartz-oblast-group-col-label">${escapeHtml(groupLabel)}:</span> <strong>${escapeHtml(g.label)}</strong></span><span class="quartz-oblast-group-count">${g.rows.length}</span></button></td></tr>`
+    const bodyTrs = g.rows
+      .map((r) => {
+        const style = isCollapsed ? ` style="display:none"` : ""
+        return `<tr class="quartz-oblast-detail-row" data-group="${escapeHtml(g.id)}"${style}>${r.__cells.map((c) => `<td>${c}</td>`).join("")}</tr>`
+      })
+      .join("")
+    groupChunks.push(headerTr + bodyTrs)
+  }
+  return `<div class="quartz-oblast-table-wrap"><table class="quartz-oblast-table"><thead><tr>${thr}</tr></thead><tbody>${groupChunks.join("")}</tbody></table></div>`
+}
+
+function labelForField(columns: OblastColumn[], field: string): string {
+  const c = columns.find((col) => col.field === field)
+  return c?.alias ?? field
 }
 
 async function fillTables(slug: FullSlug) {
@@ -229,14 +337,14 @@ async function fillTables(slug: FullSlug) {
     })
   }
 
-  for (const host of hosts) {
+  hosts.forEach((host, hostIdx) => {
     const configStr = host.dataset.dvConfig
-    if (!configStr) continue
+    if (!configStr) return
     let config: DvConfig
     try {
       config = JSON.parse(configStr)
     } catch {
-      continue
+      return
     }
 
     let rows = pool.filter((r) => {
@@ -259,14 +367,106 @@ async function fillTables(slug: FullSlug) {
     }
 
     const headers = config.columns.map((c) => c.alias)
-    const bodyRows = rows.map((r) =>
-      config.columns.map((c) => renderCellValue(c.field, r, slug, resolve)),
-    )
-    host.innerHTML = bodyRows.length
-      ? renderTable(headers, bodyRows)
-      : `<p class="quartz-oblast-empty">Žádné záznamy.</p>`
-    attachTablePopovers(host)
-  }
+    const renderRows: OblastRenderRow[] = rows.map((r) => ({
+      row: r,
+      cells: config.columns.map((c) => renderCellValue(c.field, r, slug, resolve)),
+    }))
+
+    if (renderRows.length === 0) {
+      host.innerHTML = `<p class="quartz-oblast-empty">Žádné záznamy.</p>`
+      return
+    }
+
+    // Výchozí groupBy: akceptujeme jen pokud existuje mezi sloupci; jinak prázdný string.
+    const hasDefaultGroupCol = config.columns.some((c) => c.field === DEFAULT_OBLAST_GROUP_BY)
+    const fallback = hasDefaultGroupCol ? DEFAULT_OBLAST_GROUP_BY : ""
+    let groupBy = loadGroupBy(slug, hostIdx, fallback)
+
+    function paint() {
+      const toolbar = renderToolbar(config.columns, groupBy, hostIdx)
+      if (!groupBy) {
+        host.innerHTML = toolbar + renderTableNoGroup(headers, renderRows)
+      } else {
+        const collapsed = loadCollapsed(slug, hostIdx, groupBy)
+        const groupLabel = labelForField(config.columns, groupBy)
+        host.innerHTML =
+          toolbar + renderTableWithGroups(headers, renderRows, groupBy, groupLabel, collapsed)
+      }
+      attachTablePopovers(host)
+    }
+
+    paint()
+
+    // ── Delegované handlery na hostu ───────────────────────────────────
+    host.addEventListener("change", (e) => {
+      const target = e.target as HTMLElement
+      if (!target.classList.contains("quartz-oblast-group-select")) return
+      groupBy = (target as HTMLSelectElement).value || ""
+      saveGroupBy(slug, hostIdx, groupBy)
+      paint()
+    })
+
+    host.addEventListener("click", (e) => {
+      const target = e.target as HTMLElement
+
+      const expandAll = target.closest(".quartz-oblast-expand-all")
+      if (expandAll) {
+        if (!groupBy) return
+        saveCollapsed(slug, hostIdx, groupBy, new Set())
+        host
+          .querySelectorAll<HTMLElement>("tr.quartz-oblast-group-row")
+          .forEach((tr) => {
+            delete tr.dataset.collapsed
+            const btn = tr.querySelector(".quartz-oblast-group-toggle") as HTMLElement | null
+            btn?.setAttribute("aria-expanded", "true")
+          })
+        host
+          .querySelectorAll<HTMLElement>("tr.quartz-oblast-detail-row")
+          .forEach((tr) => (tr.style.display = ""))
+        return
+      }
+
+      const collapseAll = target.closest(".quartz-oblast-collapse-all")
+      if (collapseAll) {
+        if (!groupBy) return
+        const all = new Set<string>()
+        host
+          .querySelectorAll<HTMLElement>("tr.quartz-oblast-group-row")
+          .forEach((tr) => {
+            const gid = tr.dataset.group
+            if (gid) all.add(gid)
+            tr.dataset.collapsed = "true"
+            const btn = tr.querySelector(".quartz-oblast-group-toggle") as HTMLElement | null
+            btn?.setAttribute("aria-expanded", "false")
+          })
+        host
+          .querySelectorAll<HTMLElement>("tr.quartz-oblast-detail-row")
+          .forEach((tr) => (tr.style.display = "none"))
+        saveCollapsed(slug, hostIdx, groupBy, all)
+        return
+      }
+
+      const toggle = target.closest(".quartz-oblast-group-toggle") as HTMLElement | null
+      if (!toggle) return
+      const tr = toggle.closest("tr.quartz-oblast-group-row") as HTMLElement | null
+      if (!tr) return
+      const gid = tr.dataset.group
+      if (!gid) return
+      const willCollapse = tr.dataset.collapsed !== "true"
+      if (willCollapse) tr.dataset.collapsed = "true"
+      else delete tr.dataset.collapsed
+      toggle.setAttribute("aria-expanded", willCollapse ? "false" : "true")
+      host
+        .querySelectorAll<HTMLElement>(
+          `tr.quartz-oblast-detail-row[data-group="${CSS.escape(gid)}"]`,
+        )
+        .forEach((r) => (r.style.display = willCollapse ? "none" : ""))
+      const collapsed = loadCollapsed(slug, hostIdx, groupBy)
+      if (willCollapse) collapsed.add(gid)
+      else collapsed.delete(gid)
+      saveCollapsed(slug, hostIdx, groupBy, collapsed)
+    })
+  })
 }
 
 document.addEventListener("nav", async (e: CustomEventMap["nav"]) => {

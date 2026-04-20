@@ -8,6 +8,7 @@ import {
   escapeHtml,
   getMetaArray,
   getMetaString,
+  groupRows,
   isCdeWorkflowRow,
   isCinnostRow,
   metaStringToTableHtml,
@@ -18,6 +19,19 @@ import {
 const LS_HIDDEN = "cinnosti-hidden-cols:"
 const LS_ORDER = "cinnosti-col-order:"
 const LS_WIDTHS = "cinnosti-col-widths:"
+const LS_GROUP_BY = "cinnosti-group-by:"
+const LS_GROUP_COLLAPSED = "cinnosti-group-collapsed:"
+
+/** Hardcoded fallback groupingy podle jména view (případně data-cinnosti-ls-id). */
+const DEFAULT_GROUP_BY_BY_VIEW: Record<string, string> = {
+  "Všechny dílčí činnosti": "procesni_oblast",
+}
+
+/** Fallback pokud view není v mapě nahoře - podle data-cinnosti-ls-id root elementu. */
+const DEFAULT_GROUP_BY_BY_SCOPE: Record<string, string> = {
+  cinnosti: "procesni_oblast",
+  "cde-workflow": "typ",
+}
 
 type BaseConfig = {
   formulas?: Record<string, string>
@@ -26,6 +40,8 @@ type BaseConfig = {
     name?: string
     filters?: { and?: string[]; or?: string[] }
     order?: string[]
+    /** Volitelný override defaultního groupBy (spätně kompatibilní - chybí → použije se fallback). */
+    groupBy?: string
   }[]
 }
 
@@ -283,6 +299,15 @@ async function setupCinnosti(root: HTMLElement, currentSlug: FullSlug, data: Cin
   const filterCountEl = root.querySelector(
     ".cinnosti-active-filter-count",
   ) as HTMLElement | null
+  const groupSelect = root.querySelector(
+    ".cinnosti-group-select",
+  ) as HTMLSelectElement | null
+  const groupExpandAllBtn = root.querySelector(
+    ".cinnosti-group-expand-all",
+  ) as HTMLButtonElement | null
+  const groupCollapseAllBtn = root.querySelector(
+    ".cinnosti-group-collapse-all",
+  ) as HTMLButtonElement | null
   if (!headRow || !tbody || !textInput || !countEl || !viewSelect) return
 
   const lsScope = root.dataset.cinnostiLsId ?? "cinnosti"
@@ -345,9 +370,23 @@ async function setupCinnosti(root: HTMLElement, currentSlug: FullSlug, data: Cin
   let columnOrder: string[] = []
   const columnWidths = new Map<string, number>()
   const columnFilters = new Map<string, Set<string>>()
+  /** "" = žádné seskupení (fallback / explicitní volba). */
+  let groupBy: string = ""
+  /** Sada `data-group` (hash) u sbalených skupin v aktuálním view. */
+  let collapsedGroups = new Set<string>()
 
   function viewKey(): string {
     return views[activeViewIdx]?.name ?? "default"
+  }
+
+  function defaultGroupByForView(view: BaseView | undefined): string {
+    if (!view) return ""
+    const fromFm = typeof view.groupBy === "string" ? view.groupBy.trim() : ""
+    if (fromFm) return fromFm
+    const byName = view.name ? DEFAULT_GROUP_BY_BY_VIEW[view.name] : undefined
+    if (byName) return byName
+    const scope = root.dataset.cinnostiLsId ?? ""
+    return DEFAULT_GROUP_BY_BY_SCOPE[scope] ?? ""
   }
 
   function loadHiddenCols() {
@@ -406,9 +445,44 @@ async function setupCinnosti(root: HTMLElement, currentSlug: FullSlug, data: Cin
     )
   }
 
+  function loadGroupBy() {
+    try {
+      const raw = localStorage.getItem(lsScope + ":" + LS_GROUP_BY + viewKey())
+      if (raw === null) {
+        groupBy = defaultGroupByForView(views[activeViewIdx])
+      } else {
+        groupBy = raw
+      }
+    } catch {
+      groupBy = defaultGroupByForView(views[activeViewIdx])
+    }
+  }
+  function saveGroupBy() {
+    localStorage.setItem(lsScope + ":" + LS_GROUP_BY + viewKey(), groupBy)
+  }
+
+  function loadCollapsedGroups() {
+    try {
+      const raw = localStorage.getItem(
+        lsScope + ":" + LS_GROUP_COLLAPSED + viewKey() + ":" + (groupBy || "_none_"),
+      )
+      collapsedGroups = raw ? new Set(JSON.parse(raw)) : new Set()
+    } catch {
+      collapsedGroups = new Set()
+    }
+  }
+  function saveCollapsedGroups() {
+    localStorage.setItem(
+      lsScope + ":" + LS_GROUP_COLLAPSED + viewKey() + ":" + (groupBy || "_none_"),
+      JSON.stringify([...collapsedGroups]),
+    )
+  }
+
   loadHiddenCols()
   loadColumnOrder()
   loadColumnWidths()
+  loadGroupBy()
+  loadCollapsedGroups()
 
   function getColLabel(col: string): string {
     const fromFm = baseConfig.properties?.[col]?.displayName
@@ -552,16 +626,41 @@ async function setupCinnosti(root: HTMLElement, currentSlug: FullSlug, data: Cin
     } else {
       sortedRows = rows
     }
+    const visibleRows = sortedRows.filter((r) => rowMatchesAllFilters(r, textQ, activeView))
+
     tbody.innerHTML = ""
-    let n = 0
-    for (const row of sortedRows) {
-      if (!rowMatchesAllFilters(row, textQ, activeView)) continue
-      n++
-      const tr = document.createElement("tr")
-      tr.innerHTML = cols.map((col) => `<td>${getCellHtml(row, col)}</td>`).join("")
-      tbody.appendChild(tr)
+    countEl.textContent = String(visibleRows.length)
+
+    // Bez seskupení - jednoduchý render jako dříve.
+    if (!groupBy) {
+      for (const row of visibleRows) {
+        const tr = document.createElement("tr")
+        tr.innerHTML = cols.map((col) => `<td>${getCellHtml(row, col)}</td>`).join("")
+        tbody.appendChild(tr)
+      }
+      return
     }
-    countEl.textContent = String(n)
+
+    const groups = groupRows(visibleRows, groupBy)
+    const groupLabel = getColLabel(groupBy)
+    for (const g of groups) {
+      const isCollapsed = collapsedGroups.has(g.id)
+      const headerTr = document.createElement("tr")
+      headerTr.className = "cinnosti-group-row"
+      headerTr.dataset.group = g.id
+      if (isCollapsed) headerTr.dataset.collapsed = "true"
+      headerTr.innerHTML = `<td colspan="${cols.length}"><button type="button" class="cinnosti-group-toggle" aria-expanded="${isCollapsed ? "false" : "true"}"><span class="cinnosti-group-chevron" aria-hidden="true">▾</span><span class="cinnosti-group-label"><span class="cinnosti-group-col-label">${escapeHtml(groupLabel)}:</span> <strong>${escapeHtml(g.label)}</strong></span><span class="cinnosti-group-count">${g.rows.length}</span></button></td>`
+      tbody.appendChild(headerTr)
+
+      for (const row of g.rows) {
+        const tr = document.createElement("tr")
+        tr.className = "cinnosti-detail-row"
+        tr.dataset.group = g.id
+        if (isCollapsed) tr.style.display = "none"
+        tr.innerHTML = cols.map((col) => `<td>${getCellHtml(row, col)}</td>`).join("")
+        tbody.appendChild(tr)
+      }
+    }
   }
 
   function updateFilterIcons() {
@@ -591,6 +690,7 @@ async function setupCinnosti(root: HTMLElement, currentSlug: FullSlug, data: Cin
     renderBody(cols, textInput.value, views[activeViewIdx])
     attachTablePopovers(tbody)
     updateActiveFilterCount()
+    populateGroupSelect()
   }
 
   function renderBodyOnly() {
@@ -923,6 +1023,93 @@ async function setupCinnosti(root: HTMLElement, currentSlug: FullSlug, data: Cin
   textInput.addEventListener("input", onTextInput)
   window.addCleanup(() => textInput.removeEventListener("input", onTextInput))
 
+  // ── Group row toggle (chevron + whole header button) ─────────────────
+
+  const onTbodyClick = (e: Event) => {
+    const target = e.target as HTMLElement
+    const btn = target.closest(".cinnosti-group-toggle") as HTMLElement | null
+    if (!btn) return
+    const tr = btn.closest("tr.cinnosti-group-row") as HTMLElement | null
+    if (!tr) return
+    const gid = tr.dataset.group
+    if (!gid) return
+    const willCollapse = tr.dataset.collapsed !== "true"
+    if (willCollapse) {
+      tr.dataset.collapsed = "true"
+      collapsedGroups.add(gid)
+    } else {
+      delete tr.dataset.collapsed
+      collapsedGroups.delete(gid)
+    }
+    btn.setAttribute("aria-expanded", willCollapse ? "false" : "true")
+    tbody.querySelectorAll<HTMLElement>(
+      `tr.cinnosti-detail-row[data-group="${CSS.escape(gid)}"]`,
+    ).forEach((r) => {
+      r.style.display = willCollapse ? "none" : ""
+    })
+    saveCollapsedGroups()
+  }
+  tbody.addEventListener("click", onTbodyClick)
+  window.addCleanup(() => tbody.removeEventListener("click", onTbodyClick))
+
+  // ── Group select ──────────────────────────────────────────────────────
+
+  function populateGroupSelect() {
+    if (!groupSelect) return
+    const noneLabel = ds.strGroupNone ?? "(žádné seskupení)"
+    const opts = [`<option value="">${escapeHtml(noneLabel)}</option>`]
+    const seen = new Set<string>()
+    // Primární zdroj: pořadí sloupců aktuálního view.
+    for (const col of columnOrder) {
+      if (seen.has(col)) continue
+      seen.add(col)
+      const label = getColLabel(col)
+      const selAttr = col === groupBy ? " selected" : ""
+      opts.push(
+        `<option value="${escapeHtml(col)}"${selAttr}>${escapeHtml(label)}</option>`,
+      )
+    }
+    // Pokud je aktuální groupBy mimo columnOrder (např. default z .base),
+    // přidáme jej do výběru, aby zůstal vidět jako aktivní.
+    if (groupBy && !seen.has(groupBy)) {
+      opts.push(
+        `<option value="${escapeHtml(groupBy)}" selected>${escapeHtml(getColLabel(groupBy))}</option>`,
+      )
+    }
+    groupSelect.innerHTML = opts.join("")
+    groupSelect.value = groupBy
+  }
+
+  const onGroupChange = () => {
+    if (!groupSelect) return
+    groupBy = groupSelect.value || ""
+    saveGroupBy()
+    loadCollapsedGroups()
+    render()
+  }
+  groupSelect?.addEventListener("change", onGroupChange)
+  window.addCleanup(() => groupSelect?.removeEventListener("change", onGroupChange))
+
+  const onExpandAll = () => {
+    collapsedGroups.clear()
+    saveCollapsedGroups()
+    renderBodyOnly()
+  }
+  groupExpandAllBtn?.addEventListener("click", onExpandAll)
+  window.addCleanup(() => groupExpandAllBtn?.removeEventListener("click", onExpandAll))
+
+  const onCollapseAll = () => {
+    if (!groupBy) return
+    tbody.querySelectorAll<HTMLElement>("tr.cinnosti-group-row").forEach((tr) => {
+      const gid = tr.dataset.group
+      if (gid) collapsedGroups.add(gid)
+    })
+    saveCollapsedGroups()
+    renderBodyOnly()
+  }
+  groupCollapseAllBtn?.addEventListener("click", onCollapseAll)
+  window.addCleanup(() => groupCollapseAllBtn?.removeEventListener("click", onCollapseAll))
+
   viewSelect.innerHTML = views
     .map(
       (view, idx) =>
@@ -935,6 +1122,8 @@ async function setupCinnosti(root: HTMLElement, currentSlug: FullSlug, data: Cin
     loadHiddenCols()
     loadColumnOrder()
     loadColumnWidths()
+    loadGroupBy()
+    loadCollapsedGroups()
     sortState = null
     columnFilters.clear()
     renderColumnPanel()
