@@ -857,6 +857,45 @@ async function setupCinnosti(root: HTMLElement, currentSlug: FullSlug, data: Cin
     })
   }
 
+  // ── View kebab menu (Uložit jako / Obnovit / Sdílet / Spravovat) ─────
+
+  const viewMenuBtn = root.querySelector(".cinnosti-view-menu-btn") as HTMLButtonElement | null
+  const viewMenuPanel = root.querySelector(
+    ".cinnosti-view-menu-panel",
+  ) as HTMLElement | null
+  if (viewMenuBtn && viewMenuPanel) {
+    const closeMenu = () => {
+      viewMenuPanel.classList.remove("open")
+      viewMenuBtn.setAttribute("aria-expanded", "false")
+    }
+    const onMenuBtnClick = (e: Event) => {
+      e.stopPropagation()
+      const isOpen = viewMenuPanel.classList.toggle("open")
+      viewMenuBtn.setAttribute("aria-expanded", isOpen ? "true" : "false")
+    }
+    viewMenuBtn.addEventListener("click", onMenuBtnClick)
+    // Klik uvnitř panelu nezavírá – zavření provede samotná položka po akci.
+    viewMenuPanel.addEventListener("click", (e: Event) => {
+      const target = e.target as HTMLElement
+      if (target.closest(".cinnosti-view-menu-item")) {
+        closeMenu()
+      } else {
+        e.stopPropagation()
+      }
+    })
+    const onDocCloseMenu = () => closeMenu()
+    document.addEventListener("click", onDocCloseMenu)
+    const onEscCloseMenu = (e: KeyboardEvent) => {
+      if (e.key === "Escape" && viewMenuPanel.classList.contains("open")) closeMenu()
+    }
+    document.addEventListener("keydown", onEscCloseMenu)
+    window.addCleanup(() => {
+      viewMenuBtn.removeEventListener("click", onMenuBtnClick)
+      document.removeEventListener("click", onDocCloseMenu)
+      document.removeEventListener("keydown", onEscCloseMenu)
+    })
+  }
+
   // ── URL helper ───────────────────────────────────────────────────────
 
   function resolveUrl(slug: FullSlug): string {
@@ -1022,14 +1061,25 @@ async function setupCinnosti(root: HTMLElement, currentSlug: FullSlug, data: Cin
   }
 
   function updateActiveFilterCount() {
-    if (!filterCountEl) return
     let count = 0
     for (const [, s] of columnFilters) {
       if (s.size > 0) count++
     }
     if (textInput.value.trim()) count++
-    filterCountEl.textContent = count > 0 ? `(${count})` : ""
-    filterCountEl.style.display = count > 0 ? "inline" : "none"
+    if (filterCountEl) {
+      filterCountEl.textContent = count > 0 ? String(count) : ""
+    }
+    if (clearBtn) {
+      if (count > 0) clearBtn.removeAttribute("hidden")
+      else clearBtn.setAttribute("hidden", "")
+    }
+  }
+
+  function updateGroupActionsVisibility() {
+    const groupActions = root.querySelector(".cinnosti-group-actions") as HTMLElement | null
+    if (!groupActions) return
+    if (groupBy.length > 0) groupActions.removeAttribute("hidden")
+    else groupActions.setAttribute("hidden", "")
   }
 
   function render() {
@@ -1395,6 +1445,7 @@ async function setupCinnosti(root: HTMLElement, currentSlug: FullSlug, data: Cin
   function renderGroupUI() {
     renderGroupChips()
     populateGroupAddSelect()
+    updateGroupActionsVisibility()
   }
 
   function renderGroupChips() {

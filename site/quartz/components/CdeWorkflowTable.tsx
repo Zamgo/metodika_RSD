@@ -18,55 +18,91 @@ const CdeWorkflowTable: QuartzComponent = ({ cfg }: QuartzComponentProps) => {
       data-str-view-all={cs ? "Vše" : "All"}
     >
       <div class="cinnosti-toolbar">
-        <input
-          type="search"
-          class="cinnosti-filter-text"
-          placeholder={cs ? "Hledat v názvu…" : "Search title…"}
-          autocomplete="off"
-          aria-label={cs ? "Filtrovat podle názvu" : "Filter by title"}
-        />
-        <div class="cinnosti-filter">
-          <label>
-            <span>{cs ? "Pohled" : "View"}</span>
-            <select class="cinnosti-view-select" aria-label={cs ? "Pohled" : "View"} />
-          </label>
-        </div>
-        <div class="cinnosti-column-toggle">
-          <button type="button" class="cinnosti-column-toggle-btn">
-            {cs ? "Sloupce" : "Columns"}
-          </button>
-          <div class="cinnosti-column-toggle-panel" />
-        </div>
-        <div class="cinnosti-filter cinnosti-group-filter">
-          <span class="cinnosti-group-filter-title">{cs ? "Seskupit podle" : "Group by"}</span>
-          <div class="cinnosti-group-chain">
-            <div class="cinnosti-group-chips" aria-live="polite" />
-            <select
-              class="cinnosti-group-add"
-              aria-label={cs ? "Přidat úroveň seskupení" : "Add grouping level"}
-            />
+        <div class="cinnosti-toolbar-group cinnosti-toolbar-group-data">
+          <input
+            type="search"
+            class="cinnosti-filter-text"
+            placeholder={cs ? "Hledat v názvu…" : "Search title…"}
+            autocomplete="off"
+            aria-label={cs ? "Filtrovat podle názvu" : "Filter by title"}
+          />
+          <div class="cinnosti-filter">
+            <label>
+              <span>{cs ? "Pohled" : "View"}</span>
+              <select class="cinnosti-view-select" aria-label={cs ? "Pohled" : "View"} />
+            </label>
           </div>
         </div>
-        <div class="cinnosti-group-actions">
-          <button
-            type="button"
-            class="cinnosti-group-expand-all"
-            title={cs ? "Rozbalit všechny skupiny" : "Expand all groups"}
-          >
-            {cs ? "Rozbalit vše" : "Expand all"}
-          </button>
-          <button
-            type="button"
-            class="cinnosti-group-collapse-all"
-            title={cs ? "Sbalit všechny skupiny" : "Collapse all groups"}
-          >
-            {cs ? "Sbalit vše" : "Collapse all"}
+        <div class="cinnosti-toolbar-group cinnosti-toolbar-group-structure">
+          <div class="cinnosti-column-toggle">
+            <button type="button" class="cinnosti-column-toggle-btn">
+              {cs ? "Sloupce" : "Columns"}
+            </button>
+            <div class="cinnosti-column-toggle-panel" />
+          </div>
+          <div class="cinnosti-filter cinnosti-group-filter">
+            <span class="cinnosti-group-filter-title">{cs ? "Seskupit podle" : "Group by"}</span>
+            <div class="cinnosti-group-chain">
+              <div class="cinnosti-group-chips" aria-live="polite" />
+              <select
+                class="cinnosti-group-add"
+                aria-label={cs ? "Přidat úroveň seskupení" : "Add grouping level"}
+              />
+            </div>
+          </div>
+          <div class="cinnosti-group-actions" hidden>
+            <button
+              type="button"
+              class="cinnosti-icon-btn cinnosti-group-expand-all"
+              title={cs ? "Rozbalit všechny skupiny" : "Expand all groups"}
+              aria-label={cs ? "Rozbalit všechny skupiny" : "Expand all groups"}
+            >
+              <svg
+                width="16"
+                height="16"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                aria-hidden="true"
+              >
+                <polyline points="7 6 12 11 17 6" />
+                <polyline points="7 13 12 18 17 13" />
+              </svg>
+            </button>
+            <button
+              type="button"
+              class="cinnosti-icon-btn cinnosti-group-collapse-all"
+              title={cs ? "Sbalit všechny skupiny" : "Collapse all groups"}
+              aria-label={cs ? "Sbalit všechny skupiny" : "Collapse all groups"}
+            >
+              <svg
+                width="16"
+                height="16"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                aria-hidden="true"
+              >
+                <polyline points="7 11 12 6 17 11" />
+                <polyline points="7 18 12 13 17 18" />
+              </svg>
+            </button>
+          </div>
+        </div>
+        <div class="cinnosti-toolbar-group cinnosti-toolbar-group-state">
+          <button type="button" class="cinnosti-clear-filters" hidden>
+            <span class="cinnosti-clear-filters-label">
+              {cs ? "Zrušit filtry" : "Clear filters"}
+            </span>
+            <span class="cinnosti-active-filter-count" />
           </button>
         </div>
-        <button type="button" class="cinnosti-clear-filters">
-          {cs ? "Zrušit filtry" : "Clear filters"}
-        </button>
-        <span class="cinnosti-active-filter-count" />
       </div>
       <p class="cinnosti-meta">
         {cs ? "Zobrazeno řádků: " : "Rows: "}
