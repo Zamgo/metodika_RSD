@@ -15,7 +15,18 @@ const config: QuartzConfig = {
     analytics: null,
     locale: "cs-CZ",
     baseUrl: "www.ceskesilnice.cz/RSD_Plzen",
-    ignorePatterns: ["private", "templates", ".obsidian", ".git", ".github", "site", "site/**"],
+    ignorePatterns: [
+      "private",
+      "templates",
+      ".obsidian",
+      ".git",
+      ".github",
+      "site",
+      "site/**",
+      // generated export folder with .html artifacts; can collide with Quartz slugs
+      "RSD_Plzen_upload",
+      "RSD_Plzen_upload/**",
+    ],
     defaultDateType: "modified",
     theme: {
       fontOrigin: "googleFonts",
