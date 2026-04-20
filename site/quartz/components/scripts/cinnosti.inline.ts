@@ -829,7 +829,8 @@ async function setupCinnosti(root: HTMLElement, currentSlug: FullSlug, data: Cin
   if (colToggleBtn && colTogglePanel) {
     const onColBtnClick = (e: Event) => {
       e.stopPropagation()
-      colTogglePanel.classList.toggle("open")
+      const isOpen = colTogglePanel.classList.toggle("open")
+      colToggleBtn.setAttribute("aria-expanded", isOpen ? "true" : "false")
     }
     colToggleBtn.addEventListener("click", onColBtnClick)
     colTogglePanel.addEventListener("click", (e: Event) => e.stopPropagation())
@@ -848,7 +849,10 @@ async function setupCinnosti(root: HTMLElement, currentSlug: FullSlug, data: Cin
       render()
     }
     colTogglePanel.addEventListener("change", onColChange)
-    const onDocClosePanel = () => colTogglePanel.classList.remove("open")
+    const onDocClosePanel = () => {
+      colTogglePanel.classList.remove("open")
+      colToggleBtn.setAttribute("aria-expanded", "false")
+    }
     document.addEventListener("click", onDocClosePanel)
     window.addCleanup(() => {
       colToggleBtn.removeEventListener("click", onColBtnClick)

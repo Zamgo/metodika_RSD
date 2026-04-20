@@ -26,7 +26,7 @@ const CinnostiTable: QuartzComponent = ({ cfg }: QuartzComponentProps) => {
             autocomplete="off"
             aria-label={cs ? "Filtrovat podle názvu" : "Filter by title"}
           />
-          <div class="cinnosti-filter cinnosti-view-filter">
+          <div class="cinnosti-filter cinnosti-view-filter cinnosti-inline-divider">
             <label>
               <span>{cs ? "Pohled" : "View"}</span>
               <select class="cinnosti-view-select" aria-label={cs ? "Pohled" : "View"} />
@@ -92,8 +92,26 @@ const CinnostiTable: QuartzComponent = ({ cfg }: QuartzComponentProps) => {
         </div>
         <div class="cinnosti-toolbar-group cinnosti-toolbar-group-structure">
           <div class="cinnosti-column-toggle">
-            <button type="button" class="cinnosti-column-toggle-btn">
-              {cs ? "Sloupce" : "Columns"}
+            <button
+              type="button"
+              class="cinnosti-column-toggle-btn"
+              aria-haspopup="menu"
+              aria-expanded="false"
+            >
+              <span>{cs ? "Sloupce" : "Columns"}</span>
+              <svg
+                width="14"
+                height="14"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                aria-hidden="true"
+              >
+                <polyline points="6 9 12 15 18 9" />
+              </svg>
             </button>
             <div class="cinnosti-column-toggle-panel" />
           </div>
@@ -107,7 +125,7 @@ const CinnostiTable: QuartzComponent = ({ cfg }: QuartzComponentProps) => {
               />
             </div>
           </div>
-          <div class="cinnosti-group-actions" hidden>
+          <div class="cinnosti-group-actions cinnosti-inline-divider" hidden>
             <button
               type="button"
               class="cinnosti-icon-btn cinnosti-group-expand-all"
