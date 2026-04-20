@@ -1,6 +1,7 @@
 # Quartz build artifacts
 site/node_modules/
 site/public/
+site/public_ftp/
 site/.quartz-cache/
 site/.cache/
 
@@ -10,4 +11,6 @@ Thumbs.db
 
 # Large generated uploads
 RSD_Plzen_upload.zip
+RSD_Plzen_upload_delta.zip
+RSD_Plzen_ftp_zmeny.txt
 

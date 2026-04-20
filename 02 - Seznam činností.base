@@ -3,7 +3,7 @@ filters:
     - file.inFolder("03_Oblasti správy informací")
 formulas:
   Bez názvu: ""
-  dilci_cinnost: if(typ == "dilci_cinnost", title, "")
+  dilci_cinnost: if(typ == "dilci_cinnost", link(file.path, title), "")
 properties:
   typ:
     displayName: Úroveň
@@ -47,8 +47,6 @@ views:
       - zdroj
       - stav
     sort:
-      - property: procesni_oblast
-        direction: ASC
       - property: cinnost
         direction: ASC
       - property: oznaceni
@@ -56,9 +54,9 @@ views:
     columnSize:
       note.procesni_oblast: 320
       note.cinnost: 400
-      formula.dilci_cinnost: 380
+      formula.dilci_cinnost: 456
       note.oznaceni: 262
-      note.popis: 300
+      note.popis: 825
       note.R - Odpovědnost za provádění činnosti: 457
       note.A - Právní odpovědnost za dokončení činnosti: 486
       note.C - Konzultace v průběhu činnosti: 254

@@ -31,19 +31,8 @@ jobs:
         working-directory: site
         run: node ./quartz/bootstrap-cli.mjs build -d ..
 
-      - name: Generate .htaccess for Quartz (no .html)
-        working-directory: site
-        run: |
-          cat > public/.htaccess <<'EOF'
-          RewriteEngine On
-          ErrorDocument 404 404.html
-          RewriteCond %{REQUEST_FILENAME} !-f
-          RewriteCond %{REQUEST_FILENAME} !-d
-          RewriteCond %{DOCUMENT_ROOT}/%{REQUEST_URI}.html -f
-          RewriteRule ^(.*)$ $1.html [L]
-          RewriteCond %{REQUEST_FILENAME} -d
-          RewriteRule ^(.*)/$ $1/index.html [L]
-          EOF
+      - name: Copy Apache rules for Quartz (no .html)
+        run: cp scripts/apache-quartz.htaccess site/public/.htaccess
 
       - name: Install lftp
         run: sudo apt-get update && sudo apt-get install -y lftp

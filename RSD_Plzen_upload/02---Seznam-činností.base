@@ -1,0 +1,83 @@
+filters:
+  or:
+    - file.inFolder("03_Oblasti správy informací")
+formulas:
+  Bez názvu: ""
+  dilci_cinnost: if(typ == "dilci_cinnost", title, "")
+properties:
+  typ:
+    displayName: Úroveň
+  procesni_oblast:
+    displayName: Metadata procesní oblasti
+  cinnost:
+    displayName: Činnost
+  formula.dilci_cinnost:
+    displayName: Dílčí činnost
+  oznaceni:
+    displayName: Označení
+  popis:
+    displayName: Popis
+  zdroj:
+    displayName: Zdroj
+  R - Odpovědnost za provádění činnosti:
+    displayName: R - Odpovědnost za provádění činnosti
+  A - Právní odpovědnost za dokončení činnosti:
+    displayName: A - Právní odpovědnost za dokončení činnosti
+  C - Konzultace v průběhu činnosti:
+    displayName: C - Konzultace v průběhu činnosti
+  I - Informování po dokončení činnosti:
+    displayName: I - Informování po dokončení činnosti
+views:
+  - type: table
+    name: Všechny dílčí činnosti
+    filters:
+      and:
+        - typ == "dilci_cinnost"
+    order:
+      - procesni_oblast
+      - cinnost
+      - formula.dilci_cinnost
+      - oznaceni
+      - popis
+      - R - Odpovědnost za provádění činnosti
+      - A - Právní odpovědnost za dokončení činnosti
+      - C - Konzultace v průběhu činnosti
+      - I - Informování po dokončení činnosti
+      - faze
+      - zdroj
+      - stav
+    sort:
+      - property: procesni_oblast
+        direction: ASC
+      - property: cinnost
+        direction: ASC
+      - property: oznaceni
+        direction: ASC
+    columnSize:
+      note.procesni_oblast: 320
+      note.cinnost: 400
+      formula.dilci_cinnost: 380
+      note.oznaceni: 262
+      note.popis: 300
+      note.R - Odpovědnost za provádění činnosti: 457
+      note.A - Právní odpovědnost za dokončení činnosti: 486
+      note.C - Konzultace v průběhu činnosti: 254
+      note.faze: 303
+  - type: table
+    name: Procesní oblasti činností
+    filters:
+      and:
+        - typ == "procesni_oblast"
+    order:
+      - oznaceni
+      - file.name
+      - faze
+    sort:
+      - property: procesni_oblast
+        direction: ASC
+    columnSize:
+      note.oznaceni: 107
+      file.name: 383
+      note.typ: 350
+      note.procesni_oblast: 380
+      note.cinnost: 360
