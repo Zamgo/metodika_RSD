@@ -235,20 +235,6 @@ tr.quartz-oblast-group-row[data-collapsed="true"] .quartz-oblast-group-chevron {
   }
 }
 
-.quartz-oblast-group-count {
-  flex-shrink: 0;
-  display: inline-block;
-  min-width: 1.5rem;
-  padding: 0.1rem 0.45rem;
-  border-radius: 999px;
-  background: var(--light);
-  border: 1px solid var(--lightgray);
-  color: var(--darkgray);
-  font-size: 0.78rem;
-  font-weight: 600;
-  text-align: center;
-}
-
 tr.quartz-oblast-detail-row > td:first-child {
   padding-left: calc(0.35rem + var(--quartz-oblast-detail-depth, 1) * 1rem);
 }
