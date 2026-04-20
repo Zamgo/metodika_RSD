@@ -518,54 +518,68 @@
     background: color-mix(in srgb, var(--secondary) 2%, var(--lightgray));
   }
 
-  tr.cinnosti-group-row > td {
+  tr.cinnosti-group-row > td.cinnosti-group-cell {
     padding: 0;
     border-color: var(--lightgray);
-    /* Odsazení dle hloubky (vnořené skupiny). */
-    padding-left: calc(var(--cinnosti-group-depth, 0) * 1.25rem);
+    cursor: pointer;
+
+    &:hover {
+      background: color-mix(in srgb, var(--secondary) 10%, transparent);
+    }
+  }
+
+  .cinnosti-group-cell-inner {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    padding: 0.5rem 0.75rem 0.5rem
+      calc(0.6rem + var(--cinnosti-group-depth, 0) * 1.25rem);
   }
 
   .cinnosti-group-toggle {
-    display: flex;
+    display: inline-flex;
     align-items: center;
-    gap: 0.55rem;
-    width: 100%;
-    padding: 0.5rem 0.75rem;
-    background: transparent;
-    border: none;
-    text-align: left;
+    justify-content: center;
+    flex-shrink: 0;
+    width: 1.6rem;
+    height: 1.6rem;
+    padding: 0;
+    border-radius: 999px;
+    border: 1px solid color-mix(in srgb, var(--secondary) 35%, var(--lightgray));
+    background: var(--light);
+    color: var(--secondary);
     cursor: pointer;
-    font: inherit;
-    font-size: 0.9rem;
-    color: var(--dark);
+    transition: background 0.12s, border-color 0.12s, transform 0.12s;
 
     &:hover {
-      background: color-mix(in srgb, var(--secondary) 14%, transparent);
+      background: color-mix(in srgb, var(--secondary) 18%, var(--light));
+      border-color: var(--secondary);
+      transform: scale(1.08);
     }
 
     &:focus-visible {
       outline: 2px solid var(--secondary);
-      outline-offset: -2px;
+      outline-offset: 2px;
     }
   }
 
   .cinnosti-group-chevron {
-    display: inline-block;
-    flex-shrink: 0;
-    transition: transform 0.15s ease;
-    color: var(--darkgray);
-    font-size: 0.9em;
-    line-height: 1;
+    display: block;
+    transition: transform 0.18s ease;
   }
 
   tr.cinnosti-group-row[data-collapsed="true"] .cinnosti-group-chevron {
     transform: rotate(-90deg);
   }
 
-  .cinnosti-group-label {
+  .cinnosti-group-info {
     flex: 1;
     min-width: 0;
-    word-break: break-word;
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 0.35rem 0.5rem;
+    font-size: 0.92rem;
   }
 
   .cinnosti-group-col-label {
@@ -573,11 +587,26 @@
     font-weight: 500;
   }
 
+  .cinnosti-group-value {
+    word-break: break-word;
+    font-weight: 600;
+
+    a.internal {
+      color: var(--secondary);
+      text-decoration: none;
+      border-bottom: 1px dotted color-mix(in srgb, var(--secondary) 60%, transparent);
+
+      &:hover {
+        border-bottom-color: var(--secondary);
+      }
+    }
+  }
+
   .cinnosti-group-count {
     flex-shrink: 0;
     display: inline-block;
     min-width: 1.5rem;
-    padding: 0.1rem 0.4rem;
+    padding: 0.1rem 0.45rem;
     border-radius: 999px;
     background: var(--light);
     border: 1px solid var(--lightgray);

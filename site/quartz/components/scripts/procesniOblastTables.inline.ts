@@ -312,6 +312,20 @@ function countLeaves<T>(n: RowGroupNode<T>): number {
   return 0
 }
 
+function renderOblastGroupValueHtml(
+  label: string,
+  empty: boolean,
+  currentSlug: FullSlug,
+  resolve: ReturnType<typeof createNoteSlugResolver>,
+): string {
+  if (empty) return escapeHtml(label)
+  const resolved = resolve(label)
+  if (resolved) {
+    return `<a class="internal" href="${escapeHtml(noteHref(currentSlug, resolved as FullSlug))}">${escapeHtml(label)}</a>`
+  }
+  return escapeHtml(label)
+}
+
 function emitGroupNodesHtml(
   nodes: RowGroupNode<Row & { __cells: string[] }>[],
   visibleIdx: number[],
@@ -319,6 +333,8 @@ function emitGroupNodesHtml(
   columns: OblastColumn[],
   collapsed: Set<string>,
   parentHidden: boolean,
+  currentSlug: FullSlug,
+  resolve: ReturnType<typeof createNoteSlugResolver>,
 ): string {
   let html = ""
   for (const node of nodes) {
@@ -329,7 +345,8 @@ function emitGroupNodesHtml(
     const ariaExp = isCollapsed ? "false" : "true"
     const groupLabel = labelForField(columns, node.col)
     const count = countLeaves(node)
-    html += `<tr class="quartz-oblast-group-row" data-group="${escapeHtml(node.id)}" data-depth="${node.depth}"${collapsedAttr}${hideStyle}><td colspan="${colspan}" style="--quartz-oblast-group-depth:${node.depth}"><button type="button" class="quartz-oblast-group-toggle" aria-expanded="${ariaExp}"><span class="quartz-oblast-group-chevron" aria-hidden="true">▾</span><span class="quartz-oblast-group-label"><span class="quartz-oblast-group-col-label">${escapeHtml(groupLabel)}:</span> <strong>${escapeHtml(node.label)}</strong></span><span class="quartz-oblast-group-count">${count}</span></button></td></tr>`
+    const valueHtml = renderOblastGroupValueHtml(node.label, node.empty, currentSlug, resolve)
+    html += `<tr class="quartz-oblast-group-row" data-group="${escapeHtml(node.id)}" data-depth="${node.depth}"${collapsedAttr}${hideStyle}><td colspan="${colspan}" class="quartz-oblast-group-cell" style="--quartz-oblast-group-depth:${node.depth}"><span class="quartz-oblast-group-cell-inner"><button type="button" class="quartz-oblast-group-toggle" aria-expanded="${ariaExp}" aria-label="Rozbalit nebo sbalit skupinu"><svg class="quartz-oblast-group-chevron" viewBox="0 0 20 20" width="14" height="14" aria-hidden="true"><path d="M5 7.5l5 5 5-5" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg></button><span class="quartz-oblast-group-info"><span class="quartz-oblast-group-col-label">${escapeHtml(groupLabel)}:</span> <strong class="quartz-oblast-group-value">${valueHtml}</strong><span class="quartz-oblast-group-count">${count}</span></span></span></td></tr>`
 
     const childHidden = hiddenByParent || isCollapsed
 
@@ -353,6 +370,8 @@ function emitGroupNodesHtml(
         columns,
         collapsed,
         childHidden,
+        currentSlug,
+        resolve,
       )
     }
   }
@@ -366,13 +385,24 @@ function renderTableWithGroups(
   groupBy: string[],
   columns: OblastColumn[],
   collapsed: Set<string>,
+  currentSlug: FullSlug,
+  resolve: ReturnType<typeof createNoteSlugResolver>,
 ): string {
   const tree = groupRowsNested(
     rows.map((r) => ({ ...r.row, __cells: r.cells })),
     groupBy,
   )
   const thr = visibleIdx.map((i) => `<th>${escapeHtml(headers[i])}</th>`).join("")
-  const body = emitGroupNodesHtml(tree, visibleIdx, visibleIdx.length, columns, collapsed, false)
+  const body = emitGroupNodesHtml(
+    tree,
+    visibleIdx,
+    visibleIdx.length,
+    columns,
+    collapsed,
+    false,
+    currentSlug,
+    resolve,
+  )
   return `<div class="quartz-oblast-table-wrap"><table class="quartz-oblast-table"><thead><tr>${thr}</tr></thead><tbody>${body}</tbody></table></div>`
 }
 
@@ -462,7 +492,16 @@ async function fillTables(slug: FullSlug) {
         const collapsed = loadCollapsed(slug, hostIdx, groupBy)
         host.innerHTML =
           toolbar +
-          renderTableWithGroups(headers, vIdx, renderRows, groupBy, config.columns, collapsed)
+          renderTableWithGroups(
+            headers,
+            vIdx,
+            renderRows,
+            groupBy,
+            config.columns,
+            collapsed,
+            slug,
+            resolve,
+          )
       }
       attachTablePopovers(host)
     }
@@ -522,9 +561,9 @@ async function fillTables(slug: FullSlug) {
         return
       }
 
-      const toggle = target.closest(".quartz-oblast-group-toggle") as HTMLElement | null
-      if (!toggle) return
-      const tr = toggle.closest("tr.quartz-oblast-group-row") as HTMLElement | null
+      // Klikateľný odkaz má prednosť — nezakrývame ho togglom.
+      if (target.closest("a")) return
+      const tr = target.closest("tr.quartz-oblast-group-row") as HTMLElement | null
       if (!tr) return
       const gid = tr.dataset.group
       if (!gid) return

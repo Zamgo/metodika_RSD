@@ -699,6 +699,15 @@ async function setupCinnosti(root: HTMLElement, currentSlug: FullSlug, data: Cin
     return 0
   }
 
+  function renderGroupValueHtml(label: string, empty: boolean): string {
+    if (empty) return escapeHtml(label)
+    const resolved = resolveNote(label)
+    if (resolved) {
+      return `<a class="internal" href="${escapeHtml(resolveUrl(resolved))}">${escapeHtml(label)}</a>`
+    }
+    return escapeHtml(label)
+  }
+
   function emitGroupNodes(nodes: RowGroupNode<Row>[], cols: string[], parentHidden: boolean) {
     for (const node of nodes) {
       const isCollapsed = collapsedGroups.has(node.id)
@@ -710,7 +719,8 @@ async function setupCinnosti(root: HTMLElement, currentSlug: FullSlug, data: Cin
       if (parentHidden) headerTr.style.display = "none"
       const groupColLabel = getColLabel(node.col)
       const count = countLeafRows(node)
-      headerTr.innerHTML = `<td colspan="${cols.length}" style="--cinnosti-group-depth:${node.depth}"><button type="button" class="cinnosti-group-toggle" aria-expanded="${isCollapsed ? "false" : "true"}"><span class="cinnosti-group-chevron" aria-hidden="true">▾</span><span class="cinnosti-group-label"><span class="cinnosti-group-col-label">${escapeHtml(groupColLabel)}:</span> <strong>${escapeHtml(node.label)}</strong></span><span class="cinnosti-group-count">${count}</span></button></td>`
+      const valueHtml = renderGroupValueHtml(node.label, node.empty)
+      headerTr.innerHTML = `<td colspan="${cols.length}" class="cinnosti-group-cell" style="--cinnosti-group-depth:${node.depth}"><span class="cinnosti-group-cell-inner"><button type="button" class="cinnosti-group-toggle" aria-expanded="${isCollapsed ? "false" : "true"}" aria-label="Rozbalit nebo sbalit skupinu"><svg class="cinnosti-group-chevron" viewBox="0 0 20 20" width="14" height="14" aria-hidden="true"><path d="M5 7.5l5 5 5-5" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg></button><span class="cinnosti-group-info"><span class="cinnosti-group-col-label">${escapeHtml(groupColLabel)}:</span> <strong class="cinnosti-group-value">${valueHtml}</strong><span class="cinnosti-group-count">${count}</span></span></span></td>`
       tbody.appendChild(headerTr)
 
       const childrenHidden = parentHidden || isCollapsed
@@ -1101,9 +1111,9 @@ async function setupCinnosti(root: HTMLElement, currentSlug: FullSlug, data: Cin
 
   const onTbodyClick = (e: Event) => {
     const target = e.target as HTMLElement
-    const btn = target.closest(".cinnosti-group-toggle") as HTMLElement | null
-    if (!btn) return
-    const tr = btn.closest("tr.cinnosti-group-row") as HTMLElement | null
+    // Klikateľný odkaz v labeli skupiny má prednosť — nezakrývame ho togglom.
+    if (target.closest("a")) return
+    const tr = target.closest("tr.cinnosti-group-row") as HTMLElement | null
     if (!tr) return
     const gid = tr.dataset.group
     if (!gid) return
