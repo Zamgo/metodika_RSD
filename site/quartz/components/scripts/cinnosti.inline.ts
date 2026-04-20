@@ -693,19 +693,17 @@ async function setupCinnosti(root: HTMLElement, currentSlug: FullSlug, data: Cin
     emitGroupNodes(tree, cols, false)
   }
 
-  function countLeafRows(node: RowGroupNode<Row>): number {
-    if (node.rows) return node.rows.length
-    if (node.children) return node.children.reduce((sum, c) => sum + countLeafRows(c), 0)
-    return 0
-  }
-
-  function renderGroupValueHtml(label: string, empty: boolean): string {
-    if (empty) return escapeHtml(label)
-    const resolved = resolveNote(label)
-    if (resolved) {
-      return `<a class="internal" href="${escapeHtml(resolveUrl(resolved))}">${escapeHtml(label)}</a>`
+  function renderGroupValueHtml(node: RowGroupNode<Row>): string {
+    if (node.empty) return escapeHtml(node.label)
+    const raw = getMetaString(node.sampleRow.meta, node.col)
+    if (raw.includes("[[")) {
+      return metaStringToTableHtml(raw, currentSlug, resolveNote)
     }
-    return escapeHtml(label)
+    const resolved = resolveNote(node.label)
+    if (resolved) {
+      return `<a class="internal" href="${escapeHtml(resolveUrl(resolved))}">${escapeHtml(node.label)}</a>`
+    }
+    return escapeHtml(node.label)
   }
 
   function emitGroupNodes(nodes: RowGroupNode<Row>[], cols: string[], parentHidden: boolean) {
@@ -718,9 +716,8 @@ async function setupCinnosti(root: HTMLElement, currentSlug: FullSlug, data: Cin
       if (isCollapsed) headerTr.dataset.collapsed = "true"
       if (parentHidden) headerTr.style.display = "none"
       const groupColLabel = getColLabel(node.col)
-      const count = countLeafRows(node)
-      const valueHtml = renderGroupValueHtml(node.label, node.empty)
-      headerTr.innerHTML = `<td colspan="${cols.length}" class="cinnosti-group-cell" style="--cinnosti-group-depth:${node.depth}"><span class="cinnosti-group-cell-inner"><button type="button" class="cinnosti-group-toggle" aria-expanded="${isCollapsed ? "false" : "true"}" aria-label="Rozbalit nebo sbalit skupinu"><svg class="cinnosti-group-chevron" viewBox="0 0 20 20" width="14" height="14" aria-hidden="true"><path d="M5 7.5l5 5 5-5" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg></button><span class="cinnosti-group-info"><span class="cinnosti-group-col-label">${escapeHtml(groupColLabel)}:</span> <strong class="cinnosti-group-value">${valueHtml}</strong><span class="cinnosti-group-count">${count}</span></span></span></td>`
+      const valueHtml = renderGroupValueHtml(node)
+      headerTr.innerHTML = `<td colspan="${cols.length}" class="cinnosti-group-cell" style="--cinnosti-group-depth:${node.depth}"><span class="cinnosti-group-cell-inner"><button type="button" class="cinnosti-group-toggle" aria-expanded="${isCollapsed ? "false" : "true"}" aria-label="Rozbalit nebo sbalit skupinu"><svg class="cinnosti-group-chevron" viewBox="0 0 20 20" width="14" height="14" aria-hidden="true"><path d="M5 7.5l5 5 5-5" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg></button><span class="cinnosti-group-info"><span class="cinnosti-group-col-label">${escapeHtml(groupColLabel)}:</span> <strong class="cinnosti-group-value">${valueHtml}</strong></span></span></td>`
       tbody.appendChild(headerTr)
 
       const childrenHidden = parentHidden || isCollapsed

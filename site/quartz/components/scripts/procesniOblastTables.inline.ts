@@ -306,24 +306,21 @@ function renderTableNoGroup(
   return `<div class="quartz-oblast-table-wrap"><table class="quartz-oblast-table"><thead><tr>${thr}</tr></thead><tbody>${trs}</tbody></table></div>`
 }
 
-function countLeaves<T>(n: RowGroupNode<T>): number {
-  if (n.rows) return n.rows.length
-  if (n.children) return n.children.reduce((s, c) => s + countLeaves(c), 0)
-  return 0
-}
-
 function renderOblastGroupValueHtml(
-  label: string,
-  empty: boolean,
+  node: RowGroupNode<Row & { __cells: string[] }>,
   currentSlug: FullSlug,
   resolve: ReturnType<typeof createNoteSlugResolver>,
 ): string {
-  if (empty) return escapeHtml(label)
-  const resolved = resolve(label)
-  if (resolved) {
-    return `<a class="internal" href="${escapeHtml(noteHref(currentSlug, resolved as FullSlug))}">${escapeHtml(label)}</a>`
+  if (node.empty) return escapeHtml(node.label)
+  const raw = getMetaString(node.sampleRow.meta, node.col)
+  if (raw.includes("[[")) {
+    return metaStringToTableHtml(raw, currentSlug, resolve)
   }
-  return escapeHtml(label)
+  const resolved = resolve(node.label)
+  if (resolved) {
+    return `<a class="internal" href="${escapeHtml(noteHref(currentSlug, resolved as FullSlug))}">${escapeHtml(node.label)}</a>`
+  }
+  return escapeHtml(node.label)
 }
 
 function emitGroupNodesHtml(
@@ -344,9 +341,8 @@ function emitGroupNodesHtml(
     const hideStyle = hiddenByParent ? ` style="display:none"` : ""
     const ariaExp = isCollapsed ? "false" : "true"
     const groupLabel = labelForField(columns, node.col)
-    const count = countLeaves(node)
-    const valueHtml = renderOblastGroupValueHtml(node.label, node.empty, currentSlug, resolve)
-    html += `<tr class="quartz-oblast-group-row" data-group="${escapeHtml(node.id)}" data-depth="${node.depth}"${collapsedAttr}${hideStyle}><td colspan="${colspan}" class="quartz-oblast-group-cell" style="--quartz-oblast-group-depth:${node.depth}"><span class="quartz-oblast-group-cell-inner"><button type="button" class="quartz-oblast-group-toggle" aria-expanded="${ariaExp}" aria-label="Rozbalit nebo sbalit skupinu"><svg class="quartz-oblast-group-chevron" viewBox="0 0 20 20" width="14" height="14" aria-hidden="true"><path d="M5 7.5l5 5 5-5" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg></button><span class="quartz-oblast-group-info"><span class="quartz-oblast-group-col-label">${escapeHtml(groupLabel)}:</span> <strong class="quartz-oblast-group-value">${valueHtml}</strong><span class="quartz-oblast-group-count">${count}</span></span></span></td></tr>`
+    const valueHtml = renderOblastGroupValueHtml(node, currentSlug, resolve)
+    html += `<tr class="quartz-oblast-group-row" data-group="${escapeHtml(node.id)}" data-depth="${node.depth}"${collapsedAttr}${hideStyle}><td colspan="${colspan}" class="quartz-oblast-group-cell" style="--quartz-oblast-group-depth:${node.depth}"><span class="quartz-oblast-group-cell-inner"><button type="button" class="quartz-oblast-group-toggle" aria-expanded="${ariaExp}" aria-label="Rozbalit nebo sbalit skupinu"><svg class="quartz-oblast-group-chevron" viewBox="0 0 20 20" width="14" height="14" aria-hidden="true"><path d="M5 7.5l5 5 5-5" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg></button><span class="quartz-oblast-group-info"><span class="quartz-oblast-group-col-label">${escapeHtml(groupLabel)}:</span> <strong class="quartz-oblast-group-value">${valueHtml}</strong></span></span></td></tr>`
 
     const childHidden = hiddenByParent || isCollapsed
 

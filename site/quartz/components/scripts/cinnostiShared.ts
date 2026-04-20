@@ -161,6 +161,8 @@ export type RowGroupNode<T> = {
   empty: boolean
   /** 0-indexovaná hloubka (0 = kořenová skupina). */
   depth: number
+  /** První řádek dané skupiny pro případné odvození raw metadata hodnoty. */
+  sampleRow: T
   rows?: T[]
   children?: RowGroupNode<T>[]
 }
@@ -188,6 +190,7 @@ export function groupRowsNested<T extends { meta?: Record<string, unknown>; titl
         col: first,
         empty: g.empty,
         depth,
+        sampleRow: g.rows[0]!,
         rows: g.rows,
       }
     }
@@ -197,6 +200,7 @@ export function groupRowsNested<T extends { meta?: Record<string, unknown>; titl
       col: first,
       empty: g.empty,
       depth,
+      sampleRow: g.rows[0]!,
       children: groupRowsNested(g.rows, rest, depth + 1, id),
     }
   })
