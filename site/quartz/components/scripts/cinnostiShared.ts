@@ -206,6 +206,26 @@ export function groupRowsNested<T extends { meta?: Record<string, unknown>; titl
   })
 }
 
+/**
+ * Pojmenovaný pohled (view) pro tabulku činností.
+ * - `base` = pohled definovaný v `.base` souboru (read-only, id = `base:<name>`)
+ * - `preset` = shipped read-only doporučený pohled (id = `preset:<slug>`)
+ * - `user` = uživatelem uložený pohled (id = `user:<uuid>`)
+ */
+export type SavedView = {
+  id: string
+  name: string
+  kind: "base" | "preset" | "user"
+  /** Název `.base` view, z níž pohled dědí filtry a pořadí sloupců. */
+  baseView: string
+  groupBy: string[]
+  hiddenCols: string[]
+  colOrder?: string[]
+  colWidths?: Record<string, number>
+  sort?: { col: string; dir: "asc" | "desc" } | null
+  schemaVersion: 1
+}
+
 function normalizeWikiPathPart(s: string): string {
   return s
     .trim()

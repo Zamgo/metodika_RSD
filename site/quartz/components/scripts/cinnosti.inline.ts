@@ -14,6 +14,7 @@ import {
   metaStringToTableHtml,
   plainTextFromWikiMeta,
   RowGroupNode,
+  SavedView,
   sortKeyForRow,
 } from "./cinnostiShared"
 
@@ -22,6 +23,9 @@ const LS_ORDER = "cinnosti-col-order:"
 const LS_WIDTHS = "cinnosti-col-widths:"
 const LS_GROUP_BY = "cinnosti-group-by:"
 const LS_GROUP_COLLAPSED = "cinnosti-group-collapsed:"
+const LS_USER_VIEWS = "cinnosti-user-views:"
+const LS_ACTIVE_VIEW = "cinnosti-active-view:"
+const LS_MIGRATED = "cinnosti-migrated-v1:"
 
 /** Hardcoded fallback groupingy podle jména view (případně data-cinnosti-ls-id). */
 const DEFAULT_GROUP_BY_BY_VIEW: Record<string, string> = {
@@ -32,6 +36,52 @@ const DEFAULT_GROUP_BY_BY_VIEW: Record<string, string> = {
 const DEFAULT_GROUP_BY_BY_SCOPE: Record<string, string> = {
   cinnosti: "procesni_oblast",
   "cde-workflow": "typ",
+}
+
+/** Shipped (read-only) "Doporučené" pohledy pro scope `cinnosti`. */
+const PRESET_VIEWS_CINNOSTI: SavedView[] = [
+  {
+    id: "preset:zrychleny-prehled",
+    name: "Zrychlený přehled (RACI)",
+    kind: "preset",
+    baseView: "Všechny dílčí činnosti",
+    groupBy: ["procesni_oblast"],
+    hiddenCols: ["popis", "zdroj", "stav", "procesni_oblast"],
+    schemaVersion: 1,
+  },
+]
+
+function generateViewId(): string {
+  const rnd = Math.random().toString(36).slice(2, 10)
+  const t = Date.now().toString(36)
+  return `user:${t}-${rnd}`
+}
+
+function encodeStateParam(obj: unknown): string {
+  try {
+    const json = JSON.stringify(obj)
+    const b64 =
+      typeof btoa === "function"
+        ? btoa(unescape(encodeURIComponent(json)))
+        : Buffer.from(json, "utf8").toString("base64")
+    return b64.replace(/\+/g, "-").replace(/\//g, "_").replace(/=+$/, "")
+  } catch {
+    return ""
+  }
+}
+
+function decodeStateParam(s: string): unknown | null {
+  try {
+    const b64 = s.replace(/-/g, "+").replace(/_/g, "/")
+    const pad = b64.length % 4 === 0 ? "" : "=".repeat(4 - (b64.length % 4))
+    const raw =
+      typeof atob === "function"
+        ? decodeURIComponent(escape(atob(b64 + pad)))
+        : Buffer.from(b64 + pad, "base64").toString("utf8")
+    return JSON.parse(raw)
+  } catch {
+    return null
+  }
 }
 
 type BaseConfig = {
@@ -371,6 +421,118 @@ async function setupCinnosti(root: HTMLElement, currentSlug: FullSlug, data: Cin
     return cols.length > 0 ? cols : fallbackView.order!
   }
 
+  // ── Views system ─────────────────────────────────────────────────────
+
+  const viewsUiEnabled = lsScope === "cinnosti"
+  const presetViews: SavedView[] = viewsUiEnabled ? PRESET_VIEWS_CINNOSTI.slice() : []
+
+  function buildBaseSavedViews(): SavedView[] {
+    return views.map((v) => ({
+      id: `base:${v.name ?? "default"}`,
+      name: v.name ?? "default",
+      kind: "base" as const,
+      baseView: v.name ?? "default",
+      groupBy: [],
+      hiddenCols: [],
+      schemaVersion: 1 as const,
+    }))
+  }
+
+  let baseViews: SavedView[] = buildBaseSavedViews()
+  let userViews: SavedView[] = []
+  let activeViewId: string = baseViews[0]?.id ?? "base:default"
+
+  function loadUserViews(): SavedView[] {
+    if (!viewsUiEnabled) return []
+    try {
+      const raw = localStorage.getItem(LS_USER_VIEWS + lsScope)
+      if (!raw) return []
+      const parsed = JSON.parse(raw)
+      if (!Array.isArray(parsed)) return []
+      return parsed.filter(
+        (v: unknown): v is SavedView =>
+          !!v && typeof v === "object" && typeof (v as SavedView).id === "string",
+      )
+    } catch {
+      return []
+    }
+  }
+  function saveUserViews() {
+    if (!viewsUiEnabled) return
+    try {
+      localStorage.setItem(LS_USER_VIEWS + lsScope, JSON.stringify(userViews))
+    } catch {}
+  }
+
+  function listAllViews(): SavedView[] {
+    return [...baseViews, ...presetViews, ...userViews]
+  }
+
+  function findViewById(id: string): SavedView | null {
+    return listAllViews().find((v) => v.id === id) ?? null
+  }
+
+  function getActiveSavedView(): SavedView {
+    return (
+      findViewById(activeViewId) ??
+      baseViews[0] ?? {
+        id: "base:default",
+        name: "default",
+        kind: "base",
+        baseView: "default",
+        groupBy: [],
+        hiddenCols: [],
+        schemaVersion: 1,
+      }
+    )
+  }
+
+  function getActiveBaseView(): BaseView {
+    const sv = getActiveSavedView()
+    const idx = views.findIndex((v) => v.name === sv.baseView)
+    if (idx >= 0) {
+      activeViewIdx = idx
+      return views[idx]
+    }
+    activeViewIdx = 0
+    return views[0]
+  }
+
+  /** Jednorazová migrace starých LS klíčů pojmenovaných pouze dle base view name. */
+  function migrateLegacyKeys() {
+    if (!viewsUiEnabled) return
+    const marker = LS_MIGRATED + lsScope
+    try {
+      if (localStorage.getItem(marker)) return
+      for (const bv of baseViews) {
+        const legacyName = bv.baseView
+        const newId = bv.id
+        const keys = [LS_HIDDEN, LS_ORDER, LS_WIDTHS, LS_GROUP_BY]
+        for (const k of keys) {
+          const legacy = lsScope + ":" + k + legacyName
+          const next = lsScope + ":" + k + newId
+          const v = localStorage.getItem(legacy)
+          if (v != null && localStorage.getItem(next) == null) {
+            localStorage.setItem(next, v)
+          }
+        }
+        const prefix = lsScope + ":" + LS_GROUP_COLLAPSED + legacyName + ":"
+        const nextPrefix = lsScope + ":" + LS_GROUP_COLLAPSED + newId + ":"
+        for (let i = 0; i < localStorage.length; i++) {
+          const key = localStorage.key(i)
+          if (!key || !key.startsWith(prefix)) continue
+          const suffix = key.slice(prefix.length)
+          const nextKey = nextPrefix + suffix
+          if (localStorage.getItem(nextKey) == null) {
+            const v = localStorage.getItem(key)
+            if (v != null) localStorage.setItem(nextKey, v)
+          }
+        }
+      }
+      localStorage.setItem(marker, "1")
+    } catch {}
+  }
+
   // ── State ────────────────────────────────────────────────────────────
   let sortState: SortState = null
   let hiddenCols = new Set<string>()
@@ -383,6 +545,7 @@ async function setupCinnosti(root: HTMLElement, currentSlug: FullSlug, data: Cin
   let collapsedGroups = new Set<string>()
 
   function viewKey(): string {
+    if (viewsUiEnabled) return activeViewId
     return views[activeViewIdx]?.name ?? "default"
   }
 
@@ -403,9 +566,18 @@ async function setupCinnosti(root: HTMLElement, currentSlug: FullSlug, data: Cin
   }
 
   function loadHiddenCols() {
+    const sv = viewsUiEnabled ? getActiveSavedView() : null
     try {
       const raw = localStorage.getItem(lsScope + ":" + LS_HIDDEN + viewKey())
-      hiddenCols = raw ? new Set(JSON.parse(raw)) : new Set()
+      if (raw !== null) {
+        hiddenCols = new Set(JSON.parse(raw))
+        return
+      }
+      if (sv && sv.kind !== "base" && Array.isArray(sv.hiddenCols)) {
+        hiddenCols = new Set(sv.hiddenCols)
+        return
+      }
+      hiddenCols = new Set()
     } catch {
       hiddenCols = new Set()
     }
@@ -415,23 +587,29 @@ async function setupCinnosti(root: HTMLElement, currentSlug: FullSlug, data: Cin
   }
 
   function loadColumnOrder() {
+    const sv = viewsUiEnabled ? getActiveSavedView() : null
+    const defaults = getDefaultCols(views[activeViewIdx])
+    const defaultSet = new Set(defaults)
     try {
       const raw = localStorage.getItem(lsScope + ":" + LS_ORDER + viewKey())
-      if (raw) {
-        const saved: string[] = JSON.parse(raw)
-        const defaults = getDefaultCols(views[activeViewIdx])
-        const savedSet = new Set(saved)
-        const merged = [...saved]
+      const source =
+        raw != null
+          ? (JSON.parse(raw) as string[])
+          : sv && Array.isArray(sv.colOrder) && sv.colOrder.length > 0
+            ? sv.colOrder
+            : null
+      if (source) {
+        const savedSet = new Set(source)
+        const merged = [...source]
         for (const col of defaults) {
           if (!savedSet.has(col)) merged.push(col)
         }
-        const defaultSet = new Set(defaults)
         columnOrder = merged.filter((c) => defaultSet.has(c))
       } else {
-        columnOrder = [...getDefaultCols(views[activeViewIdx])]
+        columnOrder = [...defaults]
       }
     } catch {
-      columnOrder = [...getDefaultCols(views[activeViewIdx])]
+      columnOrder = [...defaults]
     }
   }
   function saveColumnOrder() {
@@ -439,11 +617,18 @@ async function setupCinnosti(root: HTMLElement, currentSlug: FullSlug, data: Cin
   }
 
   function loadColumnWidths() {
+    const sv = viewsUiEnabled ? getActiveSavedView() : null
     try {
       const raw = localStorage.getItem(lsScope + ":" + LS_WIDTHS + viewKey())
       columnWidths.clear()
-      if (raw) {
-        for (const [k, v] of Object.entries(JSON.parse(raw))) {
+      const source =
+        raw != null
+          ? (JSON.parse(raw) as Record<string, number>)
+          : sv && sv.colWidths
+            ? sv.colWidths
+            : null
+      if (source) {
+        for (const [k, v] of Object.entries(source)) {
           columnWidths.set(k, v as number)
         }
       }
@@ -459,14 +644,19 @@ async function setupCinnosti(root: HTMLElement, currentSlug: FullSlug, data: Cin
   }
 
   function loadGroupBy() {
+    const sv = viewsUiEnabled ? getActiveSavedView() : null
     let fromDefault = false
     try {
       const raw = localStorage.getItem(lsScope + ":" + LS_GROUP_BY + viewKey())
       if (raw === null) {
-        groupBy = defaultGroupByForView(views[activeViewIdx])
-        fromDefault = true
+        if (sv && sv.kind !== "base" && Array.isArray(sv.groupBy)) {
+          groupBy = [...sv.groupBy]
+          fromDefault = true
+        } else {
+          groupBy = defaultGroupByForView(views[activeViewIdx])
+          fromDefault = true
+        }
       } else {
-        // Zpětná kompatibilita: dřívější verze ukládala holý řetězec.
         const parsed = JSON.parse(raw)
         if (Array.isArray(parsed)) {
           groupBy = parsed.filter((x: unknown): x is string => typeof x === "string" && !!x.trim())
@@ -477,7 +667,6 @@ async function setupCinnosti(root: HTMLElement, currentSlug: FullSlug, data: Cin
         }
       }
     } catch {
-      // Mohl se tam nacházet i starý plain string → zkusíme načíst přímo.
       try {
         const raw = localStorage.getItem(lsScope + ":" + LS_GROUP_BY + viewKey())
         groupBy = raw ? [raw] : defaultGroupByForView(views[activeViewIdx])
@@ -487,7 +676,6 @@ async function setupCinnosti(root: HTMLElement, currentSlug: FullSlug, data: Cin
       }
     }
 
-    // Auto-hide sloupců použitých pro default seskupení (jen při prvním načtení view).
     if (fromDefault && groupBy.length > 0) {
       let changed = false
       for (const c of groupBy) {
@@ -497,7 +685,6 @@ async function setupCinnosti(root: HTMLElement, currentSlug: FullSlug, data: Cin
         }
       }
       if (changed) saveHiddenCols()
-      // Uložíme ihned aby se defaultní auto-hide neaplikovalo znovu při dalším načtení.
       saveGroupBy()
     }
   }
@@ -526,11 +713,94 @@ async function setupCinnosti(root: HTMLElement, currentSlug: FullSlug, data: Cin
     )
   }
 
+  // Init views system.
+  migrateLegacyKeys()
+  userViews = loadUserViews()
+
+  function initActiveViewFromEnv() {
+    if (!viewsUiEnabled) {
+      activeViewId = baseViews[0]?.id ?? "base:default"
+      return
+    }
+    try {
+      const url = new URL(location.href)
+      const fromUrl = url.searchParams.get("view")
+      if (fromUrl && findViewById(fromUrl)) {
+        activeViewId = fromUrl
+        return
+      }
+    } catch {}
+    try {
+      const stored = localStorage.getItem(LS_ACTIVE_VIEW + lsScope)
+      if (stored && findViewById(stored)) {
+        activeViewId = stored
+        return
+      }
+    } catch {}
+    activeViewId = baseViews[0]?.id ?? "base:default"
+  }
+  initActiveViewFromEnv()
+  getActiveBaseView()
+
+  function persistActiveViewId() {
+    if (!viewsUiEnabled) return
+    try {
+      localStorage.setItem(LS_ACTIVE_VIEW + lsScope, activeViewId)
+    } catch {}
+    try {
+      const url = new URL(location.href)
+      url.searchParams.set("view", activeViewId)
+      url.searchParams.delete("state")
+      history.replaceState(null, "", url.toString())
+    } catch {}
+  }
+  persistActiveViewId()
+
   loadHiddenCols()
   loadColumnOrder()
   loadColumnWidths()
   loadGroupBy()
   loadCollapsedGroups()
+
+  // Případná podkladová overlay přes ?state= z URL (např. sdílený link).
+  function applyUrlStateOverlay() {
+    if (!viewsUiEnabled) return
+    try {
+      const url = new URL(location.href)
+      const s = url.searchParams.get("state")
+      if (!s) return
+      const decoded = decodeStateParam(s) as
+        | {
+            hiddenCols?: string[]
+            colOrder?: string[]
+            colWidths?: Record<string, number>
+            groupBy?: string[]
+            sort?: { col: string; dir: "asc" | "desc" } | null
+          }
+        | null
+      if (!decoded || typeof decoded !== "object") return
+      if (Array.isArray(decoded.hiddenCols)) hiddenCols = new Set(decoded.hiddenCols)
+      if (Array.isArray(decoded.colOrder) && decoded.colOrder.length > 0) {
+        const defaults = getDefaultCols(views[activeViewIdx])
+        const ds = new Set(defaults)
+        columnOrder = decoded.colOrder.filter((c) => ds.has(c))
+        for (const c of defaults) if (!columnOrder.includes(c)) columnOrder.push(c)
+      }
+      if (decoded.colWidths) {
+        columnWidths.clear()
+        for (const [k, v] of Object.entries(decoded.colWidths)) {
+          if (typeof v === "number") columnWidths.set(k, v)
+        }
+      }
+      if (Array.isArray(decoded.groupBy)) {
+        groupBy = decoded.groupBy.filter((x): x is string => typeof x === "string" && !!x.trim())
+      }
+      if (decoded.sort && typeof decoded.sort === "object") {
+        sortState = decoded.sort
+      }
+    } catch {}
+  }
+  applyUrlStateOverlay()
 
   function getColLabel(col: string): string {
     const fromFm = baseConfig.properties?.[col]?.displayName
@@ -1216,14 +1486,64 @@ async function setupCinnosti(root: HTMLElement, currentSlug: FullSlug, data: Cin
   groupCollapseAllBtn?.addEventListener("click", onCollapseAll)
   window.addCleanup(() => groupCollapseAllBtn?.removeEventListener("click", onCollapseAll))
 
-  viewSelect.innerHTML = views
-    .map(
-      (view, idx) =>
-        `<option value="${idx}">${escapeHtml(view.name ?? `View ${idx + 1}`)}</option>`,
-    )
-    .join("")
+  function populateViewSelect() {
+    if (viewsUiEnabled) {
+      const groupLabels = {
+        base: "Výchozí",
+        preset: "Doporučené",
+        user: "Moje pohledy",
+      } as const
+      const parts: string[] = []
+      const kinds: Array<"base" | "preset" | "user"> = ["base", "preset", "user"]
+      for (const kind of kinds) {
+        const list = listAllViews().filter((v) => v.kind === kind)
+        if (list.length === 0 && kind !== "user") continue
+        parts.push(`<optgroup label="${escapeHtml(groupLabels[kind])}">`)
+        if (list.length === 0) {
+          parts.push(
+            `<option value="" disabled>— zatím žádné uložené —</option>`,
+          )
+        } else {
+          for (const v of list) {
+            const sel = v.id === activeViewId ? " selected" : ""
+            parts.push(
+              `<option value="${escapeHtml(v.id)}"${sel}>${escapeHtml(v.name)}</option>`,
+            )
+          }
+        }
+        parts.push(`</optgroup>`)
+      }
+      viewSelect.innerHTML = parts.join("")
+    } else {
+      viewSelect.innerHTML = views
+        .map(
+          (view, idx) =>
+            `<option value="${idx}">${escapeHtml(view.name ?? `View ${idx + 1}`)}</option>`,
+        )
+        .join("")
+    }
+  }
+  populateViewSelect()
 
   const onViewChange = () => {
+    if (viewsUiEnabled) {
+      const id = viewSelect.value
+      if (!id || !findViewById(id)) return
+      activeViewId = id
+      getActiveBaseView()
+      persistActiveViewId()
+      loadHiddenCols()
+      loadColumnOrder()
+      loadColumnWidths()
+      loadGroupBy()
+      loadCollapsedGroups()
+      sortState = null
+      columnFilters.clear()
+      renderColumnPanel()
+      updateViewActionState()
+      render()
+      return
+    }
     activeViewIdx = Number.parseInt(viewSelect.value || "0", 10) || 0
     loadHiddenCols()
     loadColumnOrder()
@@ -1237,6 +1557,400 @@ async function setupCinnosti(root: HTMLElement, currentSlug: FullSlug, data: Cin
   }
   viewSelect.addEventListener("change", onViewChange)
   window.addCleanup(() => viewSelect.removeEventListener("change", onViewChange))
+
+  // ── Views toolbar actions + modals ──────────────────────────────────
+
+  const viewSaveBtn = root.querySelector(".cinnosti-view-save-btn") as HTMLButtonElement | null
+  const viewResetBtn = root.querySelector(".cinnosti-view-reset-btn") as HTMLButtonElement | null
+  const viewShareBtn = root.querySelector(".cinnosti-view-share-btn") as HTMLButtonElement | null
+  const viewManageBtn = root.querySelector(".cinnosti-view-manage-btn") as HTMLButtonElement | null
+  const modalRoot = root.querySelector("[data-cinnosti-modal-root]") as HTMLElement | null
+  const toastEl = root.querySelector("[data-cinnosti-toast]") as HTMLElement | null
+  const viewActionsContainer = root.querySelector(
+    "[data-cinnosti-views-ui]",
+  ) as HTMLElement | null
+
+  // Scope guard: pro /cde-workflow UI nerenderujeme vůbec.
+  if (!viewsUiEnabled && viewActionsContainer) {
+    viewActionsContainer.style.display = "none"
+  }
+
+  let toastTimer: number | null = null
+  function showToast(msg: string) {
+    if (!toastEl) return
+    toastEl.textContent = msg
+    toastEl.classList.add("visible")
+    if (toastTimer !== null) window.clearTimeout(toastTimer)
+    toastTimer = window.setTimeout(() => {
+      toastEl.classList.remove("visible")
+      toastTimer = null
+    }, 2400)
+  }
+
+  function closeModal() {
+    if (!modalRoot) return
+    modalRoot.innerHTML = ""
+    modalRoot.classList.remove("open")
+  }
+
+  function openModal(html: string) {
+    if (!modalRoot) return
+    modalRoot.innerHTML = `<div class="cinnosti-modal-backdrop"><div class="cinnosti-modal" role="dialog" aria-modal="true">${html}</div></div>`
+    modalRoot.classList.add("open")
+    const backdrop = modalRoot.querySelector(".cinnosti-modal-backdrop") as HTMLElement | null
+    backdrop?.addEventListener("click", (e) => {
+      if (e.target === backdrop) closeModal()
+    })
+    modalRoot.querySelectorAll<HTMLButtonElement>("[data-modal-close]").forEach((b) =>
+      b.addEventListener("click", () => closeModal()),
+    )
+    const first = modalRoot.querySelector(
+      "input, textarea, button",
+    ) as HTMLElement | null
+    first?.focus()
+  }
+
+  function updateViewActionState() {
+    if (!viewsUiEnabled) return
+    const sv = getActiveSavedView()
+    const isReadOnly = sv.kind !== "user"
+    if (viewResetBtn) {
+      viewResetBtn.disabled = false
+      viewResetBtn.title = isReadOnly
+        ? "Obnovit výchozí stav pohledu"
+        : "Obnovit pohled na uložený stav"
+    }
+  }
+
+  function snapshotCurrentState(): Pick<
+    SavedView,
+    "groupBy" | "hiddenCols" | "colOrder" | "colWidths" | "sort"
+  > {
+    return {
+      groupBy: [...groupBy],
+      hiddenCols: [...hiddenCols],
+      colOrder: [...columnOrder],
+      colWidths: Object.fromEntries(columnWidths),
+      sort: sortState ? { col: sortState.col, dir: sortState.dir } : null,
+    }
+  }
+
+  function saveCurrentAsNewView(name: string) {
+    const trimmed = name.trim()
+    if (!trimmed) return
+    const sv = getActiveSavedView()
+    const nv: SavedView = {
+      id: generateViewId(),
+      name: trimmed,
+      kind: "user",
+      baseView: sv.baseView,
+      ...snapshotCurrentState(),
+      schemaVersion: 1,
+    }
+    userViews.push(nv)
+    saveUserViews()
+    activeViewId = nv.id
+    persistActiveViewId()
+    // Reset working overrides — nový pohled má svůj vlastní stav.
+    try {
+      localStorage.removeItem(lsScope + ":" + LS_HIDDEN + nv.id)
+      localStorage.removeItem(lsScope + ":" + LS_ORDER + nv.id)
+      localStorage.removeItem(lsScope + ":" + LS_WIDTHS + nv.id)
+      localStorage.removeItem(lsScope + ":" + LS_GROUP_BY + nv.id)
+    } catch {}
+    loadHiddenCols()
+    loadColumnOrder()
+    loadColumnWidths()
+    loadGroupBy()
+    loadCollapsedGroups()
+    populateViewSelect()
+    renderColumnPanel()
+    updateViewActionState()
+    render()
+    showToast(`Pohled „${nv.name}" uložen`)
+  }
+
+  function deleteUserView(id: string) {
+    const idx = userViews.findIndex((v) => v.id === id)
+    if (idx < 0) return
+    userViews.splice(idx, 1)
+    saveUserViews()
+    try {
+      localStorage.removeItem(lsScope + ":" + LS_HIDDEN + id)
+      localStorage.removeItem(lsScope + ":" + LS_ORDER + id)
+      localStorage.removeItem(lsScope + ":" + LS_WIDTHS + id)
+      localStorage.removeItem(lsScope + ":" + LS_GROUP_BY + id)
+      const cp = lsScope + ":" + LS_GROUP_COLLAPSED + id + ":"
+      for (let i = localStorage.length - 1; i >= 0; i--) {
+        const key = localStorage.key(i)
+        if (key && key.startsWith(cp)) localStorage.removeItem(key)
+      }
+    } catch {}
+    if (activeViewId === id) {
+      activeViewId = baseViews[0]?.id ?? "base:default"
+      persistActiveViewId()
+      getActiveBaseView()
+      loadHiddenCols()
+      loadColumnOrder()
+      loadColumnWidths()
+      loadGroupBy()
+      loadCollapsedGroups()
+      sortState = null
+      columnFilters.clear()
+    }
+    populateViewSelect()
+    renderColumnPanel()
+    updateViewActionState()
+    render()
+  }
+
+  function renameUserView(id: string, name: string) {
+    const v = userViews.find((u) => u.id === id)
+    if (!v) return
+    const trimmed = name.trim()
+    if (!trimmed) return
+    v.name = trimmed
+    saveUserViews()
+    populateViewSelect()
+  }
+
+  function resetCurrentView() {
+    try {
+      localStorage.removeItem(lsScope + ":" + LS_HIDDEN + activeViewId)
+      localStorage.removeItem(lsScope + ":" + LS_ORDER + activeViewId)
+      localStorage.removeItem(lsScope + ":" + LS_WIDTHS + activeViewId)
+      localStorage.removeItem(lsScope + ":" + LS_GROUP_BY + activeViewId)
+      const cp = lsScope + ":" + LS_GROUP_COLLAPSED + activeViewId + ":"
+      for (let i = localStorage.length - 1; i >= 0; i--) {
+        const key = localStorage.key(i)
+        if (key && key.startsWith(cp)) localStorage.removeItem(key)
+      }
+    } catch {}
+    sortState = null
+    columnFilters.clear()
+    loadHiddenCols()
+    loadColumnOrder()
+    loadColumnWidths()
+    loadGroupBy()
+    loadCollapsedGroups()
+    renderColumnPanel()
+    render()
+    showToast("Pohled obnoven do výchozího stavu")
+  }
+
+  function shareCurrentState() {
+    try {
+      const url = new URL(location.href)
+      url.searchParams.set("view", activeViewId)
+      const encoded = encodeStateParam(snapshotCurrentState())
+      if (encoded) url.searchParams.set("state", encoded)
+      else url.searchParams.delete("state")
+      const str = url.toString()
+      if (navigator.clipboard && typeof navigator.clipboard.writeText === "function") {
+        navigator.clipboard.writeText(str).then(
+          () => showToast("Odkaz zkopírován do schránky"),
+          () => {
+            history.replaceState(null, "", str)
+            showToast("Odkaz aktualizován v adresním řádku")
+          },
+        )
+      } else {
+        history.replaceState(null, "", str)
+        showToast("Odkaz aktualizován v adresním řádku")
+      }
+    } catch {}
+  }
+
+  function openSaveAsModal() {
+    const sv = getActiveSavedView()
+    const suggested = sv.kind === "user" ? `${sv.name} (kopie)` : sv.name
+    openModal(`
+      <h3 class="cinnosti-modal-title">Uložit jako pohled</h3>
+      <p class="cinnosti-modal-desc">Pojmenujte pohled. Uloží se aktuální stav (skryté sloupce, seskupení, pořadí, šířky, třídění).</p>
+      <label class="cinnosti-modal-label">
+        <span>Název pohledu</span>
+        <input type="text" class="cinnosti-modal-input" data-modal-name value="${escapeHtml(
+          suggested,
+        )}" />
+      </label>
+      <div class="cinnosti-modal-actions">
+        <button type="button" class="cinnosti-modal-btn" data-modal-close>Zrušit</button>
+        <button type="button" class="cinnosti-modal-btn primary" data-modal-save>Uložit</button>
+      </div>
+    `)
+    if (!modalRoot) return
+    const input = modalRoot.querySelector("[data-modal-name]") as HTMLInputElement | null
+    const saveBtn = modalRoot.querySelector("[data-modal-save]") as HTMLButtonElement | null
+    const submit = () => {
+      const name = input?.value.trim() ?? ""
+      if (!name) {
+        input?.focus()
+        return
+      }
+      closeModal()
+      saveCurrentAsNewView(name)
+    }
+    saveBtn?.addEventListener("click", submit)
+    input?.addEventListener("keydown", (ev) => {
+      if ((ev as KeyboardEvent).key === "Enter") submit()
+    })
+    input?.select()
+  }
+
+  function renderManageViewsList(): string {
+    if (userViews.length === 0) {
+      return `<p class="cinnosti-modal-empty">Zatím žádné uložené pohledy.</p>`
+    }
+    return `
+      <ul class="cinnosti-manage-views-list">
+        ${userViews
+          .map(
+            (v) => `
+          <li data-view-id="${escapeHtml(v.id)}">
+            <span class="cinnosti-manage-views-name" title="${escapeHtml(v.baseView)}">${escapeHtml(
+              v.name,
+            )}</span>
+            <span class="cinnosti-manage-views-actions">
+              <button type="button" data-act="rename" title="Přejmenovat">Přejmenovat</button>
+              <button type="button" data-act="duplicate" title="Duplikovat">Duplikovat</button>
+              <button type="button" data-act="export" title="Exportovat JSON">Export</button>
+              <button type="button" data-act="delete" title="Smazat" class="danger">Smazat</button>
+            </span>
+          </li>`,
+          )
+          .join("")}
+      </ul>
+    `
+  }
+
+  function openManageViewsModal() {
+    openModal(`
+      <h3 class="cinnosti-modal-title">Spravovat pohledy</h3>
+      <div class="cinnosti-manage-views-body">
+        ${renderManageViewsList()}
+      </div>
+      <hr />
+      <details class="cinnosti-modal-import">
+        <summary>Importovat pohled z JSON</summary>
+        <textarea class="cinnosti-modal-textarea" data-modal-import placeholder='{"id":"user:…","name":"…",…}'></textarea>
+        <div class="cinnosti-modal-actions">
+          <button type="button" class="cinnosti-modal-btn" data-modal-import-run>Importovat</button>
+        </div>
+      </details>
+      <div class="cinnosti-modal-actions">
+        <button type="button" class="cinnosti-modal-btn" data-modal-close>Zavřít</button>
+      </div>
+    `)
+    if (!modalRoot) return
+
+    const body = modalRoot.querySelector(".cinnosti-manage-views-body") as HTMLElement | null
+    const refresh = () => {
+      if (body) body.innerHTML = renderManageViewsList()
+      populateViewSelect()
+    }
+
+    modalRoot
+      .querySelector(".cinnosti-manage-views-body")
+      ?.addEventListener("click", (ev) => {
+        const target = ev.target as HTMLElement
+        const btn = target.closest("button[data-act]") as HTMLButtonElement | null
+        if (!btn) return
+        const li = btn.closest("li[data-view-id]") as HTMLElement | null
+        const id = li?.dataset.viewId
+        if (!id) return
+        const v = userViews.find((u) => u.id === id)
+        if (!v) return
+        const act = btn.dataset.act
+        if (act === "rename") {
+          const name = window.prompt("Nový název pohledu:", v.name)
+          if (name && name.trim()) {
+            renameUserView(id, name)
+            refresh()
+          }
+        } else if (act === "duplicate") {
+          const copy: SavedView = {
+            ...v,
+            id: generateViewId(),
+            name: `${v.name} (kopie)`,
+          }
+          userViews.push(copy)
+          saveUserViews()
+          refresh()
+          showToast(`Pohled duplikován jako „${copy.name}"`)
+        } else if (act === "export") {
+          const json = JSON.stringify(v, null, 2)
+          if (navigator.clipboard && typeof navigator.clipboard.writeText === "function") {
+            navigator.clipboard.writeText(json).then(
+              () => showToast("JSON pohledu zkopírován do schránky"),
+              () => showToast("Kopírování selhalo — JSON v konzoli"),
+            )
+          }
+          console.info("[cinnosti] Exportovaný pohled", json)
+        } else if (act === "delete") {
+          if (window.confirm(`Opravdu smazat pohled „${v.name}"?`)) {
+            deleteUserView(id)
+            refresh()
+          }
+        }
+      })
+
+    const importBtn = modalRoot.querySelector(
+      "[data-modal-import-run]",
+    ) as HTMLButtonElement | null
+    const importArea = modalRoot.querySelector(
+      "[data-modal-import]",
+    ) as HTMLTextAreaElement | null
+    importBtn?.addEventListener("click", () => {
+      const raw = importArea?.value?.trim() ?? ""
+      if (!raw) return
+      try {
+        const parsed = JSON.parse(raw) as SavedView
+        if (!parsed || typeof parsed !== "object" || typeof parsed.name !== "string") {
+          throw new Error("Invalid shape")
+        }
+        const nv: SavedView = {
+          ...parsed,
+          id: generateViewId(),
+          kind: "user",
+          schemaVersion: 1,
+        }
+        userViews.push(nv)
+        saveUserViews()
+        if (importArea) importArea.value = ""
+        refresh()
+        showToast(`Pohled „${nv.name}" importován`)
+      } catch {
+        showToast("Import selhal — neplatný JSON")
+      }
+    })
+  }
+
+  viewSaveBtn?.addEventListener("click", () => {
+    if (!viewsUiEnabled) return
+    openSaveAsModal()
+  })
+  viewResetBtn?.addEventListener("click", () => {
+    if (!viewsUiEnabled) return
+    if (window.confirm("Obnovit výchozí stav pohledu? Neuložené úpravy se zahodí.")) {
+      resetCurrentView()
+    }
+  })
+  viewShareBtn?.addEventListener("click", () => {
+    if (!viewsUiEnabled) return
+    shareCurrentState()
+  })
+  viewManageBtn?.addEventListener("click", () => {
+    if (!viewsUiEnabled) return
+    openManageViewsModal()
+  })
+
+  const onEscClose = (e: KeyboardEvent) => {
+    if (e.key === "Escape" && modalRoot?.classList.contains("open")) closeModal()
+  }
+  document.addEventListener("keydown", onEscClose)
+  window.addCleanup(() => document.removeEventListener("keydown", onEscClose))
+
+  updateViewActionState()
 
   const onClear = () => {
     textInput.value = ""

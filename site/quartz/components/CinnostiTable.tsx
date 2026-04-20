@@ -25,11 +25,45 @@ const CinnostiTable: QuartzComponent = ({ cfg }: QuartzComponentProps) => {
           autocomplete="off"
           aria-label={cs ? "Filtrovat podle názvu" : "Filter by title"}
         />
-        <div class="cinnosti-filter">
+        <div class="cinnosti-filter cinnosti-view-filter">
           <label>
             <span>{cs ? "Pohled" : "View"}</span>
             <select class="cinnosti-view-select" aria-label={cs ? "Pohled" : "View"} />
           </label>
+          <div class="cinnosti-view-actions" data-cinnosti-views-ui>
+            <button
+              type="button"
+              class="cinnosti-view-action-btn cinnosti-view-save-btn"
+              title={cs ? "Uložit aktuální stav jako pohled" : "Save current state as view"}
+              aria-label={cs ? "Uložit jako pohled" : "Save as view"}
+            >
+              {cs ? "Uložit jako…" : "Save as…"}
+            </button>
+            <button
+              type="button"
+              class="cinnosti-view-action-btn cinnosti-view-reset-btn"
+              title={cs ? "Obnovit výchozí stav pohledu" : "Reset view to defaults"}
+              aria-label={cs ? "Obnovit výchozí" : "Reset defaults"}
+            >
+              {cs ? "Obnovit" : "Reset"}
+            </button>
+            <button
+              type="button"
+              class="cinnosti-view-action-btn cinnosti-view-share-btn"
+              title={cs ? "Zkopírovat odkaz s aktuálním stavem" : "Copy link with current state"}
+              aria-label={cs ? "Sdílet odkaz" : "Copy share link"}
+            >
+              {cs ? "Sdílet" : "Share"}
+            </button>
+            <button
+              type="button"
+              class="cinnosti-view-action-btn cinnosti-view-manage-btn"
+              title={cs ? "Spravovat pohledy" : "Manage views"}
+              aria-label={cs ? "Spravovat pohledy" : "Manage views"}
+            >
+              {cs ? "Spravovat…" : "Manage…"}
+            </button>
+          </div>
         </div>
         <div class="cinnosti-column-toggle">
           <button type="button" class="cinnosti-column-toggle-btn">
@@ -80,6 +114,8 @@ const CinnostiTable: QuartzComponent = ({ cfg }: QuartzComponentProps) => {
           <tbody class="cinnosti-tbody" />
         </table>
       </div>
+      <div class="cinnosti-modal-root" data-cinnosti-modal-root />
+      <div class="cinnosti-toast" data-cinnosti-toast role="status" aria-live="polite" />
       <script
         class="cinnosti-base-config"
         type="application/x-yaml"

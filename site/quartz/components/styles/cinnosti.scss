@@ -125,10 +125,11 @@
   // ── Table ────────────────────────────────────────────────────────────
 
   .cinnosti-table-scroll {
-    overflow-x: auto;
+    overflow: auto;
     -webkit-overflow-scrolling: touch;
-    /* overflow-x: auto vynutí i vertikální ořez — při prázdném tbody nebo otevřeném filtru
-       by se dropdown pod hlavičkou usekl; min-height zajistí místo pro seznam hodnot. */
+    max-height: calc(100vh - 12rem);
+    /* pri prazdnem tbody nebo otevrenem filtru dropdown by se pod hlavickou usekl;
+       min-height zajisti misto pro seznam hodnot. */
     &:has(.cinnosti-tbody:empty),
     &:has(.cinnosti-col-filter-dropdown.open) {
       min-height: 22rem;
@@ -160,8 +161,11 @@
     min-width: 80px;
     cursor: pointer;
     user-select: none;
-    position: relative;
+    position: sticky;
+    top: 0;
+    z-index: 3;
     overflow: visible;
+    box-shadow: 0 1px 0 var(--lightgray);
 
     &:hover {
       filter: brightness(0.95);
@@ -606,6 +610,264 @@
     /* 1.5rem za první úroveň + 1.25rem za každou další */
     padding-left: calc(0.5rem + var(--cinnosti-detail-depth, 1) * 1rem);
   }
+
+  // ── Views toolbar actions ──────────────────────────────────────────
+
+  .cinnosti-view-filter {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+  }
+
+  .cinnosti-view-actions {
+    display: inline-flex;
+    gap: 0.25rem;
+    align-items: center;
+    flex-wrap: wrap;
+  }
+
+  .cinnosti-view-action-btn {
+    font-size: 0.78rem;
+    padding: 0.25rem 0.55rem;
+    border: 1px solid var(--lightgray);
+    border-radius: 6px;
+    background: var(--light);
+    color: var(--dark);
+    cursor: pointer;
+    line-height: 1.1;
+
+    &:hover:not(:disabled) {
+      background: var(--lightgray);
+    }
+
+    &:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+
+    &.cinnosti-view-save-btn {
+      border-color: color-mix(in srgb, var(--secondary) 40%, transparent);
+      color: var(--secondary);
+
+      &:hover:not(:disabled) {
+        background: color-mix(in srgb, var(--secondary) 12%, transparent);
+      }
+    }
+  }
+
+  // ── Modals ─────────────────────────────────────────────────────────
+
+  .cinnosti-modal-root {
+    &.open {
+      position: fixed;
+      inset: 0;
+      z-index: 1000;
+    }
+  }
+
+  .cinnosti-modal-backdrop {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.4);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 1rem;
+  }
+
+  .cinnosti-modal {
+    background: var(--light);
+    color: var(--dark);
+    border: 1px solid var(--lightgray);
+    border-radius: 10px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
+    width: min(560px, 100%);
+    max-height: 80vh;
+    overflow: auto;
+    padding: 1.25rem 1.5rem;
+
+    hr {
+      border: none;
+      border-top: 1px solid var(--lightgray);
+      margin: 1rem 0;
+    }
+  }
+
+  .cinnosti-modal-title {
+    margin: 0 0 0.5rem 0;
+    font-size: 1.1rem;
+  }
+
+  .cinnosti-modal-desc {
+    margin: 0 0 0.75rem 0;
+    color: var(--darkgray);
+    font-size: 0.88rem;
+  }
+
+  .cinnosti-modal-label {
+    display: flex;
+    flex-direction: column;
+    gap: 0.3rem;
+    margin-bottom: 0.75rem;
+    font-size: 0.88rem;
+
+    span {
+      font-weight: 600;
+    }
+  }
+
+  .cinnosti-modal-input,
+  .cinnosti-modal-textarea {
+    font-size: 0.9rem;
+    padding: 0.45rem 0.6rem;
+    border: 1px solid var(--lightgray);
+    border-radius: 6px;
+    background: var(--light);
+    color: var(--dark);
+    width: 100%;
+    box-sizing: border-box;
+  }
+
+  .cinnosti-modal-textarea {
+    min-height: 6rem;
+    font-family: var(--codeFont, ui-monospace, monospace);
+  }
+
+  .cinnosti-modal-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 0.5rem;
+    margin-top: 0.5rem;
+  }
+
+  .cinnosti-modal-btn {
+    font-size: 0.88rem;
+    padding: 0.4rem 0.9rem;
+    border: 1px solid var(--lightgray);
+    border-radius: 6px;
+    background: var(--light);
+    color: var(--dark);
+    cursor: pointer;
+
+    &:hover {
+      background: var(--lightgray);
+    }
+
+    &.primary {
+      background: var(--secondary);
+      color: var(--light);
+      border-color: var(--secondary);
+
+      &:hover {
+        filter: brightness(1.05);
+      }
+    }
+  }
+
+  .cinnosti-modal-empty {
+    color: var(--darkgray);
+    font-size: 0.88rem;
+    margin: 0.25rem 0 0.75rem 0;
+  }
+
+  .cinnosti-manage-views-list {
+    list-style: none;
+    padding: 0;
+    margin: 0.25rem 0 0.5rem 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+
+    li {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.4rem 0.5rem;
+      border: 1px solid var(--lightgray);
+      border-radius: 6px;
+      background: var(--light);
+    }
+  }
+
+  .cinnosti-manage-views-name {
+    flex: 1;
+    min-width: 0;
+    font-weight: 600;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .cinnosti-manage-views-actions {
+    display: inline-flex;
+    gap: 0.25rem;
+    flex-wrap: wrap;
+
+    button {
+      font-size: 0.78rem;
+      padding: 0.2rem 0.5rem;
+      border: 1px solid var(--lightgray);
+      border-radius: 5px;
+      background: var(--light);
+      color: var(--dark);
+      cursor: pointer;
+
+      &:hover {
+        background: var(--lightgray);
+      }
+
+      &.danger {
+        color: #b00020;
+        border-color: color-mix(in srgb, #b00020 35%, var(--lightgray));
+
+        &:hover {
+          background: color-mix(in srgb, #b00020 12%, transparent);
+        }
+      }
+    }
+  }
+
+  .cinnosti-modal-import {
+    margin: 0.25rem 0;
+
+    summary {
+      cursor: pointer;
+      font-size: 0.88rem;
+      color: var(--darkgray);
+      padding: 0.25rem 0;
+    }
+
+    textarea {
+      margin-top: 0.4rem;
+    }
+  }
+
+  // ── Toast ──────────────────────────────────────────────────────────
+
+  .cinnosti-toast {
+    position: fixed;
+    bottom: 1.5rem;
+    left: 50%;
+    transform: translateX(-50%) translateY(1rem);
+    background: var(--dark);
+    color: var(--light);
+    padding: 0.55rem 1rem;
+    border-radius: 999px;
+    font-size: 0.88rem;
+    opacity: 0;
+    pointer-events: none;
+    transition:
+      opacity 160ms ease,
+      transform 160ms ease;
+    z-index: 1100;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+
+    &.visible {
+      opacity: 1;
+      transform: translateX(-50%) translateY(0);
+    }
+  }
 }
 
 // ── Dark mode overrides ──────────────────────────────────────────────────
@@ -617,4 +879,14 @@
 :root[saved-theme="dark"] .cinnosti-column-toggle-panel,
 :root[saved-theme="dark"] .cinnosti-col-filter-dropdown {
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+:root[saved-theme="dark"] .cinnosti-table-root {
+  .cinnosti-modal-backdrop {
+    background: rgba(0, 0, 0, 0.6);
+  }
+
+  .cinnosti-modal {
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6);
+  }
 }
