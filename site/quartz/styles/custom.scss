@@ -231,7 +231,7 @@ body {
 /* Stejné stránky: zmenšit spodní vnitřní odsazení MD karty (to dělalo největší
    vizuální „díru“ nad RACI blokem) a odstranit extra margin posledního prvku. */
 #quartz-body .center:has([data-raci-backlinks]) > article.popover-hint .article-surface {
-  padding-bottom: 1.1rem;
+  padding-bottom: 0.35rem;
 }
 
 #quartz-body
@@ -239,7 +239,7 @@ body {
   > article.popover-hint
   .article-surface
   > :last-child {
-  margin-bottom: 0;
+  margin-bottom: 0 !important;
 }
 
 /* ─── Left sidebar: Explorer title hidden on desktop ─────────────── */
