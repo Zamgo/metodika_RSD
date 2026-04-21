@@ -40,13 +40,6 @@ function isMetodikaUvodPage(fileData: QuartzPluginData): boolean {
   return fp.endsWith("01_Úvod do metodiky ŘSD Plzeň.md")
 }
 
-/** Stránky s typem role / smluvní strana — chovají se jako běžné MD s metadata panelem,
- *  ale dostávají navíc per-role filtrovanou RACI tabulku pod tělem. */
-function isRolePage(fileData: QuartzPluginData): boolean {
-  const typ = String(fileData.frontmatter?.typ ?? "")
-  return typ === "role" || typ === "smluvni_strana"
-}
-
 /** Řazení: 1) podle číselného prefixu (01_, 02_, …), 2) složky před soubory, 3) podle názvu. Používá slugSegment (segment cesty), ne displayName (může být z frontmatter). */
 function sortByNumericPrefix(a: FileTrieNode, b: FileTrieNode): number {
   const segA = a.slugSegment ?? a.displayName ?? ""
@@ -114,10 +107,6 @@ export const sharedPageComponents: SharedLayout = {
     Component.ConditionalRender({
       component: Component.CdeWorkflowTable(),
       condition: (page) => isCdeWorkflowPage(page.fileData),
-    }),
-    Component.ConditionalRender({
-      component: Component.RoleRaciTable(),
-      condition: (page) => isRolePage(page.fileData),
     }),
     Component.ConditionalRender({
       component: Component.RaciBacklinks(),
