@@ -138,17 +138,17 @@ p.quartz-oblast-empty {
 /* ── Group header row ─────────────────────────────────────────────── */
 
 tr.quartz-oblast-group-row {
-  background: color-mix(in srgb, var(--secondary) 10%, var(--lightgray));
+  background: color-mix(in srgb, var(--lightgray) 82%, var(--light));
 }
 
 tr.quartz-oblast-group-row[data-depth="1"] {
-  background: color-mix(in srgb, var(--secondary) 7%, var(--lightgray));
+  background: color-mix(in srgb, var(--lightgray) 72%, var(--light));
 }
 tr.quartz-oblast-group-row[data-depth="2"] {
-  background: color-mix(in srgb, var(--secondary) 4%, var(--lightgray));
+  background: color-mix(in srgb, var(--lightgray) 62%, var(--light));
 }
 tr.quartz-oblast-group-row[data-depth="3"] {
-  background: color-mix(in srgb, var(--secondary) 2%, var(--lightgray));
+  background: color-mix(in srgb, var(--lightgray) 52%, var(--light));
 }
 
 tr.quartz-oblast-group-row > td.quartz-oblast-group-cell {
@@ -157,7 +157,7 @@ tr.quartz-oblast-group-row > td.quartz-oblast-group-cell {
   cursor: pointer;
 
   &:hover {
-    background: color-mix(in srgb, var(--secondary) 10%, transparent);
+    background: color-mix(in srgb, var(--lightgray) 70%, var(--light));
   }
 }
 
