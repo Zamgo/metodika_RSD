@@ -31,6 +31,8 @@ import ProcesniOblastRuntime from "./ProcesniOblastRuntime"
 import SidebarToggle from "./SidebarToggle"
 import MetadataPanel from "./MetadataPanel"
 import RaciBacklinks from "./RaciBacklinks"
+import HomeLanding from "./HomeLanding"
+import RolePortal from "./RolePortal"
 
 export {
   ArticleTitle,
@@ -66,4 +68,6 @@ export {
   SidebarToggle,
   MetadataPanel,
   RaciBacklinks,
+  HomeLanding,
+  RolePortal,
 }

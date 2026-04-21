@@ -1,7 +1,8 @@
 ---
 title: Člen týmu správce stavby – Koordinátor BIM
-typ: term
+typ: role
 stav: draft
+nadrizena_role: "[[Správce stavby]]"
 aliases:
   - BIM koordinátor
 ---

@@ -1,10 +1,11 @@
 ---
 title: Pověřená strana
-typ: term
-faze: [priprava]
+typ: smluvni_strana
+ramec: ISO19650
+faze: [priprava, realizace]
 workflow: []
 stav: draft
-permalink: /pojem/role/poverena-strana
+permalink: /pojem/smluvni-strana/poverena-strana
 ---
 
 # Definice

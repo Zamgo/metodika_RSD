@@ -40,6 +40,12 @@ function isMetodikaUvodPage(fileData: QuartzPluginData): boolean {
   return fp.endsWith("01_Úvod do metodiky ŘSD Plzeň.md")
 }
 
+/** Stránky s typem role / smluvní strana — mají vlastní RolePortal, skrýváme defaultní MetadataPanel. */
+function isRolePortalPage(fileData: QuartzPluginData): boolean {
+  const typ = String(fileData.frontmatter?.typ ?? "")
+  return typ === "role" || typ === "smluvni_strana"
+}
+
 /** Řazení: 1) podle číselného prefixu (01_, 02_, …), 2) složky před soubory, 3) podle názvu. Používá slugSegment (segment cesty), ne displayName (může být z frontmatter). */
 function sortByNumericPrefix(a: FileTrieNode, b: FileTrieNode): number {
   const segA = a.slugSegment ?? a.displayName ?? ""
@@ -92,6 +98,10 @@ export const sharedPageComponents: SharedLayout = {
   header: [],
   afterBody: [
     Component.ConditionalRender({
+      component: Component.HomeLanding(),
+      condition: (page) => page.fileData.slug === "index",
+    }),
+    Component.ConditionalRender({
       component: Component.ProcesniOblastRuntime(),
       condition: (page) =>
         page.fileData.frontmatter?.typ === "procesni_oblast",
@@ -110,6 +120,8 @@ export const sharedPageComponents: SharedLayout = {
         const typ = page.fileData.frontmatter?.typ
         return (
           typ === "term" ||
+          typ === "role" ||
+          typ === "smluvni_strana" ||
           typ === "cinnost" ||
           typ === "dilci_cinnost" ||
           typ === "procesni_oblast"
@@ -130,11 +142,16 @@ export const defaultContentPageLayout: PageLayout = {
     Component.ArticleTitle(),
     Component.ContentMeta(),
     Component.ConditionalRender({
+      component: Component.RolePortal(),
+      condition: (page) => isRolePortalPage(page.fileData),
+    }),
+    Component.ConditionalRender({
       component: Component.MetadataPanel(),
       condition: (page) =>
         !isSeznamCinnostiPage(page.fileData) &&
         !isCdeWorkflowPage(page.fileData) &&
-        !isMetodikaUvodPage(page.fileData),
+        !isMetodikaUvodPage(page.fileData) &&
+        !isRolePortalPage(page.fileData),
     }),
     Component.TagList(),
   ],

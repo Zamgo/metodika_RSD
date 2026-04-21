@@ -69,10 +69,40 @@ Klíč `workflow` z obecné sady se u těchto stránek nepoužívá (identita wo
 - `cinnost`
 - `dilci_cinnost`
 - `workflow`
-- `term`
+- `term` — obecný pojem (CDE, BEP, DiMS, PIR, ...)
+- `role` — funkční role v týmu (Správce stavby, Koordinátor CDE, Koordinátor BIM, ...)
+- `smluvni_strana` — smluvní subjekt (Pověřující strana / Objednatel, Vedoucí pověřená strana / Zhotovitel, ...)
 - `reference`
 - `appendix`
 - `catalog`
+
+## Klíče specifické pro typ `role` a `smluvni_strana`
+
+Tyto klíče slouží pro úvodní rozcestník (HomeLanding) a role portál.
+
+| Klíč | Popis | Typ | Platí pro |
+|------|-------|-----|-----------|
+| `show_na_rozcestniku` | Pokud `true`, karta role/smluvní strany se zobrazí na úvodní stránce. Default `false`. | bool | `role`, `smluvni_strana` |
+| `order` | Pořadí karty na úvodní stránce (nižší číslo = dříve). Default `999`. | number | `role`, `smluvni_strana` |
+| `popis_karta` | Jedna věta pro kartu na rozcestníku. Pokud chybí, komponenta fallbackne na `description`. | text | `role`, `smluvni_strana` |
+| `ikona` | Volitelná ikona pro kartu (Lucide icon name, např. `hard-hat`, nebo emoji). Pokud chybí, zobrazí se iniciály. | text | `role`, `smluvni_strana` |
+| `ramec` | Smluvní rámec: `FIDIC` nebo `ISO19650`. Slouží pro překladovou vrstvu. | text | `smluvni_strana` |
+| `ekvivalent` | Wikilink na ekvivalentní stránku v jiném rámci (např. v `Pověřující strana` odkaz na FIDIC ekvivalent — pokud ještě jako samostatná stránka existuje). | wikilink | `smluvni_strana` |
+| `nadrizena_role` | Wikilink na nadřízenou roli v hierarchii týmu. | wikilink | `role` |
+| `klicove_pojmy` | Kurátorovaný whitelist pojmů, které by měl držitel role znát (zobrazí se v sekci „Co byste měli znát" v role portálu). | seznam wikilinků | `role`, `smluvni_strana` |
+| `sablony` | Odkazy na šablony a podklady ke stažení (např. do `00_Podklady/`). | seznam wikilinků | `role`, `smluvni_strana` |
+
+### Aliases a sjednocení FIDIC ↔ ISO 19650
+
+Pro smluvní strany, které existují pod více názvy (FIDIC ↔ ISO 19650), se používá **jedna kanonická stránka** a ostatní názvy se přidávají přes `aliases`. Tím:
+
+- `[[Objednatel]]` i `[[Pověřující strana]]` resolvují na tutéž stránku.
+- `AliasRedirects` vygeneruje URL redirect z aliasu na kanonickou adresu.
+
+Doporučená kanonizace:
+
+- **Pověřující strana** (ISO 19650) s `aliases: [Objednatel, ŘSD]`
+- **Vedoucí pověřená strana** (ISO 19650) s `aliases: [Zhotovitel, Hlavní zhotovitel]`
 
 ## Zápis seznamů
 

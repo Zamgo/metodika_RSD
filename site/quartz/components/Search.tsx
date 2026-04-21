@@ -24,7 +24,7 @@ export default ((userOpts?: Partial<SearchOptions>) => {
 
     return (
       <div class={classNames(displayClass, "search")}>
-        <button class="search-button" type="button">
+        <button class="search-button" type="button" data-search-trigger>
           <svg role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 19.9 19.7">
             <title>Search</title>
             <g class="search-path" fill="none">
