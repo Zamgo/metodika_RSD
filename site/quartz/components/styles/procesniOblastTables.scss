@@ -22,8 +22,9 @@ table.quartz-oblast-table {
 }
 
 .quartz-oblast-table th {
-  background: color-mix(in srgb, var(--lightgray) 35%, var(--light));
+  background: color-mix(in srgb, var(--lightgray) 78%, var(--light));
   font-weight: 600;
+  box-shadow: inset 0 -2px 0 color-mix(in srgb, var(--secondary) 28%, var(--lightgray));
 }
 
 p.quartz-oblast-empty {
@@ -154,7 +155,6 @@ tr.quartz-oblast-group-row[data-depth="3"] {
 tr.quartz-oblast-group-row > td.quartz-oblast-group-cell {
   padding: 0;
   border: 1px solid color-mix(in srgb, var(--secondary) 30%, var(--lightgray));
-  border-left-width: 4px;
   cursor: pointer;
 
   &:hover {
