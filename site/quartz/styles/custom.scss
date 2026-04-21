@@ -218,10 +218,14 @@ body {
   margin-top: 0;
 }
 
-/* Role stránky s RACI propojením: zmenšit výchozí mezeru (<hr>) mezi MD tělem
-   a blokem "Propojení v RACI matici", aby odpovídala běžnému rytmu panelů. */
-#quartz-body .center > hr:has(+ [data-raci-backlinks]) {
-  margin: 0.75rem auto;
+/* Role stránky s RACI propojením: odstranit dělící čáru + velkou mezeru mezi
+   článkem a footerem, pokud footer obsahuje `data-raci-backlinks`. */
+#quartz-body .center > hr:has(+ .page-footer:has([data-raci-backlinks])) {
+  display: none;
+}
+
+#quartz-body .center > .page-footer:has([data-raci-backlinks]) {
+  margin-top: 0;
 }
 
 /* ─── Left sidebar: Explorer title hidden on desktop ─────────────── */
