@@ -218,6 +218,12 @@ body {
   margin-top: 0;
 }
 
+/* Role stránky s RACI propojením: zmenšit výchozí mezeru (<hr>) mezi MD tělem
+   a blokem "Propojení v RACI matici", aby odpovídala běžnému rytmu panelů. */
+#quartz-body .center > hr:has(+ [data-raci-backlinks]) {
+  margin: 0.75rem auto;
+}
+
 /* ─── Left sidebar: Explorer title hidden on desktop ─────────────── */
 @media all and (min-width: 801px) {
   #quartz-body .sidebar.left .explorer button.desktop-explorer {
