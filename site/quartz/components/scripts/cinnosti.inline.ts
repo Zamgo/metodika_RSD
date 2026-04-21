@@ -371,14 +371,58 @@ async function setupCinnosti(root: HTMLElement, currentSlug: FullSlug, data: Cin
   const workflowTable = root.dataset.cinnostiRows === "workflow"
   const rowFilter = workflowTable ? isCdeWorkflowRow : isCinnostRow
 
+  /** Implicitní filtr pro per-role tabulku: seznam termů (title + aliases role).
+   *  Řádek projde, pokud alespoň jeden term je obsažen v hodnotách sloupce
+   *  `R - …` NEBO `A - …` (case-insensitive, ignoruje wikilink obal). Tento filtr
+   *  NENÍ vázaný na `columnFilters` a neovlivňuje dropdowny filtrů — je to scope
+   *  stránky, ne uživatelský filtr. */
+  const roleFilterTerms: string[] = (() => {
+    const raw = root.dataset.cinnostiRoleFilter
+    if (!raw) return []
+    try {
+      const parsed = JSON.parse(raw)
+      if (!Array.isArray(parsed)) return []
+      return parsed
+        .map((v) => (typeof v === "string" ? v.trim().toLowerCase() : ""))
+        .filter(Boolean)
+    } catch {
+      return []
+    }
+  })()
+  const hasRoleFilter = roleFilterTerms.length > 0
+  const ROLE_FILTER_COLUMNS = [
+    "R - Odpovědnost za provádění činnosti",
+    "A - Právní odpovědnost za dokončení činnosti",
+  ]
+
+  /** Vrací true, pokud alespoň jeden term role filtru figuruje v R nebo A
+   *  sloupci daného meta záznamu. Pracuje přímo s raw meta (bez Row), ať se
+   *  dá aplikovat už při prvotním filtrování před sestavením Row. */
+  function metaMatchesRoleFilter(meta: Record<string, unknown> | undefined): boolean {
+    if (!hasRoleFilter) return true
+    for (const col of ROLE_FILTER_COLUMNS) {
+      const vals = getMetaArray(meta, col)
+      for (const v of vals) {
+        const plain = plainTextFromWikiMeta(String(v)).toLowerCase()
+        if (!plain) continue
+        for (const term of roleFilterTerms) {
+          if (plain.includes(term)) return true
+        }
+      }
+    }
+    return false
+  }
+
   const rows: Row[] = []
   for (const [slug, details] of Object.entries(data)) {
     if (!rowFilter(details.filePath)) continue
+    const meta = details.meta as Record<string, unknown> | undefined
+    if (!metaMatchesRoleFilter(meta)) continue
     rows.push({
       slug: slug as FullSlug,
       title: details.title ?? slug,
       fp: details.filePath,
-      meta: details.meta as Record<string, unknown> | undefined,
+      meta,
     })
   }
 
@@ -923,6 +967,7 @@ async function setupCinnosti(root: HTMLElement, currentSlug: FullSlug, data: Cin
   // ── Matching ─────────────────────────────────────────────────────────
 
   function rowMatchesAllFilters(row: Row, textQ: string, activeView?: BaseView): boolean {
+    // Role filter je aplikovaný už při budování `rows` výše — zde netřeba.
     const tq = textQ.trim().toLowerCase()
     if (tq && !row.title.toLowerCase().includes(tq)) return false
     if (!rowMatchesViewFilters(row.meta, activeView)) return false

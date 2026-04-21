@@ -5,16 +5,35 @@ import path from "node:path"
 // @ts-ignore
 import script from "./scripts/cinnosti.inline"
 
-const CinnostiTable: QuartzComponent = ({ cfg }: QuartzComponentProps) => {
-  const cs = cfg.locale.startsWith("cs")
-  const basePath = path.resolve(process.cwd(), "..", "02 - Seznam činností.base")
-  const baseText = fs.existsSync(basePath) ? fs.readFileSync(basePath, "utf8") : ""
+type CinnostiTableOptions = {
+  rootId?: string
+  lsId?: string
+  rowsDataset?: string
+  roleFilterTerms?: string[]
+}
+
+/** Shared toolbar + table DOM používané jak Seznamem činností, tak per-role RACI tabulkou.
+ *  Logika/state žije v scripts/cinnosti.inline.ts a pracuje přes class selectory
+ *  a data-cinnosti-* atributy — umí tedy obsluhovat víc instancí najednou. */
+export function renderCinnostiTableMarkup({
+  cs,
+  baseText,
+  rootId = "cinnosti-browser",
+  lsId = "cinnosti",
+  rowsDataset = "oblasti",
+  roleFilterTerms,
+}: CinnostiTableOptions & { cs: boolean; baseText: string }) {
+  const roleFilterAttr =
+    roleFilterTerms && roleFilterTerms.length > 0
+      ? JSON.stringify(roleFilterTerms)
+      : undefined
   return (
     <div
-      id="cinnosti-browser"
+      id={rootId}
       class="cinnosti-table-root"
-      data-cinnosti-ls-id="cinnosti"
-      data-cinnosti-rows="oblasti"
+      data-cinnosti-ls-id={lsId}
+      data-cinnosti-rows={rowsDataset}
+      data-cinnosti-role-filter={roleFilterAttr}
       data-str-view-all={cs ? "Vše" : "All"}
     >
       <div class="cinnosti-toolbar">
@@ -200,6 +219,13 @@ const CinnostiTable: QuartzComponent = ({ cfg }: QuartzComponentProps) => {
       />
     </div>
   )
+}
+
+const CinnostiTable: QuartzComponent = ({ cfg }: QuartzComponentProps) => {
+  const cs = cfg.locale.startsWith("cs")
+  const basePath = path.resolve(process.cwd(), "..", "02 - Seznam činností.base")
+  const baseText = fs.existsSync(basePath) ? fs.readFileSync(basePath, "utf8") : ""
+  return renderCinnostiTableMarkup({ cs, baseText })
 }
 
 CinnostiTable.afterDOMLoaded = script

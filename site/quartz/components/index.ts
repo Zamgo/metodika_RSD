@@ -32,7 +32,7 @@ import SidebarToggle from "./SidebarToggle"
 import MetadataPanel from "./MetadataPanel"
 import RaciBacklinks from "./RaciBacklinks"
 import HomeLanding from "./HomeLanding"
-import RolePortal from "./RolePortal"
+import RoleRaciTable from "./RoleRaciTable"
 
 export {
   ArticleTitle,
@@ -69,5 +69,5 @@ export {
   MetadataPanel,
   RaciBacklinks,
   HomeLanding,
-  RolePortal,
+  RoleRaciTable,
 }

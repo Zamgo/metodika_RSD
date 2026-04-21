@@ -7,12 +7,6 @@ order: 20
 popis_karta: "Spravuje CDE, přístupová práva, procesy výměny informací a CDE kapitolu v BEP."
 ikona: "database"
 nadrizena_role: "[[Správce stavby]]"
-klicove_pojmy:
-  - "[[Společné datové prostředí (CDE)]]"
-  - "[[BIM Execution Plan (BEP)]]"
-  - "[[Informační model]]"
-  - "[[Pověřující strana]]"
-  - "[[Vedoucí pověřená strana]]"
 aliases:
   - CDE koordinátor
   - Administrátor CDE

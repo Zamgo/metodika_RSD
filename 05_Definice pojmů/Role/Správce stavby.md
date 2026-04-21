@@ -6,12 +6,6 @@ show_na_rozcestniku: true
 order: 10
 popis_karta: "Zástupce objednatele v realizační fázi — kontroluje plnění smlouvy, kvalitu, termíny a cenu."
 ikona: "hard-hat"
-klicove_pojmy:
-  - "[[Pověřující strana]]"
-  - "[[Vedoucí pověřená strana]]"
-  - "[[Společné datové prostředí (CDE)]]"
-  - "[[BIM Execution Plan (BEP)]]"
-  - "[[Požadavky objednatele na výměnu informací (EIR)]]"
 ---
 # Popis
 

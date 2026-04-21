@@ -49,7 +49,18 @@ const FIELDS: FieldDef[] = [
   { key: "frekvence", label: "Frekvence" },
 ]
 
+/** Metadata panel pro typy role / smluvní strana — zobrazuje strukturovaná data
+ *  z frontmatteru, která dříve renderoval RolePortal. */
+const ROLE_FIELDS: FieldDef[] = [
+  { key: "aliases", label: "Další názvy" },
+  { key: "nadrizena_role", label: "Nadřízená role" },
+  { key: "ekvivalent", label: "Ekvivalent" },
+  { key: "ramec", label: "Rámec" },
+  { key: "stav", label: "Stav" },
+]
+
 const ACTIVITY_TYPES = new Set(["cinnost", "dilci_cinnost"])
+const ROLE_TYPES = new Set(["role", "smluvni_strana"])
 
 function normalizeValue(v: unknown): string[] {
   if (v == null) return []
@@ -67,11 +78,13 @@ function normalizeValue(v: unknown): string[] {
 const MetadataPanel: QuartzComponent = ({ fileData, displayClass, allFiles }: QuartzComponentProps) => {
   const fm = (fileData.frontmatter ?? {}) as FrontmatterLike
   const typ = String(fm.typ ?? "")
+  const isRole = ROLE_TYPES.has(typ)
   const showAllFields = ACTIVITY_TYPES.has(typ)
   const pageSlug = fileData.slug as FullSlug | undefined
   const resolveNote = createSlugResolverFromAllFiles(allFiles)
 
-  const rows = FIELDS.map(({ key, label }) => {
+  const activeFields = isRole ? ROLE_FIELDS : FIELDS
+  const rows = activeFields.map(({ key, label }) => {
     const values = normalizeValue(fm[key])
     return { key, label, values }
   })
@@ -81,19 +94,23 @@ const MetadataPanel: QuartzComponent = ({ fileData, displayClass, allFiles }: Qu
   if (displayRows.length === 0) return null
 
   return (
-    <section class={classNames(displayClass, "metadata-panel")} data-metadata-panel>
+    <section
+      class={classNames(displayClass, "metadata-panel")}
+      data-metadata-panel
+      data-metadata-initial-collapsed={isRole ? "true" : "false"}
+    >
       <div class="metadata-panel-header">
         <h2>Metadata</h2>
         <button
           type="button"
           class="metadata-panel-toggle"
-          aria-expanded="true"
+          aria-expanded={isRole ? "false" : "true"}
           aria-controls="metadata-panel-fields"
         >
-          Skrýt
+          {isRole ? "Zobrazit" : "Skrýt"}
         </button>
       </div>
-      <dl class="metadata-panel-body" id="metadata-panel-fields">
+      <dl class="metadata-panel-body" id="metadata-panel-fields" hidden={isRole}>
         {displayRows.map((row) => (
           <Fragment key={row.key}>
             <dt>{row.label}</dt>

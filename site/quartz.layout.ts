@@ -40,8 +40,9 @@ function isMetodikaUvodPage(fileData: QuartzPluginData): boolean {
   return fp.endsWith("01_Úvod do metodiky ŘSD Plzeň.md")
 }
 
-/** Stránky s typem role / smluvní strana — mají vlastní RolePortal, skrýváme defaultní MetadataPanel. */
-function isRolePortalPage(fileData: QuartzPluginData): boolean {
+/** Stránky s typem role / smluvní strana — chovají se jako běžné MD s metadata panelem,
+ *  ale dostávají navíc per-role filtrovanou RACI tabulku pod tělem. */
+function isRolePage(fileData: QuartzPluginData): boolean {
   const typ = String(fileData.frontmatter?.typ ?? "")
   return typ === "role" || typ === "smluvni_strana"
 }
@@ -115,6 +116,10 @@ export const sharedPageComponents: SharedLayout = {
       condition: (page) => isCdeWorkflowPage(page.fileData),
     }),
     Component.ConditionalRender({
+      component: Component.RoleRaciTable(),
+      condition: (page) => isRolePage(page.fileData),
+    }),
+    Component.ConditionalRender({
       component: Component.RaciBacklinks(),
       condition: (page) => {
         const typ = page.fileData.frontmatter?.typ
@@ -142,16 +147,11 @@ export const defaultContentPageLayout: PageLayout = {
     Component.ArticleTitle(),
     Component.ContentMeta(),
     Component.ConditionalRender({
-      component: Component.RolePortal(),
-      condition: (page) => isRolePortalPage(page.fileData),
-    }),
-    Component.ConditionalRender({
       component: Component.MetadataPanel(),
       condition: (page) =>
         !isSeznamCinnostiPage(page.fileData) &&
         !isCdeWorkflowPage(page.fileData) &&
-        !isMetodikaUvodPage(page.fileData) &&
-        !isRolePortalPage(page.fileData),
+        !isMetodikaUvodPage(page.fileData),
     }),
     Component.TagList(),
   ],
