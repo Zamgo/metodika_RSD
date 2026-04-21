@@ -138,26 +138,26 @@ p.quartz-oblast-empty {
 /* ── Group header row ─────────────────────────────────────────────── */
 
 tr.quartz-oblast-group-row {
-  background: color-mix(in srgb, var(--lightgray) 82%, var(--light));
+  background: color-mix(in srgb, var(--secondary) 14%, var(--light));
 }
 
 tr.quartz-oblast-group-row[data-depth="1"] {
-  background: color-mix(in srgb, var(--lightgray) 72%, var(--light));
+  background: color-mix(in srgb, var(--secondary) 10%, var(--light));
 }
 tr.quartz-oblast-group-row[data-depth="2"] {
-  background: color-mix(in srgb, var(--lightgray) 62%, var(--light));
+  background: color-mix(in srgb, var(--secondary) 7%, var(--light));
 }
 tr.quartz-oblast-group-row[data-depth="3"] {
-  background: color-mix(in srgb, var(--lightgray) 52%, var(--light));
+  background: color-mix(in srgb, var(--secondary) 4%, var(--light));
 }
 
 tr.quartz-oblast-group-row > td.quartz-oblast-group-cell {
   padding: 0;
-  border: 1px solid var(--lightgray);
+  border: 1px solid color-mix(in srgb, var(--secondary) 22%, var(--lightgray));
   cursor: pointer;
 
   &:hover {
-    background: color-mix(in srgb, var(--lightgray) 70%, var(--light));
+    background: color-mix(in srgb, var(--secondary) 18%, var(--light));
   }
 }
 
