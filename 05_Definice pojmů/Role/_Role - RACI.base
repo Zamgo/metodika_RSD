@@ -53,7 +53,9 @@ views:
         direction: ASC
       - property: oznaceni
         direction: ASC
-    groupBy: cinnost
+    groupBy:
+      property: note.cinnost
+      direction: ASC
     columnSize:
       note.cinnost: 360
       formula.dilci_cinnost: 420

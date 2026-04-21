@@ -95,7 +95,11 @@ type BaseConfig = {
      * Volitelný override defaultního groupBy (spätně kompatibilní - chybí → použije se fallback).
      * Přijímá řetězec nebo pole řetězců pro víceúrovňové seskupení.
      */
-    groupBy?: string | string[]
+    groupBy?:
+      | string
+      | string[]
+      | { property?: string }
+      | Array<string | { property?: string }>
   }[]
 }
 
@@ -596,11 +600,22 @@ async function setupCinnosti(root: HTMLElement, currentSlug: FullSlug, data: Cin
   function defaultGroupByForView(view: BaseView | undefined): string[] {
     if (!view) return []
     const fromFm = view.groupBy
+    const groupByFromObject = (value: unknown): string | null => {
+      if (typeof value !== "object" || value == null) return null
+      const prop = (value as { property?: unknown }).property
+      if (typeof prop !== "string" || !prop.trim()) return null
+      return prop.trim()
+    }
     if (Array.isArray(fromFm)) {
-      const filtered = fromFm.filter((x): x is string => typeof x === "string" && !!x.trim())
+      const filtered = fromFm
+        .map((x) => (typeof x === "string" ? x.trim() : groupByFromObject(x) ?? ""))
+        .filter((x): x is string => !!x)
       if (filtered.length > 0) return filtered.map((s) => s.trim())
     } else if (typeof fromFm === "string" && fromFm.trim()) {
       return [fromFm.trim()]
+    } else {
+      const single = groupByFromObject(fromFm)
+      if (single) return [single]
     }
     const byName = view.name ? DEFAULT_GROUP_BY_BY_VIEW[view.name] : undefined
     if (byName) return [byName]

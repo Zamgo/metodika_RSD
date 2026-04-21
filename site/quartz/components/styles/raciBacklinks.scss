@@ -6,31 +6,177 @@
   border: 1px solid var(--lightgray);
   border-radius: 10px;
   background: var(--light);
+}
 
-  & > h3 {
+.raci-backlinks-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 0.75rem;
+
+  & > div > h3 {
     font-size: 1.05rem;
     margin: 0 0 0.25rem;
     color: var(--dark);
   }
 
-  & > .raci-backlinks-desc {
+  & > div > .raci-backlinks-desc {
     font-size: 0.85rem;
     color: var(--gray);
-    margin: 0 0 1rem;
+    margin: 0;
   }
 }
+
+.raci-backlinks-full-link {
+  flex-shrink: 0;
+  font-size: 0.85rem;
+  color: var(--secondary);
+  text-decoration: none;
+  white-space: nowrap;
+  padding: 0.3rem 0.6rem;
+  border-radius: 6px;
+  border: 1px solid color-mix(in srgb, var(--secondary) 25%, transparent);
+  background: color-mix(in srgb, var(--secondary) 4%, transparent);
+  transition: background 0.15s ease, border-color 0.15s ease;
+
+  &:hover {
+    background: color-mix(in srgb, var(--secondary) 10%, transparent);
+    border-color: color-mix(in srgb, var(--secondary) 45%, transparent);
+    text-decoration: none;
+  }
+}
+
+/* ───────── Filter chips ───────── */
+
+.raci-backlinks-filters {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.75rem 1.25rem;
+  padding: 0.6rem 0.75rem;
+  margin-bottom: 1rem;
+  background: color-mix(in srgb, var(--lightgray) 30%, transparent);
+  border-radius: 8px;
+  border: 1px solid color-mix(in srgb, var(--lightgray) 70%, transparent);
+}
+
+.raci-filter-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.raci-filter-row-label {
+  font-size: 0.78rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--gray);
+  margin-right: 0.25rem;
+}
+
+.raci-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.25rem 0.65rem;
+  font-size: 0.82rem;
+  font-weight: 500;
+  border: 1px solid color-mix(in srgb, var(--lightgray) 85%, transparent);
+  border-radius: 999px;
+  background: var(--light);
+  color: var(--dark);
+  cursor: pointer;
+  user-select: none;
+  transition: background 0.15s ease, border-color 0.15s ease, color 0.15s ease;
+
+  &:hover {
+    background: color-mix(in srgb, var(--secondary) 6%, var(--light));
+    border-color: color-mix(in srgb, var(--secondary) 30%, transparent);
+  }
+
+  &.is-active {
+    background: color-mix(in srgb, var(--secondary) 14%, var(--light));
+    border-color: color-mix(in srgb, var(--secondary) 55%, transparent);
+    color: var(--dark);
+    font-weight: 600;
+  }
+}
+
+.raci-chip-letter {
+  font-weight: 600;
+  letter-spacing: 0.03em;
+
+  &.is-active.raci-r {
+    background: color-mix(in srgb, #c0392b 18%, var(--light));
+    border-color: color-mix(in srgb, #c0392b 60%, transparent);
+  }
+  &.is-active.raci-a {
+    background: color-mix(in srgb, #2980b9 18%, var(--light));
+    border-color: color-mix(in srgb, #2980b9 60%, transparent);
+  }
+  &.is-active.raci-c {
+    background: color-mix(in srgb, #27ae60 18%, var(--light));
+    border-color: color-mix(in srgb, #27ae60 60%, transparent);
+  }
+  &.is-active.raci-i {
+    background: color-mix(in srgb, #8e44ad 18%, var(--light));
+    border-color: color-mix(in srgb, #8e44ad 60%, transparent);
+  }
+}
+
+.raci-chip-dot {
+  display: inline-block;
+  width: 0.5rem;
+  height: 0.5rem;
+  border-radius: 50%;
+  background: var(--gray);
+
+  &.raci-r {
+    background: #c0392b;
+  }
+  &.raci-a {
+    background: #2980b9;
+  }
+  &.raci-c {
+    background: #27ae60;
+  }
+  &.raci-i {
+    background: #8e44ad;
+  }
+}
+
+.raci-filter-reset {
+  margin-left: auto;
+  font-size: 0.8rem;
+  padding: 0.25rem 0.7rem;
+  border-radius: 6px;
+  border: 1px solid color-mix(in srgb, var(--lightgray) 80%, transparent);
+  background: var(--light);
+  color: var(--darkgray);
+  cursor: pointer;
+
+  &:hover {
+    background: color-mix(in srgb, var(--gray) 8%, var(--light));
+    color: var(--dark);
+  }
+}
+
+/* ───────── Letter blocks (R/A/C/I) ───────── */
 
 .raci-groups {
   display: flex;
   flex-direction: column;
-  gap: 1rem;
+  gap: 0.25rem;
 }
 
 .raci-group-header {
   display: flex;
   align-items: center;
   gap: 0.5rem;
-  margin-bottom: 0.4rem;
+  padding: 0.5rem 0;
   cursor: pointer;
   list-style: none;
   user-select: none;
@@ -87,113 +233,252 @@
 
 .raci-group-label {
   font-weight: 600;
-  font-size: 0.9rem;
+  font-size: 0.92rem;
   color: var(--darkgray);
 }
 
 .raci-group {
   border-bottom: 1px solid color-mix(in srgb, var(--lightgray) 60%, transparent);
-  padding-bottom: 0.5rem;
 
-  &:last-child {
+  &:last-of-type {
     border-bottom: none;
-    padding-bottom: 0;
   }
 
-  &:not([open]) > .raci-group-header {
-    margin-bottom: 0;
+  &.raci-group-empty {
+    opacity: 0.4;
+    cursor: not-allowed;
+
+    & > .raci-group-header {
+      cursor: not-allowed;
+
+      &::after {
+        opacity: 0.4;
+      }
+    }
   }
 }
 
 .raci-group-content {
   display: flex;
   flex-direction: column;
-  gap: 0.6rem;
-  margin-left: 2.25rem;
+  gap: 0.25rem;
+  margin: 0.25rem 0 0.75rem 2.25rem;
+  padding-left: 0.5rem;
+  border-left: 2px solid color-mix(in srgb, var(--lightgray) 70%, transparent);
 }
 
-.raci-typ-section {
-  & > .raci-typ-label {
-    display: block;
-    font-size: 0.78rem;
-    font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 0.04em;
-    color: var(--gray);
-    margin-bottom: 0.25rem;
-    padding-bottom: 0.15rem;
-    border-bottom: 1px solid color-mix(in srgb, var(--lightgray) 80%, transparent);
+/* ───────── Cinnost group (2. úroveň) ───────── */
+
+.raci-cinnost-group {
+  padding: 0.25rem 0;
+
+  & > .raci-cinnost-header {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.25rem 0.4rem;
+    border-radius: 6px;
+    cursor: pointer;
+    list-style: none;
+    user-select: none;
+    font-size: 0.88rem;
+
+    &::-webkit-details-marker {
+      display: none;
+    }
+
+    &:hover {
+      background: color-mix(in srgb, var(--lightgray) 40%, transparent);
+    }
+
+    &::before {
+      content: "";
+      display: inline-block;
+      width: 0.38rem;
+      height: 0.38rem;
+      border-right: 2px solid var(--darkgray);
+      border-bottom: 2px solid var(--darkgray);
+      transform: rotate(-45deg);
+      transition: transform 0.2s ease;
+      flex-shrink: 0;
+      opacity: 0.7;
+    }
   }
 
-  & > ul {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-    display: flex;
-    flex-direction: column;
-    gap: 0.2rem;
+  &[open] > .raci-cinnost-header::before {
+    transform: rotate(45deg);
+  }
+}
 
-    & > li {
-      padding: 0.2rem 0;
-      font-size: 0.88rem;
-      border-bottom: 1px solid color-mix(in srgb, var(--lightgray) 50%, transparent);
+.raci-cinnost-oznaceni {
+  font-weight: 600;
+  color: var(--dark);
+  min-width: 2.5rem;
+}
 
-      &:last-child {
-        border-bottom: none;
-      }
+.raci-cinnost-title {
+  color: var(--dark);
+  flex: 1 1 auto;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
 
-      & > a {
-        background-color: transparent;
-        color: var(--secondary);
-        text-decoration: none;
+.raci-cinnost-faze {
+  display: inline-flex;
+  gap: 0.25rem;
+  flex-shrink: 0;
+}
 
-        &:hover {
-          text-decoration: underline;
-        }
-      }
+.raci-cinnost-count {
+  color: var(--gray);
+  font-size: 0.82rem;
+  font-variant-numeric: tabular-nums;
+  flex-shrink: 0;
+}
+
+.raci-cinnost-items {
+  list-style: none;
+  padding: 0.25rem 0 0.25rem 1.4rem;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.1rem;
+}
+
+.raci-item {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.2rem 0;
+  font-size: 0.86rem;
+  border-bottom: 1px solid color-mix(in srgb, var(--lightgray) 40%, transparent);
+
+  &:last-child {
+    border-bottom: none;
+  }
+
+  & > a {
+    background-color: transparent;
+    color: var(--secondary);
+    text-decoration: none;
+    flex: 1 1 auto;
+
+    &:hover {
+      text-decoration: underline;
     }
   }
 }
 
+.raci-item-faze {
+  display: inline-flex;
+  gap: 0.2rem;
+  flex-shrink: 0;
+}
+
+.raci-cinnost-parent-link {
+  padding-bottom: 0.25rem;
+  margin-bottom: 0.25rem;
+  border-bottom: 1px dashed color-mix(in srgb, var(--lightgray) 70%, transparent);
+
+  & > a {
+    font-size: 0.82rem;
+    color: var(--gray);
+    font-style: italic;
+
+    &:hover {
+      color: var(--secondary);
+    }
+  }
+}
+
+/* ───────── Faze chip (neutral badge) ───────── */
+
+.raci-faze-chip {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.05rem 0.45rem;
+  font-size: 0.72rem;
+  font-weight: 500;
+  color: var(--darkgray);
+  background: color-mix(in srgb, var(--secondary) 8%, var(--light));
+  border: 1px solid color-mix(in srgb, var(--secondary) 22%, transparent);
+  border-radius: 4px;
+  white-space: nowrap;
+  line-height: 1.3;
+}
+
+/* Colored dot before item link — per letter (zachováno z původní verze) */
+
 .raci-group {
-  &.raci-r ul > li > a::before {
+  &.raci-r .raci-item > a::before {
     content: "";
     display: inline-block;
     width: 6px;
     height: 6px;
     border-radius: 50%;
     background: #c0392b;
-    margin-right: 0.5rem;
+    margin-right: 0.45rem;
     vertical-align: middle;
   }
-  &.raci-a ul > li > a::before {
+  &.raci-a .raci-item > a::before {
     content: "";
     display: inline-block;
     width: 6px;
     height: 6px;
     border-radius: 50%;
     background: #2980b9;
-    margin-right: 0.5rem;
+    margin-right: 0.45rem;
     vertical-align: middle;
   }
-  &.raci-c ul > li > a::before {
+  &.raci-c .raci-item > a::before {
     content: "";
     display: inline-block;
     width: 6px;
     height: 6px;
     border-radius: 50%;
     background: #27ae60;
-    margin-right: 0.5rem;
+    margin-right: 0.45rem;
     vertical-align: middle;
   }
-  &.raci-i ul > li > a::before {
+  &.raci-i .raci-item > a::before {
     content: "";
     display: inline-block;
     width: 6px;
     height: 6px;
     border-radius: 50%;
     background: #8e44ad;
-    margin-right: 0.5rem;
+    margin-right: 0.45rem;
     vertical-align: middle;
+  }
+}
+
+/* Prázdné skupiny činnosti: skryté přes `hidden`, ale pro jistotu i CSS. */
+.raci-cinnost-group-empty {
+  display: none;
+}
+
+/* Responsive — mobil: header do dvou řádků, činnost bez ellipsis. */
+@media (max-width: 640px) {
+  .raci-backlinks-header {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .raci-backlinks-full-link {
+    align-self: flex-start;
+  }
+
+  .raci-cinnost-header {
+    flex-wrap: wrap;
+  }
+
+  .raci-cinnost-title {
+    white-space: normal;
+    flex-basis: 100%;
+  }
+
+  .raci-group-content {
+    margin-left: 1rem;
   }
 }
