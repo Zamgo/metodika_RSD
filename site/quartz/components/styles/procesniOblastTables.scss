@@ -138,26 +138,27 @@ p.quartz-oblast-empty {
 /* ── Group header row ─────────────────────────────────────────────── */
 
 tr.quartz-oblast-group-row {
-  background: color-mix(in srgb, var(--secondary) 14%, var(--light));
+  background: color-mix(in srgb, var(--secondary) 24%, var(--light));
 }
 
 tr.quartz-oblast-group-row[data-depth="1"] {
-  background: color-mix(in srgb, var(--secondary) 10%, var(--light));
+  background: color-mix(in srgb, var(--secondary) 18%, var(--light));
 }
 tr.quartz-oblast-group-row[data-depth="2"] {
-  background: color-mix(in srgb, var(--secondary) 7%, var(--light));
+  background: color-mix(in srgb, var(--secondary) 12%, var(--light));
 }
 tr.quartz-oblast-group-row[data-depth="3"] {
-  background: color-mix(in srgb, var(--secondary) 4%, var(--light));
+  background: color-mix(in srgb, var(--secondary) 8%, var(--light));
 }
 
 tr.quartz-oblast-group-row > td.quartz-oblast-group-cell {
   padding: 0;
-  border: 1px solid color-mix(in srgb, var(--secondary) 22%, var(--lightgray));
+  border: 1px solid color-mix(in srgb, var(--secondary) 30%, var(--lightgray));
+  border-left-width: 4px;
   cursor: pointer;
 
   &:hover {
-    background: color-mix(in srgb, var(--secondary) 18%, var(--light));
+    background: color-mix(in srgb, var(--secondary) 30%, var(--light));
   }
 }
 
