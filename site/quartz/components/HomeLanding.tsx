@@ -235,16 +235,8 @@ const HomeLanding: QuartzComponent = ({
 
   return (
     <div class={`home-landing ${displayClass ?? ""}`.trim()}>
-      {/* Hero — zredukovaný, bez search inputu (search je teď v horní liště) */}
-      <section class="home-landing-hero" aria-labelledby="home-landing-hero-title">
-        <h1 id="home-landing-hero-title" class="home-landing-hero-title">
-          Metodika ŘSD Plzeň
-        </h1>
-        <p class="home-landing-hero-subtitle">
-          Znalostní databáze pro správu informací o stavbě. Vyberte svou roli
-          a fázi projektu — ukážeme vám kroky, které vás čekají.
-        </p>
-      </section>
+      {/* Hero banner odstraněn — popis patří pod menu lištu (jako obsah index.md),
+         ne do samostatného baneru. Wizard jde rovnou. */}
 
       {/* Wizard Step 1 — výběr role */}
       <section class="home-wizard-step" data-wizard-step="1" aria-labelledby="wizard-step1-title">

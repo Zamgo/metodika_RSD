@@ -8,33 +8,7 @@ $rsd-green: #2f855a;
 .home-landing {
   margin: 1.25rem 0 2.5rem;
 
-  /* ═══════════ Hero (zredukovaný) ═══════════ */
-  .home-landing-hero {
-    padding: 1.75rem 1.5rem 1.5rem;
-    border-radius: 12px;
-    background: linear-gradient(
-      135deg,
-      color-mix(in srgb, var(--secondary) 10%, var(--light)) 0%,
-      var(--light) 100%
-    );
-    border: 1px solid var(--lightgray);
-    text-align: center;
-    margin-bottom: 2rem;
-
-    .home-landing-hero-title {
-      font-size: 1.9rem;
-      line-height: 1.2;
-      margin: 0 0 0.55rem;
-      color: var(--dark);
-    }
-
-    .home-landing-hero-subtitle {
-      color: var(--darkgray);
-      margin: 0 auto;
-      max-width: 42rem;
-      font-size: 1.02rem;
-    }
-  }
+  /* Hero banner odstraněn — popis patří pod menu lištu (jako obsah index.md). */
 
   /* ═══════════ Wizard krok obecně ═══════════ */
   .home-wizard-step {
