@@ -329,7 +329,7 @@
   align-items: center;
   gap: 0.5rem;
   min-width: 0;
-  color: inherit;
+  color: var(--secondary);
   text-decoration: none;
   flex: 0 0 auto;
 
@@ -360,7 +360,7 @@
 
 .raci-cinnost-items {
   list-style: none;
-  padding: 0.25rem 0 0.25rem 1.4rem;
+  padding: 0.25rem 0;
   margin: 0;
   display: flex;
   flex-direction: column;
@@ -371,7 +371,7 @@
   display: flex;
   align-items: center;
   gap: 0.4rem;
-  padding: 0.2rem 0;
+  padding: 0.2rem 0.4rem 0.2rem 1.4rem;
   font-size: 0.86rem;
   border-bottom: 1px solid color-mix(in srgb, var(--lightgray) 40%, transparent);
 
@@ -416,6 +416,51 @@
 /* Colored dot before item link — per letter (zachováno z původní verze) */
 
 .raci-group {
+  &.raci-r .raci-cinnost-main-link::before {
+    content: "";
+    display: inline-block;
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: #c0392b;
+    margin-right: 0.45rem;
+    vertical-align: middle;
+    flex-shrink: 0;
+  }
+  &.raci-a .raci-cinnost-main-link::before {
+    content: "";
+    display: inline-block;
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: #2980b9;
+    margin-right: 0.45rem;
+    vertical-align: middle;
+    flex-shrink: 0;
+  }
+  &.raci-c .raci-cinnost-main-link::before {
+    content: "";
+    display: inline-block;
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: #27ae60;
+    margin-right: 0.45rem;
+    vertical-align: middle;
+    flex-shrink: 0;
+  }
+  &.raci-i .raci-cinnost-main-link::before {
+    content: "";
+    display: inline-block;
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: #8e44ad;
+    margin-right: 0.45rem;
+    vertical-align: middle;
+    flex-shrink: 0;
+  }
+
   &.raci-r .raci-item > a::before {
     content: "";
     display: inline-block;
