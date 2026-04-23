@@ -89,7 +89,7 @@ function hideOrderingPrefix(node: FileTrieNode): void {
 // components shared across all pages
 export const sharedPageComponents: SharedLayout = {
   head: Component.Head(),
-  header: [],
+  header: [Component.TopNav(), Component.Search(), Component.Darkmode()],
   afterBody: [
     Component.ConditionalRender({
       component: Component.HomeLanding(),
@@ -144,44 +144,13 @@ export const defaultContentPageLayout: PageLayout = {
     }),
     Component.TagList(),
   ],
-  left: [
-    Component.SidebarToggle(),
-    Component.SiteBranding(),
-    Component.MobileOnly(Component.Spacer()),
-    Component.Flex({
-      components: [
-        { Component: Component.Search() },
-        { Component: Component.Darkmode() },
-      ],
-    }),
-    Component.Explorer({
-      title: "",
-      sortFn: sortByNumericPrefix,
-      folderClickBehavior: "collapse",
-      filterFn: explorerFilter,
-      mapFn: hideOrderingPrefix,
-    }),
-  ],
+  left: [],
   right: [],
 }
 
 // components for pages that display lists of pages  (e.g. tags or folders)
 export const defaultListPageLayout: PageLayout = {
   beforeBody: [Component.Breadcrumbs(), Component.ArticleTitle(), Component.ContentMeta()],
-  left: [
-    Component.SidebarToggle(),
-    Component.SiteBranding(),
-    Component.MobileOnly(Component.Spacer()),
-    Component.Flex({
-      components: [{ Component: Component.Search() }, { Component: Component.Darkmode() }],
-    }),
-    Component.Explorer({
-      title: "",
-      sortFn: sortByNumericPrefix,
-      folderClickBehavior: "collapse",
-      filterFn: explorerFilter,
-      mapFn: hideOrderingPrefix,
-    }),
-  ],
+  left: [],
   right: [],
 }

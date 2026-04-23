@@ -33,6 +33,7 @@ import MetadataPanel from "./MetadataPanel"
 import RaciBacklinks from "./RaciBacklinks"
 import HomeLanding from "./HomeLanding"
 import RoleRaciTable from "./RoleRaciTable"
+import TopNav from "./TopNav"
 
 export {
   ArticleTitle,
@@ -70,4 +71,5 @@ export {
   RaciBacklinks,
   HomeLanding,
   RoleRaciTable,
+  TopNav,
 }

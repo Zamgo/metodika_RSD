@@ -97,20 +97,20 @@ const MetadataPanel: QuartzComponent = ({ fileData, displayClass, allFiles }: Qu
     <section
       class={classNames(displayClass, "metadata-panel")}
       data-metadata-panel
-      data-metadata-initial-collapsed={isRole ? "true" : "false"}
+      data-metadata-expanded="false"
     >
       <div class="metadata-panel-header">
         <h2>Metadata</h2>
         <button
           type="button"
           class="metadata-panel-toggle"
-          aria-expanded={isRole ? "false" : "true"}
+          aria-expanded="false"
           aria-controls="metadata-panel-fields"
         >
-          {isRole ? "Zobrazit" : "Skrýt"}
+          Zobrazit metadata této stránky
         </button>
       </div>
-      <dl class="metadata-panel-body" id="metadata-panel-fields" hidden={isRole}>
+      <dl class="metadata-panel-body" id="metadata-panel-fields" hidden>
         {displayRows.map((row) => (
           <Fragment key={row.key}>
             <dt>{row.label}</dt>
@@ -139,43 +139,71 @@ const MetadataPanel: QuartzComponent = ({ fileData, displayClass, allFiles }: Qu
 
 MetadataPanel.css = `
 .metadata-panel {
-  margin: 0.75rem 0 1rem;
-  padding: 0.75rem 0.9rem;
-  border: 1px solid var(--lightgray);
-  border-radius: 8px;
-  background: var(--light);
+  margin: 0.7rem 0 0.9rem;
+  display: flex;
+  justify-content: flex-start;
 }
 
 .metadata-panel-header {
   display: flex;
   align-items: center;
   justify-content: flex-start;
-  gap: 0.75rem;
-  margin-bottom: 0.6rem;
+  gap: 0.35rem;
+  margin-bottom: 0;
 }
 
 .metadata-panel h2 {
-  font-size: 0.95rem;
-  margin: 0;
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
 }
 
 .metadata-panel-toggle {
   flex-shrink: 0;
-  font-size: 0.8rem;
-  padding: 0.25rem 0.55rem;
-  border: 1px solid var(--lightgray);
-  border-radius: 6px;
-  background: var(--light);
-  color: var(--dark);
+  font-size: 0.72rem;
+  padding: 0.14rem 0.4rem;
+  border: 1px solid color-mix(in srgb, var(--lightgray) 70%, transparent);
+  border-radius: 999px;
+  background: transparent;
+  color: var(--gray);
   cursor: pointer;
 }
 
 .metadata-panel-toggle:hover {
-  background: var(--lightgray);
+  color: var(--dark);
+  border-color: var(--lightgray);
+}
+
+.metadata-panel[data-metadata-expanded="true"] {
+  display: block;
+  margin-top: 0.75rem;
+  padding: 0;
+  border: 0;
+  background: transparent;
+}
+
+.metadata-panel[data-metadata-expanded="true"] .metadata-panel-header {
+  justify-content: flex-start;
+  gap: 0.35rem;
+  margin-bottom: 0;
 }
 
 .metadata-panel-body[hidden] {
   display: none;
+}
+
+.metadata-panel[data-metadata-expanded="true"] .metadata-panel-body:not([hidden]) {
+  margin-top: 0.45rem;
+  padding: 0.65rem 0.85rem;
+  border: 1px solid var(--lightgray);
+  border-radius: 8px;
+  background: var(--light);
 }
 
 .metadata-panel dl {
@@ -219,8 +247,11 @@ MetadataPanel.afterDOMLoaded = `
       function onClick() {
         const nextHidden = !body.hidden;
         body.hidden = nextHidden;
+        panel.setAttribute("data-metadata-expanded", String(!nextHidden));
         btn.setAttribute("aria-expanded", String(!nextHidden));
-        btn.textContent = nextHidden ? "Zobrazit" : "Skrýt";
+        btn.textContent = nextHidden
+          ? "Zobrazit metadata této stránky"
+          : "Skrýt metadata této stránky";
       }
 
       btn.addEventListener("click", onClick);

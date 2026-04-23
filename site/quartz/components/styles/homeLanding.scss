@@ -1,3 +1,5 @@
+@use "../../styles/variables.scss" as *;
+
 .home-landing {
   margin: 1.5rem 0 2.5rem;
 
@@ -81,6 +83,102 @@
         &:hover {
           filter: brightness(1.05);
         }
+      }
+    }
+
+    .home-landing-hero-results {
+      max-width: 72rem;
+      margin: 0.45rem auto 0;
+      background: var(--light);
+      border: 1px solid var(--lightgray);
+      border-radius: 8px;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+      text-align: left;
+      overflow: hidden;
+      display: grid;
+      grid-template-columns: minmax(16rem, 22rem) 1fr;
+      min-height: 16rem;
+
+      @media all and ($mobile) {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .home-landing-hero-results-list {
+      border-right: 1px solid color-mix(in srgb, var(--lightgray) 70%, transparent);
+
+      @media all and ($mobile) {
+        border-right: 0;
+        border-bottom: 1px solid color-mix(in srgb, var(--lightgray) 70%, transparent);
+      }
+    }
+
+    .home-landing-hero-result-item {
+      display: block;
+      padding: 0.7rem 0.9rem;
+      color: var(--dark);
+      text-decoration: none;
+      border-bottom: 1px solid color-mix(in srgb, var(--lightgray) 70%, transparent);
+
+      &:last-child {
+        border-bottom: 0;
+      }
+
+      &:hover,
+      &:focus {
+        background: color-mix(in srgb, var(--secondary) 10%, var(--light));
+      }
+    }
+
+    .home-landing-hero-no-results {
+      margin: 0;
+      padding: 0.85rem 0.9rem;
+      color: var(--darkgray);
+      font-size: 0.92rem;
+    }
+
+    .home-landing-hero-preview {
+      padding: 0.8rem 1rem;
+      overflow-y: auto;
+      max-height: 26rem;
+      color: var(--dark);
+
+      .home-landing-hero-preview-inner {
+        font-size: 0.95rem;
+        line-height: 1.5;
+
+        .article-surface,
+        article {
+          background: transparent;
+          border: 0;
+          border-radius: 0;
+          box-shadow: none;
+          padding: 0;
+        }
+
+        h1:first-child {
+          margin-top: 0.1rem;
+        }
+      }
+
+      .home-landing-hero-preview-fallback {
+        h3 {
+          margin: 0 0 0.5rem;
+          font-size: 1.05rem;
+          color: var(--dark);
+        }
+
+        p {
+          margin: 0;
+          color: var(--darkgray);
+        }
+      }
+
+      .home-landing-hero-preview-empty,
+      .home-landing-hero-preview-loading {
+        margin: 0;
+        color: var(--darkgray);
+        font-size: 0.92rem;
       }
     }
 

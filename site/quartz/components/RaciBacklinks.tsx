@@ -73,6 +73,11 @@ function stripOznaceniPrefix(title: string, oznaceni: string | undefined): strin
   return title.replace(re, "").trim() || title
 }
 
+function formatCinnostLabel(title: string, oznaceni?: string): string {
+  const cleanTitle = stripOznaceniPrefix(title, oznaceni)
+  return oznaceni ? `${oznaceni} – ${cleanTitle}` : cleanTitle
+}
+
 /** Text z wikilinku → samotný cíl / alias (první hodnota). */
 function plainFromWiki(raw: unknown): string {
   const arr = extractNames(raw)
@@ -397,9 +402,7 @@ export default ((opts?: Partial<RaciBacklinksOptions>) => {
             >
               <summary class="raci-group-header">
                 <span class={`raci-badge ${lb.colorClass}`}>{lb.letter}</span>
-                <span class="raci-group-label">
-                  {lb.label} (<span class="raci-group-count">{lb.totalCount}</span>)
-                </span>
+                <span class="raci-group-label">{lb.label}</span>
               </summary>
               <div class="raci-group-content">
                 {lb.groups.map((g) => {
@@ -419,18 +422,14 @@ export default ((opts?: Partial<RaciBacklinksOptions>) => {
                               class="internal raci-cinnost-main-link"
                               onClick={(evt) => evt.stopPropagation()}
                             >
-                              <span class="raci-cinnost-oznaceni">{g.oznaceni || "–"}</span>
                               <span class="raci-cinnost-title">
-                                {stripOznaceniPrefix(g.title, g.oznaceni)}
+                                {formatCinnostLabel(g.title, g.oznaceni)}
                               </span>
                             </a>
                           ) : (
-                            <>
-                              <span class="raci-cinnost-oznaceni">{g.oznaceni || "–"}</span>
-                              <span class="raci-cinnost-title">
-                                {stripOznaceniPrefix(g.title, g.oznaceni)}
-                              </span>
-                            </>
+                            <span class="raci-cinnost-title">
+                              {formatCinnostLabel(g.title, g.oznaceni)}
+                            </span>
                           )}
                         </span>
                         <span class="raci-cinnost-faze">
@@ -439,9 +438,6 @@ export default ((opts?: Partial<RaciBacklinksOptions>) => {
                               {fz}
                             </span>
                           ))}
-                        </span>
-                        <span class="raci-cinnost-count">
-                          (<span class="raci-cinnost-count-value">{g.items.length}</span>)
                         </span>
                       </summary>
                       <ul class="raci-cinnost-items">
@@ -457,8 +453,7 @@ export default ((opts?: Partial<RaciBacklinksOptions>) => {
                                 href={resolveRelative(fileData.slug!, entry.slug)}
                                 class="internal"
                               >
-                                {entry.oznaceni ? `${entry.oznaceni} – ` : ""}
-                                {stripOznaceniPrefix(entry.title, entry.oznaceni)}
+                                {formatCinnostLabel(entry.title, entry.oznaceni)}
                               </a>
                               {entry.fazeList.length > 0 ? (
                                 <span class="raci-item-faze">

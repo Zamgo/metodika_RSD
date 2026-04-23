@@ -179,7 +179,6 @@ const HomeLanding: QuartzComponent = ({
             class="home-landing-hero-input"
             placeholder="Hledat pojem, činnost, roli…"
             aria-label="Hledat v metodice"
-            readOnly
           />
           <button type="button" class="home-landing-hero-button">
             Hledat

@@ -281,7 +281,7 @@
     cursor: pointer;
     list-style: none;
     user-select: none;
-    font-size: 0.88rem;
+    font-size: 0.86rem;
     position: relative;
 
     &::-webkit-details-marker {
@@ -314,14 +314,8 @@
   }
 }
 
-.raci-cinnost-oznaceni {
-  font-weight: 600;
-  color: var(--dark);
-  min-width: 2.5rem;
-}
-
 .raci-cinnost-title {
-  color: var(--dark);
+  color: var(--secondary);
   flex: 1 1 auto;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -333,26 +327,32 @@
   align-items: center;
   min-width: 0;
   flex: 1 1 auto;
+  pointer-events: none;
+
+  > .raci-cinnost-title {
+    flex: 0 1 auto;
+  }
 }
 
 .raci-cinnost-main-link {
   display: inline-flex;
   align-items: center;
-  gap: 0.5rem;
   min-width: 0;
   color: var(--secondary);
   text-decoration: none;
-  max-width: 100%;
+  max-width: fit-content;
+  pointer-events: auto;
 
-  &:hover .raci-cinnost-title {
+  &:hover {
     text-decoration: underline;
   }
 
   .raci-cinnost-title {
+    font-weight: inherit;
+  }
+
+  .raci-cinnost-title {
     flex: 0 1 auto;
-    overflow: visible;
-    text-overflow: clip;
-    white-space: normal;
   }
 }
 
@@ -360,13 +360,7 @@
   display: inline-flex;
   gap: 0.25rem;
   flex-shrink: 0;
-}
-
-.raci-cinnost-count {
-  color: var(--gray);
-  font-size: 0.82rem;
-  font-variant-numeric: tabular-nums;
-  flex-shrink: 0;
+  margin-left: 0.15rem;
 }
 
 .raci-cinnost-items {
@@ -394,7 +388,8 @@
     background-color: transparent;
     color: var(--secondary);
     text-decoration: none;
-    flex: 1 1 auto;
+    flex: 0 1 auto;
+    max-width: fit-content;
 
     &:hover {
       text-decoration: underline;
@@ -406,6 +401,7 @@
   display: inline-flex;
   gap: 0.2rem;
   flex-shrink: 0;
+  margin-left: 0.15rem;
 }
 
 /* ───────── Faze chip (neutral badge) ───────── */
