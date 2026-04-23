@@ -12,6 +12,8 @@ type WizardActivity = {
   faze: string[]
   rRoles: string[]
   aRoles: string[]
+  cRoles: string[]
+  iRoles: string[]
   popis: string
 }
 
@@ -145,7 +147,9 @@ function normalizeLower(s: string): string {
 
 function activityMatchesRole(activity: WizardActivity, role: WizardRole): boolean {
   const roleNames = new Set<string>([role.title, ...role.aliases].map(normalizeLower))
-  const haystack = [...activity.rRoles, ...activity.aRoles].map(normalizeLower)
+  const haystack = [...activity.rRoles, ...activity.aRoles, ...activity.cRoles, ...activity.iRoles].map(
+    normalizeLower,
+  )
   for (const h of haystack) {
     if (roleNames.has(h)) return true
   }
@@ -165,14 +169,24 @@ function filterActivities(
   data: WizardData,
   roleKey: string | null,
   phaseKey: string | null,
+  raciKeys: Set<string>,
 ): WizardActivity[] {
   if (!roleKey || !phaseKey) return []
+  if (raciKeys.size === 0) return []
   const role = data.roles.find((r) => r.key === roleKey)
   const phase = data.phases.find((p) => p.key === phaseKey)
   if (!role || !phase) return []
   return data.activities.filter(
-    (a) => activityMatchesRole(a, role) && activityMatchesPhase(a, phase),
+    (a) => activityMatchesRole(a, role) && activityMatchesPhase(a, phase) && activityMatchesRaci(a, role, raciKeys),
   )
+}
+
+function activityMatchesRaci(activity: WizardActivity, role: WizardRole, raciKeys: Set<string>): boolean {
+  if (raciKeys.has("R") && isRoleIn(role, activity.rRoles)) return true
+  if (raciKeys.has("A") && isRoleIn(role, activity.aRoles)) return true
+  if (raciKeys.has("C") && isRoleIn(role, activity.cRoles ?? [])) return true
+  if (raciKeys.has("I") && isRoleIn(role, activity.iRoles ?? [])) return true
+  return false
 }
 
 /* ═══════════ Wizard main ═══════════ */
@@ -183,15 +197,17 @@ function wireWizard() {
   const data = parseWizardData()
   if (!data) return
 
-  const state: { roleKey: string | null; phaseKey: string | null } = {
+  const state: { roleKey: string | null; phaseKey: string | null; raciKeys: Set<string> } = {
     roleKey: null,
     phaseKey: null,
+    raciKeys: new Set<string>(["R", "A", "C", "I"]),
   }
 
   const step2 = root.querySelector<HTMLElement>('[data-wizard-step="2"]')
   const step3 = root.querySelector<HTMLElement>('[data-wizard-step="3"]')
   const roleCards = Array.from(root.querySelectorAll<HTMLButtonElement>(".home-wizard-role-card"))
   const phaseCards = Array.from(root.querySelectorAll<HTMLButtonElement>(".home-wizard-phase-card"))
+  const raciCards = Array.from(root.querySelectorAll<HTMLButtonElement>(".home-wizard-raci-card"))
   const listEl = root.querySelector<HTMLElement>("[data-wizard-list]")
   const previewEl = root.querySelector<HTMLElement>("[data-wizard-preview]")
   const summaryEl = root.querySelector<HTMLElement>("[data-wizard-summary]")
@@ -200,6 +216,7 @@ function wireWizard() {
 
   const previewEmptyHtml = `<p class="home-wizard-result-preview-empty">Vyberte činnost v levém seznamu pro náhled.</p>`
   const listEmptyHtml = `<li class="home-wizard-result-empty">Pro zvolenou kombinaci jsme nenašli žádné činnosti.</li>`
+  const listEmptyRaciHtml = `<li class="home-wizard-result-empty">Vyberte alespoň jednu roli v RACI (R, A, C nebo I).</li>`
 
   function setActiveRole(key: string) {
     state.roleKey = key
@@ -231,12 +248,31 @@ function wireWizard() {
     })
   }
 
+  function syncRaciCards() {
+    for (const card of raciCards) {
+      const key = (card.dataset.raciKey || "").toUpperCase()
+      const isSelected = state.raciKeys.has(key)
+      card.classList.toggle("selected", isSelected)
+      card.setAttribute("aria-pressed", isSelected ? "true" : "false")
+    }
+  }
+
+  function toggleRaciKey(key: string) {
+    if (state.raciKeys.has(key)) {
+      state.raciKeys.delete(key)
+    } else {
+      state.raciKeys.add(key)
+    }
+    syncRaciCards()
+    if (state.phaseKey) renderResult()
+  }
+
   function renderResult() {
     if (!state.roleKey || !state.phaseKey) return
 
     const role = data!.roles.find((r) => r.key === state.roleKey)
     const phase = data!.phases.find((p) => p.key === state.phaseKey)
-    const filtered = filterActivities(data!, state.roleKey, state.phaseKey)
+    const filtered = filterActivities(data!, state.roleKey, state.phaseKey, state.raciKeys)
 
     // Summary
     if (role && phase) {
@@ -244,6 +280,8 @@ function wireWizard() {
         <span class="home-wizard-result-tag">${escapeHtml(role.title)}</span>
         ·
         <span class="home-wizard-result-tag">${escapeHtml(phase.label)}</span>
+        ·
+        <span class="home-wizard-result-tag">${Array.from(state.raciKeys).sort().join(", ") || "—"}</span>
         — ${filtered.length} ${pluralCinnosti(filtered.length)}
       `
     }
@@ -251,7 +289,7 @@ function wireWizard() {
     // List
     listEl!.innerHTML = ""
     if (filtered.length === 0) {
-      listEl!.innerHTML = listEmptyHtml
+      listEl!.innerHTML = state.raciKeys.size === 0 ? listEmptyRaciHtml : listEmptyHtml
       previewEl!.innerHTML = previewEmptyHtml
       return
     }
@@ -268,9 +306,13 @@ function wireWizard() {
       // Označení role na aktivitě — R vs A
       const rMatch = role && isRoleIn(role, act.rRoles)
       const aMatch = role && isRoleIn(role, act.aRoles)
+      const cMatch = role && isRoleIn(role, act.cRoles ?? [])
+      const iMatch = role && isRoleIn(role, act.iRoles ?? [])
       const tagsHtml: string[] = []
       if (rMatch) tagsHtml.push(`<span class="home-wizard-result-item-tag">R</span>`)
       if (aMatch) tagsHtml.push(`<span class="home-wizard-result-item-tag">A</span>`)
+      if (cMatch) tagsHtml.push(`<span class="home-wizard-result-item-tag">C</span>`)
+      if (iMatch) tagsHtml.push(`<span class="home-wizard-result-item-tag">I</span>`)
 
       li.innerHTML = `
         ${act.oznaceni ? `<span class="home-wizard-result-item-num">${escapeHtml(act.oznaceni)}</span>` : ""}
@@ -347,6 +389,14 @@ function wireWizard() {
       if (key) setActivePhase(key)
     })
   }
+  for (const card of raciCards) {
+    card.addEventListener("click", () => {
+      const key = (card.dataset.raciKey || "").toUpperCase()
+      if (!key) return
+      toggleRaciKey(key)
+    })
+  }
+  syncRaciCards()
 }
 
 function isRoleIn(role: WizardRole, list: string[]): boolean {

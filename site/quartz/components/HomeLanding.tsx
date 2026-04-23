@@ -25,6 +25,8 @@ type ActivityEntry = {
   faze: string[]
   rRoles: string[]
   aRoles: string[]
+  cRoles: string[]
+  iRoles: string[]
   popis: string
 }
 
@@ -141,12 +143,18 @@ function pickActivities(currentSlug: FullSlug, allFiles: QuartzPluginData[]): Ac
     // Frontmatter klíče obsahují mezery a pomlčky — proto vybíráme dynamicky.
     let rRoles: string[] = []
     let aRoles: string[] = []
+    let cRoles: string[] = []
+    let iRoles: string[] = []
     for (const [k, v] of Object.entries(fm)) {
       const keyLower = k.toLowerCase()
       if (keyLower.startsWith("r -") || keyLower.startsWith("r-")) {
         rRoles = coerceLinkArray(v)
       } else if (keyLower.startsWith("a -") || keyLower.startsWith("a-")) {
         aRoles = coerceLinkArray(v)
+      } else if (keyLower.startsWith("c -") || keyLower.startsWith("c-")) {
+        cRoles = coerceLinkArray(v)
+      } else if (keyLower.startsWith("i -") || keyLower.startsWith("i-")) {
+        iRoles = coerceLinkArray(v)
       }
     }
 
@@ -158,6 +166,8 @@ function pickActivities(currentSlug: FullSlug, allFiles: QuartzPluginData[]): Ac
       faze,
       rRoles,
       aRoles,
+      cRoles,
+      iRoles,
       popis,
     })
   }
@@ -206,6 +216,8 @@ const HomeLanding: QuartzComponent = ({
       faze: a.faze,
       rRoles: a.rRoles,
       aRoles: a.aRoles,
+      cRoles: a.cRoles,
+      iRoles: a.iRoles,
       popis: a.popis,
     })),
     phases: PHASE_DEFS.map((p) => ({
@@ -309,11 +321,52 @@ const HomeLanding: QuartzComponent = ({
         <div class="home-wizard-step-head">
           <span class="home-wizard-step-num">3</span>
           <h2 id="wizard-step3-title" class="home-wizard-step-title">
-            Co potřebuji?
+            Jaké činnosti se mě týkají?
           </h2>
           <div class="home-wizard-result-summary" data-wizard-summary>
             {/* doplní skript: "Správce stavby · Příprava — 12 činností" */}
           </div>
+        </div>
+        <p class="home-wizard-step-hint">
+          Zaškrtněte, jakou máte roli v RACI tabulce.
+        </p>
+        <div class="home-wizard-raci-grid" role="group" aria-label="Role v RACI">
+          <button
+            type="button"
+            class="home-wizard-raci-card raci-r"
+            data-raci-key="R"
+            aria-pressed="true"
+          >
+            <span class="home-wizard-raci-code raci-r">R</span>
+            <span class="home-wizard-raci-text">Mám odpovědnost za provedení činnosti</span>
+          </button>
+          <button
+            type="button"
+            class="home-wizard-raci-card raci-a"
+            data-raci-key="A"
+            aria-pressed="true"
+          >
+            <span class="home-wizard-raci-code raci-a">A</span>
+            <span class="home-wizard-raci-text">Mám odpovědnost za schválení činnosti</span>
+          </button>
+          <button
+            type="button"
+            class="home-wizard-raci-card raci-c"
+            data-raci-key="C"
+            aria-pressed="true"
+          >
+            <span class="home-wizard-raci-code raci-c">C</span>
+            <span class="home-wizard-raci-text">Činnost má být se mnou konzultována</span>
+          </button>
+          <button
+            type="button"
+            class="home-wizard-raci-card raci-i"
+            data-raci-key="I"
+            aria-pressed="true"
+          >
+            <span class="home-wizard-raci-code raci-i">I</span>
+            <span class="home-wizard-raci-text">O průběhu činnosti mám být informován</span>
+          </button>
         </div>
         <div class="home-wizard-result-split">
           <div class="home-wizard-result-list-wrap">

@@ -4,6 +4,8 @@ $rsd-blue-dark: #09417a;
 $rsd-blue-light: #2b6cb0;
 $rsd-orange: #d97706;
 $rsd-green: #2f855a;
+$wizard-card-radius: 10px;
+$wizard-card-min-height: 3.5rem;
 
 .home-landing {
   margin: 1.25rem 0 2.5rem;
@@ -63,22 +65,29 @@ $rsd-green: #2f855a;
   /* ═══════════ Step 1 — Role karty ═══════════ */
   .home-wizard-role-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-    gap: 0.55rem;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 0.65rem;
+    align-items: stretch;
+    grid-auto-rows: 1fr;
   }
 
-  .home-wizard-role-card {
+  .home-wizard-role-card,
+  .home-wizard-phase-card,
+  .home-wizard-raci-card {
     display: flex;
-    align-items: center;
-    gap: 0;
-    padding: 0.6rem 0.72rem;
+    align-items: flex-start;
+    gap: 0.55rem;
+    min-height: $wizard-card-min-height;
+    padding: 0.72rem 0.85rem;
     border: 1px solid var(--lightgray);
-    border-radius: 8px;
+    border-radius: $wizard-card-radius;
     background: var(--light);
     text-align: left;
     cursor: pointer;
     font: inherit;
     color: var(--dark);
+    font-size: 0.9rem;
+    line-height: 1.3;
     transition: border-color 120ms ease, transform 120ms ease, box-shadow 120ms ease,
       background 120ms ease;
     position: relative;
@@ -86,21 +95,21 @@ $rsd-green: #2f855a;
     &:hover {
       border-color: var(--secondary);
       transform: translateY(-1px);
-      box-shadow: 0 4px 14px rgba(9, 65, 122, 0.08);
+      box-shadow: 0 6px 18px rgba(9, 65, 122, 0.1);
     }
 
     &.selected {
       border-color: $rsd-blue-dark;
       border-width: 2px;
-      padding: calc(0.6rem - 1px) calc(0.72rem - 1px);
+      padding: calc(0.72rem - 1px) calc(0.85rem - 1px);
       background: color-mix(in srgb, $rsd-blue-dark 8%, var(--light));
-      box-shadow: 0 4px 18px rgba(9, 65, 122, 0.12);
+      box-shadow: 0 6px 20px rgba(9, 65, 122, 0.14);
 
       &::after {
         content: "✓";
         position: absolute;
-        top: 0.25rem;
-        right: 0.3rem;
+        top: 0.3rem;
+        right: 0.35rem;
         width: 1rem;
         height: 1rem;
         border-radius: 50%;
@@ -123,7 +132,7 @@ $rsd-green: #2f855a;
   }
 
   .home-wizard-role-title {
-    font-size: 0.9rem;
+    font-size: 0.92rem;
     font-weight: 600;
     line-height: 1.2;
     color: var(--dark);
@@ -136,7 +145,7 @@ $rsd-green: #2f855a;
   }
 
   .home-wizard-role-badge {
-    margin-top: 0.12rem;
+    margin-top: 0.16rem;
     display: inline-block;
     font-size: 0.62rem;
     font-weight: 600;
@@ -153,8 +162,10 @@ $rsd-green: #2f855a;
   /* ═══════════ Step 2 — Fáze dlaždice ═══════════ */
   .home-wizard-phase-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-    gap: 0.6rem;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 0.65rem;
+    align-items: stretch;
+    grid-auto-rows: 1fr;
 
     @media all and ($mobile) {
       grid-template-columns: 1fr;
@@ -162,39 +173,8 @@ $rsd-green: #2f855a;
   }
 
   .home-wizard-phase-card {
-    display: flex;
-    align-items: center;
-    gap: 0;
-    padding: 0.75rem 0.9rem;
-    border-radius: 9px;
-    border: 1px solid var(--lightgray);
-    background: var(--light);
-    cursor: pointer;
-    font: inherit;
-    color: var(--dark);
-    transition: border-color 120ms ease, transform 120ms ease, box-shadow 120ms ease;
-    position: relative;
-    min-height: 3.1rem;
-
-    &:hover {
-      transform: translateY(-1px);
-      box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08);
-    }
-
     &.selected::after {
-      content: "✓";
-      position: absolute;
-      top: 0.28rem;
-      right: 0.35rem;
-      width: 1rem;
-      height: 1rem;
-      border-radius: 50%;
-      color: #fff;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 0.68rem;
-      font-weight: 700;
+      top: 0.3rem;
     }
   }
 
@@ -216,7 +196,7 @@ $rsd-green: #2f855a;
     &.selected {
       border-color: $rsd-blue-dark;
       border-width: 2px;
-      padding: calc(0.75rem - 1px) calc(0.9rem - 1px);
+      padding: calc(0.72rem - 1px) calc(0.85rem - 1px);
       background: linear-gradient(135deg, color-mix(in srgb, $rsd-blue-dark 22%, #fff) 0%, #fff 100%);
 
       &::after {
@@ -240,7 +220,7 @@ $rsd-green: #2f855a;
     &.selected {
       border-color: $rsd-orange;
       border-width: 2px;
-      padding: calc(0.75rem - 1px) calc(0.9rem - 1px);
+      padding: calc(0.72rem - 1px) calc(0.85rem - 1px);
       background: linear-gradient(135deg, color-mix(in srgb, $rsd-orange 25%, #fff) 0%, #fff 100%);
 
       &::after {
@@ -264,7 +244,7 @@ $rsd-green: #2f855a;
     &.selected {
       border-color: $rsd-green;
       border-width: 2px;
-      padding: calc(0.75rem - 1px) calc(0.9rem - 1px);
+      padding: calc(0.72rem - 1px) calc(0.85rem - 1px);
       background: linear-gradient(135deg, color-mix(in srgb, $rsd-green 25%, #fff) 0%, #fff 100%);
 
       &::after {
@@ -275,6 +255,89 @@ $rsd-green: #2f855a;
     .home-wizard-phase-label {
       color: color-mix(in srgb, $rsd-green 80%, #000);
     }
+  }
+
+  /* ═══════════ Step 3 — RACI výběr ═══════════ */
+  .home-wizard-raci-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 0.65rem;
+    margin: 0 0 1rem;
+    align-items: stretch;
+    grid-auto-rows: 1fr;
+
+    @media all and ($mobile) {
+      margin-left: 0;
+      grid-template-columns: 1fr;
+    }
+  }
+
+  .home-wizard-raci-card {
+    &.selected {
+      &.raci-r {
+        border-color: #c0392b;
+        background: color-mix(in srgb, #c0392b 12%, #fff);
+        --raci-accent: #c0392b;
+      }
+      &.raci-a {
+        border-color: #2980b9;
+        background: color-mix(in srgb, #2980b9 12%, #fff);
+        --raci-accent: #2980b9;
+      }
+      &.raci-c {
+        border-color: #27ae60;
+        background: color-mix(in srgb, #27ae60 12%, #fff);
+        --raci-accent: #27ae60;
+      }
+      &.raci-i {
+        border-color: #8e44ad;
+        background: color-mix(in srgb, #8e44ad 12%, #fff);
+        --raci-accent: #8e44ad;
+      }
+
+      &::after {
+        background: var(--raci-accent, #09417a);
+      }
+    }
+  }
+
+  .home-wizard-raci-code {
+    flex: 0 0 auto;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 1.35rem;
+    height: 1.35rem;
+    border-radius: 6px;
+    background: color-mix(in srgb, $rsd-blue-dark 14%, #fff);
+    color: $rsd-blue-dark;
+    font-weight: 700;
+    font-size: 0.82rem;
+    line-height: 1;
+    margin-top: 0.03rem;
+
+    &.raci-r {
+      color: #c0392b;
+      background: color-mix(in srgb, #c0392b 16%, #fff);
+    }
+    &.raci-a {
+      color: #2980b9;
+      background: color-mix(in srgb, #2980b9 16%, #fff);
+    }
+    &.raci-c {
+      color: #27ae60;
+      background: color-mix(in srgb, #27ae60 16%, #fff);
+    }
+    &.raci-i {
+      color: #8e44ad;
+      background: color-mix(in srgb, #8e44ad 16%, #fff);
+    }
+  }
+
+  .home-wizard-raci-text {
+    font-size: 0.88rem;
+    line-height: 1.3;
+    color: var(--dark);
   }
 
   /* ═══════════ Step 3 — Result split pane ═══════════ */
