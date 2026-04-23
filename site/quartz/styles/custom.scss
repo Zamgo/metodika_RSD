@@ -628,22 +628,19 @@ body[data-sidebar-collapsed] {
 }
 
 /* ═══════════════════════════════════════════════════════════════════
-   TOP-NAV LAYOUT
-   Levý panel nahrazen horní sticky lištou (TopNav + Search + Darkmode).
-   Tyto pravidla přepisují výše definovaná sidebar pravidla.
-   .page-header je uvnitř .center (flex column), takže používáme
-   position: sticky — element zůstává ve flow a align-items: stretch
-   mu dá plnou šířku; při scrollu se lepí k top:0.
+   TOP-NAV LAYOUT (Sprint 1 — finální verze)
+   Bílá lišta s modrým akcentem (2px RSD blue border-bottom).
+   .page-header je uvnitř .center (flex column), sticky top:0.
    ════════════════════════════════════════════════════════════════════ */
 
 /* ─── CSS proměnná pro výšku horní lišty ────────────────────────── */
 :root {
-  --top-nav-height: 52px;
+  --top-nav-height: 56px;
 }
 
 @media all and (max-width: 800px) {
   :root {
-    --top-nav-height: 48px;
+    --top-nav-height: 50px;
   }
 }
 
@@ -665,21 +662,20 @@ html #quartz-body {
   grid-template-columns: 0px auto 0px !important;
 }
 
-/* ─── 2. Sticky horní lišta (.page-header uvnitř .center flex col) ─ */
+/* ─── 2. Sticky horní lišta — bílá s modrým akcentem ─────────────── */
 #quartz-body .page-header {
   position: sticky;
   top: 0;
   z-index: 200;
   margin: 0 !important;
-  /* Přetáhnout přes boční padding .center (.center má padding-left/right clamp(1rem, 3vw, 2.25rem)) */
+  /* Přetáhnout přes boční padding .center */
   margin-left: calc(-1 * clamp(1rem, 3vw, 2.25rem)) !important;
   margin-right: calc(-1 * clamp(1rem, 3vw, 2.25rem)) !important;
-  /* Zároveň align-self: stretch by měl stačit, ale explicitní width jistí plnou šířku */
   width: calc(100% + 2 * clamp(1rem, 3vw, 2.25rem));
   align-self: stretch;
   background: #ffffff;
-  border-bottom: 1px solid color-mix(in srgb, $rsd-blue-dark 10%, transparent);
-  box-shadow: 0 1px 8px rgba(9, 65, 122, 0.06);
+  border-bottom: 2px solid $rsd-blue-dark;
+  box-shadow: 0 2px 12px rgba(9, 65, 122, 0.08);
   box-sizing: border-box;
 }
 
@@ -691,7 +687,7 @@ html #quartz-body {
   }
 }
 
-/* Override výchozího margin: 2rem 0 na <header> elementu */
+/* Override výchozího header margin a přinutit horizontální flex */
 #quartz-body .page-header header {
   margin: 0;
   padding: 0 clamp(1rem, 3vw, 2.25rem);
@@ -701,65 +697,124 @@ html #quartz-body {
   display: flex;
   flex-direction: row;
   align-items: center;
-  gap: 0.75rem;
+  gap: 1.25rem;
 }
 
 @media all and (max-width: 800px) {
   #quartz-body .page-header header {
     padding: 0 1rem;
+    gap: 0.75rem;
   }
 }
 
-/* ─── 3. scroll-padding-top — kotvy se otvírají pod lištou ─────── */
+/* ─── 3. Zneutralizovat $topSpacing (byl 6rem top margin) ───────── */
+/* Base.scss má `.page-header { margin: $topSpacing 0 0 0 }` — přepsáno výše margin: 0 !important. */
+/* .center má padding-bottom 2rem a padding-left/right clamp — ty zůstávají, OK. */
+
+/* ─── 4. scroll-padding-top — kotvy se otvírají pod lištou ─────── */
 html {
   scroll-padding-top: calc(var(--top-nav-height) + 0.5rem);
 }
 
-/* ─── 5. Search button v horní liště ────────────────────────────── */
+/* ─── 5. TopNav: logo + nav linky ───────────────────────────────── */
+/* .top-nav je hlavní levá sekce — zabere dostupný prostor */
+#quartz-body .page-header .top-nav {
+  flex: 1 1 auto;
+  min-width: 0;
+  gap: 1.25rem;
+}
+
+#quartz-body .page-header .top-nav-logo-img {
+  height: 32px;
+}
+
+@media all and (max-width: 800px) {
+  #quartz-body .page-header .top-nav-logo-img {
+    height: 26px;
+  }
+}
+
+/* Nav linky: horizontálně, nikdy nestackují */
+#quartz-body .page-header .top-nav-links {
+  flex: 0 1 auto;
+  flex-wrap: nowrap;
+  gap: 0.1rem;
+  overflow: hidden;
+}
+
+#quartz-body .page-header .top-nav-link {
+  white-space: nowrap;
+  color: $rsd-blue-dark;
+  padding: 0.4rem 0.75rem;
+  border-radius: 6px;
+  font-size: 0.92rem;
+  font-weight: 500;
+}
+
+#quartz-body .page-header .top-nav-link:hover {
+  background: color-mix(in srgb, $rsd-blue-dark 10%, transparent);
+  color: $rsd-blue-light;
+}
+
+#quartz-body .page-header .top-nav-link.active {
+  background: color-mix(in srgb, $rsd-blue-dark 12%, transparent);
+  color: $rsd-blue-dark;
+  font-weight: 600;
+}
+
+/* ─── 6. Search button v liště — override width:100% z search.scss ─ */
 #quartz-body .page-header .search {
-  flex: 0 0 auto;
+  flex: 0 0 auto !important;
+  width: auto !important;
+  min-width: 0;
 }
 
 #quartz-body .page-header .search > .search-button {
   display: inline-flex;
   align-items: center;
-  gap: 0.4rem;
-  background: color-mix(in srgb, $rsd-blue-dark 5%, transparent);
-  border: 1px solid color-mix(in srgb, $rsd-blue-dark 15%, transparent);
+  gap: 0.45rem;
+  background: color-mix(in srgb, $rsd-blue-dark 6%, transparent);
+  border: 1px solid color-mix(in srgb, $rsd-blue-dark 18%, transparent);
   border-radius: 6px;
-  padding: 0.28rem 0.65rem;
+  padding: 0.32rem 0.75rem 0.32rem 0.65rem;
   color: $rsd-blue-dark;
   font-size: 0.88rem;
   font-weight: 500;
   cursor: pointer;
   transition: background 120ms ease, border-color 120ms ease;
-  width: auto;
-  min-width: unset;
+  width: auto !important;
+  min-width: 0 !important;
+  min-height: 0 !important;
   height: auto;
+  justify-content: flex-start;
+  white-space: nowrap;
 }
 
 #quartz-body .page-header .search > .search-button:hover {
-  background: color-mix(in srgb, $rsd-blue-dark 12%, transparent);
-  border-color: color-mix(in srgb, $rsd-blue-dark 30%, transparent);
+  background: color-mix(in srgb, $rsd-blue-dark 14%, transparent);
+  border-color: color-mix(in srgb, $rsd-blue-dark 35%, transparent);
 }
 
 #quartz-body .page-header .search > .search-button svg {
   width: 16px;
   height: 16px;
+  min-width: 16px;
   margin: 0;
   flex: 0 0 auto;
 }
 
 #quartz-body .page-header .search > .search-button svg .search-path {
   stroke: $rsd-blue-dark !important;
+  stroke-width: 2px;
 }
 
 #quartz-body .page-header .search > .search-button > p {
-  display: block;
+  display: inline;
   margin: 0;
   color: inherit;
   font-size: inherit;
   font-weight: inherit;
+  text-wrap: unset;
 }
 
 @media all and (max-width: 800px) {
@@ -767,27 +822,30 @@ html {
     display: none;
   }
   #quartz-body .page-header .search > .search-button {
+    padding: 0.35rem;
     background: transparent;
-    border: none;
-    padding: 0.3rem;
+    border: 1px solid transparent;
   }
 }
 
-/* ─── 6. Darkmode button v horní liště ──────────────────────────── */
+/* ─── 7. Darkmode button v liště ────────────────────────────────── */
 #quartz-body .page-header .darkmode {
   flex: 0 0 auto;
   background: transparent;
   border: none;
-  padding: 0.28rem;
+  padding: 0.35rem;
   cursor: pointer;
   display: inline-flex;
   align-items: center;
+  justify-content: center;
   border-radius: 6px;
   transition: background 120ms ease;
+  width: 32px;
+  height: 32px;
 }
 
 #quartz-body .page-header .darkmode:hover {
-  background: color-mix(in srgb, $rsd-blue-dark 8%, transparent);
+  background: color-mix(in srgb, $rsd-blue-dark 10%, transparent);
 }
 
 #quartz-body .page-header .darkmode svg {
@@ -796,11 +854,36 @@ html {
   height: 18px;
 }
 
-/* ─── 7. Dark mode ───────────────────────────────────────────────── */
+/* ─── 8. Tablet (800–1200): zmenšit nav padding ─────────────────── */
+@media all and (min-width: 801px) and (max-width: 1199px) {
+  #quartz-body .page-header .top-nav-link {
+    padding: 0.4rem 0.55rem;
+    font-size: 0.86rem;
+  }
+  #quartz-body .page-header .top-nav {
+    gap: 0.9rem;
+  }
+}
+
+/* ─── 9. Dark mode ───────────────────────────────────────────────── */
 :root[saved-theme="dark"] #quartz-body .page-header {
   background: var(--light);
-  border-bottom-color: var(--lightgray);
-  box-shadow: 0 1px 8px rgba(0, 0, 0, 0.22);
+  border-bottom-color: $rsd-blue-light;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.22);
+}
+
+:root[saved-theme="dark"] #quartz-body .page-header .top-nav-link {
+  color: var(--secondary);
+}
+
+:root[saved-theme="dark"] #quartz-body .page-header .top-nav-link:hover,
+:root[saved-theme="dark"] #quartz-body .page-header .top-nav-link.active {
+  background: color-mix(in srgb, var(--secondary) 15%, var(--light));
+  color: var(--secondary);
+}
+
+:root[saved-theme="dark"] #quartz-body .page-header .top-nav-logo-img {
+  filter: brightness(1.8) saturate(0.3);
 }
 
 :root[saved-theme="dark"] #quartz-body .page-header .search > .search-button {

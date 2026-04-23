@@ -77,9 +77,10 @@ TopNav.css = `
 .top-nav-links {
   display: flex;
   align-items: center;
-  gap: 0.15rem;
-  flex-wrap: wrap;
+  gap: 0.1rem;
+  flex-wrap: nowrap;
   min-width: 0;
+  overflow: hidden;
 }
 
 .top-nav-link {

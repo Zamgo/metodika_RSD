@@ -15,14 +15,45 @@ type PersonaCard = {
   badgeLabel: string
   icon?: string
   order: number
+  typ: string
 }
 
-type QuickLink = {
-  label: string
-  slug?: FullSlug
+type ActivityEntry = {
+  slug: string
+  href: string
+  title: string
+  oznaceni: string
+  faze: string[]
+  rRoles: string[]
+  aRoles: string[]
+  popis: string
 }
 
 const ROLE_TYPES = new Set(["role", "smluvni_strana"])
+
+const PHASE_DEFS: { key: string; label: string; match: string[]; color: string; icon: string }[] = [
+  {
+    key: "priprava",
+    label: "Příprava",
+    match: ["příprava"],
+    color: "blue",
+    icon: "📐",
+  },
+  {
+    key: "realizace",
+    label: "Realizace",
+    match: ["realizace"],
+    color: "orange",
+    icon: "🏗️",
+  },
+  {
+    key: "provoz",
+    label: "Provoz a údržba",
+    match: ["provoz a údržba", "provoz"],
+    color: "green",
+    icon: "🛠️",
+  },
+]
 
 function coerceString(value: unknown): string {
   if (value == null) return ""
@@ -49,6 +80,19 @@ function coerceOrder(value: unknown): number {
   if (typeof value === "number" && Number.isFinite(value)) return value
   const num = Number(coerceString(value))
   return Number.isFinite(num) ? num : 999
+}
+
+/** Vyextrahuje z řetězce `[[Link|Alias]]` nebo `[[Link]]` čistý název bez wiki markeru. */
+function stripWikiLink(raw: string): string {
+  const m = raw.match(/^\s*\[\[(.*?)\]\]\s*$/)
+  if (!m) return raw.trim()
+  const inner = m[1]
+  const pipe = inner.indexOf("|")
+  return (pipe >= 0 ? inner.slice(0, pipe) : inner).trim()
+}
+
+function coerceLinkArray(value: unknown): string[] {
+  return coerceArray(value).map(stripWikiLink).filter(Boolean)
 }
 
 function buildIconLabel(title: string, explicit?: string): string {
@@ -86,6 +130,7 @@ function pickPersonaCards(allFiles: QuartzPluginData[]): PersonaCard[] {
       badgeLabel,
       icon: coerceString(fm.ikona) || undefined,
       order,
+      typ,
     })
   }
 
@@ -97,39 +142,53 @@ function pickPersonaCards(allFiles: QuartzPluginData[]): PersonaCard[] {
   return cards
 }
 
-function findSlugByTitleOrAlias(
-  allFiles: QuartzPluginData[],
-  candidates: string[],
-): FullSlug | undefined {
-  const normalized = candidates.map((c) => c.trim().toLowerCase()).filter(Boolean)
-  if (normalized.length === 0) return undefined
-
+/** Procházka `allFiles` a vypreparování všech dílčích činností s daty
+ *  potřebnými pro klientský wizard (filtrace dle role + fáze). */
+function pickActivities(currentSlug: FullSlug, allFiles: QuartzPluginData[]): ActivityEntry[] {
+  const out: ActivityEntry[] = []
   for (const file of allFiles) {
     const fm = (file.frontmatter ?? {}) as FrontmatterLike
-    const title = coerceString(fm.title).toLowerCase()
-    const aliases = coerceArray(fm.aliases).map((a) => a.toLowerCase())
-    if (normalized.includes(title) || normalized.some((n) => aliases.includes(n))) {
-      return file.slug
+    const typ = coerceString(fm.typ)
+    if (typ !== "dilci_cinnost") continue
+
+    const title = coerceString(fm.title) || "Bez názvu"
+    const oznaceni = coerceString(fm.oznaceni)
+    const popis = coerceString(fm.popis)
+    const faze = coerceLinkArray(fm.faze)
+
+    // Frontmatter klíče obsahují mezery a pomlčky — proto vybíráme dynamicky.
+    let rRoles: string[] = []
+    let aRoles: string[] = []
+    for (const [k, v] of Object.entries(fm)) {
+      const keyLower = k.toLowerCase()
+      if (keyLower.startsWith("r -") || keyLower.startsWith("r-")) {
+        rRoles = coerceLinkArray(v)
+      } else if (keyLower.startsWith("a -") || keyLower.startsWith("a-")) {
+        aRoles = coerceLinkArray(v)
+      }
     }
+
+    out.push({
+      slug: file.slug!,
+      href: resolveRelative(currentSlug, file.slug!),
+      title,
+      oznaceni,
+      faze,
+      rRoles,
+      aRoles,
+      popis,
+    })
   }
-  return undefined
+
+  out.sort((a, b) => {
+    const ao = a.oznaceni
+    const bo = b.oznaceni
+    if (ao && bo) return ao.localeCompare(bo, "cs", { numeric: true })
+    return a.title.localeCompare(b.title, "cs")
+  })
+
+  return out
 }
-
-const QUICK_LINK_DEFS: { label: string; match: string[] }[] = [
-  { label: "CDE", match: ["Společné datové prostředí (CDE)", "CDE"] },
-  { label: "BEP", match: ["BIM Execution Plan (BEP)", "BEP"] },
-  { label: "DiMS", match: ["DiMS"] },
-  { label: "ZBV", match: ["ZBV"] },
-  { label: "RDS", match: ["RDS"] },
-  { label: "EIR", match: ["Požadavky objednatele na výměnu informací (EIR)", "EIR"] },
-]
-
-const NEXT_LINK_DEFS: { label: string; match: string[] }[] = [
-  { label: "Seznam činností", match: ["Seznam činností"] },
-  { label: "CDE workflow", match: ["CDE workflow"] },
-  { label: "Slovník pojmů", match: ["05_Definice pojmů", "Definice pojmů"] },
-  { label: "Úvod do metodiky", match: ["Úvod do metodiky ŘSD Plzeň"] },
-]
 
 const HomeLanding: QuartzComponent = ({
   fileData,
@@ -138,115 +197,184 @@ const HomeLanding: QuartzComponent = ({
 }: QuartzComponentProps) => {
   const currentSlug = fileData.slug as FullSlug
   const personaCards = pickPersonaCards(allFiles)
+  const activities = pickActivities(currentSlug, allFiles)
 
-  const quickLinks: QuickLink[] = QUICK_LINK_DEFS.map((def) => ({
-    label: def.label,
-    slug: findSlugByTitleOrAlias(allFiles, def.match),
-  })).filter((q) => q.slug)
+  // Seznam činností pro přímý přístup — najdeme cestu na /cinnosti
+  const cinnostiFile = allFiles.find((f) => {
+    const fm = (f.frontmatter ?? {}) as FrontmatterLike
+    const title = coerceString(fm.title).toLowerCase()
+    return title === "seznam činností"
+  })
+  const cinnostiHref = cinnostiFile
+    ? resolveRelative(currentSlug, cinnostiFile.slug!)
+    : "../cinnosti"
 
-  const nextLinks = NEXT_LINK_DEFS.map((def) => ({
-    label: def.label,
-    slug: findSlugByTitleOrAlias(allFiles, def.match),
-  })).filter((q) => q.slug)
+  // Data pro klientský skript — zapouzdří role + činnosti
+  const wizardData = {
+    roles: personaCards.map((c) => ({
+      key: c.slug,
+      title: c.title,
+      aliases: c.aliases,
+    })),
+    activities: activities.map((a) => ({
+      slug: a.slug,
+      href: a.href,
+      title: a.title,
+      oznaceni: a.oznaceni,
+      faze: a.faze,
+      rRoles: a.rRoles,
+      aRoles: a.aRoles,
+      popis: a.popis,
+    })),
+    phases: PHASE_DEFS.map((p) => ({
+      key: p.key,
+      label: p.label,
+      match: p.match,
+    })),
+  }
 
   return (
     <div class={`home-landing ${displayClass ?? ""}`.trim()}>
+      {/* Hero — zredukovaný, bez search inputu (search je teď v horní liště) */}
       <section class="home-landing-hero" aria-labelledby="home-landing-hero-title">
         <h1 id="home-landing-hero-title" class="home-landing-hero-title">
           Metodika ŘSD Plzeň
         </h1>
         <p class="home-landing-hero-subtitle">
-          Znalostní databáze pro správu informací o stavbě. Najděte rychle pojem, činnost
-          nebo roli — nebo začněte podle toho, kdo jste.
+          Znalostní databáze pro správu informací o stavbě. Vyberte svou roli
+          a fázi projektu — ukážeme vám kroky, které vás čekají.
         </p>
-        <div class="home-landing-hero-searchbox" role="search">
-          <svg
-            width="18"
-            height="18"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            stroke-width="2"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            aria-hidden="true"
-          >
-            <circle cx="11" cy="11" r="8" />
-            <line x1="21" y1="21" x2="16.65" y2="16.65" />
-          </svg>
-          <input
-            type="text"
-            class="home-landing-hero-input"
-            placeholder="Hledat pojem, činnost, roli…"
-            aria-label="Hledat v metodice"
-          />
-          <button type="button" class="home-landing-hero-button">
-            Hledat
-          </button>
+      </section>
+
+      {/* Wizard Step 1 — výběr role */}
+      <section class="home-wizard-step" data-wizard-step="1" aria-labelledby="wizard-step1-title">
+        <div class="home-wizard-step-head">
+          <span class="home-wizard-step-num">1</span>
+          <h2 id="wizard-step1-title" class="home-wizard-step-title">
+            Kdo jste?
+          </h2>
         </div>
-        {quickLinks.length > 0 && (
-          <div class="home-landing-hero-chips" aria-label="Rychlé odkazy">
-            {quickLinks.map((q) => (
-              <a class="home-landing-chip" href={resolveRelative(currentSlug, q.slug!)}>
-                {q.label}
-              </a>
+        <p class="home-wizard-step-hint">
+          Vyberte svou roli nebo smluvní pozici.
+        </p>
+        {personaCards.length === 0 ? (
+          <p>
+            <em>
+              Žádná role zatím není označena k zobrazení. Doplňte ve
+              frontmatteru <code>show_na_rozcestniku: true</code>.
+            </em>
+          </p>
+        ) : (
+          <div class="home-wizard-role-grid" role="list">
+            {personaCards.map((card) => (
+              <button
+                type="button"
+                class="home-wizard-role-card"
+                data-role-key={card.slug}
+                data-role-title={card.title}
+                data-role-aliases={card.aliases.join("|")}
+                data-role-href={resolveRelative(currentSlug, card.slug)}
+                role="listitem"
+                aria-pressed="false"
+              >
+                <span class="home-wizard-role-icon">
+                  {buildIconLabel(card.title, card.icon)}
+                </span>
+                <span class="home-wizard-role-body">
+                  <span class="home-wizard-role-title">{card.title}</span>
+                  {card.aliases.length > 0 && (
+                    <span class="home-wizard-role-aliases">
+                      {card.aliases.slice(0, 2).join(" · ")}
+                    </span>
+                  )}
+                  <span class="home-wizard-role-badge">{card.badgeLabel}</span>
+                </span>
+              </button>
             ))}
           </div>
         )}
       </section>
 
-      <h2 class="home-landing-section-title">Kdo jste?</h2>
-      <p class="home-landing-section-hint">
-        Vyberte svou roli nebo smluvní pozici — ukážeme vám vaše činnosti podle fáze projektu.
-      </p>
-      {personaCards.length === 0 ? (
-        <p>
-          <em>
-            Žádná karta zatím není označena k zobrazení. Doplňte ve frontmatteru role nebo
-            smluvní strany pole <code>show_na_rozcestniku: true</code>.
-          </em>
+      {/* Wizard Step 2 — výběr fáze */}
+      <section
+        class="home-wizard-step"
+        data-wizard-step="2"
+        aria-labelledby="wizard-step2-title"
+        hidden
+      >
+        <div class="home-wizard-step-head">
+          <span class="home-wizard-step-num">2</span>
+          <h2 id="wizard-step2-title" class="home-wizard-step-title">
+            V jaké fázi projektu jste?
+          </h2>
+        </div>
+        <p class="home-wizard-step-hint">
+          Vyberte fázi — zobrazíme činnosti, které vás v ní čekají.
         </p>
-      ) : (
-        <div class="home-landing-persona-grid">
-          {personaCards.map((card) => (
-            <a
-              class="home-landing-persona-card"
-              href={resolveRelative(currentSlug, card.slug)}
+        <div class="home-wizard-phase-grid" role="list">
+          {PHASE_DEFS.map((phase) => (
+            <button
+              type="button"
+              class={`home-wizard-phase-card home-wizard-phase-${phase.color}`}
+              data-phase-key={phase.key}
+              data-phase-label={phase.label}
+              data-phase-match={phase.match.join("|")}
+              role="listitem"
+              aria-pressed="false"
             >
-              <div class="home-landing-card-head">
-                <span class="home-landing-card-icon">
-                  {buildIconLabel(card.title, card.icon)}
-                </span>
-                <div>
-                  <p class="home-landing-card-title">{card.title}</p>
-                  {card.aliases.length > 0 && (
-                    <p class="home-landing-card-aliases">
-                      {card.aliases.slice(0, 2).join(" · ")}
-                    </p>
-                  )}
-                </div>
-              </div>
-              <span class="home-landing-card-badge">{card.badgeLabel}</span>
-              {card.description && (
-                <p class="home-landing-card-desc">{card.description}</p>
-              )}
-            </a>
+              <span class="home-wizard-phase-icon" aria-hidden="true">
+                {phase.icon}
+              </span>
+              <span class="home-wizard-phase-label">{phase.label}</span>
+            </button>
           ))}
         </div>
-      )}
+      </section>
 
-      {nextLinks.length > 0 && (
-        <div class="home-landing-next" aria-label="Kam dál">
-          <strong>Kam dál</strong>
-          <ul>
-            {nextLinks.map((n) => (
-              <li>
-                <a href={resolveRelative(currentSlug, n.slug!)}>{n.label}</a>
-              </li>
-            ))}
-          </ul>
+      {/* Wizard Step 3 — výsledek (split pane) */}
+      <section
+        class="home-wizard-step home-wizard-result"
+        data-wizard-step="3"
+        aria-labelledby="wizard-step3-title"
+        hidden
+      >
+        <div class="home-wizard-step-head">
+          <span class="home-wizard-step-num">3</span>
+          <h2 id="wizard-step3-title" class="home-wizard-step-title">
+            Co potřebuji?
+          </h2>
+          <div class="home-wizard-result-summary" data-wizard-summary>
+            {/* doplní skript: "Správce stavby · Příprava — 12 činností" */}
+          </div>
         </div>
-      )}
+        <div class="home-wizard-result-split">
+          <div class="home-wizard-result-list-wrap">
+            <ul class="home-wizard-result-list" data-wizard-list>
+              <li class="home-wizard-result-empty">
+                Zatím žádné činnosti nejsou vybrány.
+              </li>
+            </ul>
+          </div>
+          <div class="home-wizard-result-preview" data-wizard-preview>
+            <p class="home-wizard-result-preview-empty">
+              Vyberte činnost v levém seznamu pro náhled.
+            </p>
+          </div>
+        </div>
+        <div class="home-wizard-result-actions">
+          <a class="home-wizard-link" href={cinnostiHref}>
+            Zobrazit všechny činnosti v tabulce →
+          </a>
+        </div>
+      </section>
+
+      {/* Data pro klient */}
+      <script
+        type="application/json"
+        id="home-wizard-data"
+        // @ts-ignore
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(wizardData) }}
+      />
     </div>
   )
 }
