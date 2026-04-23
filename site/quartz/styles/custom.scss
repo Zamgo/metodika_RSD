@@ -644,51 +644,74 @@ body[data-sidebar-collapsed] {
   }
 }
 
-/* ─── 1. Sidebar vždy na 0 px ───────────────────────────────────── */
-html #quartz-body {
-  grid-template-columns: 0px auto 0px !important;
+/* ─── 1. #quartz-body: jednoduchý block layout bez gridu ─────────
+   Kompletní override gridu z base.scss (grid-template shorthand
+   definuje kolize při mezilehlých breakpointech). Přepíšeme na
+   flex-column, sidebary jsou display: none, takže jedinou viditelnou
+   položkou je .center + footer. */
+html body .page > #quartz-body {
+  display: flex !important;
+  flex-direction: column !important;
+  grid-template: none !important;
+  grid-template-columns: none !important;
+  grid-template-rows: none !important;
+  grid-template-areas: none !important;
+  gap: 0 !important;
+  padding: 0 !important;
   transition: none !important;
+  width: 100%;
+  max-width: 100%;
+  margin: 0;
 }
 
-#quartz-body .sidebar.left {
+#quartz-body .sidebar.left,
+#quartz-body .sidebar.right {
   display: none !important;
 }
 
-.sidebar-toggle {
+.sidebar-toggle,
+.sidebar-resizer {
   display: none !important;
 }
 
-:root[reader-mode="on"] html #quartz-body {
-  grid-template-columns: 0px auto 0px !important;
+/* .center: zabere plnou šířku, flex column jako dřív */
+html body .page > #quartz-body > .center {
+  width: 100%;
+  max-width: 100%;
+  margin: 0 !important;
+  padding: 0 clamp(1rem, 3vw, 2.25rem) 2rem !important;
+  box-sizing: border-box;
+}
+
+html body .page > #quartz-body > footer {
+  width: 100%;
+  margin: 0 !important;
 }
 
 /* ─── 2. Sticky horní lišta — bílá s modrým akcentem ─────────────── */
-#quartz-body .page-header {
+/* .page-header je první dítě .center, sticky připne se k top:0 viewportu.
+   Přetáhneme přes boční padding .center pomocí negativních marginů. */
+#quartz-body .center > .page-header {
   position: sticky;
   top: 0;
   z-index: 200;
-  margin: 0 !important;
-  /* Přetáhnout přes boční padding .center */
-  margin-left: calc(-1 * clamp(1rem, 3vw, 2.25rem)) !important;
-  margin-right: calc(-1 * clamp(1rem, 3vw, 2.25rem)) !important;
-  width: calc(100% + 2 * clamp(1rem, 3vw, 2.25rem));
-  align-self: stretch;
+  margin: 0 calc(-1 * clamp(1rem, 3vw, 2.25rem)) !important;
   background: #ffffff;
   border-bottom: 2px solid $rsd-blue-dark;
   box-shadow: 0 2px 12px rgba(9, 65, 122, 0.08);
   box-sizing: border-box;
+  padding: 0 !important;
 }
 
 @media all and (max-width: 800px) {
-  #quartz-body .page-header {
+  #quartz-body .center > .page-header {
     margin-left: 0 !important;
     margin-right: 0 !important;
-    width: 100%;
   }
 }
 
 /* Override výchozího header margin a přinutit horizontální flex */
-#quartz-body .page-header header {
+#quartz-body .center > .page-header > header {
   margin: 0;
   padding: 0 clamp(1rem, 3vw, 2.25rem);
   height: var(--top-nav-height);
@@ -701,7 +724,7 @@ html #quartz-body {
 }
 
 @media all and (max-width: 800px) {
-  #quartz-body .page-header header {
+  #quartz-body .center > .page-header > header {
     padding: 0 1rem;
     gap: 0.75rem;
   }
