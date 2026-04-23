@@ -11,13 +11,14 @@
             "id": "7b02233921117898",
             "type": "leaf",
             "state": {
-              "type": "bases",
+              "type": "markdown",
               "state": {
-                "file": "05_Definice pojmů/Role/_Role - RACI.base",
-                "viewName": "Kde figuruji (R + A)"
+                "file": "index.md",
+                "mode": "source",
+                "source": false
               },
-              "icon": "lucide-table",
-              "title": "_Role - RACI"
+              "icon": "lucide-file",
+              "title": "index"
             }
           }
         ]
@@ -185,28 +186,28 @@
   },
   "active": "7b02233921117898",
   "lastOpenFiles": [
-    "site/public/ČSN-EN-ISO-19650-2.html",
     "site/public/01_Úvod-do-metodiky-ŘSD-Plzeň.html",
-    "site/public/tags/index.html",
+    "site/public/ČSN-EN-ISO-19650-2.html",
+    "site/public/03_CDE_workflow/ZBV-do-50-mil.html",
+    "site/public/03_CDE_workflow/index.html",
     "site/public/03_CDE_workflow/_report_migrace_metadat.txt",
-    "site/public/03_CDE_workflow/Ciselnik_RACI_hodnot.html",
     "site/public/03_CDE_workflow/_report_hierarchie_cinnosti.txt",
     "site/public/03_CDE_workflow/ZBV.html",
     "site/public/03_CDE_workflow/ZBV-nad-50-mil.html",
-    "site/public/03_CDE_workflow/ZBV-do-50-mil.html",
     "site/public/03_CDE_workflow/ZBV-do-20-mil.html",
     "site/public/03_CDE_workflow/Variace.html",
-    "site/public/99_Media/obrazky/zaklady_image85.png",
-    "site/public/99_Media/obrazky/zaklady_image86.jpeg",
-    "site/public/99_Media/obrazky/zaklady_image87.jpeg",
-    "site/public/99_Media/obrazky/zaklady_image88.png",
-    "site/public/99_Media/obrazky/zaklady_image89.jpeg",
-    "site/public/99_Media/obrazky/zaklady_image9.png",
-    "site/public/99_Media/obrazky/zaklady_image90.png",
-    "site/public/99_Media/obrazky/zaklady_image91.png",
-    "site/public/99_Media/obrazky/zaklady_image92.png",
-    "site/public/99_Media/obrazky/zaklady_image93.png",
+    "site/public/03_CDE_workflow/Subdodávky.html",
+    "site/public/00_Podklady/rsd-logo-sirkove-2c-barevne-rgb.svg",
     "site/public/06_Diagramy/Hierarchie-týmu-správce-stavby.canvas",
+    "site/public/static/og-image.png",
+    "site/public/static/rsd-logo.svg",
+    "site/public/static/icon.png",
+    "site/public/99_Media/obrazky/zaklady_bim/image98.png",
+    "site/public/99_Media/obrazky/zaklady_bim/image99.png",
+    "site/public/99_Media/obrazky/zaklady_bim/image97.jpeg",
+    "site/public/99_Media/obrazky/zaklady_bim/image96.jpeg",
+    "site/public/99_Media/obrazky/zaklady_bim/image95.jpeg",
+    "site/public/99_Media/obrazky/zaklady_bim/image94.png",
     "05_Definice pojmů/Role/Asistent správce stavby – Specialista v oboru.md",
     "05_Definice pojmů/Role/Člen týmu správce stavby – Koordinátor BOZP.md",
     "05_Definice pojmů/Role/Správce stavby.md",

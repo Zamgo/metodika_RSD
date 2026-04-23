@@ -13,7 +13,6 @@ type PersonaCard = {
   aliases: string[]
   description: string
   badgeLabel: string
-  icon?: string
   order: number
   typ: string
 }
@@ -31,27 +30,24 @@ type ActivityEntry = {
 
 const ROLE_TYPES = new Set(["role", "smluvni_strana"])
 
-const PHASE_DEFS: { key: string; label: string; match: string[]; color: string; icon: string }[] = [
+const PHASE_DEFS: { key: string; label: string; match: string[]; color: string }[] = [
   {
     key: "priprava",
     label: "Příprava",
     match: ["příprava"],
     color: "blue",
-    icon: "📐",
   },
   {
     key: "realizace",
     label: "Realizace",
     match: ["realizace"],
     color: "orange",
-    icon: "🏗️",
   },
   {
     key: "provoz",
     label: "Provoz a údržba",
     match: ["provoz a údržba", "provoz"],
     color: "green",
-    icon: "🛠️",
   },
 ]
 
@@ -95,19 +91,6 @@ function coerceLinkArray(value: unknown): string[] {
   return coerceArray(value).map(stripWikiLink).filter(Boolean)
 }
 
-function buildIconLabel(title: string, explicit?: string): string {
-  if (explicit) {
-    const trimmed = explicit.trim()
-    if (trimmed) return trimmed
-  }
-  const words = title.split(/\s+/).filter(Boolean)
-  const initials = words
-    .slice(0, 2)
-    .map((w) => w.charAt(0).toUpperCase())
-    .join("")
-  return initials || title.slice(0, 2).toUpperCase()
-}
-
 function pickPersonaCards(allFiles: QuartzPluginData[]): PersonaCard[] {
   const cards: PersonaCard[] = []
   for (const file of allFiles) {
@@ -128,7 +111,6 @@ function pickPersonaCards(allFiles: QuartzPluginData[]): PersonaCard[] {
       aliases,
       description: popisKarta,
       badgeLabel,
-      icon: coerceString(fm.ikona) || undefined,
       order,
       typ,
     })
@@ -269,9 +251,6 @@ const HomeLanding: QuartzComponent = ({
                 role="listitem"
                 aria-pressed="false"
               >
-                <span class="home-wizard-role-icon">
-                  {buildIconLabel(card.title, card.icon)}
-                </span>
                 <span class="home-wizard-role-body">
                   <span class="home-wizard-role-title">{card.title}</span>
                   {card.aliases.length > 0 && (
@@ -314,9 +293,6 @@ const HomeLanding: QuartzComponent = ({
               role="listitem"
               aria-pressed="false"
             >
-              <span class="home-wizard-phase-icon" aria-hidden="true">
-                {phase.icon}
-              </span>
               <span class="home-wizard-phase-label">{phase.label}</span>
             </button>
           ))}

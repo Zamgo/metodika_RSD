@@ -37,6 +37,9 @@ views:
     filters:
       and:
         - typ == "dilci_cinnost"
+    groupBy:
+      property: cinnost
+      direction: ASC
     order:
       - cinnost
       - formula.dilci_cinnost
@@ -53,9 +56,6 @@ views:
         direction: ASC
       - property: oznaceni
         direction: ASC
-    groupBy:
-      property: note.cinnost
-      direction: ASC
     columnSize:
       note.cinnost: 360
       formula.dilci_cinnost: 420

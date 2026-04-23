@@ -126,12 +126,11 @@ async function loadPreviewHtml(
     .catch(() => "")
   if (!html) return renderTextFallback(title, fallbackContent)
   const doc = new DOMParser().parseFromString(html, "text/html")
-  const node = doc.querySelector(".popover-hint .article-surface, .popover-hint")
-  if (!node) return renderTextFallback(title, fallbackContent)
+  const hints = Array.from(doc.getElementsByClassName("popover-hint")) as HTMLElement[]
+  if (hints.length === 0) return renderTextFallback(title, fallbackContent)
   const wrapper = document.createElement("div")
   wrapper.className = "home-wizard-result-preview-inner"
-  wrapper.innerHTML = node.innerHTML
-  cleanupPreviewDom(wrapper)
+  wrapper.innerHTML = hints.map((hint) => hint.outerHTML).join("")
   absolutizeRelativeUrls(wrapper, href)
   const textLen = wrapper.textContent?.trim().length ?? 0
   const output = textLen < 40 ? renderTextFallback(title, fallbackContent) : wrapper.outerHTML
