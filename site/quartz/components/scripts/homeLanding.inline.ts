@@ -214,9 +214,9 @@ function wireWizard() {
 
   if (!step2 || !step3 || !listEl || !previewEl || !summaryEl) return
 
-  const previewEmptyHtml = `<p class="home-wizard-result-preview-empty">Vyberte činnost v levém seznamu pro náhled.</p>`
-  const listEmptyHtml = `<li class="home-wizard-result-empty">Pro zvolenou kombinaci jsme nenašli žádné činnosti.</li>`
-  const listEmptyRaciHtml = `<li class="home-wizard-result-empty">Vyberte alespoň jednu roli v RACI (R, A, C nebo I).</li>`
+  const previewEmptyHtml = `<p class="home-wizard-result-preview-empty">Vyberte dílčí činnost v levém seznamu pro náhled.</p>`
+  const listEmptyHtml = `<li class="home-wizard-result-empty">Pro zvolenou kombinaci jsme nenašli žádné dílčí činnosti.</li>`
+  const listEmptyRaciHtml = `<li class="home-wizard-result-empty">Vyberte alespoň jednu roli v RACI (R, A, C nebo I) pro zobrazení dílčích činností.</li>`
 
   function setActiveRole(key: string) {
     state.roleKey = key
@@ -309,10 +309,10 @@ function wireWizard() {
       const cMatch = role && isRoleIn(role, act.cRoles ?? [])
       const iMatch = role && isRoleIn(role, act.iRoles ?? [])
       const tagsHtml: string[] = []
-      if (rMatch) tagsHtml.push(`<span class="home-wizard-result-item-tag">R</span>`)
-      if (aMatch) tagsHtml.push(`<span class="home-wizard-result-item-tag">A</span>`)
-      if (cMatch) tagsHtml.push(`<span class="home-wizard-result-item-tag">C</span>`)
-      if (iMatch) tagsHtml.push(`<span class="home-wizard-result-item-tag">I</span>`)
+      if (rMatch) tagsHtml.push(`<span class="home-wizard-result-item-tag raci-r">R</span>`)
+      if (aMatch) tagsHtml.push(`<span class="home-wizard-result-item-tag raci-a">A</span>`)
+      if (cMatch) tagsHtml.push(`<span class="home-wizard-result-item-tag raci-c">C</span>`)
+      if (iMatch) tagsHtml.push(`<span class="home-wizard-result-item-tag raci-i">I</span>`)
 
       li.innerHTML = `
         ${act.oznaceni ? `<span class="home-wizard-result-item-num">${escapeHtml(act.oznaceni)}</span>` : ""}
@@ -405,9 +405,9 @@ function isRoleIn(role: WizardRole, list: string[]): boolean {
 }
 
 function pluralCinnosti(n: number): string {
-  if (n === 1) return "činnost"
-  if (n >= 2 && n <= 4) return "činnosti"
-  return "činností"
+  if (n === 1) return "dílčí činnost"
+  if (n >= 2 && n <= 4) return "dílčí činnosti"
+  return "dílčích činností"
 }
 
 document.addEventListener("nav", wireWizard)

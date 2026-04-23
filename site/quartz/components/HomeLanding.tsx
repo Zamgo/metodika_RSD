@@ -292,7 +292,7 @@ const HomeLanding: QuartzComponent = ({
           </h2>
         </div>
         <p class="home-wizard-step-hint">
-          Vyberte fázi — zobrazíme činnosti, které vás v ní čekají.
+          Vyberte fázi — zobrazíme dílčí činnosti, které vás v ní čekají.
         </p>
         <div class="home-wizard-phase-grid" role="list">
           {PHASE_DEFS.map((phase) => (
@@ -321,11 +321,8 @@ const HomeLanding: QuartzComponent = ({
         <div class="home-wizard-step-head">
           <span class="home-wizard-step-num">3</span>
           <h2 id="wizard-step3-title" class="home-wizard-step-title">
-            Jaké činnosti se mě týkají?
+            Jaké dílčí činnosti se mě týkají?
           </h2>
-          <div class="home-wizard-result-summary" data-wizard-summary>
-            {/* doplní skript: "Správce stavby · Příprava — 12 činností" */}
-          </div>
         </div>
         <p class="home-wizard-step-hint">
           Zaškrtněte, jakou máte roli v RACI tabulce.
@@ -338,7 +335,7 @@ const HomeLanding: QuartzComponent = ({
             aria-pressed="true"
           >
             <span class="home-wizard-raci-code raci-r">R</span>
-            <span class="home-wizard-raci-text">Mám odpovědnost za provedení činnosti</span>
+            <span class="home-wizard-raci-text">Mám odpovědnost za provedení dílčí činnosti</span>
           </button>
           <button
             type="button"
@@ -347,7 +344,7 @@ const HomeLanding: QuartzComponent = ({
             aria-pressed="true"
           >
             <span class="home-wizard-raci-code raci-a">A</span>
-            <span class="home-wizard-raci-text">Mám odpovědnost za schválení činnosti</span>
+            <span class="home-wizard-raci-text">Mám odpovědnost za schválení dílčí činnosti</span>
           </button>
           <button
             type="button"
@@ -356,7 +353,7 @@ const HomeLanding: QuartzComponent = ({
             aria-pressed="true"
           >
             <span class="home-wizard-raci-code raci-c">C</span>
-            <span class="home-wizard-raci-text">Činnost má být se mnou konzultována</span>
+            <span class="home-wizard-raci-text">Dílčí činnost má být se mnou konzultována</span>
           </button>
           <button
             type="button"
@@ -365,26 +362,29 @@ const HomeLanding: QuartzComponent = ({
             aria-pressed="true"
           >
             <span class="home-wizard-raci-code raci-i">I</span>
-            <span class="home-wizard-raci-text">O průběhu činnosti mám být informován</span>
+            <span class="home-wizard-raci-text">O průběhu dílčí činnosti mám být informován</span>
           </button>
+        </div>
+        <div class="home-wizard-result-summary" data-wizard-summary>
+          {/* doplní skript: "Správce stavby · Příprava — 12 dílčích činností" */}
         </div>
         <div class="home-wizard-result-split">
           <div class="home-wizard-result-list-wrap">
             <ul class="home-wizard-result-list" data-wizard-list>
               <li class="home-wizard-result-empty">
-                Zatím žádné činnosti nejsou vybrány.
+                Zatím žádné dílčí činnosti nejsou vybrány.
               </li>
             </ul>
           </div>
           <div class="home-wizard-result-preview" data-wizard-preview>
             <p class="home-wizard-result-preview-empty">
-              Vyberte činnost v levém seznamu pro náhled.
+              Vyberte dílčí činnost v levém seznamu pro náhled.
             </p>
           </div>
         </div>
         <div class="home-wizard-result-actions">
           <a class="home-wizard-link" href={cinnostiHref}>
-            Zobrazit všechny činnosti v tabulce →
+            Zobrazit všechny dílčí činnosti v tabulce →
           </a>
         </div>
       </section>
