@@ -4,6 +4,10 @@
 // Paleta dle manuálu ŘSD (02/2024): #09417A, #0096DC; sekundární šedá ~#aeb4ab
 $rsd-blue-dark: #09417a;
 $rsd-blue-light: #0096dc;
+:root {
+  --left-sidebar-width: 280px;
+}
+
 // --- Rozložení: bílé boční sloupce | šedý střed | bílý pravý sloupec ---
 
 body {
@@ -461,7 +465,7 @@ ul.toc-content.overflow > li > a.in-view {
 /* ─── Desktop: two-column full-width layout ────────────────────── */
 @media all and (min-width: 1200px) {
   #quartz-body {
-    grid-template-columns: 280px auto 0px !important;
+    grid-template-columns: var(--left-sidebar-width) auto 0px !important;
     transition: grid-template-columns 0.3s ease;
   }
 }
@@ -469,7 +473,7 @@ ul.toc-content.overflow > li > a.in-view {
 /* ─── Sidebar toggle button ────────────────────────────────────── */
 .sidebar-toggle {
   position: fixed;
-  left: 280px;
+  left: var(--left-sidebar-width);
   top: 1.1rem;
   z-index: 10;
   width: 24px;
@@ -497,6 +501,47 @@ ul.toc-content.overflow > li > a.in-view {
     width: 14px;
     height: 14px;
     transition: transform 0.3s ease;
+  }
+}
+
+/* ─── Sidebar resize handle ─────────────────────────────────────── */
+#quartz-body .sidebar.left {
+  position: sticky;
+}
+
+#quartz-body .sidebar.left .sidebar-resizer {
+  display: none;
+}
+
+@media all and (min-width: 1200px) {
+  #quartz-body .sidebar.left .sidebar-resizer {
+    display: block;
+    position: absolute;
+    top: 0;
+    right: -6px;
+    width: 12px;
+    height: 100%;
+    cursor: col-resize;
+    touch-action: none;
+    z-index: 20;
+  }
+
+  #quartz-body .sidebar.left .sidebar-resizer::before {
+    content: "";
+    position: absolute;
+    top: 20%;
+    bottom: 20%;
+    left: 5px;
+    width: 2px;
+    border-radius: 1px;
+    background: color-mix(in srgb, $rsd-blue-dark 20%, transparent);
+    opacity: 0;
+    transition: opacity 0.15s ease;
+  }
+
+  #quartz-body .sidebar.left:hover .sidebar-resizer::before,
+  body.sidebar-resizing #quartz-body .sidebar.left .sidebar-resizer::before {
+    opacity: 1;
   }
 }
 
@@ -573,7 +618,7 @@ body[data-sidebar-collapsed] {
 /* ─── Reader mode: collapse right panel (desktop) ────────────────── */
 @media all and (min-width: 1200px) {
   :root[reader-mode="on"] #quartz-body {
-    grid-template-columns: 280px auto 0px !important;
+    grid-template-columns: var(--left-sidebar-width) auto 0px !important;
   }
 
   :root[reader-mode="on"] #quartz-body .sidebar.left {

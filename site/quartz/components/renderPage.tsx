@@ -246,6 +246,12 @@ export function renderPage(
       {left.map((BodyComponent) => (
         <BodyComponent {...componentData} />
       ))}
+      <div
+        class="sidebar-resizer"
+        role="separator"
+        aria-label="Resize sidebar"
+        aria-orientation="vertical"
+      />
     </div>
   )
 
