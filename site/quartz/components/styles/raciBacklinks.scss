@@ -324,6 +324,20 @@
   white-space: nowrap;
 }
 
+.raci-cinnost-main-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  min-width: 0;
+  color: inherit;
+  text-decoration: none;
+  flex: 1 1 auto;
+
+  &:hover .raci-cinnost-title {
+    text-decoration: underline;
+  }
+}
+
 .raci-cinnost-faze {
   display: inline-flex;
   gap: 0.25rem;
@@ -476,6 +490,10 @@
   .raci-cinnost-title {
     white-space: normal;
     flex-basis: 100%;
+  }
+
+  .raci-cinnost-main-link {
+    flex-wrap: wrap;
   }
 
   .raci-group-content {

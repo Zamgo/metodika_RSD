@@ -412,10 +412,25 @@ export default ((opts?: Partial<RaciBacklinksOptions>) => {
                       data-faze-list={g.faze.join("|")}
                     >
                       <summary class="raci-cinnost-header">
-                        <span class="raci-cinnost-oznaceni">{g.oznaceni || "–"}</span>
-                        <span class="raci-cinnost-title">
-                          {stripOznaceniPrefix(g.title, g.oznaceni)}
-                        </span>
+                        {hrefGroup ? (
+                          <a
+                            href={hrefGroup}
+                            class="internal raci-cinnost-main-link"
+                            onClick={(evt) => evt.stopPropagation()}
+                          >
+                            <span class="raci-cinnost-oznaceni">{g.oznaceni || "–"}</span>
+                            <span class="raci-cinnost-title">
+                              {stripOznaceniPrefix(g.title, g.oznaceni)}
+                            </span>
+                          </a>
+                        ) : (
+                          <>
+                            <span class="raci-cinnost-oznaceni">{g.oznaceni || "–"}</span>
+                            <span class="raci-cinnost-title">
+                              {stripOznaceniPrefix(g.title, g.oznaceni)}
+                            </span>
+                          </>
+                        )}
                         <span class="raci-cinnost-faze">
                           {g.faze.map((fz) => (
                             <span class="raci-faze-chip" data-faze={fz}>
