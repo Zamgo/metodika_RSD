@@ -443,13 +443,6 @@ export default ((opts?: Partial<RaciBacklinksOptions>) => {
                         </span>
                       </summary>
                       <ul class="raci-cinnost-items">
-                        {hrefGroup ? (
-                          <li class="raci-cinnost-parent-link">
-                            <a href={hrefGroup} class="internal">
-                              Otevřít činnost {g.oznaceni || ""}
-                            </a>
-                          </li>
-                        ) : null}
                         {g.items.map((entry) => {
                           const itemFaze = entry.fazeList.join("|")
                           return (
