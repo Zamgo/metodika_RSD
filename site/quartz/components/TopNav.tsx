@@ -7,11 +7,23 @@ type NavLink = {
   path: string
 }
 
+type DropdownLink = {
+  label: string
+  path: string
+}
+
 const NAV_LINKS: NavLink[] = [
   { label: "Úvod", path: "" },
   { label: "Seznam činností", path: "cinnosti" },
   { label: "CDE workflow", path: "cde-workflow" },
-  { label: "Definice pojmů", path: "05_Definice-pojm\u016f" },
+]
+
+const DEFINITIONS_ROOT_PATH = "05_Definice-pojm\u016f"
+const DEFINITIONS_DROPDOWN_LINKS: DropdownLink[] = [
+  { label: "Smluvní strany", path: "05_Definice-pojm\u016f/Smluvní-strany" },
+  { label: "Role", path: "05_Definice-pojm\u016f/Role" },
+  { label: "Informační management", path: "05_Definice-pojm\u016f/Informační-management" },
+  { label: "Fáze", path: "05_Definice-pojm\u016f/Faze" },
 ]
 
 const TopNav: QuartzComponent = ({ fileData }: QuartzComponentProps) => {
@@ -39,6 +51,29 @@ const TopNav: QuartzComponent = ({ fileData }: QuartzComponentProps) => {
             {link.label}
           </a>
         ))}
+        <div class="top-nav-dropdown" data-top-nav-dropdown>
+          <button
+            type="button"
+            class="top-nav-link top-nav-dropdown-toggle"
+            data-top-nav-dropdown-toggle
+            data-top-nav-path={DEFINITIONS_ROOT_PATH}
+            aria-haspopup="true"
+            aria-expanded="false"
+          >
+            Definice pojmů
+          </button>
+          <div class="top-nav-dropdown-menu" data-top-nav-dropdown-menu>
+            {DEFINITIONS_DROPDOWN_LINKS.map((link) => (
+              <a
+                href={joinSegments(baseDir, link.path)}
+                class="top-nav-dropdown-link"
+                data-top-nav-path={link.path}
+              >
+                {link.label}
+              </a>
+            ))}
+          </div>
+        </div>
       </nav>
     </div>
   )
@@ -80,12 +115,13 @@ TopNav.css = `
   gap: 0.1rem;
   flex-wrap: nowrap;
   min-width: 0;
-  overflow: hidden;
+  overflow: visible;
 }
 
 .top-nav-link {
   display: inline-flex;
   align-items: center;
+  border: 0;
   padding: 0.3rem 0.6rem;
   border-radius: 6px;
   font-size: 0.9rem;
@@ -97,12 +133,57 @@ TopNav.css = `
   transition: background 120ms ease, color 120ms ease;
 }
 
+.top-nav-dropdown {
+  position: relative;
+}
+
+.top-nav-dropdown-toggle {
+  cursor: pointer;
+  font-family: inherit;
+}
+
+.top-nav-dropdown-menu {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  min-width: 14rem;
+  background: var(--light);
+  border: 1px solid var(--lightgray);
+  border-radius: 8px;
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.12);
+  display: none;
+  flex-direction: column;
+  padding: 0.35rem 0.25rem 0.25rem;
+  z-index: 25;
+}
+
+.top-nav-dropdown.open .top-nav-dropdown-menu {
+  display: flex;
+}
+
+.top-nav-dropdown-link {
+  display: block;
+  padding: 0.45rem 0.55rem;
+  border-radius: 6px;
+  color: var(--darkgray);
+  text-decoration: none;
+  white-space: nowrap;
+  font-size: 0.87rem;
+}
+
+.top-nav-dropdown-link:hover {
+  color: var(--secondary);
+  background: color-mix(in srgb, var(--secondary) 10%, var(--light));
+}
+
 .top-nav-link:hover {
   background: color-mix(in srgb, var(--secondary) 10%, var(--light));
   color: var(--secondary);
 }
 
-.top-nav-link.active {
+.top-nav-link.active,
+.top-nav-dropdown-link.active,
+.top-nav-dropdown-toggle.active {
   color: var(--secondary);
   font-weight: 600;
   background: color-mix(in srgb, var(--secondary) 10%, var(--light));
@@ -120,11 +201,15 @@ TopNav.css = `
 
 TopNav.afterDOMLoaded = `
 function markActiveTopNavLink() {
-  const links = document.querySelectorAll(".top-nav-link");
+  const links = document.querySelectorAll(".top-nav-link, .top-nav-dropdown-link");
   if (!links.length) return;
-  const currentPath = window.location.pathname.replace(/\\/+$/, "") || "/";
+  const normalizedPath = window.location.pathname.replace(/\\/+$/, "") || "/";
+  const currentPath = decodeURIComponent(normalizedPath);
   for (const link of links) {
-    const resolved = new URL(link.href, window.location.href).pathname.replace(/\\/+$/, "") || "/";
+    const pathFromData = link.dataset.topNavPath;
+    const resolved = pathFromData
+      ? "/" + pathFromData.replace(/^\\/+/, "")
+      : (new URL(link.href, window.location.href).pathname.replace(/\\/+$/, "") || "/");
     const isRoot = resolved === "/";
     const isActive = isRoot
       ? currentPath === "/"
@@ -132,6 +217,50 @@ function markActiveTopNavLink() {
     link.classList.toggle("active", isActive);
   }
 }
+
+function setupTopNavDropdown() {
+  const dropdown = document.querySelector("[data-top-nav-dropdown]");
+  if (!dropdown) return;
+  const toggle = dropdown.querySelector("[data-top-nav-dropdown-toggle]");
+  const menu = dropdown.querySelector("[data-top-nav-dropdown-menu]");
+  if (!toggle || !menu) return;
+
+  const close = () => {
+    dropdown.classList.remove("open");
+    toggle.setAttribute("aria-expanded", "false");
+  };
+
+  const open = () => {
+    dropdown.classList.add("open");
+    toggle.setAttribute("aria-expanded", "true");
+  };
+
+  toggle.addEventListener("click", (event) => {
+    event.preventDefault();
+    const isOpen = dropdown.classList.contains("open");
+    if (isOpen) {
+      close();
+    } else {
+      open();
+    }
+  });
+
+  document.addEventListener("click", (event) => {
+    if (!dropdown.contains(event.target)) {
+      close();
+    }
+  });
+
+  menu.querySelectorAll("a").forEach((item) => {
+    item.addEventListener("click", close);
+  });
+
+  document.addEventListener("keydown", (event) => {
+    if (event.key === "Escape") close();
+  });
+}
+
+setupTopNavDropdown();
 document.addEventListener("nav", markActiveTopNavLink);
 `
 

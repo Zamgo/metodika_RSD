@@ -270,7 +270,15 @@ const HomeLanding: QuartzComponent = ({
                       {card.aliases.slice(0, 2).join(" · ")}
                     </span>
                   )}
-                  <span class="home-wizard-role-badge">{card.badgeLabel}</span>
+                  <span
+                    class={`home-wizard-role-badge ${
+                      card.typ === "role"
+                        ? "home-wizard-role-badge-role"
+                        : "home-wizard-role-badge-contract"
+                    }`}
+                  >
+                    {card.badgeLabel}
+                  </span>
                 </span>
               </button>
             ))}

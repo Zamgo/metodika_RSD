@@ -36,7 +36,7 @@ article.home-hero {
 }
 
 .home-landing {
-  margin: 0 0 2.5rem;
+  margin: -0.55rem 0 2.5rem;
 
   /* ═══════════ Wizard krok obecně ═══════════ */
   .home-wizard-step {
@@ -89,7 +89,7 @@ article.home-hero {
   }
 
   .home-wizard-step[data-wizard-step="1"] {
-    margin-top: 0.1rem;
+    margin-top: -0.45rem;
   }
 
   /* ═══════════ Step 1 — Role karty ═══════════ */
@@ -105,14 +105,15 @@ article.home-hero {
   .home-wizard-phase-card,
   .home-wizard-raci-card {
     display: flex;
-    align-items: flex-start;
+    align-items: center;
+    justify-content: center;
     gap: 0.55rem;
     min-height: $wizard-card-min-height;
     padding: 0.72rem 0.85rem;
     border: 1px solid var(--lightgray);
     border-radius: $wizard-card-radius;
     background: var(--light);
-    text-align: left;
+    text-align: center;
     cursor: pointer;
     font: inherit;
     color: var(--dark);
@@ -157,8 +158,10 @@ article.home-hero {
   .home-wizard-role-body {
     display: flex;
     flex-direction: column;
+    align-items: center;
     gap: 0.08rem;
     min-width: 0;
+    text-align: center;
   }
 
   .home-wizard-role-title {
@@ -186,7 +189,19 @@ article.home-hero {
     color: var(--darkgray);
     background: color-mix(in srgb, var(--secondary) 8%, var(--light));
     border: 1px solid var(--lightgray);
-    align-self: flex-start;
+    align-self: center;
+  }
+
+  .home-wizard-role-badge-role {
+    color: color-mix(in srgb, $rsd-blue-dark 85%, #000);
+    background: color-mix(in srgb, $rsd-blue-dark 12%, #fff);
+    border-color: color-mix(in srgb, $rsd-blue-dark 32%, var(--lightgray));
+  }
+
+  .home-wizard-role-badge-contract {
+    color: color-mix(in srgb, $rsd-orange 85%, #000);
+    background: color-mix(in srgb, $rsd-orange 16%, #fff);
+    border-color: color-mix(in srgb, $rsd-orange 36%, var(--lightgray));
   }
 
   /* ═══════════ Step 2 — Fáze dlaždice ═══════════ */

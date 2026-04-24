@@ -101,10 +101,11 @@ export default ((opts?: Partial<FolderContentOptions>) => {
         ? fileData.description
         : htmlToJsx(fileData.filePath!, tree)
     ) as ComponentChildren
+    const hasContent = content !== undefined && content !== null && content !== ""
 
     return (
       <div class="popover-hint">
-        <article class={classes}>{content}</article>
+        {hasContent && <article class={classes}>{content}</article>}
         <div class="page-listing">
           {options.showFolderCount && (
             <p>

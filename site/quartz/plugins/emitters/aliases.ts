@@ -16,6 +16,7 @@ async function* processFile(ctx: BuildCtx, file: VFile) {
     ) as FullSlug
 
     const redirUrl = resolveRelative(aliasTargetSlug, ogSlug)
+    const iconUrl = resolveRelative(aliasTargetSlug, "static/icon.png" as FullSlug)
     yield write({
       ctx,
       content: `
@@ -24,6 +25,7 @@ async function* processFile(ctx: BuildCtx, file: VFile) {
         <head>
         <title>${ogSlug}</title>
         <link rel="canonical" href="${redirUrl}">
+        <link rel="icon" href="${iconUrl}">
         <meta name="robots" content="noindex">
         <meta charset="utf-8">
         <meta http-equiv="refresh" content="0; url=${redirUrl}">

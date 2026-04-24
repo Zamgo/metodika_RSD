@@ -828,7 +828,17 @@ html {
   flex: 0 1 auto;
   flex-wrap: nowrap;
   gap: 0.1rem;
-  overflow: hidden;
+  overflow: visible;
+}
+
+#quartz-body .page-header .top-nav-dropdown {
+  position: relative;
+}
+
+#quartz-body .page-header .top-nav-dropdown:hover .top-nav-dropdown-menu,
+#quartz-body .page-header .top-nav-dropdown:focus-within .top-nav-dropdown-menu,
+#quartz-body .page-header .top-nav-dropdown.open .top-nav-dropdown-menu {
+  display: flex;
 }
 
 #quartz-body .page-header .top-nav-link {
@@ -836,22 +846,72 @@ html {
   color: $rsd-blue-dark;
   padding: 0.45rem 0.85rem;
   border-radius: 6px;
+  border: 1px solid transparent;
   font-size: 0.95rem;
   font-weight: 500;
   transition:
     background 120ms ease,
-    color 120ms ease;
+    color 120ms ease,
+    border-color 120ms ease;
 }
 
 #quartz-body .page-header .top-nav-link:hover {
-  background: color-mix(in srgb, $rsd-blue-dark 10%, transparent);
+  background: color-mix(in srgb, $rsd-blue-dark 9%, #ffffff);
   color: $rsd-blue-light;
+  border-color: color-mix(in srgb, $rsd-blue-dark 14%, transparent);
 }
 
-#quartz-body .page-header .top-nav-link.active {
-  background: color-mix(in srgb, $rsd-blue-dark 12%, transparent);
+#quartz-body .page-header .top-nav-link.active,
+#quartz-body .page-header .top-nav-dropdown-toggle[aria-expanded="true"] {
+  background: color-mix(in srgb, $rsd-blue-dark 14%, #ffffff);
   color: $rsd-blue-dark;
   font-weight: 600;
+  border-color: color-mix(in srgb, $rsd-blue-dark 24%, transparent);
+}
+
+#quartz-body .page-header .top-nav-dropdown-toggle::after {
+  content: "▾";
+  margin-left: 0.38rem;
+  font-size: 0.72em;
+  opacity: 0.8;
+  transform: translateY(-1px);
+}
+
+#quartz-body .page-header .top-nav-dropdown-toggle[aria-expanded="true"]::after {
+  content: "▴";
+}
+
+#quartz-body .page-header .top-nav-dropdown-menu {
+  background: #ffffff;
+  border: 1px solid color-mix(in srgb, $rsd-blue-dark 16%, #dce5f0);
+  border-radius: 8px;
+  box-shadow:
+    0 8px 24px -10px rgba(9, 65, 122, 0.32),
+    0 2px 6px rgba(9, 65, 122, 0.08);
+}
+
+#quartz-body .page-header .top-nav-dropdown-link {
+  color: $rsd-blue-dark;
+  border-left: 2px solid transparent;
+  border-radius: 5px;
+}
+
+#quartz-body .page-header .top-nav-dropdown-link:hover {
+  color: $rsd-blue-light;
+  background: color-mix(in srgb, $rsd-blue-dark 8%, #ffffff);
+}
+
+#quartz-body .page-header .top-nav-dropdown-link.active {
+  color: $rsd-blue-dark;
+  font-weight: 600;
+  background: color-mix(in srgb, $rsd-blue-dark 12%, #ffffff);
+  border-left-color: $rsd-blue-light;
+}
+
+#quartz-body .page-header .top-nav-link:focus-visible,
+#quartz-body .page-header .top-nav-dropdown-link:focus-visible {
+  outline: 2px solid color-mix(in srgb, $rsd-blue-light 55%, #ffffff);
+  outline-offset: 1px;
 }
 
 /* ─── 6. Search button v liště — override width:100% z search.scss ─ */
@@ -972,9 +1032,29 @@ html {
 }
 
 :root[saved-theme="dark"] #quartz-body .page-header .top-nav-link:hover,
-:root[saved-theme="dark"] #quartz-body .page-header .top-nav-link.active {
+:root[saved-theme="dark"] #quartz-body .page-header .top-nav-link.active,
+:root[saved-theme="dark"] #quartz-body .page-header .top-nav-dropdown-toggle[aria-expanded="true"] {
   background: color-mix(in srgb, var(--secondary) 15%, var(--light));
   color: var(--secondary);
+  border-color: color-mix(in srgb, var(--secondary) 28%, var(--light));
+}
+
+:root[saved-theme="dark"] #quartz-body .page-header .top-nav-dropdown-menu {
+  background: color-mix(in srgb, var(--lightgray) 20%, var(--light));
+  border-color: var(--lightgray);
+}
+
+:root[saved-theme="dark"] #quartz-body .page-header .top-nav-dropdown-link {
+  color: var(--secondary);
+}
+
+:root[saved-theme="dark"] #quartz-body .page-header .top-nav-dropdown-link:hover {
+  background: color-mix(in srgb, var(--secondary) 12%, var(--light));
+}
+
+:root[saved-theme="dark"] #quartz-body .page-header .top-nav-dropdown-link.active {
+  background: color-mix(in srgb, var(--secondary) 18%, var(--light));
+  border-left-color: var(--secondary);
 }
 
 :root[saved-theme="dark"] #quartz-body .page-header .top-nav-logo-img {
