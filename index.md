@@ -1,13 +1,17 @@
 ---
-title: Úvod do metodiky ŘSD Plzeň
-description: Úvod do metodiky ŘSD Plzeň a její formy znalostní databáze
+title: Praktický průvodce správou informací o stavbě na projektech ŘSD
+description: Praktický průvodce správou informací o stavbě na projektech ŘSD
 typ: index
 faze: []
 workflow: []
 stav: draft
-aliases: [Domů, Home]
+aliases:
+  - Domů
+  - Home
+cssclasses:
+  - home-hero
 ---
 
-Praktický průvodce správou informací o stavbě na projektech ŘSD — pojmy, činnosti a role pohromadě. Začněte vyhledáním nebo vyberte svou roli níže.
+Praktický průvodce správou informací o stavbě na projektech ŘSD - pojmy, činnosti a role pohromadě.
 
-Více o metodice: [[01_Úvod do metodiky ŘSD Plzeň|Úvod do metodiky →]]
+Začněte výběrem role níže, nebo si otevřete [[01_Úvod do metodiky ŘSD Plzeň|Úvod do metodiky ->]].

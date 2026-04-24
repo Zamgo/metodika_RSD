@@ -7,10 +7,36 @@ $rsd-green: #2f855a;
 $wizard-card-radius: 10px;
 $wizard-card-min-height: 3.5rem;
 
-.home-landing {
-  margin: 1.25rem 0 2.5rem;
+/* Homepage hero (z index.md přes cssclasses: [home-hero]) */
+article.home-hero {
+  margin-top: 0.4rem;
+  margin-bottom: 0.2rem;
 
-  /* Hero banner odstraněn — popis patří pod menu lištu (jako obsah index.md). */
+  .article-surface {
+    padding: 1rem 1.2rem;
+    border-radius: 12px;
+    border: 1px solid color-mix(in srgb, $rsd-blue-dark 18%, var(--lightgray));
+    background:
+      linear-gradient(180deg, color-mix(in srgb, $rsd-blue-dark 5%, #fff) 0%, #fff 100%);
+    box-shadow: 0 6px 18px rgba(9, 65, 122, 0.08);
+  }
+
+  p:first-child {
+    margin-top: 0;
+    font-size: 1rem;
+    line-height: 1.5;
+    color: var(--dark);
+  }
+
+  p:last-child {
+    margin-bottom: 0;
+    color: var(--darkgray);
+    font-size: 0.94rem;
+  }
+}
+
+.home-landing {
+  margin: 0 0 2.5rem;
 
   /* ═══════════ Wizard krok obecně ═══════════ */
   .home-wizard-step {
@@ -60,6 +86,10 @@ $wizard-card-min-height: 3.5rem;
     @media all and ($mobile) {
       margin-left: 0;
     }
+  }
+
+  .home-wizard-step[data-wizard-step="1"] {
+    margin-top: 0.1rem;
   }
 
   /* ═══════════ Step 1 — Role karty ═══════════ */
