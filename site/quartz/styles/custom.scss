@@ -250,10 +250,14 @@ html::-webkit-scrollbar-thumb:hover {
   margin-top: 0;
 }
 
-/* Role stránky s RACI propojením: odstranit dělící čáru + velkou mezeru mezi
-   článkem a footerem, pokud footer obsahuje `data-raci-backlinks`. */
+/* Role stránky s RACI propojením: zvýraznit dělící čáru mezi obsahem a RACI blokem
+   a držet kompaktní vertikální odsazení. */
 #quartz-body .center > hr:has(+ .page-footer:has([data-raci-backlinks])) {
-  display: none;
+  display: block;
+  border: 0;
+  border-top: 2px solid color-mix(in srgb, $rsd-blue-dark 78%, #fff);
+  margin: 0.35rem 0 0.65rem;
+  opacity: 0.95;
 }
 
 #quartz-body .center > .page-footer:has([data-raci-backlinks]) {

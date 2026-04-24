@@ -35,6 +35,21 @@ article.home-hero {
   }
 }
 
+/* Oddělovač mezi intro kartou a krokem "Kdo jste?" na úvodní stránce */
+#quartz-body .center > article.home-hero + hr {
+  margin: 0.75rem 0;
+  height: 1px;
+  border: 0;
+  background: color-mix(in srgb, #0096dc 78%, #fff);
+  opacity: 1;
+}
+
+/* Fallback, pokud je hr v některém layoutu vynecháno */
+#quartz-body .center > article.home-hero + .home-landing {
+  border-top: 1px solid color-mix(in srgb, #0096dc 78%, #fff);
+  padding-top: 0.75rem;
+}
+
 .home-landing {
   margin: -0.55rem 0 2.5rem;
 
@@ -432,7 +447,7 @@ article.home-hero {
 
     @media all and ($mobile) {
       border-right: 0;
-      border-bottom: 1px solid color-mix(in srgb, var(--lightgray) 70%, transparent);
+      border-bottom: 1px solid color-mix(in srgb, $rsd-blue-dark 55%, #fff);
       max-height: 22rem;
     }
   }
@@ -455,7 +470,7 @@ article.home-hero {
     align-items: flex-start;
     gap: 0.55rem;
     padding: 0.7rem 0.9rem;
-    border-bottom: 1px solid color-mix(in srgb, var(--lightgray) 60%, transparent);
+    border-bottom: 1px solid color-mix(in srgb, $rsd-blue-dark 60%, #fff);
     color: var(--dark);
     text-decoration: none;
     background: transparent;

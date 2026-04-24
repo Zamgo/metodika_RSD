@@ -92,6 +92,76 @@ async function mouseEnterHandler(
     default:
       const contents = await response.text()
       const html = p.parseFromString(contents, "text/html")
+      const hasCanvasViewer = !!html.querySelector(".quartz-canvas-viewer")
+
+      if (hasCanvasViewer) {
+        popoverInner.dataset.contentType = "text/canvas-preview"
+        const iframe = document.createElement("iframe")
+        iframe.src = targetUrl.toString()
+        iframe.title = `Náhled: ${targetUrl.pathname}`
+        iframe.loading = "lazy"
+        iframe.referrerPolicy = "no-referrer-when-downgrade"
+        iframe.addEventListener("load", () => {
+          try {
+            const doc = iframe.contentDocument
+            if (!doc) return
+            const title = doc.querySelector(".article-title")
+            const viewer = doc.querySelector(".quartz-canvas-viewer")
+            if (!viewer) return
+
+            const shell = doc.createElement("div")
+            shell.className = "canvas-popover-shell"
+
+            if (title?.textContent?.trim()) {
+              const heading = doc.createElement("h1")
+              heading.className = "canvas-popover-title"
+              heading.textContent = title.textContent.trim()
+              shell.appendChild(heading)
+            }
+
+            shell.appendChild(viewer)
+            doc.body.innerHTML = ""
+            doc.body.appendChild(shell)
+
+            const style = doc.createElement("style")
+            style.textContent = `
+              html, body {
+                margin: 0 !important;
+                padding: 0 !important;
+                background: var(--light) !important;
+              }
+
+              .canvas-popover-shell {
+                box-sizing: border-box;
+                width: 100%;
+                height: 100vh;
+                padding: 0.75rem;
+                display: grid;
+                grid-template-rows: auto minmax(0, 1fr);
+                gap: 0.5rem;
+              }
+
+              .canvas-popover-title {
+                margin: 0;
+                font-size: 1.25rem;
+                line-height: 1.25;
+                color: var(--dark);
+              }
+
+              .quartz-canvas-viewer {
+                height: 100% !important;
+                min-height: 0 !important;
+              }
+            `
+            doc.head.appendChild(style)
+          } catch {
+            // Ignore cross-document access issues and fall back to full-page preview.
+          }
+        })
+        popoverInner.appendChild(iframe)
+        break
+      }
+
       normalizeRelativeURLs(html, targetUrl)
       // prepend all IDs inside popovers to prevent duplicates
       html.querySelectorAll("[id]").forEach((el) => {

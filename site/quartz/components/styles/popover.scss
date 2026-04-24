@@ -46,7 +46,8 @@
 
   & > .popover-inner[data-content-type] {
     &[data-content-type*="pdf"],
-    &[data-content-type*="image"] {
+    &[data-content-type*="image"],
+    &[data-content-type*="canvas-preview"] {
       padding: 0;
       max-height: 100%;
     }
@@ -62,6 +63,19 @@
     &[data-content-type*="pdf"] {
       iframe {
         width: 100%;
+      }
+    }
+
+    &[data-content-type*="canvas-preview"] {
+      width: min(70vw, 56rem);
+      height: min(70vh, 40rem);
+      overflow: hidden;
+
+      iframe {
+        width: 100%;
+        height: 100%;
+        border: 0;
+        display: block;
       }
     }
   }

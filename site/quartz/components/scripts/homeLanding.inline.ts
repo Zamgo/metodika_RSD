@@ -39,6 +39,7 @@ type ContentIndex = Record<string, IndexItem>
 
 let indexPromise: Promise<ContentIndex> | null = null
 const pagePreviewCache = new Map<string, string>()
+const RACI_ORDER = ["R", "A", "C", "I"] as const
 
 function getContentIndex(): Promise<ContentIndex> {
   if (!indexPromise) {
@@ -107,6 +108,10 @@ function escapeHtml(s: string): string {
     .replace(/>/g, "&gt;")
     .replace(/"/g, "&quot;")
     .replace(/'/g, "&#039;")
+}
+
+function formatRaciKeys(keys: Set<string>): string {
+  return RACI_ORDER.filter((key) => keys.has(key)).join(", ")
 }
 
 function cleanupPreviewDom(container: HTMLElement) {
@@ -281,7 +286,7 @@ function wireWizard() {
         ·
         <span class="home-wizard-result-tag">${escapeHtml(phase.label)}</span>
         ·
-        <span class="home-wizard-result-tag">${Array.from(state.raciKeys).sort().join(", ") || "—"}</span>
+        <span class="home-wizard-result-tag">${formatRaciKeys(state.raciKeys) || "—"}</span>
         — ${filtered.length} ${pluralCinnosti(filtered.length)}
       `
     }
