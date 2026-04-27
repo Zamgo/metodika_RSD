@@ -241,7 +241,7 @@ const HomeLanding: QuartzComponent = ({
           </h2>
         </div>
         <p class="home-wizard-step-hint">
-          Vyberte svou roli nebo smluvní pozici.
+          Vyberte jednu nebo více rolí / smluvních pozic.
         </p>
         {personaCards.length === 0 ? (
           <p>
@@ -300,7 +300,7 @@ const HomeLanding: QuartzComponent = ({
           </h2>
         </div>
         <p class="home-wizard-step-hint">
-          Vyberte fázi — zobrazíme dílčí činnosti, které vás v ní čekají.
+          Vyberte fáze, o kterých chcete zobrazit informace.
         </p>
         <div class="home-wizard-phase-grid" role="list">
           {PHASE_DEFS.map((phase) => (
@@ -333,7 +333,7 @@ const HomeLanding: QuartzComponent = ({
           </h2>
         </div>
         <p class="home-wizard-step-hint">
-          Zaškrtněte, jakou máte roli v RACI tabulce.
+          Vyberte typy odpovědností, o kterých chcete zobrazit informace.
         </p>
         <div class="home-wizard-raci-grid" role="group" aria-label="Role v RACI">
           <button

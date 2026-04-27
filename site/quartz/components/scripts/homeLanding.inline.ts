@@ -40,6 +40,8 @@ type ContentIndex = Record<string, IndexItem>
 let indexPromise: Promise<ContentIndex> | null = null
 const pagePreviewCache = new Map<string, string>()
 const RACI_ORDER = ["R", "A", "C", "I"] as const
+const popoverParser = new DOMParser()
+let activePreviewPopoverLink: HTMLAnchorElement | null = null
 
 function getContentIndex(): Promise<ContentIndex> {
   if (!indexPromise) {
@@ -122,6 +124,128 @@ function cleanupPreviewDom(container: HTMLElement) {
     .forEach((el) => el.remove())
 }
 
+async function fetchCanonical(url: URL): Promise<Response> {
+  const canonicalPath = url.pathname.endsWith("/") ? url.pathname : `${url.pathname}/`
+  const canonicalUrl = new URL(`${canonicalPath}${url.hash}`, url)
+  try {
+    const res = await fetch(canonicalUrl.toString())
+    if (res.ok) return res
+  } catch {
+    // fall back to non-canonical path below
+  }
+  return fetch(url.toString())
+}
+
+async function positionPopover(anchor: HTMLElement, popover: HTMLElement, x: number, y: number) {
+  const { computePosition, inline, shift, flip } = await import("@floating-ui/dom")
+  const position = await computePosition(anchor, popover, {
+    strategy: "fixed",
+    middleware: [inline({ x, y }), shift(), flip()],
+  })
+  popover.style.transform = `translate(${position.x.toFixed()}px, ${position.y.toFixed()}px)`
+}
+
+function clearPreviewPopovers() {
+  activePreviewPopoverLink = null
+  document.querySelectorAll(".popover.active-popover").forEach((el) => {
+    el.classList.remove("active-popover")
+  })
+}
+
+function normalizeRelativeUrlsToAbsolute(container: HTMLElement, base: URL) {
+  container.querySelectorAll<HTMLElement>("[href], [src]").forEach((el) => {
+    const href = el.getAttribute("href")
+    if (href) {
+      try {
+        el.setAttribute("href", new URL(href, base).toString())
+      } catch {}
+    }
+    const src = el.getAttribute("src")
+    if (src) {
+      try {
+        el.setAttribute("src", new URL(src, base).toString())
+      } catch {}
+    }
+  })
+}
+
+async function showPreviewPopover(link: HTMLAnchorElement, event: MouseEvent) {
+  if (link.dataset.noPopover === "true") return
+  activePreviewPopoverLink = link
+
+  const targetUrl = new URL(link.href)
+  const hash = decodeURIComponent(targetUrl.hash)
+  targetUrl.hash = ""
+  targetUrl.search = ""
+  const popoverId = `popover-${link.pathname}`
+
+  const renderExisting = (el: HTMLElement) => {
+    clearPreviewPopovers()
+    activePreviewPopoverLink = link
+    el.classList.add("active-popover")
+    void positionPopover(link, el, event.clientX, event.clientY)
+    if (!hash) return
+    const inner = el.querySelector(".popover-inner") as HTMLElement | null
+    const heading = inner?.querySelector(`#popover-internal-${hash.slice(1)}`) as HTMLElement | null
+    if (inner && heading) inner.scroll({ top: heading.offsetTop - 12, behavior: "instant" })
+  }
+
+  const existing = document.getElementById(popoverId)
+  if (existing) {
+    renderExisting(existing as HTMLElement)
+    return
+  }
+
+  const response = await fetchCanonical(targetUrl).catch(() => null)
+  if (!response?.ok || activePreviewPopoverLink !== link) return
+
+  const [contentType] = (response.headers.get("Content-Type") ?? "").split(";")
+  const [category, typeInfo] = contentType.split("/")
+  const popoverEl = document.createElement("div")
+  popoverEl.id = popoverId
+  popoverEl.classList.add("popover")
+  const inner = document.createElement("div")
+  inner.classList.add("popover-inner")
+  inner.dataset.contentType = contentType
+  popoverEl.appendChild(inner)
+
+  if (category === "image") {
+    const img = document.createElement("img")
+    img.src = targetUrl.toString()
+    inner.appendChild(img)
+  } else if (category === "application" && typeInfo === "pdf") {
+    const pdf = document.createElement("iframe")
+    pdf.src = targetUrl.toString()
+    inner.appendChild(pdf)
+  } else {
+    const html = await response.text()
+    const doc = popoverParser.parseFromString(html, "text/html")
+    const hints = Array.from(doc.getElementsByClassName("popover-hint")) as HTMLElement[]
+    if (hints.length === 0) return
+    hints.forEach((hint) => {
+      hint.querySelectorAll("[id]").forEach((el) => {
+        ;(el as HTMLElement).id = `popover-internal-${(el as HTMLElement).id}`
+      })
+      normalizeRelativeUrlsToAbsolute(hint, targetUrl)
+      inner.appendChild(hint)
+    })
+  }
+
+  if (document.getElementById(popoverId) || activePreviewPopoverLink !== link) return
+  document.body.appendChild(popoverEl)
+  renderExisting(popoverEl)
+}
+
+function attachPreviewPopovers(scope: HTMLElement) {
+  const links = scope.querySelectorAll("a.internal") as NodeListOf<HTMLAnchorElement>
+  links.forEach((link) => {
+    if ((link as HTMLAnchorElement & { __previewPopoverBound?: boolean }).__previewPopoverBound) return
+    ;(link as HTMLAnchorElement & { __previewPopoverBound?: boolean }).__previewPopoverBound = true
+    link.addEventListener("mouseenter", (e) => void showPreviewPopover(link, e))
+    link.addEventListener("mouseleave", clearPreviewPopovers)
+  })
+}
+
 async function loadPreviewHtml(
   href: string,
   title: string,
@@ -172,17 +296,20 @@ function activityMatchesPhase(activity: WizardActivity, phase: WizardPhase): boo
 
 function filterActivities(
   data: WizardData,
-  roleKey: string | null,
-  phaseKey: string | null,
+  roleKeys: Set<string>,
+  phaseKeys: Set<string>,
   raciKeys: Set<string>,
 ): WizardActivity[] {
-  if (!roleKey || !phaseKey) return []
+  if (roleKeys.size === 0 || phaseKeys.size === 0) return []
   if (raciKeys.size === 0) return []
-  const role = data.roles.find((r) => r.key === roleKey)
-  const phase = data.phases.find((p) => p.key === phaseKey)
-  if (!role || !phase) return []
+  const selectedRoles = data.roles.filter((r) => roleKeys.has(r.key))
+  const selectedPhases = data.phases.filter((p) => phaseKeys.has(p.key))
+  if (selectedRoles.length === 0 || selectedPhases.length === 0) return []
   return data.activities.filter(
-    (a) => activityMatchesRole(a, role) && activityMatchesPhase(a, phase) && activityMatchesRaci(a, role, raciKeys),
+    (a) =>
+      selectedRoles.some((role) => activityMatchesRole(a, role)) &&
+      selectedPhases.some((phase) => activityMatchesPhase(a, phase)) &&
+      activityMatchesAnySelectedRoleRaci(a, selectedRoles, raciKeys),
   )
 }
 
@@ -194,6 +321,14 @@ function activityMatchesRaci(activity: WizardActivity, role: WizardRole, raciKey
   return false
 }
 
+function activityMatchesAnySelectedRoleRaci(
+  activity: WizardActivity,
+  roles: WizardRole[],
+  raciKeys: Set<string>,
+): boolean {
+  return roles.some((role) => activityMatchesRaci(activity, role, raciKeys))
+}
+
 /* ═══════════ Wizard main ═══════════ */
 function wireWizard() {
   const root = document.querySelector<HTMLElement>(".home-landing")
@@ -202,9 +337,9 @@ function wireWizard() {
   const data = parseWizardData()
   if (!data) return
 
-  const state: { roleKey: string | null; phaseKey: string | null; raciKeys: Set<string> } = {
-    roleKey: null,
-    phaseKey: null,
+  const state: { roleKeys: Set<string>; phaseKeys: Set<string>; raciKeys: Set<string> } = {
+    roleKeys: new Set<string>(),
+    phaseKeys: new Set<string>(),
     raciKeys: new Set<string>(["R", "A", "C", "I"]),
   }
 
@@ -223,34 +358,65 @@ function wireWizard() {
   const listEmptyHtml = `<li class="home-wizard-result-empty">Pro zvolenou kombinaci jsme nenašli žádné dílčí činnosti.</li>`
   const listEmptyRaciHtml = `<li class="home-wizard-result-empty">Vyberte alespoň jednu roli v RACI (R, A, C nebo I) pro zobrazení dílčích činností.</li>`
 
-  function setActiveRole(key: string) {
-    state.roleKey = key
+  function syncRoleCards() {
     for (const card of roleCards) {
-      const isActive = card.dataset.roleKey === key
+      const roleKey = card.dataset.roleKey || ""
+      const isActive = state.roleKeys.has(roleKey)
       card.classList.toggle("selected", isActive)
       card.setAttribute("aria-pressed", isActive ? "true" : "false")
     }
-    step2!.hidden = false
-    // Při změně role pokud je zvolená fáze, přerenderuj výsledek
-    if (state.phaseKey) renderResult()
-    // Plynule scrollnout na step 2, aby uživatel viděl co má dál vybrat
-    requestAnimationFrame(() => {
-      step2!.scrollIntoView({ behavior: "smooth", block: "start" })
-    })
   }
 
-  function setActivePhase(key: string) {
-    state.phaseKey = key
+  function toggleRole(key: string) {
+    if (state.roleKeys.has(key)) {
+      state.roleKeys.delete(key)
+    } else {
+      state.roleKeys.add(key)
+    }
+    syncRoleCards()
+    step2!.hidden = state.roleKeys.size === 0
+    // Při změně role pokud je zvolená alespoň jedna fáze, přerenderuj výsledek
+    if (state.phaseKeys.size > 0) renderResult()
+    // Plynule scrollnout na step 2, aby uživatel viděl co má dál vybrat
+    if (state.roleKeys.size > 0) {
+      requestAnimationFrame(() => {
+        step2!.scrollIntoView({ behavior: "smooth", block: "start" })
+      })
+    } else {
+      step3!.hidden = true
+      listEl!.innerHTML = listEmptyHtml
+      previewEl!.innerHTML = previewEmptyHtml
+      summaryEl!.innerHTML = ""
+    }
+  }
+
+  function syncPhaseCards() {
     for (const card of phaseCards) {
-      const isActive = card.dataset.phaseKey === key
+      const phaseKey = card.dataset.phaseKey || ""
+      const isActive = state.phaseKeys.has(phaseKey)
       card.classList.toggle("selected", isActive)
       card.setAttribute("aria-pressed", isActive ? "true" : "false")
     }
-    step3!.hidden = false
-    renderResult()
-    requestAnimationFrame(() => {
-      step3!.scrollIntoView({ behavior: "smooth", block: "start" })
-    })
+  }
+
+  function togglePhase(key: string) {
+    if (state.phaseKeys.has(key)) {
+      state.phaseKeys.delete(key)
+    } else {
+      state.phaseKeys.add(key)
+    }
+    syncPhaseCards()
+    step3!.hidden = state.phaseKeys.size === 0
+    if (state.phaseKeys.size > 0) {
+      renderResult()
+      requestAnimationFrame(() => {
+        step3!.scrollIntoView({ behavior: "smooth", block: "start" })
+      })
+    } else {
+      listEl!.innerHTML = listEmptyHtml
+      previewEl!.innerHTML = previewEmptyHtml
+      summaryEl!.innerHTML = ""
+    }
   }
 
   function syncRaciCards() {
@@ -269,22 +435,24 @@ function wireWizard() {
       state.raciKeys.add(key)
     }
     syncRaciCards()
-    if (state.phaseKey) renderResult()
+    if (state.phaseKeys.size > 0) renderResult()
   }
 
   function renderResult() {
-    if (!state.roleKey || !state.phaseKey) return
+    if (state.roleKeys.size === 0 || state.phaseKeys.size === 0) return
 
-    const role = data!.roles.find((r) => r.key === state.roleKey)
-    const phase = data!.phases.find((p) => p.key === state.phaseKey)
-    const filtered = filterActivities(data!, state.roleKey, state.phaseKey, state.raciKeys)
+    const selectedRoles = data!.roles.filter((r) => state.roleKeys.has(r.key))
+    const selectedPhases = data!.phases.filter((p) => state.phaseKeys.has(p.key))
+    const filtered = filterActivities(data!, state.roleKeys, state.phaseKeys, state.raciKeys)
+    const roleLabels = selectedRoles.map((r) => r.title).join(", ")
+    const phaseLabels = selectedPhases.map((p) => p.label).join(", ")
 
     // Summary
-    if (role && phase) {
+    if (selectedRoles.length > 0 && selectedPhases.length > 0) {
       summaryEl!.innerHTML = `
-        <span class="home-wizard-result-tag">${escapeHtml(role.title)}</span>
+        <span class="home-wizard-result-tag">${escapeHtml(roleLabels)}</span>
         ·
-        <span class="home-wizard-result-tag">${escapeHtml(phase.label)}</span>
+        <span class="home-wizard-result-tag">${escapeHtml(phaseLabels)}</span>
         ·
         <span class="home-wizard-result-tag">${formatRaciKeys(state.raciKeys) || "—"}</span>
         — ${filtered.length} ${pluralCinnosti(filtered.length)}
@@ -308,11 +476,11 @@ function wireWizard() {
       li.dataset.title = act.title
       li.dataset.fallback = act.popis ?? ""
 
-      // Označení role na aktivitě — R vs A
-      const rMatch = role && isRoleIn(role, act.rRoles)
-      const aMatch = role && isRoleIn(role, act.aRoles)
-      const cMatch = role && isRoleIn(role, act.cRoles ?? [])
-      const iMatch = role && isRoleIn(role, act.iRoles ?? [])
+      // Označení role na aktivitě dle vybraných rolí — R/A/C/I
+      const rMatch = selectedRoles.some((role) => isRoleIn(role, act.rRoles))
+      const aMatch = selectedRoles.some((role) => isRoleIn(role, act.aRoles))
+      const cMatch = selectedRoles.some((role) => isRoleIn(role, act.cRoles ?? []))
+      const iMatch = selectedRoles.some((role) => isRoleIn(role, act.iRoles ?? []))
       const tagsHtml: string[] = []
       if (rMatch) tagsHtml.push(`<span class="home-wizard-result-item-tag raci-r">R</span>`)
       if (aMatch) tagsHtml.push(`<span class="home-wizard-result-item-tag raci-a">A</span>`)
@@ -379,19 +547,20 @@ function wireWizard() {
       <a class="home-wizard-result-preview-open" href="${activity.href}">Otevřít celou stránku →</a>
       ${html}
     `
+    attachPreviewPopovers(previewEl!)
   }
 
   /* Připojení kliků */
   for (const card of roleCards) {
     card.addEventListener("click", () => {
       const key = card.dataset.roleKey
-      if (key) setActiveRole(key)
+      if (key) toggleRole(key)
     })
   }
   for (const card of phaseCards) {
     card.addEventListener("click", () => {
       const key = card.dataset.phaseKey
-      if (key) setActivePhase(key)
+      if (key) togglePhase(key)
     })
   }
   for (const card of raciCards) {
@@ -401,6 +570,8 @@ function wireWizard() {
       toggleRaciKey(key)
     })
   }
+  syncRoleCards()
+  syncPhaseCards()
   syncRaciCards()
 }
 

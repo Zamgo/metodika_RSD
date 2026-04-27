@@ -96,7 +96,7 @@ Tyto klíče slouží pro úvodní rozcestník (HomeLanding) a role portál.
 
 Pro smluvní strany, které existují pod více názvy (FIDIC ↔ ISO 19650), se používá **jedna kanonická stránka** a ostatní názvy se přidávají přes `aliases`. Tím:
 
-- `[[Objednatel]]` i `[[Pověřující strana]]` resolvují na tutéž stránku.
+- `[[Pověřující strana|Objednatel]]` i `[[Pověřující strana]]` resolvují na tutéž stránku.
 - `AliasRedirects` vygeneruje URL redirect z aliasu na kanonickou adresu.
 
 Doporučená kanonizace:

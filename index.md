@@ -11,7 +11,7 @@ aliases:
 cssclasses:
   - home-hero
 ---
+Praktický průvodce správou informací o stavbě na projektech ŘSD Plzeň. 
 
-Praktický průvodce správou informací o stavbě na projektech ŘSD - pojmy, činnosti a role pohromadě.
-
-Začněte výběrem role níže, nebo si otevřete [[01_Úvod do metodiky ŘSD Plzeň|Úvod do metodiky ->]].
+- Pro bližší informace přejděte na stránku [[Použití průvodce]].
+- Pro zobrazení konkrétních činností a postupů pro Vaši situaci začněte výběrem role níže.

@@ -50,6 +50,8 @@ views:
       - zdroj
       - stav
     sort:
+      - property: procesni_oblast
+        direction: ASC
       - property: faze
         direction: DESC
       - property: cinnost

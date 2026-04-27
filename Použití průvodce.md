@@ -1,11 +1,11 @@
 ---
-title: Úvod do metodiky ŘSD Plzeň
-description: Úvod do metodiky ŘSD Plzeň a její formy znalostní databáze
+title: Cíl a použití průvodce
+description: Cíl a použití průvodce
 typ: index
 faze: []
 workflow: []
 stav: draft
-aliases: [Domů, Home]
+aliases:
 ---
 # Cíl metodiky
 
@@ -22,7 +22,7 @@ Cílem metodiky je stanovit jednotný a prakticky použitelný rámec pro správ
 Metodika je koncipována jako realistický a udržitelný minimální standard praktické správy informací o stavbě.
 
 Zpracování metodiky v podobě provázané znalostní databáze zjednodušuje rutinní práci se získáváním potřebných informací.
-## Použití metodiky
+## Použití průvodce
 
 Metodika je určena k použití na projektech ŘSD ve fázi přípravy, realizace i předání stavby do provozu. Slouží jako:
 
@@ -31,11 +31,5 @@ Metodika je určena k použití na projektech ŘSD ve fázi přípravy, realizac
 - opora při řešení změn a aktualizací informací.
 
 Metodika není závazným smluvním dokumentem, ale praktickým nástrojem, který lze přizpůsobit specifikům konkrétního projektu.
-### Struktura obsahu
-
-- **`Oblasti správy informací`** — hlavní procesní obsah metodiky členěný podle oblastí správy informací (dle ISO 19650). Fáze projektu: [[Příprava]], [[Realizace]], [[Provoz a údržba]].
-- **`CDE_workflow`** — popisy konkrétních workflow v CDE (např. [[BEP]], [[DiMS]], [[ZBV]]).
-- **`Knihovna průvodce`** — definice rolí, smluvních stran, fází a klíčových konceptů informačního managementu.
-- **`Diagramy`** — grafické přehledy a diagramy.
 
 Stránky jsou vzájemně provázány interními odkazy. 
