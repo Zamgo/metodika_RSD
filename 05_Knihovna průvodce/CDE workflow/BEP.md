@@ -4,7 +4,7 @@ typ: workflow
 faze:
   - "[[Příprava]]"
 stav: draft
-permalink: /workflow/bep
+permalink: workflow/bep
 aliases:
   - BEP
 navazane_cinnosti: []

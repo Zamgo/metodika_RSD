@@ -4,7 +4,7 @@ typ: workflow
 faze:
   - "[[Realizace]]"
 stav: draft
-permalink: /workflow/variace
+permalink: workflow/variace
 navazane_cinnosti: []
 ---
 

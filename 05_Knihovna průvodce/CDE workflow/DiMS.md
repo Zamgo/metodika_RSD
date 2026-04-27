@@ -6,7 +6,7 @@ faze:
   - "[[Příprava]]"
   - "[[Provoz a údržba]]"
 stav: draft
-permalink: /workflow/dims
+permalink: workflow/dims
 navazane_cinnosti: []
 ---
 

@@ -5,7 +5,7 @@ faze:
   - "[[Realizace]]"
   - "[[Příprava]]"
 stav: draft
-permalink: /workflow/rds
+permalink: workflow/rds
 navazane_cinnosti: []
 ---
 

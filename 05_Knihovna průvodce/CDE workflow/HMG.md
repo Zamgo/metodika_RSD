@@ -5,7 +5,7 @@ faze:
   - "[[Realizace]]"
   - "[[Příprava]]"
 stav: draft
-permalink: /workflow/hmg
+permalink: workflow/hmg
 navazane_cinnosti: []
 ---
 
