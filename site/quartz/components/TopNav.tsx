@@ -15,15 +15,15 @@ type DropdownLink = {
 const NAV_LINKS: NavLink[] = [
   { label: "Úvod", path: "" },
   { label: "Seznam všech činností", path: "cinnosti" },
-  { label: "CDE workflow", path: "cde-workflow" },
 ]
 
-const DEFINITIONS_ROOT_PATH = "05_Definice-pojm\u016f"
+const DEFINITIONS_ROOT_PATH = "05_Knihovna-průvodce"
 const DEFINITIONS_DROPDOWN_LINKS: DropdownLink[] = [
-  { label: "Smluvní strany", path: "05_Definice-pojm\u016f/Smluvní-strany" },
-  { label: "Role", path: "05_Definice-pojm\u016f/Role" },
-  { label: "Informační management", path: "05_Definice-pojm\u016f/Informační-management" },
-  { label: "Fáze", path: "05_Definice-pojm\u016f/Faze" },
+  { label: "CDE workflow", path: "05_Knihovna-průvodce/CDE-workflow" },
+  { label: "Smluvní strany", path: "05_Knihovna-průvodce/Smluvní-strany" },
+  { label: "Role", path: "05_Knihovna-průvodce/Role" },
+  { label: "Informační management", path: "05_Knihovna-průvodce/Informační-management" },
+  { label: "Fáze", path: "05_Knihovna-průvodce/Faze" },
 ]
 
 const TopNav: QuartzComponent = ({ fileData }: QuartzComponentProps) => {
@@ -60,7 +60,7 @@ const TopNav: QuartzComponent = ({ fileData }: QuartzComponentProps) => {
             aria-haspopup="true"
             aria-expanded="false"
           >
-            Definice pojmů
+            Knihovna průvodce
           </button>
           <div class="top-nav-dropdown-menu" data-top-nav-dropdown-menu>
             {DEFINITIONS_DROPDOWN_LINKS.map((link) => (

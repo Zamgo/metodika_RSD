@@ -24,6 +24,15 @@ interface FolderPageOptions extends FullPageLayout {
   sort?: (f1: QuartzPluginData, f2: QuartzPluginData) => number
 }
 
+const ORDER_PREFIX_RE = /^\d+[_-]+/
+
+function formatFolderPathForTitle(folder: SimpleSlug): string {
+  return folder
+    .split("/")
+    .map((segment) => segment.replace(ORDER_PREFIX_RE, "").replaceAll("-", " "))
+    .join("/")
+}
+
 async function* processFolderInfo(
   ctx: BuildCtx,
   folderInfo: Record<SimpleSlug, ProcessedContent>,
@@ -71,7 +80,7 @@ function computeFolderInfo(
       defaultProcessedContent({
         slug: joinSegments(folder, "index") as FullSlug,
         frontmatter: {
-          title: `${i18n(locale).pages.folderContent.folder}: ${folder}`,
+          title: `${i18n(locale).pages.folderContent.folder}: ${formatFolderPathForTitle(folder)}`,
           tags: [],
         },
       }),

@@ -7,6 +7,12 @@ interface FileTrieData {
   filePath: string
 }
 
+const ORDER_PREFIX_RE = /^\d+[_-]+/
+
+function stripOrderPrefix(name: string): string {
+  return name.replace(ORDER_PREFIX_RE, "")
+}
+
 export class FileTrieNode<T extends FileTrieData = ContentDetails> {
   isFolder: boolean
   children: Array<FileTrieNode<T>>
@@ -29,9 +35,9 @@ export class FileTrieNode<T extends FileTrieData = ContentDetails> {
 
   get displayName(): string {
     const nonIndexTitle = this.data?.title === "index" ? undefined : this.data?.title
-    return (
+    const resolvedName =
       this.displayNameOverride ?? nonIndexTitle ?? this.fileSegmentHint ?? this.slugSegment ?? ""
-    )
+    return stripOrderPrefix(resolvedName)
   }
 
   set displayName(name: string) {

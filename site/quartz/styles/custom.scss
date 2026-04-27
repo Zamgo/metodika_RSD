@@ -929,8 +929,8 @@ html {
   display: inline-flex;
   align-items: center;
   gap: 0.45rem;
-  background: color-mix(in srgb, $rsd-blue-dark 6%, transparent);
-  border: 1px solid color-mix(in srgb, $rsd-blue-dark 18%, transparent);
+  background: transparent;
+  border: 1px solid color-mix(in srgb, $rsd-blue-dark 14%, transparent);
   border-radius: 6px;
   padding: 0.4rem 0.85rem 0.4rem 0.7rem;
   color: $rsd-blue-dark;
@@ -949,8 +949,13 @@ html {
 }
 
 #quartz-body .page-header .search > .search-button:hover {
-  background: color-mix(in srgb, $rsd-blue-dark 14%, transparent);
+  background: color-mix(in srgb, $rsd-blue-dark 9%, transparent);
   border-color: color-mix(in srgb, $rsd-blue-dark 35%, transparent);
+}
+
+#quartz-body .page-header .search > .search-button:focus-visible {
+  outline: 2px solid color-mix(in srgb, $rsd-blue-light 45%, #ffffff);
+  outline-offset: 1px;
 }
 
 #quartz-body .page-header .search > .search-button svg {

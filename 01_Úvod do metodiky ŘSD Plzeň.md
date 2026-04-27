@@ -35,7 +35,7 @@ Metodika není závazným smluvním dokumentem, ale praktickým nástrojem, kter
 
 - **`Oblasti správy informací`** — hlavní procesní obsah metodiky členěný podle oblastí správy informací (dle ISO 19650). Fáze projektu: [[Příprava]], [[Realizace]], [[Provoz a údržba]].
 - **`CDE_workflow`** — popisy konkrétních workflow v CDE (např. [[BEP]], [[DiMS]], [[ZBV]]).
-- **`Definice pojmů`** — definice rolí, smluvních stran, fází a klíčových konceptů informačního managementu.
+- **`Knihovna průvodce`** — definice rolí, smluvních stran, fází a klíčových konceptů informačního managementu.
 - **`Diagramy`** — grafické přehledy a diagramy.
 
 Stránky jsou vzájemně provázány interními odkazy. 

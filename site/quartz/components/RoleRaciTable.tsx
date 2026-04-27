@@ -36,7 +36,7 @@ const RoleRaciTable: QuartzComponent = ({ cfg, fileData }: QuartzComponentProps)
   const basePath = path.resolve(
     process.cwd(),
     "..",
-    "05_Definice pojmů",
+    "05_Knihovna průvodce",
     "Role",
     "_Role - RACI.base",
   )

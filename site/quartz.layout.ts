@@ -56,7 +56,7 @@ function sortByNumericPrefix(a: FileTrieNode, b: FileTrieNode): number {
 }
 
 /**
- * Levý panel: úvod (index + stránka Úvod do metodiky), seznam všech činností, CDE workflow, Definice pojmů, Diagramy.
+ * Levý panel: úvod (index + stránka Úvod do metodiky), seznam všech činností, CDE workflow, Knihovna průvodce, Diagramy.
  * Ikony (vyhledávání, tmavý režim) zůstávají v layoutu — nejsou součástí Exploreru.
  * (filterFn se do klienta posílá přes .toString() — nesmí volat jiné funkce z tohoto souboru.)
  */
@@ -72,14 +72,14 @@ function explorerFilter(node: FileTrieNode): boolean {
     "01_Úvod-do-metodiky-ŘSD-Plzeň",
     "02---Seznam-všech-činností",
     "03---CDE-workflow",
-    "05_Definice-pojmů",
+    "05_Knihovna-průvodce",
     "06_Diagramy",
   ])
 
   if (parts.length === 1) {
     return allowedRoot.has(rootSeg)
   }
-  return rootSeg === "05_Definice-pojmů" || rootSeg === "06_Diagramy"
+  return rootSeg === "05_Knihovna-průvodce" || rootSeg === "06_Diagramy"
 }
 
 function hideOrderingPrefix(node: FileTrieNode): void {
@@ -130,7 +130,7 @@ export const sharedPageComponents: SharedLayout = {
 export const defaultContentPageLayout: PageLayout = {
   beforeBody: [
     Component.ConditionalRender({
-      component: Component.Breadcrumbs(),
+      component: Component.Breadcrumbs({ showRoot: false }),
       condition: (page) => page.fileData.slug !== "index",
     }),
     Component.ArticleTitle(),
@@ -150,7 +150,11 @@ export const defaultContentPageLayout: PageLayout = {
 
 // components for pages that display lists of pages  (e.g. tags or folders)
 export const defaultListPageLayout: PageLayout = {
-  beforeBody: [Component.Breadcrumbs(), Component.ArticleTitle(), Component.ContentMeta()],
+  beforeBody: [
+    Component.Breadcrumbs({ showRoot: false }),
+    Component.ArticleTitle(),
+    Component.ContentMeta(),
+  ],
   left: [],
   right: [],
 }
