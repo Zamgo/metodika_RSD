@@ -216,7 +216,7 @@ html::-webkit-scrollbar-thumb:hover {
   }
 }
 
-/* Seznam činností (/cinnosti): prázdný stub článku + Quartz vždy vykreslí <hr> před page-footer — skrýt obojí, aby nebyla bílá mezera nad tabulkou */
+/* Seznam všech činností (/cinnosti): prázdný stub článku + Quartz vždy vykreslí <hr> před page-footer — skrýt obojí, aby nebyla bílá mezera nad tabulkou */
 #quartz-body .center:has(#cinnosti-browser) > article.popover-hint:not(:has(> .article-surface > *)) {
   display: none;
 }
@@ -228,7 +228,7 @@ html::-webkit-scrollbar-thumb:hover {
   display: none;
 }
 
-/* Přehled CDE workflow (/cde-workflow): stejné jako Seznam činností */
+/* Přehled CDE workflow (/cde-workflow): stejné jako Seznam všech činností */
 #quartz-body .center:has(#cde-workflow-browser) > article.popover-hint:not(:has(> .article-surface > *)) {
   display: none;
 }

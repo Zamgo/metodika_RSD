@@ -101,7 +101,7 @@ for folder in folders:
                 f"typ: \"cinnost\" procesni_oblast: \"{code}\" path:\"07_RACI_cinnosti\"\n"
                 "```\n\n"
                 "## Související stránky\n\n"
-                "- [[03_CDE_workflow/Seznam-cinnosti|Seznam činností]]\n"
+                "- [[03_CDE_workflow/Seznam-cinnosti|Seznam všech činností]]\n"
                 "- [[03_CDE_workflow/Cinnosti.base|Cinnosti.base]]\n"
             )
         elif typ == '"pracovni_balicek"':
@@ -115,7 +115,7 @@ for folder in folders:
                 f"typ: \"cinnost\" pracovni_balicek: \"{pcode}\" path:\"07_RACI_cinnosti\"\n"
                 "```\n\n"
                 "## Související stránky\n\n"
-                "- [[03_CDE_workflow/Seznam-cinnosti|Seznam činností]]\n"
+                "- [[03_CDE_workflow/Seznam-cinnosti|Seznam všech činností]]\n"
                 "- [[03_CDE_workflow/Cinnosti.base|Cinnosti.base]]\n"
             )
 

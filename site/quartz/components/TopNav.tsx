@@ -14,7 +14,7 @@ type DropdownLink = {
 
 const NAV_LINKS: NavLink[] = [
   { label: "Úvod", path: "" },
-  { label: "Seznam činností", path: "cinnosti" },
+  { label: "Seznam všech činností", path: "cinnosti" },
   { label: "CDE workflow", path: "cde-workflow" },
 ]
 

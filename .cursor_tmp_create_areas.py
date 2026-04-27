@@ -54,7 +54,7 @@ typ: "cinnost" procesni_oblast: "{a}" path:"07_RACI_cinnosti"
 
 ## Související stránky
 
-- [[03_CDE_workflow/Seznam-cinnosti|Seznam činností]]
+- [[03_CDE_workflow/Seznam-cinnosti|Seznam všech činností]]
 - [[03_CDE_workflow/Cinnosti.base|Cinnosti.base]]
 '''
     path.write_text(text, encoding='utf-8')

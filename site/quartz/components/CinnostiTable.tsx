@@ -24,9 +24,8 @@ export function renderCinnostiTableMarkup({
   roleFilterTerms,
 }: CinnostiTableOptions & { cs: boolean; baseText: string }) {
   const roleFilterAttr =
-    roleFilterTerms && roleFilterTerms.length > 0
-      ? JSON.stringify(roleFilterTerms)
-      : undefined
+    roleFilterTerms && roleFilterTerms.length > 0 ? JSON.stringify(roleFilterTerms) : undefined
+  const showFullscreenButton = lsId === "cinnosti"
   return (
     <div
       id={rootId}
@@ -35,6 +34,8 @@ export function renderCinnostiTableMarkup({
       data-cinnosti-rows={rowsDataset}
       data-cinnosti-role-filter={roleFilterAttr}
       data-str-view-all={cs ? "Vše" : "All"}
+      data-str-fullscreen-enter={cs ? "Celá obrazovka" : "Fullscreen"}
+      data-str-fullscreen-exit={cs ? "Zpět z celé obrazovky" : "Exit fullscreen"}
     >
       <div class="cinnosti-toolbar">
         <div class="cinnosti-toolbar-group cinnosti-toolbar-group-data">
@@ -92,7 +93,9 @@ export function renderCinnostiTableMarkup({
                   type="button"
                   class="cinnosti-view-menu-item cinnosti-view-share-btn"
                   role="menuitem"
-                  title={cs ? "Zkopírovat odkaz s aktuálním stavem" : "Copy link with current state"}
+                  title={
+                    cs ? "Zkopírovat odkaz s aktuálním stavem" : "Copy link with current state"
+                  }
                 >
                   {cs ? "Sdílet odkaz na pohled" : "Copy share link"}
                 </button>
@@ -190,6 +193,32 @@ export function renderCinnostiTableMarkup({
           </div>
         </div>
         <div class="cinnosti-toolbar-group cinnosti-toolbar-group-state">
+          {showFullscreenButton && (
+            <button
+              type="button"
+              class="cinnosti-fullscreen-btn"
+              aria-pressed="false"
+              title={cs ? "Zobrazit tabulku na celou obrazovku" : "Show table fullscreen"}
+            >
+              <svg
+                width="15"
+                height="15"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                aria-hidden="true"
+              >
+                <path d="M8 3H3v5" />
+                <path d="M16 3h5v5" />
+                <path d="M21 16v5h-5" />
+                <path d="M3 16v5h5" />
+              </svg>
+              <span class="cinnosti-fullscreen-label">{cs ? "Celá obrazovka" : "Fullscreen"}</span>
+            </button>
+          )}
           <button type="button" class="cinnosti-clear-filters" hidden>
             <span class="cinnosti-clear-filters-label">
               {cs ? "Zrušit filtry" : "Clear filters"}
@@ -223,7 +252,7 @@ export function renderCinnostiTableMarkup({
 
 const CinnostiTable: QuartzComponent = ({ cfg }: QuartzComponentProps) => {
   const cs = cfg.locale.startsWith("cs")
-  const basePath = path.resolve(process.cwd(), "..", "02 - Seznam činností.base")
+  const basePath = path.resolve(process.cwd(), "..", "02 - Seznam všech činností.base")
   const baseText = fs.existsSync(basePath) ? fs.readFileSync(basePath, "utf8") : ""
   return renderCinnostiTableMarkup({ cs, baseText })
 }

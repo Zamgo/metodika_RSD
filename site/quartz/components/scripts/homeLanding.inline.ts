@@ -376,8 +376,8 @@ function wireWizard() {
     }
 
     previewEl!.innerHTML = `
-      ${html}
       <a class="home-wizard-result-preview-open" href="${activity.href}">Otevřít celou stránku →</a>
+      ${html}
     `
   }
 

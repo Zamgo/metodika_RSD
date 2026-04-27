@@ -141,7 +141,7 @@ function fazeFromFrontmatter(fm: Record<string, unknown>): string[] {
 
 /**
  * Heuristika pro dohledání slugu pro zobrazení. V tomto komponentu se používá jen
- * pro nalezení slugu hlavní stránky „Seznam činností" — pokud existuje. Jinak
+ * pro nalezení slugu hlavní stránky „Seznam všech činností" — pokud existuje. Jinak
  * vrací null.
  */
 function findSeznamCinnostiSlug(allFiles: QuartzComponentProps["allFiles"]): FullSlug | null {
@@ -153,7 +153,7 @@ function findSeznamCinnostiSlug(allFiles: QuartzComponentProps["allFiles"]): Ful
       .toLowerCase()
     if (
       permalink === "cinnosti" ||
-      title === "seznam činností" ||
+      title === "seznam všech činností" ||
       slug === "seznam-cinnosti" ||
       slug.endsWith("/seznam-cinnosti") ||
       slug === "seznam-činností" ||
@@ -328,7 +328,7 @@ export default ((opts?: Partial<RaciBacklinksOptions>) => {
     }
     const fazeChips = discoveredFaze.filter((fz) => matchedFaze.has(fz))
 
-    // Link na kompletní seznam činností (pokud je v úložišti).
+    // Link na kompletní seznam všech činností (pokud je v úložišti).
     const seznamSlug = findSeznamCinnostiSlug(allFiles)
     const seznamHref = seznamSlug ? resolveRelative(fileData.slug!, seznamSlug) : null
 
@@ -347,7 +347,7 @@ export default ((opts?: Partial<RaciBacklinksOptions>) => {
           </div>
           {seznamHref ? (
             <a class="raci-backlinks-full-link" href={seznamHref}>
-              Celý seznam činností →
+              Celý seznam všech činností →
             </a>
           ) : null}
         </div>

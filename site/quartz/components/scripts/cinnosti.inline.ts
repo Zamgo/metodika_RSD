@@ -38,19 +38,6 @@ const DEFAULT_GROUP_BY_BY_SCOPE: Record<string, string> = {
   "cde-workflow": "typ",
 }
 
-/** Shipped (read-only) "Doporučené" pohledy pro scope `cinnosti`. */
-const PRESET_VIEWS_CINNOSTI: SavedView[] = [
-  {
-    id: "preset:zrychleny-prehled",
-    name: "Zrychlený přehled (RACI)",
-    kind: "preset",
-    baseView: "Všechny dílčí činnosti",
-    groupBy: ["procesni_oblast"],
-    hiddenCols: ["popis", "zdroj", "stav", "procesni_oblast"],
-    schemaVersion: 1,
-  },
-]
-
 function generateViewId(): string {
   const rnd = Math.random().toString(36).slice(2, 10)
   const t = Date.now().toString(36)
@@ -95,11 +82,7 @@ type BaseConfig = {
      * Volitelný override defaultního groupBy (spätně kompatibilní - chybí → použije se fallback).
      * Přijímá řetězec nebo pole řetězců pro víceúrovňové seskupení.
      */
-    groupBy?:
-      | string
-      | string[]
-      | { property?: string }
-      | Array<string | { property?: string }>
+    groupBy?: string | string[] | { property?: string } | Array<string | { property?: string }>
   }[]
 }
 
@@ -172,7 +155,7 @@ function rowMatchesViewFilters(
   return true
 }
 
-/** Stejné chování jako formule v 02 - Seznam činností.base: dilci_cinnost. */
+/** Stejné chování jako formule v 02 - Seznam všech činností.base: dilci_cinnost. */
 function dilciCinnostDisplay(row: Row): string {
   if (getMetaString(row.meta, "typ") !== "dilci_cinnost") return ""
   return row.title.trim()
@@ -350,19 +333,12 @@ async function setupCinnosti(root: HTMLElement, currentSlug: FullSlug, data: Cin
   const viewSelect = root.querySelector(".cinnosti-view-select") as HTMLSelectElement
   const countEl = root.querySelector(".cinnosti-count") as HTMLElement
   const clearBtn = root.querySelector(".cinnosti-clear-filters") as HTMLButtonElement
+  const fullscreenBtn = root.querySelector(".cinnosti-fullscreen-btn") as HTMLButtonElement | null
   const colToggleBtn = root.querySelector(".cinnosti-column-toggle-btn") as HTMLButtonElement | null
-  const colTogglePanel = root.querySelector(
-    ".cinnosti-column-toggle-panel",
-  ) as HTMLElement | null
-  const filterCountEl = root.querySelector(
-    ".cinnosti-active-filter-count",
-  ) as HTMLElement | null
-  const groupAddSelect = root.querySelector(
-    ".cinnosti-group-add",
-  ) as HTMLSelectElement | null
-  const groupChipsEl = root.querySelector(
-    ".cinnosti-group-chips",
-  ) as HTMLElement | null
+  const colTogglePanel = root.querySelector(".cinnosti-column-toggle-panel") as HTMLElement | null
+  const filterCountEl = root.querySelector(".cinnosti-active-filter-count") as HTMLElement | null
+  const groupAddSelect = root.querySelector(".cinnosti-group-add") as HTMLSelectElement | null
+  const groupChipsEl = root.querySelector(".cinnosti-group-chips") as HTMLElement | null
   const groupExpandAllBtn = root.querySelector(
     ".cinnosti-group-expand-all",
   ) as HTMLButtonElement | null
@@ -374,6 +350,56 @@ async function setupCinnosti(root: HTMLElement, currentSlug: FullSlug, data: Cin
   const lsScope = root.dataset.cinnostiLsId ?? "cinnosti"
   const workflowTable = root.dataset.cinnostiRows === "workflow"
   const rowFilter = workflowTable ? isCdeWorkflowRow : isCinnostRow
+
+  const updateFullscreenButton = () => {
+    if (!fullscreenBtn) return
+    const isFullscreen =
+      document.fullscreenElement === root || root.classList.contains("is-fullscreen-fallback")
+    const label = isFullscreen
+      ? (root.dataset.strFullscreenExit ?? "Zpět z celé obrazovky")
+      : (root.dataset.strFullscreenEnter ?? "Celá obrazovka")
+    fullscreenBtn.setAttribute("aria-pressed", isFullscreen ? "true" : "false")
+    fullscreenBtn.setAttribute("title", label)
+    fullscreenBtn.setAttribute("aria-label", label)
+    const labelEl = fullscreenBtn.querySelector(".cinnosti-fullscreen-label")
+    if (labelEl) labelEl.textContent = label
+  }
+
+  const exitFullscreen = async () => {
+    if (document.fullscreenElement === root && document.exitFullscreen) {
+      await document.exitFullscreen()
+    } else {
+      root.classList.remove("is-fullscreen-fallback")
+    }
+    updateFullscreenButton()
+  }
+
+  const enterFullscreen = async () => {
+    if (root.requestFullscreen) {
+      await root.requestFullscreen()
+    } else {
+      root.classList.add("is-fullscreen-fallback")
+    }
+    updateFullscreenButton()
+  }
+
+  const toggleFullscreen = () => {
+    const isFullscreen =
+      document.fullscreenElement === root || root.classList.contains("is-fullscreen-fallback")
+    ;(isFullscreen ? exitFullscreen() : enterFullscreen()).catch(() => {
+      root.classList.toggle("is-fullscreen-fallback", !isFullscreen)
+      updateFullscreenButton()
+    })
+  }
+
+  fullscreenBtn?.addEventListener("click", toggleFullscreen)
+  document.addEventListener("fullscreenchange", updateFullscreenButton)
+  window.addCleanup(() => {
+    fullscreenBtn?.removeEventListener("click", toggleFullscreen)
+    document.removeEventListener("fullscreenchange", updateFullscreenButton)
+    root.classList.remove("is-fullscreen-fallback")
+  })
+  updateFullscreenButton()
 
   /** Implicitní filtr pro per-role tabulku: seznam termů (title + aliases role).
    *  Řádek projde, pokud alespoň jeden term je obsažen v hodnotách sloupce
@@ -440,9 +466,7 @@ async function setupCinnosti(root: HTMLElement, currentSlug: FullSlug, data: Cin
   const resolveNote = createNoteSlugResolver(data)
   const baseConfig = readBaseConfig(root)
   const ds = root.dataset
-  const allViews = Array.isArray(baseConfig.views)
-    ? baseConfig.views.filter((v) => !!v?.name)
-    : []
+  const allViews = Array.isArray(baseConfig.views) ? baseConfig.views.filter((v) => !!v?.name) : []
   const fallbackView: BaseView = {
     name: ds.strViewAll ?? "Vše",
     order: [
@@ -472,8 +496,6 @@ async function setupCinnosti(root: HTMLElement, currentSlug: FullSlug, data: Cin
   // ── Views system ─────────────────────────────────────────────────────
 
   const viewsUiEnabled = lsScope === "cinnosti"
-  const presetViews: SavedView[] = viewsUiEnabled ? PRESET_VIEWS_CINNOSTI.slice() : []
-
   function buildBaseSavedViews(): SavedView[] {
     return views.map((v) => ({
       id: `base:${v.name ?? "default"}`,
@@ -513,7 +535,7 @@ async function setupCinnosti(root: HTMLElement, currentSlug: FullSlug, data: Cin
   }
 
   function listAllViews(): SavedView[] {
-    return [...baseViews, ...presetViews, ...userViews]
+    return [...baseViews, ...userViews]
   }
 
   function findViewById(id: string): SavedView | null {
@@ -608,7 +630,7 @@ async function setupCinnosti(root: HTMLElement, currentSlug: FullSlug, data: Cin
     }
     if (Array.isArray(fromFm)) {
       const filtered = fromFm
-        .map((x) => (typeof x === "string" ? x.trim() : groupByFromObject(x) ?? ""))
+        .map((x) => (typeof x === "string" ? x.trim() : (groupByFromObject(x) ?? "")))
         .filter((x): x is string => !!x)
       if (filtered.length > 0) return filtered.map((s) => s.trim())
     } else if (typeof fromFm === "string" && fromFm.trim()) {
@@ -821,15 +843,13 @@ async function setupCinnosti(root: HTMLElement, currentSlug: FullSlug, data: Cin
       const url = new URL(location.href)
       const s = url.searchParams.get("state")
       if (!s) return
-      const decoded = decodeStateParam(s) as
-        | {
-            hiddenCols?: string[]
-            colOrder?: string[]
-            colWidths?: Record<string, number>
-            groupBy?: string[]
-            sort?: { col: string; dir: "asc" | "desc" } | null
-          }
-        | null
+      const decoded = decodeStateParam(s) as {
+        hiddenCols?: string[]
+        colOrder?: string[]
+        colWidths?: Record<string, number>
+        groupBy?: string[]
+        sort?: { col: string; dir: "asc" | "desc" } | null
+      } | null
       if (!decoded || typeof decoded !== "object") return
       if (Array.isArray(decoded.hiddenCols)) hiddenCols = new Set(decoded.hiddenCols)
       if (Array.isArray(decoded.colOrder) && decoded.colOrder.length > 0) {
@@ -923,9 +943,7 @@ async function setupCinnosti(root: HTMLElement, currentSlug: FullSlug, data: Cin
   // ── View kebab menu (Uložit jako / Obnovit / Sdílet / Spravovat) ─────
 
   const viewMenuBtn = root.querySelector(".cinnosti-view-menu-btn") as HTMLButtonElement | null
-  const viewMenuPanel = root.querySelector(
-    ".cinnosti-view-menu-panel",
-  ) as HTMLElement | null
+  const viewMenuPanel = root.querySelector(".cinnosti-view-menu-panel") as HTMLElement | null
   if (viewMenuBtn && viewMenuPanel) {
     const closeMenu = () => {
       viewMenuPanel.classList.remove("open")
@@ -1010,8 +1028,7 @@ async function setupCinnosti(root: HTMLElement, currentSlug: FullSlug, data: Cin
         const w = columnWidths.get(col)
         const wStyle = w ? ` style="width:${w}px;min-width:${w}px"` : ""
         let sortInd = ""
-        if (sortState?.col === col)
-          sortInd = sortState.dir === "asc" ? " \u25B2" : " \u25BC"
+        if (sortState?.col === col) sortInd = sortState.dir === "asc" ? " \u25B2" : " \u25BC"
 
         const filterActive = columnFilters.has(col) && columnFilters.get(col)!.size > 0
         const filterBtnCls = filterActive ? " active" : ""
@@ -1021,8 +1038,7 @@ async function setupCinnosti(root: HTMLElement, currentSlug: FullSlug, data: Cin
 
         const checkboxes = allValues
           .map((val) => {
-            const isChecked =
-              !selectedSet || selectedSet.size === 0 || selectedSet.has(val)
+            const isChecked = !selectedSet || selectedSet.size === 0 || selectedSet.has(val)
             const ck = isChecked ? " checked" : ""
             const display = val ? plainTextFromWikiMeta(String(val)) : "(prázdné)"
             return `<label class="cinnosti-filter-value"><input type="checkbox" value="${escapeHtml(val)}"${ck}><span>${escapeHtml(display)}</span></label>`
@@ -1101,8 +1117,7 @@ async function setupCinnosti(root: HTMLElement, currentSlug: FullSlug, data: Cin
           if (childrenHidden) tr.style.display = "none"
           tr.innerHTML = cols
             .map((col, idx) => {
-              const style =
-                idx === 0 ? ` style="--cinnosti-detail-depth:${node.depth + 1}"` : ""
+              const style = idx === 0 ? ` style="--cinnosti-detail-depth:${node.depth + 1}"` : ""
               return `<td${style}>${getCellHtml(row, col)}</td>`
             })
             .join("")
@@ -1244,13 +1259,13 @@ async function setupCinnosti(root: HTMLElement, currentSlug: FullSlug, data: Cin
       const th = target.closest("th[data-col]") as HTMLElement
       if (!th) return
       const col = th.dataset.col!
-      th.querySelectorAll<HTMLElement>(
-        ".cinnosti-col-filter-list .cinnosti-filter-value",
-      ).forEach((label) => {
-        const cb = label.querySelector("input[type=checkbox]") as HTMLInputElement
-        if (!cb) return
-        cb.checked = label.style.display !== "none"
-      })
+      th.querySelectorAll<HTMLElement>(".cinnosti-col-filter-list .cinnosti-filter-value").forEach(
+        (label) => {
+          const cb = label.querySelector("input[type=checkbox]") as HTMLInputElement
+          if (!cb) return
+          cb.checked = label.style.display !== "none"
+        },
+      )
       syncFilterFromCheckboxes(th, col)
       renderBodyOnly()
       return
@@ -1331,9 +1346,7 @@ async function setupCinnosti(root: HTMLElement, currentSlug: FullSlug, data: Cin
 
   const onDocCloseDropdown = (e: Event) => {
     if (
-      (e.target as HTMLElement).closest(
-        ".cinnosti-col-filter-dropdown, .cinnosti-col-filter-btn",
-      )
+      (e.target as HTMLElement).closest(".cinnosti-col-filter-dropdown, .cinnosti-col-filter-btn")
     )
       return
     headRow
@@ -1421,9 +1434,7 @@ async function setupCinnosti(root: HTMLElement, currentSlug: FullSlug, data: Cin
   let resizeStartW = 0
 
   const onResizeDown = (e: MouseEvent) => {
-    const handle = (e.target as HTMLElement).closest(
-      ".cinnosti-resize-handle",
-    ) as HTMLElement
+    const handle = (e.target as HTMLElement).closest(".cinnosti-resize-handle") as HTMLElement
     if (!handle) return
     e.preventDefault()
     e.stopPropagation()
@@ -1444,9 +1455,7 @@ async function setupCinnosti(root: HTMLElement, currentSlug: FullSlug, data: Cin
     const dx = e.clientX - resizeStartX
     const newW = Math.max(60, resizeStartW + dx)
     columnWidths.set(resizeCol, newW)
-    const th = headRow.querySelector(
-      `th[data-col="${CSS.escape(resizeCol)}"]`,
-    ) as HTMLElement
+    const th = headRow.querySelector(`th[data-col="${CSS.escape(resizeCol)}"]`) as HTMLElement
     if (th) {
       th.style.width = `${newW}px`
       th.style.minWidth = `${newW}px`
@@ -1469,9 +1478,7 @@ async function setupCinnosti(root: HTMLElement, currentSlug: FullSlug, data: Cin
     if (!resizeCol) return
     document.body.style.cursor = ""
     document.body.style.userSelect = ""
-    const th = headRow.querySelector(
-      `th[data-col="${CSS.escape(resizeCol)}"]`,
-    ) as HTMLElement
+    const th = headRow.querySelector(`th[data-col="${CSS.escape(resizeCol)}"]`) as HTMLElement
     if (th) th.classList.remove("resizing")
     saveColumnWidths()
     resizeCol = null
@@ -1534,9 +1541,7 @@ async function setupCinnosti(root: HTMLElement, currentSlug: FullSlug, data: Cin
     for (const col of columnOrder) {
       if (seen.has(col)) continue
       seen.add(col)
-      opts.push(
-        `<option value="${escapeHtml(col)}">${escapeHtml(getColLabel(col))}</option>`,
-      )
+      opts.push(`<option value="${escapeHtml(col)}">${escapeHtml(getColLabel(col))}</option>`)
     }
     groupAddSelect.innerHTML = opts.join("")
     groupAddSelect.value = ""
@@ -1599,25 +1604,20 @@ async function setupCinnosti(root: HTMLElement, currentSlug: FullSlug, data: Cin
     if (viewsUiEnabled) {
       const groupLabels = {
         base: "Výchozí",
-        preset: "Doporučené",
-        user: "Moje pohledy",
+        user: "Vlastní",
       } as const
       const parts: string[] = []
-      const kinds: Array<"base" | "preset" | "user"> = ["base", "preset", "user"]
+      const kinds: Array<"base" | "user"> = ["base", "user"]
       for (const kind of kinds) {
         const list = listAllViews().filter((v) => v.kind === kind)
         if (list.length === 0 && kind !== "user") continue
         parts.push(`<optgroup label="${escapeHtml(groupLabels[kind])}">`)
         if (list.length === 0) {
-          parts.push(
-            `<option value="" disabled>— zatím žádné uložené —</option>`,
-          )
+          parts.push(`<option value="" disabled>— zatím žádné uložené —</option>`)
         } else {
           for (const v of list) {
             const sel = v.id === activeViewId ? " selected" : ""
-            parts.push(
-              `<option value="${escapeHtml(v.id)}"${sel}>${escapeHtml(v.name)}</option>`,
-            )
+            parts.push(`<option value="${escapeHtml(v.id)}"${sel}>${escapeHtml(v.name)}</option>`)
           }
         }
         parts.push(`</optgroup>`)
@@ -1677,9 +1677,7 @@ async function setupCinnosti(root: HTMLElement, currentSlug: FullSlug, data: Cin
   const viewManageBtn = root.querySelector(".cinnosti-view-manage-btn") as HTMLButtonElement | null
   const modalRoot = root.querySelector("[data-cinnosti-modal-root]") as HTMLElement | null
   const toastEl = root.querySelector("[data-cinnosti-toast]") as HTMLElement | null
-  const viewActionsContainer = root.querySelector(
-    "[data-cinnosti-views-ui]",
-  ) as HTMLElement | null
+  const viewActionsContainer = root.querySelector("[data-cinnosti-views-ui]") as HTMLElement | null
 
   // Scope guard: pro /cde-workflow UI nerenderujeme vůbec.
   if (!viewsUiEnabled && viewActionsContainer) {
@@ -1712,12 +1710,10 @@ async function setupCinnosti(root: HTMLElement, currentSlug: FullSlug, data: Cin
     backdrop?.addEventListener("click", (e) => {
       if (e.target === backdrop) closeModal()
     })
-    modalRoot.querySelectorAll<HTMLButtonElement>("[data-modal-close]").forEach((b) =>
-      b.addEventListener("click", () => closeModal()),
-    )
-    const first = modalRoot.querySelector(
-      "input, textarea, button",
-    ) as HTMLElement | null
+    modalRoot
+      .querySelectorAll<HTMLButtonElement>("[data-modal-close]")
+      .forEach((b) => b.addEventListener("click", () => closeModal()))
+    const first = modalRoot.querySelector("input, textarea, button") as HTMLElement | null
     first?.focus()
   }
 
@@ -1963,57 +1959,51 @@ async function setupCinnosti(root: HTMLElement, currentSlug: FullSlug, data: Cin
       populateViewSelect()
     }
 
-    modalRoot
-      .querySelector(".cinnosti-manage-views-body")
-      ?.addEventListener("click", (ev) => {
-        const target = ev.target as HTMLElement
-        const btn = target.closest("button[data-act]") as HTMLButtonElement | null
-        if (!btn) return
-        const li = btn.closest("li[data-view-id]") as HTMLElement | null
-        const id = li?.dataset.viewId
-        if (!id) return
-        const v = userViews.find((u) => u.id === id)
-        if (!v) return
-        const act = btn.dataset.act
-        if (act === "rename") {
-          const name = window.prompt("Nový název pohledu:", v.name)
-          if (name && name.trim()) {
-            renameUserView(id, name)
-            refresh()
-          }
-        } else if (act === "duplicate") {
-          const copy: SavedView = {
-            ...v,
-            id: generateViewId(),
-            name: `${v.name} (kopie)`,
-          }
-          userViews.push(copy)
-          saveUserViews()
+    modalRoot.querySelector(".cinnosti-manage-views-body")?.addEventListener("click", (ev) => {
+      const target = ev.target as HTMLElement
+      const btn = target.closest("button[data-act]") as HTMLButtonElement | null
+      if (!btn) return
+      const li = btn.closest("li[data-view-id]") as HTMLElement | null
+      const id = li?.dataset.viewId
+      if (!id) return
+      const v = userViews.find((u) => u.id === id)
+      if (!v) return
+      const act = btn.dataset.act
+      if (act === "rename") {
+        const name = window.prompt("Nový název pohledu:", v.name)
+        if (name && name.trim()) {
+          renameUserView(id, name)
           refresh()
-          showToast(`Pohled duplikován jako „${copy.name}"`)
-        } else if (act === "export") {
-          const json = JSON.stringify(v, null, 2)
-          if (navigator.clipboard && typeof navigator.clipboard.writeText === "function") {
-            navigator.clipboard.writeText(json).then(
-              () => showToast("JSON pohledu zkopírován do schránky"),
-              () => showToast("Kopírování selhalo — JSON v konzoli"),
-            )
-          }
-          console.info("[cinnosti] Exportovaný pohled", json)
-        } else if (act === "delete") {
-          if (window.confirm(`Opravdu smazat pohled „${v.name}"?`)) {
-            deleteUserView(id)
-            refresh()
-          }
         }
-      })
+      } else if (act === "duplicate") {
+        const copy: SavedView = {
+          ...v,
+          id: generateViewId(),
+          name: `${v.name} (kopie)`,
+        }
+        userViews.push(copy)
+        saveUserViews()
+        refresh()
+        showToast(`Pohled duplikován jako „${copy.name}"`)
+      } else if (act === "export") {
+        const json = JSON.stringify(v, null, 2)
+        if (navigator.clipboard && typeof navigator.clipboard.writeText === "function") {
+          navigator.clipboard.writeText(json).then(
+            () => showToast("JSON pohledu zkopírován do schránky"),
+            () => showToast("Kopírování selhalo — JSON v konzoli"),
+          )
+        }
+        console.info("[cinnosti] Exportovaný pohled", json)
+      } else if (act === "delete") {
+        if (window.confirm(`Opravdu smazat pohled „${v.name}"?`)) {
+          deleteUserView(id)
+          refresh()
+        }
+      }
+    })
 
-    const importBtn = modalRoot.querySelector(
-      "[data-modal-import-run]",
-    ) as HTMLButtonElement | null
-    const importArea = modalRoot.querySelector(
-      "[data-modal-import]",
-    ) as HTMLTextAreaElement | null
+    const importBtn = modalRoot.querySelector("[data-modal-import-run]") as HTMLButtonElement | null
+    const importArea = modalRoot.querySelector("[data-modal-import]") as HTMLTextAreaElement | null
     importBtn?.addEventListener("click", () => {
       const raw = importArea?.value?.trim() ?? ""
       if (!raw) return

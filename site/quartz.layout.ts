@@ -11,7 +11,7 @@ function isSeznamCinnostiPage(fileData: QuartzPluginData): boolean {
   const title = String(fileData.frontmatter?.title ?? "").toLowerCase()
   return (
     permalink === "cinnosti" ||
-    title === "seznam činností" ||
+    title === "seznam všech činností" ||
     slug === "seznam-cinnosti" ||
     slug.endsWith("/seznam-cinnosti") ||
     slug === "seznam-činností" ||
@@ -56,7 +56,7 @@ function sortByNumericPrefix(a: FileTrieNode, b: FileTrieNode): number {
 }
 
 /**
- * Levý panel: úvod (index + stránka Úvod do metodiky), seznam činností, CDE workflow, Definice pojmů, Diagramy.
+ * Levý panel: úvod (index + stránka Úvod do metodiky), seznam všech činností, CDE workflow, Definice pojmů, Diagramy.
  * Ikony (vyhledávání, tmavý režim) zůstávají v layoutu — nejsou součástí Exploreru.
  * (filterFn se do klienta posílá přes .toString() — nesmí volat jiné funkce z tohoto souboru.)
  */
@@ -70,7 +70,7 @@ function explorerFilter(node: FileTrieNode): boolean {
   const allowedRoot = new Set([
     "index",
     "01_Úvod-do-metodiky-ŘSD-Plzeň",
-    "02---Seznam-činností",
+    "02---Seznam-všech-činností",
     "03---CDE-workflow",
     "05_Definice-pojmů",
     "06_Diagramy",

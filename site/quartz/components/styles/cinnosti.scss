@@ -1,4 +1,4 @@
-/* Společné styly pro Seznam činností i CDE workflow (oba rooty mají tuto třídu). */
+/* Společné styly pro Seznam všech činností i CDE workflow (oba rooty mají tuto třídu). */
 .cinnosti-table-root {
   --cinnosti-control-height: 2.1rem;
   --cinnosti-control-radius: 6px;
@@ -84,6 +84,7 @@
   }
 
   .cinnosti-column-toggle-btn,
+  .cinnosti-fullscreen-btn,
   .cinnosti-clear-filters {
     min-height: var(--cinnosti-control-height);
     padding: 0.4rem 0.82rem;
@@ -104,7 +105,8 @@
     }
   }
 
-  .cinnosti-column-toggle-btn {
+  .cinnosti-column-toggle-btn,
+  .cinnosti-fullscreen-btn {
     display: inline-flex;
     align-items: center;
     gap: 0.45rem;
@@ -112,7 +114,8 @@
     color: var(--dark);
     background: var(--light);
 
-    &[aria-expanded="true"] {
+    &[aria-expanded="true"],
+    &[aria-pressed="true"] {
       background: var(--highlight);
       border-color: color-mix(in srgb, var(--secondary) 40%, var(--lightgray));
       color: var(--secondary);
@@ -126,6 +129,10 @@
     &[aria-expanded="true"] svg {
       transform: rotate(180deg);
     }
+  }
+
+  .cinnosti-fullscreen-btn svg {
+    transform: none;
   }
 
   .cinnosti-inline-divider {
@@ -185,7 +192,10 @@
     cursor: pointer;
     line-height: 1;
     box-sizing: border-box;
-    transition: background 0.12s, border-color 0.12s, color 0.12s;
+    transition:
+      background 0.12s,
+      border-color 0.12s,
+      color 0.12s;
 
     &:hover {
       background: var(--lightgray);
@@ -272,6 +282,42 @@
     &:has(.cinnosti-col-filter-dropdown.open) {
       min-height: 22rem;
     }
+  }
+
+  &:fullscreen,
+  &.is-fullscreen-fallback {
+    width: 100vw;
+    height: 100vh;
+    max-height: 100vh;
+    margin: 0;
+    padding: 1rem;
+    border-radius: 0;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    background: var(--light);
+    color: var(--dark);
+  }
+
+  &.is-fullscreen-fallback {
+    position: fixed;
+    inset: 0;
+    z-index: 9999;
+  }
+
+  &:fullscreen .cinnosti-toolbar,
+  &.is-fullscreen-fallback .cinnosti-toolbar,
+  &:fullscreen .cinnosti-meta,
+  &.is-fullscreen-fallback .cinnosti-meta {
+    flex-shrink: 0;
+  }
+
+  &:fullscreen .cinnosti-table-scroll,
+  &.is-fullscreen-fallback .cinnosti-table-scroll {
+    flex: 1 1 auto;
+    min-height: 0;
+    max-height: none;
   }
 
   table.cinnosti-table {
@@ -657,8 +703,7 @@
     display: flex;
     align-items: center;
     gap: 0.6rem;
-    padding: 0.5rem 0.75rem 0.5rem
-      calc(0.6rem + var(--cinnosti-group-depth, 0) * 1.25rem);
+    padding: 0.5rem 0.75rem 0.5rem calc(0.6rem + var(--cinnosti-group-depth, 0) * 1.25rem);
   }
 
   .cinnosti-group-toggle {
@@ -674,7 +719,10 @@
     background: var(--light);
     color: var(--secondary);
     cursor: pointer;
-    transition: background 0.12s, border-color 0.12s, transform 0.12s;
+    transition:
+      background 0.12s,
+      border-color 0.12s,
+      transform 0.12s;
 
     &:hover {
       background: color-mix(in srgb, var(--secondary) 18%, var(--light));
