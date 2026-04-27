@@ -45,7 +45,7 @@ let activePreviewPopoverLink: HTMLAnchorElement | null = null
 
 function getContentIndex(): Promise<ContentIndex> {
   if (!indexPromise) {
-    indexPromise = fetch("/static/contentIndex.json")
+    indexPromise = fetch(new URL("../static/contentIndex.json", window.location.href).toString())
       .then((res) => {
         if (!res.ok) throw new Error("Nepodarilo se nacist index vyhledavani")
         return res.json() as Promise<ContentIndex>

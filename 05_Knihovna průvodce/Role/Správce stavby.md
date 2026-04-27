@@ -20,4 +20,4 @@ ikona: "hard-hat"
 - posuzuje změny během výstavby a jejich dopad
 - potvrzuje podklady pro fakturaci, přejímku a další rozhodnutí objednatele
 
-Správce stavby je součástí [týmu správce stavby](/06_Diagramy/Hierarchie-týmu-správce-stavby).
+Správce stavby je součástí [[06_Diagramy/Hierarchie-týmu-správce-stavby|týmu správce stavby]].
