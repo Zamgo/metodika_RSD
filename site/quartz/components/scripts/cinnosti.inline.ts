@@ -121,6 +121,30 @@ function getRaciHelpText(col: string, label: string): string | null {
   return null
 }
 
+function isRaciLabel(label: string): boolean {
+  return /^[RACI]\s*-\s*/i.test(label.trim())
+}
+
+function classifyRaciParticipant(text: string): "party" | "role" | "other" {
+  const t = text.toLowerCase()
+  if (
+    t.includes("pověřující strana") ||
+    t.includes("pověřená strana") ||
+    t.includes("vedoucí pověřená strana")
+  ) {
+    return "party"
+  }
+  if (
+    t.includes("správce stavby") ||
+    t.includes("asistent") ||
+    t.includes("koordinátor") ||
+    t.includes("člen týmu")
+  ) {
+    return "role"
+  }
+  return "other"
+}
+
 function readBaseConfig(root: HTMLElement): BaseConfig {
   const script = root.querySelector(".cinnosti-base-config") as HTMLScriptElement | null
   const raw = script?.textContent?.trim() ?? ""
@@ -993,6 +1017,26 @@ async function setupCinnosti(root: HTMLElement, currentSlug: FullSlug, data: Cin
       const s = dilciCinnostDisplay(row)
       if (!s) return ""
       return `<a class="internal" href="${escapeHtml(resolveUrl(row.slug))}">${escapeHtml(s)}</a>`
+    }
+    const label = getColLabel(col)
+    if (isRaciLabel(label)) {
+      const vals = getCellValues(row, col)
+      if (vals.length === 0) return ""
+      const badges = vals
+        .map((raw) => {
+          const plain = plainTextFromWikiMeta(String(raw)).trim()
+          const kind = classifyRaciParticipant(plain)
+          const content = metaStringToTableHtml(String(raw), currentSlug, resolveNote)
+          const kindTitle =
+            kind === "party"
+              ? "Smluvní strana"
+              : kind === "role"
+                ? "Role"
+                : "Nezařazený subjekt"
+          return `<span class="cinnosti-raci-badge cinnosti-raci-badge-${kind}" title="${escapeHtml(kindTitle)}">${content}</span>`
+        })
+        .join("")
+      return `<div class="cinnosti-raci-badges">${badges}</div>`
     }
     return metaStringToTableHtml(getMetaString(row.meta, col), currentSlug, resolveNote)
   }

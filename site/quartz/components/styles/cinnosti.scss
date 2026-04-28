@@ -586,6 +586,51 @@
     word-break: break-word;
   }
 
+  .cinnosti-raci-badges {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.25rem;
+  }
+
+  .cinnosti-raci-badge {
+    display: inline-flex;
+    align-items: center;
+    max-width: 100%;
+    padding: 0.12rem 0.42rem;
+    border-radius: 999px;
+    border: 1px solid transparent;
+    font-size: 0.78rem;
+    line-height: 1.25;
+    white-space: normal;
+    overflow-wrap: anywhere;
+    background: color-mix(in srgb, var(--lightgray) 78%, var(--light));
+    color: var(--dark);
+
+    a.internal {
+      color: inherit;
+      text-decoration: none;
+      border-bottom: 1px dotted color-mix(in srgb, currentColor 42%, transparent);
+    }
+  }
+
+  .cinnosti-raci-badge-party {
+    background: color-mix(in srgb, #2b6cb0 16%, var(--light));
+    border-color: color-mix(in srgb, #2b6cb0 42%, var(--lightgray));
+    color: color-mix(in srgb, #2b6cb0 78%, var(--dark));
+  }
+
+  .cinnosti-raci-badge-role {
+    background: color-mix(in srgb, #2f855a 16%, var(--light));
+    border-color: color-mix(in srgb, #2f855a 42%, var(--lightgray));
+    color: color-mix(in srgb, #2f855a 80%, var(--dark));
+  }
+
+  .cinnosti-raci-badge-other {
+    background: color-mix(in srgb, #6b7280 13%, var(--light));
+    border-color: color-mix(in srgb, #6b7280 35%, var(--lightgray));
+    color: var(--darkgray);
+  }
+
   // ── Grouping (group header row + collapsed detail rows) ──────────────
 
   .cinnosti-group-filter {
@@ -1130,5 +1175,28 @@
 
   .cinnosti-modal {
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6);
+  }
+
+  .cinnosti-raci-badge {
+    background: color-mix(in srgb, var(--darkgray) 28%, var(--light));
+    color: var(--dark);
+  }
+
+  .cinnosti-raci-badge-party {
+    background: color-mix(in srgb, #4299e1 28%, var(--light));
+    border-color: color-mix(in srgb, #63b3ed 48%, var(--darkgray));
+    color: color-mix(in srgb, #ebf8ff 85%, var(--dark));
+  }
+
+  .cinnosti-raci-badge-role {
+    background: color-mix(in srgb, #48bb78 26%, var(--light));
+    border-color: color-mix(in srgb, #68d391 46%, var(--darkgray));
+    color: color-mix(in srgb, #f0fff4 84%, var(--dark));
+  }
+
+  .cinnosti-raci-badge-other {
+    background: color-mix(in srgb, #a0aec0 22%, var(--light));
+    border-color: color-mix(in srgb, #a0aec0 36%, var(--darkgray));
+    color: var(--dark);
   }
 }
