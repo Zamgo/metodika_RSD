@@ -1,4 +1,4 @@
-import { FullSlug, getFullSlug, resolveRelative, normalizeRelativeURLs } from "../../util/path"
+import { FullSlug, getFullSlug, normalizeRelativeURLs, runtimeSitePath } from "../../util/path"
 import { computePosition, flip, inline, shift } from "@floating-ui/dom"
 import { fetchCanonical } from "./util"
 import type { CinnostiIndex, RowGroupNode } from "./cinnostiShared"
@@ -176,7 +176,7 @@ function rowLinkFieldMatchesSlug(
 }
 
 function noteHref(currentSlug: FullSlug, targetSlug: FullSlug): string {
-  return new URL(resolveRelative(currentSlug, targetSlug), location.toString()).pathname
+  return runtimeSitePath(currentSlug, targetSlug)
 }
 
 function renderCellValue(
@@ -273,11 +273,7 @@ function saveCollapsed(slug: FullSlug, idx: number, groupBy: string[], set: Set<
   }
 }
 
-function renderToolbar(
-  columns: OblastColumn[],
-  groupBy: string[],
-  hostIdx: number,
-): string {
+function renderToolbar(columns: OblastColumn[], groupBy: string[], hostIdx: number): string {
   const addPlaceholder = `<option value="">+ Přidat skupinu</option>`
   const inUse = new Set(groupBy)
   const addOpts = columns
@@ -546,12 +542,10 @@ async function fillTables(slug: FullSlug) {
       if (collapseAll) {
         if (groupBy.length === 0) return
         const all = new Set<string>()
-        host
-          .querySelectorAll<HTMLElement>("tr.quartz-oblast-group-row")
-          .forEach((tr) => {
-            const gid = tr.dataset.group
-            if (gid) all.add(gid)
-          })
+        host.querySelectorAll<HTMLElement>("tr.quartz-oblast-group-row").forEach((tr) => {
+          const gid = tr.dataset.group
+          if (gid) all.add(gid)
+        })
         saveCollapsed(slug, hostIdx, groupBy, all)
         paint()
         return

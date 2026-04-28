@@ -1,6 +1,8 @@
 import { QuartzConfig } from "./quartz/cfg"
 import * as Plugin from "./quartz/plugins"
 
+const baseUrl = process.env.QUARTZ_BASE_URL ?? "www.ceskesilnice.cz/RSD_Plzen"
+
 /**
  * Quartz 4 Configuration
  *
@@ -14,7 +16,7 @@ const config: QuartzConfig = {
     enablePopovers: true,
     analytics: null,
     locale: "cs-CZ",
-    baseUrl: "www.ceskesilnice.cz/RSD_Plzen",
+    baseUrl,
     ignorePatterns: [
       "private",
       "templates",

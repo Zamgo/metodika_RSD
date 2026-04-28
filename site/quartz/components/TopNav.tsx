@@ -1,5 +1,5 @@
 import { QuartzComponent, QuartzComponentConstructor, QuartzComponentProps } from "./types"
-import { joinSegments, pathToRoot } from "../util/path"
+import { sitePath } from "../util/path"
 
 type NavLink = {
   label: string
@@ -19,20 +19,21 @@ const NAV_LINKS: NavLink[] = [
 
 const DEFINITIONS_ROOT_PATH = "05_Knihovna-průvodce"
 const DEFINITIONS_DROPDOWN_LINKS: DropdownLink[] = [
-  { label: "CDE workflow", path: "05_Knihovna-průvodce/CDE-workflow" },
-  { label: "Smluvní strany", path: "05_Knihovna-průvodce/Smluvní-strany" },
-  { label: "Role", path: "05_Knihovna-průvodce/Role" },
-  { label: "Informační management", path: "05_Knihovna-průvodce/Informační-management" },
-  { label: "Fáze", path: "05_Knihovna-průvodce/Faze" },
+  { label: "CDE workflow", path: "05_Knihovna-průvodce/CDE-workflow/" },
+  { label: "Smluvní strany", path: "05_Knihovna-průvodce/Smluvní-strany/" },
+  { label: "Role", path: "05_Knihovna-průvodce/Role/" },
+  { label: "Fáze", path: "05_Knihovna-průvodce/Faze/" },
+  { label: "Terminologie", path: "05_Knihovna-průvodce/Terminologie/" },
+  { label: "Zákony", path: "05_Knihovna-průvodce/Zákony/" },
 ]
 
-const TopNav: QuartzComponent = ({ fileData }: QuartzComponentProps) => {
-  const baseDir = pathToRoot(fileData.slug!)
-  const logoSrc = joinSegments(baseDir, "static/rsd-logo.svg")
+const TopNav: QuartzComponent = ({ cfg }: QuartzComponentProps) => {
+  const homeHref = sitePath(cfg.baseUrl)
+  const logoSrc = sitePath(cfg.baseUrl, "static/rsd-logo.svg")
 
   return (
     <div class="top-nav">
-      <a href={baseDir} class="top-nav-logo" aria-label="Zpět na úvod">
+      <a href={homeHref} class="top-nav-logo" aria-label="Zpět na úvod">
         <img
           src={logoSrc}
           alt="Ředitelství silnic a dálnic"
@@ -44,7 +45,7 @@ const TopNav: QuartzComponent = ({ fileData }: QuartzComponentProps) => {
       <nav class="top-nav-links" aria-label="Hlavní navigace">
         {NAV_LINKS.map((link) => (
           <a
-            href={link.path ? joinSegments(baseDir, link.path) : baseDir}
+            href={link.path ? sitePath(cfg.baseUrl, link.path) : homeHref}
             class="top-nav-link"
             data-top-nav-path={link.path}
           >
@@ -65,7 +66,7 @@ const TopNav: QuartzComponent = ({ fileData }: QuartzComponentProps) => {
           <div class="top-nav-dropdown-menu" data-top-nav-dropdown-menu>
             {DEFINITIONS_DROPDOWN_LINKS.map((link) => (
               <a
-                href={joinSegments(baseDir, link.path)}
+                href={sitePath(cfg.baseUrl, link.path)}
                 class="top-nav-dropdown-link"
                 data-top-nav-path={link.path}
               >
@@ -205,11 +206,18 @@ function markActiveTopNavLink() {
   if (!links.length) return;
   const normalizedPath = window.location.pathname.replace(/\\/+$/, "") || "/";
   const currentPath = decodeURIComponent(normalizedPath);
+  const logo = document.querySelector(".top-nav-logo");
+  const siteRoot = logo
+    ? (new URL(logo.href, window.location.href).pathname.replace(/\\/+$/, "") || "/")
+    : "";
   for (const link of links) {
     const pathFromData = link.dataset.topNavPath;
-    const resolved = pathFromData
-      ? "/" + pathFromData.replace(/^\\/+/, "")
-      : (new URL(link.href, window.location.href).pathname.replace(/\\/+$/, "") || "/");
+    const href = link.getAttribute("href");
+    const resolved = href
+      ? (new URL(href, window.location.href).pathname.replace(/\\/+$/, "") || "/")
+      : pathFromData
+        ? ((siteRoot === "/" ? "" : siteRoot) + "/" + pathFromData.replace(/^\\/+/, "")).replace(/\\/+$/, "")
+        : "/";
     const isRoot = resolved === "/";
     const isActive = isRoot
       ? currentPath === "/"

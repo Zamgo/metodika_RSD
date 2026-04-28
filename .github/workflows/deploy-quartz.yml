@@ -37,6 +37,8 @@ jobs:
 
       - name: Build site
         working-directory: site
+        env:
+          QUARTZ_BASE_URL: ${{ github.repository_owner }}.github.io/${{ github.event.repository.name }}
         run: node ./quartz/bootstrap-cli.mjs build -d ..
 
       - name: Upload Pages artifact

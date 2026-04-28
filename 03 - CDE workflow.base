@@ -1,6 +1,6 @@
 filters:
   or:
-    - file.inFolder("03_CDE_workflow")
+    - file.inFolder("05_Knihovna průvodce/CDE workflow")
 properties:
   typ:
     displayName: Typ

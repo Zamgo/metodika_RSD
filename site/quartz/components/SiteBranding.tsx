@@ -1,13 +1,13 @@
-import { joinSegments, pathToRoot } from "../util/path"
+import { sitePath } from "../util/path"
 import { QuartzComponent, QuartzComponentConstructor, QuartzComponentProps } from "./types"
 
 /** ŘSD logo nad levým panelem (menu / explorer) */
-const SiteBranding: QuartzComponent = ({ fileData }: QuartzComponentProps) => {
-  const baseDir = pathToRoot(fileData.slug!)
-  const logoSrc = joinSegments(baseDir, "static/rsd-logo.svg")
+const SiteBranding: QuartzComponent = ({ cfg }: QuartzComponentProps) => {
+  const homeHref = sitePath(cfg.baseUrl)
+  const logoSrc = sitePath(cfg.baseUrl, "static/rsd-logo.svg")
   return (
     <div class="site-branding">
-      <a href={baseDir} class="site-branding__link" aria-label="Zpět na úvod">
+      <a href={homeHref} class="site-branding__link" aria-label="Zpět na úvod">
         <img
           src={logoSrc}
           alt="Ředitelství silnic a dálnic"

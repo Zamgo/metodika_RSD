@@ -212,6 +212,41 @@ export function joinSegments(...args: string[]): string {
   return joined
 }
 
+export function basePathFromUrl(baseUrl?: string): string {
+  if (!baseUrl) return "/"
+
+  try {
+    const path = new URL(`https://${baseUrl}`).pathname
+    return path === "/" ? "/" : joinSegments(path, "/")
+  } catch {
+    return "/"
+  }
+}
+
+export function sitePath(baseUrl: string | undefined, path = ""): string {
+  const basePath = basePathFromUrl(baseUrl)
+  return path ? joinSegments(basePath, path) : basePath
+}
+
+export function runtimeBasePath(currentSlug: FullSlug): string {
+  const currentPath = decodeURI(window.location.pathname).replace(/\/+$/, "")
+  const slugPath = "/" + stripSlashes(currentSlug)
+  const suffixes = [`${slugPath}.html`, `${slugPath}/index.html`, slugPath]
+
+  for (const suffix of suffixes) {
+    if (currentPath.endsWith(suffix)) {
+      return currentPath.slice(0, -suffix.length) || "/"
+    }
+  }
+
+  return new URL(pathToRoot(currentSlug), window.location.href).pathname.replace(/\/+$/, "") || "/"
+}
+
+export function runtimeSitePath(currentSlug: FullSlug, path = ""): string {
+  const basePath = runtimeBasePath(currentSlug)
+  return path ? joinSegments(basePath, path) : joinSegments(basePath, "/")
+}
+
 export function getAllSegmentPrefixes(tags: string): string[] {
   const segments = tags.split("/")
   const results: string[] = []

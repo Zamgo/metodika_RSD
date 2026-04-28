@@ -1,12 +1,12 @@
 import { ContentDetails } from "../../plugins/emitters/contentIndex"
 import { slug as slugAnchor } from "github-slugger"
-import { resolveRelative, type FullSlug } from "../../util/path"
+import { runtimeSitePath, type FullSlug } from "../../util/path"
 
 /** Index stránek z contentIndex.json (klíč = slug). */
 export type CinnostiIndex = Record<string, ContentDetails & { meta?: Record<string, unknown> }>
 
 export const FOLDER_MARKERS = ["03_Oblasti správy informací/"] as const
-export const CDE_WORKFLOW_FOLDER = "03_CDE_workflow/"
+export const CDE_WORKFLOW_FOLDER = "05_Knihovna průvodce/CDE workflow/"
 
 export function normalizePath(fp: string): string {
   return fp.replace(/\\/g, "/")
@@ -326,7 +326,7 @@ export function metaStringToTableHtml(
   if (!normalized.includes("[[")) return escapeHtml(normalized)
 
   function noteHref(targetSlug: FullSlug, headingAnchor: string): string {
-    const path = new URL(resolveRelative(currentSlug, targetSlug), location.toString()).pathname
+    const path = runtimeSitePath(currentSlug, targetSlug)
     const h = headingAnchor.trim()
     const hash = h !== "" ? "#" + slugAnchor(h) : ""
     return path + hash

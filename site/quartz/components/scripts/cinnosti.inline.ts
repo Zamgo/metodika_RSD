@@ -1,4 +1,4 @@
-import { FullSlug, resolveRelative, normalizeRelativeURLs } from "../../util/path"
+import { FullSlug, normalizeRelativeURLs, runtimeSitePath } from "../../util/path"
 import { load as yamlLoad } from "js-yaml"
 import { computePosition, flip, inline, shift } from "@floating-ui/dom"
 import { fetchCanonical } from "./util"
@@ -1008,7 +1008,7 @@ async function setupCinnosti(root: HTMLElement, currentSlug: FullSlug, data: Cin
   // ── URL helper ───────────────────────────────────────────────────────
 
   function resolveUrl(slug: FullSlug): string {
-    return new URL(resolveRelative(currentSlug, slug), location.toString()).pathname
+    return runtimeSitePath(currentSlug, slug)
   }
 
   // ── Cell HTML ────────────────────────────────────────────────────────
@@ -1032,11 +1032,7 @@ async function setupCinnosti(root: HTMLElement, currentSlug: FullSlug, data: Cin
           const kind = classifyRaciParticipant(plain)
           const content = metaStringToTableHtml(String(raw), currentSlug, resolveNote)
           const kindTitle =
-            kind === "party"
-              ? "Smluvní strana"
-              : kind === "role"
-                ? "Role"
-                : "Nezařazený subjekt"
+            kind === "party" ? "Smluvní strana" : kind === "role" ? "Role" : "Nezařazený subjekt"
           return `<span class="cinnosti-pill cinnosti-pill-raci-${kind}" title="${escapeHtml(kindTitle)}">${content}</span>`
         })
         .join("")
