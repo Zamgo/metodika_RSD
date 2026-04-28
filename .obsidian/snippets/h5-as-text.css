@@ -1,0 +1,35 @@
+/* Make H5 look like regular paragraph text with slight indent */
+.markdown-rendered h5,
+.markdown-source-view.mod-cm6 .cm-line.HyperMD-header-5 {
+  font-size: 1em;
+  font-weight: 400;
+  line-height: 1.6;
+  margin-top: 0.35em;
+  margin-bottom: 0.35em;
+  padding-left: 0.9rem;
+}
+
+/* Keep heading marker visually subtle in editor */
+.markdown-source-view.mod-cm6 .cm-formatting-header-5 {
+  opacity: 0.45;
+}
+
+/* Rename rendered footnotes title to Czech label */
+
+.markdown-rendered .footnotes > hr + ol::before {
+  content: "Poznámky";
+  display: block;
+  font-size: 1.4em;
+  font-weight: 700;
+  margin-bottom: 0.5em;
+}
+
+.markdown-rendered .footnotes > hr + ol {
+  margin-top: 0;
+}
+
+/* Hide default English heading where theme injects it */
+.markdown-rendered .footnotes::before,
+.markdown-rendered .footnotes .footnotes-title {
+  display: none !important;
+}
