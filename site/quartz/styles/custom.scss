@@ -434,33 +434,35 @@ html::-webkit-scrollbar-thumb:hover {
 #quartz-body .center article h5 {
   font-size: 1rem;
   font-weight: 400;
+  font-family: var(--bodyFont);
   line-height: 1.6;
   margin-top: 0.35rem;
   margin-bottom: 0.35rem;
   padding-left: 0.9rem;
 }
 
-/* ─── Footnotes label in CZ ("Poznámky") instead of default heading ─────── */
-#quartz-body .center article .footnotes h2,
-#quartz-body .center article section[data-footnotes] > h2 {
-  position: absolute !important;
-  width: 1px;
-  height: 1px;
-  padding: 0;
-  margin: -1px;
-  overflow: hidden;
-  clip: rect(0, 0, 0, 0);
-  white-space: nowrap;
-  border: 0;
+/* H5 anchor icon is unnecessary for legal list items */
+#quartz-body .center article h5 > a[role="anchor"] {
+  display: none;
 }
 
-#quartz-body .center article .footnotes > ol::before,
-#quartz-body .center article section[data-footnotes] > ol::before {
-  content: "Poznámky";
+/* ─── Footnotes label in CZ ("Poznámky") instead of default heading ─────── */
+#quartz-body .center article section[data-footnotes] > h2#footnote-label {
+  margin-bottom: 0.5em;
+  font-size: 0;
+  line-height: 1.2;
+}
+
+#quartz-body .center article section[data-footnotes] > h2#footnote-label::before {
+  content: "Pozn\00E1mky";
   display: block;
   font-size: 1.4em;
   font-weight: 700;
-  margin-bottom: 0.5em;
+  color: var(--dark);
+}
+
+#quartz-body .center article section[data-footnotes] > h2#footnote-label > a[role="anchor"] {
+  display: none;
 }
 
 /* ─── Right sidebar: TOC (Obsah) ─────────────────────────────────── */
