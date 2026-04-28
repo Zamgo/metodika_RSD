@@ -145,6 +145,10 @@ function classifyRaciParticipant(text: string): "party" | "role" | "other" {
   return "other"
 }
 
+function isFazeLabel(col: string): boolean {
+  return col.trim().toLowerCase() === "faze"
+}
+
 function readBaseConfig(root: HTMLElement): BaseConfig {
   const script = root.querySelector(".cinnosti-base-config") as HTMLScriptElement | null
   const raw = script?.textContent?.trim() ?? ""
@@ -1033,10 +1037,24 @@ async function setupCinnosti(root: HTMLElement, currentSlug: FullSlug, data: Cin
               : kind === "role"
                 ? "Role"
                 : "Nezařazený subjekt"
-          return `<span class="cinnosti-raci-badge cinnosti-raci-badge-${kind}" title="${escapeHtml(kindTitle)}">${content}</span>`
+          return `<span class="cinnosti-pill cinnosti-pill-raci-${kind}" title="${escapeHtml(kindTitle)}">${content}</span>`
         })
         .join("")
-      return `<div class="cinnosti-raci-badges">${badges}</div>`
+      return `<div class="cinnosti-pill-list">${badges}</div>`
+    }
+    if (isFazeLabel(col)) {
+      const vals = getCellValues(row, col)
+      if (vals.length === 0) return ""
+      const badges = vals
+        .map((raw) => {
+          const plain = plainTextFromWikiMeta(String(raw)).trim()
+          if (!plain) return ""
+          return `<span class="cinnosti-pill cinnosti-pill-phase">${escapeHtml(plain)}</span>`
+        })
+        .filter(Boolean)
+        .join("")
+      if (!badges) return ""
+      return `<div class="cinnosti-pill-list">${badges}</div>`
     }
     return metaStringToTableHtml(getMetaString(row.meta, col), currentSlug, resolveNote)
   }

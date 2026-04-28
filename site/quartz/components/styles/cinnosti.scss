@@ -586,45 +586,70 @@
     word-break: break-word;
   }
 
-  .cinnosti-raci-badges {
+  .cinnosti-pill-list {
     display: flex;
     flex-wrap: wrap;
     gap: 0.2rem;
   }
 
-  .cinnosti-raci-badge {
+  .cinnosti-pill {
     display: inline-flex;
     align-items: center;
     max-width: 100%;
-    padding: 0.04rem 0.36rem;
+    padding: 0.08rem 0.42rem;
     border-radius: 999px;
     border: none;
-    font-size: 0.74rem;
-    line-height: 1.25;
+    font: inherit;
+    font-size: 0.88rem;
+    line-height: 1.2;
+    font-weight: 400;
     white-space: normal;
     overflow-wrap: anywhere;
-    background: color-mix(in srgb, var(--lightgray) 78%, var(--light));
+    background: color-mix(in srgb, var(--lightgray) 72%, var(--light));
     color: var(--dark);
 
     a.internal {
       color: inherit;
+      font: inherit;
+      font-weight: inherit;
       text-decoration: none;
       border-bottom: none;
+      background: transparent;
+      box-shadow: none;
+      padding: 0;
+    }
+
+    a.internal:visited,
+    a.internal:hover,
+    a.internal:focus,
+    a.internal:focus-visible,
+    a.internal:active {
+      color: inherit;
+      font-weight: inherit;
+      text-decoration: none;
+      border-bottom: none;
+      background: transparent;
+      box-shadow: none;
     }
   }
 
-  .cinnosti-raci-badge-party {
-    background: color-mix(in srgb, #2b6cb0 13%, var(--light));
+  .cinnosti-pill-phase {
+    background: color-mix(in srgb, #2b6cb0 11%, var(--light));
     color: color-mix(in srgb, #2b6cb0 78%, var(--dark));
   }
 
-  .cinnosti-raci-badge-role {
-    background: color-mix(in srgb, #2f855a 13%, var(--light));
+  .cinnosti-pill-raci-party {
+    background: color-mix(in srgb, #2b6cb0 11%, var(--light));
+    color: color-mix(in srgb, #2b6cb0 78%, var(--dark));
+  }
+
+  .cinnosti-pill-raci-role {
+    background: color-mix(in srgb, #2f855a 11%, var(--light));
     color: color-mix(in srgb, #2f855a 80%, var(--dark));
   }
 
-  .cinnosti-raci-badge-other {
-    background: color-mix(in srgb, #6b7280 10%, var(--light));
+  .cinnosti-pill-raci-other {
+    background: color-mix(in srgb, #6b7280 9%, var(--light));
     color: var(--darkgray);
   }
 
@@ -1174,23 +1199,24 @@
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6);
   }
 
-  .cinnosti-raci-badge {
+  .cinnosti-pill {
     background: color-mix(in srgb, var(--darkgray) 28%, var(--light));
     color: var(--dark);
   }
 
-  .cinnosti-raci-badge-party {
-    background: color-mix(in srgb, #4299e1 23%, var(--light));
+  .cinnosti-pill-phase,
+  .cinnosti-pill-raci-party {
+    background: color-mix(in srgb, #4299e1 19%, var(--light));
     color: color-mix(in srgb, #ebf8ff 85%, var(--dark));
   }
 
-  .cinnosti-raci-badge-role {
-    background: color-mix(in srgb, #48bb78 22%, var(--light));
+  .cinnosti-pill-raci-role {
+    background: color-mix(in srgb, #48bb78 18%, var(--light));
     color: color-mix(in srgb, #f0fff4 84%, var(--dark));
   }
 
-  .cinnosti-raci-badge-other {
-    background: color-mix(in srgb, #a0aec0 18%, var(--light));
+  .cinnosti-pill-raci-other {
+    background: color-mix(in srgb, #a0aec0 16%, var(--light));
     color: var(--dark);
   }
 }
