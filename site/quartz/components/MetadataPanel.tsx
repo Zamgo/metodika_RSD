@@ -14,7 +14,7 @@ type FieldDef = {
   label: string
 }
 
-/** Pořadí polí jako ve frontmatteru dílčí činnosti (např. 1.1.3) */
+/** Pořadí polí jako ve frontmatteru úkolu (např. 1.1.3) */
 const FIELDS: FieldDef[] = [
   { key: "oznaceni", label: "Označení" },
   { key: "popis", label: "Popis" },

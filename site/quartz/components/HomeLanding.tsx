@@ -126,7 +126,7 @@ function pickPersonaCards(allFiles: QuartzPluginData[]): PersonaCard[] {
   return cards
 }
 
-/** Procházka `allFiles` a vypreparování všech dílčích činností s daty
+/** Procházka `allFiles` a vypreparování všech úkolů s daty
  *  potřebnými pro klientský wizard (filtrace dle role + fáze). */
 function pickActivities(currentSlug: FullSlug, allFiles: QuartzPluginData[]): ActivityEntry[] {
   const out: ActivityEntry[] = []
@@ -329,7 +329,7 @@ const HomeLanding: QuartzComponent = ({
         <div class="home-wizard-step-head">
           <span class="home-wizard-step-num">3</span>
           <h2 id="wizard-step3-title" class="home-wizard-step-title">
-            Jaké dílčí činnosti se mě týkají?
+            Jaké úkoly se mě týkají?
           </h2>
         </div>
         <p class="home-wizard-step-hint">
@@ -343,7 +343,7 @@ const HomeLanding: QuartzComponent = ({
             aria-pressed="true"
           >
             <span class="home-wizard-raci-code raci-r">R</span>
-            <span class="home-wizard-raci-text">Mám odpovědnost za provedení dílčí činnosti</span>
+            <span class="home-wizard-raci-text">Mám odpovědnost za provedení úkolu</span>
           </button>
           <button
             type="button"
@@ -352,7 +352,7 @@ const HomeLanding: QuartzComponent = ({
             aria-pressed="true"
           >
             <span class="home-wizard-raci-code raci-a">A</span>
-            <span class="home-wizard-raci-text">Mám odpovědnost za schválení dílčí činnosti</span>
+            <span class="home-wizard-raci-text">Mám odpovědnost za schválení úkolu</span>
           </button>
           <button
             type="button"
@@ -361,7 +361,7 @@ const HomeLanding: QuartzComponent = ({
             aria-pressed="true"
           >
             <span class="home-wizard-raci-code raci-c">C</span>
-            <span class="home-wizard-raci-text">Dílčí činnost má být se mnou konzultována</span>
+            <span class="home-wizard-raci-text">Úkol má být se mnou konzultován</span>
           </button>
           <button
             type="button"
@@ -370,29 +370,29 @@ const HomeLanding: QuartzComponent = ({
             aria-pressed="true"
           >
             <span class="home-wizard-raci-code raci-i">I</span>
-            <span class="home-wizard-raci-text">O průběhu dílčí činnosti mám být informován</span>
+            <span class="home-wizard-raci-text">O průběhu úkolu mám být informován</span>
           </button>
         </div>
         <div class="home-wizard-result-summary" data-wizard-summary>
-          {/* doplní skript: "Správce stavby · Příprava — 12 dílčích činností" */}
+          {/* doplní skript: "Správce stavby · Příprava — 12 úkolů" */}
         </div>
         <div class="home-wizard-result-split">
           <div class="home-wizard-result-list-wrap">
             <ul class="home-wizard-result-list" data-wizard-list>
               <li class="home-wizard-result-empty">
-                Zatím žádné dílčí činnosti nejsou vybrány.
+                Zatím nejsou vybrány žádné úkoly.
               </li>
             </ul>
           </div>
           <div class="home-wizard-result-preview" data-wizard-preview>
             <p class="home-wizard-result-preview-empty">
-              Vyberte dílčí činnost v levém seznamu pro náhled.
+              Vyberte úkol v levém seznamu pro náhled.
             </p>
           </div>
         </div>
         <div class="home-wizard-result-actions">
           <a class="home-wizard-link" href={cinnostiHref}>
-            Zobrazit všechny dílčí činnosti v tabulce →
+            Zobrazit všechny úkoly v tabulce →
           </a>
         </div>
       </section>

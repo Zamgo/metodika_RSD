@@ -354,9 +354,9 @@ function wireWizard() {
 
   if (!step2 || !step3 || !listEl || !previewEl || !summaryEl) return
 
-  const previewEmptyHtml = `<p class="home-wizard-result-preview-empty">Vyberte dílčí činnost v levém seznamu pro náhled.</p>`
-  const listEmptyHtml = `<li class="home-wizard-result-empty">Pro zvolenou kombinaci jsme nenašli žádné dílčí činnosti.</li>`
-  const listEmptyRaciHtml = `<li class="home-wizard-result-empty">Vyberte alespoň jednu roli v RACI (R, A, C nebo I) pro zobrazení dílčích činností.</li>`
+  const previewEmptyHtml = `<p class="home-wizard-result-preview-empty">Vyberte úkol v levém seznamu pro náhled.</p>`
+  const listEmptyHtml = `<li class="home-wizard-result-empty">Pro zvolenou kombinaci jsme nenašli žádné úkoly.</li>`
+  const listEmptyRaciHtml = `<li class="home-wizard-result-empty">Vyberte alespoň jednu roli v RACI (R, A, C nebo I) pro zobrazení úkolů.</li>`
 
   function syncRoleCards() {
     for (const card of roleCards) {
@@ -581,9 +581,9 @@ function isRoleIn(role: WizardRole, list: string[]): boolean {
 }
 
 function pluralCinnosti(n: number): string {
-  if (n === 1) return "dílčí činnost"
-  if (n >= 2 && n <= 4) return "dílčí činnosti"
-  return "dílčích činností"
+  if (n === 1) return "úkol"
+  if (n >= 2 && n <= 4) return "úkoly"
+  return "úkolů"
 }
 
 document.addEventListener("nav", wireWizard)

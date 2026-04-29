@@ -10,7 +10,7 @@ aliases: [Číselník etap]
 
 ## Použití
 
-Tento číselník je jediný zdroj hodnot pro metadata `etapa` u činností a dílčích činností. Etapa je jemnější granularitou než `faze` — vychází z české stavební praxe (stupně PD, projektové fáze) a doplňuje ISO 19650 lifecycle.
+Tento číselník je jediný zdroj hodnot pro metadata `etapa` u činností a úkolů. Etapa je jemnější granularitou než `faze` — vychází z české stavební praxe (stupně PD, projektové fáze) a doplňuje ISO 19650 lifecycle.
 
 Pole `etapa` je multi-select (zapisuje se vždy jako seznam, i u jedné hodnoty). Pole je doplňkové k `faze`, ne náhrada — obě pole zůstávají ve frontmatteru.
 

@@ -12,7 +12,7 @@ properties:
   cinnost:
     displayName: Činnost
   formula.dilci_cinnost:
-    displayName: Dílčí činnost
+    displayName: Úkol
   oznaceni:
     displayName: Označení
   popis:
@@ -66,7 +66,7 @@ views:
       note.A - Právní odpovědnost za dokončení činnosti: 360
       note.stav: 120
   - type: table
-    name: Všechny dílčí činnosti (plný RACI)
+    name: Všechny úkoly (plný RACI)
     filters:
       and:
         - typ == "ukol"

@@ -52,7 +52,7 @@ const RoleRaciTable: QuartzComponent = ({ cfg, fileData }: QuartzComponentProps)
       </h2>
       <p class="role-raci-hint">
         {cs
-          ? "Dílčí činnosti, kde je tato role uvedena ve sloupcích R nebo A. Filtry, pohledy i seskupení fungují stejně jako v Seznamu činností."
+          ? "Úkoly, kde je tato role uvedena ve sloupcích R nebo A. Filtry, pohledy i seskupení fungují stejně jako v Seznamu činností."
           : "Activities where this role appears in the R or A column. Filters, views and grouping work the same as on the full list."}
       </p>
       {renderCinnostiTableMarkup({

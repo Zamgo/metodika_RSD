@@ -29,7 +29,6 @@ const LS_MIGRATED = "cinnosti-migrated-v1:"
 
 /** Hardcoded fallback groupingy podle jména view (případně data-cinnosti-ls-id). */
 const DEFAULT_GROUP_BY_BY_VIEW: Record<string, string> = {
-  "Všechny dílčí činnosti": "oblast",
   "Všechny úkoly": "oblast",
 }
 
@@ -124,7 +123,6 @@ const CZ_TOKEN_MAP: Record<string, string> = {
   cinnost: "činnost",
   cinnosti: "činnosti",
   cinnostmi: "činnostmi",
-  cinnostmi: "činnostmi",
   dle: "dle",
   dokonceni: "dokončení",
   etap: "etap",
@@ -152,6 +150,8 @@ const CZ_TOKEN_MAP: Record<string, string> = {
   pruvodce: "průvodce",
   priprava: "příprava",
   projekcni: "projekční",
+  permalink: "permalink",
+  predchozi: "předchozí",
   provereni: "prověření",
   provadeni: "provádění",
   rezim: "režim",
@@ -169,10 +169,15 @@ const CZ_TOKEN_MAP: Record<string, string> = {
   ukoncovaci: "ukončovací",
   udalost: "událost",
   uroven: "úroveň",
+  vstup: "vstup",
+  vstupy: "vstupy",
   vsech: "všech",
   workflow: "workflow",
   zakazky: "zakázky",
   zdroj: "zdroj",
+  nasledujici: "následující",
+  vystup: "výstup",
+  vystupy: "výstupy",
 }
 
 function humanizeTokens(raw: string): string {
@@ -195,6 +200,10 @@ function humanizeTokens(raw: string): string {
 
 function humanizeMetaKey(key: string): string {
   return humanizeTokens(key) || key
+}
+
+function isTechnicalLabel(label: string): boolean {
+  return /[_./-]/.test(label)
 }
 
 function prettifyMetaValue(col: string, value: string): string {
@@ -1028,7 +1037,7 @@ async function setupCinnosti(root: HTMLElement, currentSlug: FullSlug, data: Cin
 
   function getColLabel(col: string): string {
     const fromFm = baseConfig.properties?.[col]?.displayName
-    if (fromFm) return fromFm
+    if (fromFm) return isTechnicalLabel(fromFm) ? humanizeMetaKey(fromFm) : fromFm
     if (col === "file.name") {
       return workflowTable ? "Workflow / dokument" : "Činnost / úkol"
     }

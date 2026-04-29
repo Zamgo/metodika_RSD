@@ -319,7 +319,7 @@ export default ((opts?: Partial<RaciBacklinksOptions>) => {
     })
 
     // 3) Seznam fází pro chip filter: jen ty, které se skutečně objevily v matches
-    //    (nikoliv všechny fáze ze všech dílčích činností v úložišti).
+    //    (nikoliv všechny fáze ze všech úkolů v úložišti).
     const matchedFaze = new Set<string>()
     for (const lb of letterBuckets) {
       for (const g of lb.groups) {
@@ -341,9 +341,7 @@ export default ((opts?: Partial<RaciBacklinksOptions>) => {
         <div class="raci-backlinks-header">
           <div>
             <h3>Propojení v RACI matici</h3>
-            <p class="raci-backlinks-desc">
-              Dílčí činnosti, kde tato role figuruje v matici odpovědností:
-            </p>
+            <p class="raci-backlinks-desc">Úkoly, kde tato role figuruje v matici odpovědností:</p>
           </div>
           {seznamHref ? (
             <a class="raci-backlinks-full-link" href={seznamHref}>
