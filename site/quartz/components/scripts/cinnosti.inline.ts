@@ -102,7 +102,7 @@ const FILTER_ICON = `<svg width="12" height="12" viewBox="0 0 24 24" fill="none"
 function prettyLabel(key: string): string {
   if (key === "file.name") return "Název záznamu"
   if (key === "formula.dilci_cinnost") return "Úkol"
-  return key
+  return humanizeMetaKey(key)
 }
 
 const META_VALUE_LABELS: Record<string, Record<string, string>> = {
@@ -115,16 +115,95 @@ const META_VALUE_LABELS: Record<string, Record<string, string>> = {
   },
 }
 
+const CZ_TOKEN_MAP: Record<string, string> = {
+  a: "a",
+  aliasy: "aliasy",
+  cas: "čas",
+  casova: "časová",
+  casove: "časové",
+  cinnost: "činnost",
+  cinnosti: "činnosti",
+  cinnostmi: "činnostmi",
+  cinnostmi: "činnostmi",
+  dle: "dle",
+  dokonceni: "dokončení",
+  etap: "etap",
+  etapa: "etapa",
+  faze: "fáze",
+  ic: "IČ",
+  informovani: "informování",
+  konzultace: "konzultace",
+  koordinator: "koordinátor",
+  lhuta: "lhůta",
+  lhuty: "lhůty",
+  navazane: "navázané",
+  oblast: "oblast",
+  oblasti: "oblasti",
+  odpovednost: "odpovědnost",
+  opakovatelnost: "opakovatelnost",
+  oznaceni: "označení",
+  po: "po",
+  podminka: "podmínka",
+  podminky: "podmínky",
+  popis: "popis",
+  pravidlo: "pravidlo",
+  pravni: "právní",
+  prubehu: "průběhu",
+  pruvodce: "průvodce",
+  priprava: "příprava",
+  projekcni: "projekční",
+  provereni: "prověření",
+  provadeni: "provádění",
+  rezim: "režim",
+  role: "role",
+  rz: "ŘZ",
+  seznam: "seznam",
+  smlouva: "smlouva",
+  spousteci: "spouštěcí",
+  stav: "stav",
+  strategicka: "strategická",
+  strana: "strana",
+  typ: "typ",
+  ukol: "úkol",
+  ukonceni: "ukončení",
+  ukoncovaci: "ukončovací",
+  udalost: "událost",
+  uroven: "úroveň",
+  vsech: "všech",
+  workflow: "workflow",
+  zakazky: "zakázky",
+  zdroj: "zdroj",
+}
+
+function humanizeTokens(raw: string): string {
+  const normalized = raw
+    .replace(/^note\./i, "")
+    .replace(/^formula\./i, "")
+    .replace(/\./g, " ")
+    .replace(/[_-]+/g, " ")
+    .replace(/\s+/g, " ")
+    .trim()
+  if (!normalized) return ""
+  const words = normalized.split(" ").map((word) => {
+    const lower = word.toLowerCase()
+    return CZ_TOKEN_MAP[lower] ?? lower
+  })
+  return words
+    .map((w, idx) => (idx === 0 ? w.charAt(0).toUpperCase() + w.slice(1) : w))
+    .join(" ")
+}
+
+function humanizeMetaKey(key: string): string {
+  return humanizeTokens(key) || key
+}
+
 function prettifyMetaValue(col: string, value: string): string {
   const plain = plainTextFromWikiMeta(String(value ?? "")).trim()
   if (!plain) return ""
   const mapped = META_VALUE_LABELS[col]?.[plain]
   if (mapped) return mapped
-  if (plain.includes("_")) {
-    const normalized = plain.replace(/_/g, " ").trim()
-    return normalized.charAt(0).toUpperCase() + normalized.slice(1)
-  }
-  return plain
+  const humanized = humanizeTokens(plain)
+  return humanized || plain
 }
 
 function getRaciHelpText(col: string, label: string): string | null {
