@@ -14,7 +14,7 @@ type DropdownLink = {
 
 const NAV_LINKS: NavLink[] = [
   { label: "Úvod", path: "" },
-  { label: "Seznam všech činností", path: "cinnosti" },
+  { label: "Katalog všech činností", path: "cinnosti" },
 ]
 
 const DEFINITIONS_ROOT_PATH = "05_Knihovna-průvodce"
@@ -212,15 +212,18 @@ function markActiveTopNavLink() {
     : "";
   for (const link of links) {
     const pathFromData = link.dataset.topNavPath;
+    const isHomeLink = pathFromData === "";
     const href = link.getAttribute("href");
     const resolved = href
       ? (new URL(href, window.location.href).pathname.replace(/\\/+$/, "") || "/")
       : pathFromData
         ? ((siteRoot === "/" ? "" : siteRoot) + "/" + pathFromData.replace(/^\\/+/, "")).replace(/\\/+$/, "")
         : "/";
-    const isRoot = resolved === "/";
-    const isActive = isRoot
-      ? currentPath === "/"
+    const isRoot = resolved === "/" || resolved === siteRoot;
+    const isActive = isHomeLink
+      ? currentPath === siteRoot
+      : isRoot
+      ? currentPath === resolved
       : currentPath === resolved || currentPath.startsWith(resolved + "/");
     link.classList.toggle("active", isActive);
   }

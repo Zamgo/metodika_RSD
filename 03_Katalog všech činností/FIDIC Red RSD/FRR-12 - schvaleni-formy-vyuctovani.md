@@ -6,7 +6,7 @@ popis: "Správce stavby schválí Zhotovitelem navrženou formu Vyúčtování, 
 zdroj: "FIDIC_red_RSD; 28; 14.3"
 faze: []
 etapa:
-  - realizace_dozor
+  - realizace_stavby
 R - Odpovědnost za provádění činnosti:
   - "Správce stavby"
 A - Právní odpovědnost za dokončení činnosti: []

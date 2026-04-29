@@ -5,7 +5,7 @@ oznaceni: "8"
 popis: Archivování projektového informačního modelu (PIM) a zachycení ponaučení pro budoucí projekty -- uzavření digitální stopy stavby.
 zdroj: ČSN EN ISO 19650-2; 5.8
 faze:
-  - "[[Provoz a údržba]]"
+  - "provoz"
 ---
 # Obecný popis
 

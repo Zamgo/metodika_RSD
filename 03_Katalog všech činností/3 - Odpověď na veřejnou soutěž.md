@@ -5,7 +5,7 @@ oznaceni: "3"
 popis: Uchazeč (budoucí vedoucí pověřená strana) připraví odpověď -- nominuje osoby, vypracuje Pre-BEP, posoudí způsobilost, připraví plán mobilizace a registr rizik.
 zdroj: ČSN EN ISO 19650-2; 5.3
 faze:
-  - "[[Příprava]]"
+  - "priprava"
 ---
 # Obecný popis
 

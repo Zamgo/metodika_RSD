@@ -2,8 +2,8 @@
 title: HMG
 typ: workflow
 faze:
-  - "[[Realizace]]"
-  - "[[Příprava]]"
+  - "realizace"
+  - "priprava"
 stav: draft
 permalink: workflow/hmg
 navazane_cinnosti: []

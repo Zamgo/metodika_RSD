@@ -6,7 +6,7 @@ popis: "Správce stavby vydá do 28 dnů od podržení Závěrečného vyúčtov
 zdroj: "FIDIC_red_RSD; 68; 14.13"
 faze: []
 etapa:
-  - predani_a_uvedeni
+  - predani_stavby
   - provoz_a_sprava
 R - Odpovědnost za provádění činnosti:
   - "Správce stavby"

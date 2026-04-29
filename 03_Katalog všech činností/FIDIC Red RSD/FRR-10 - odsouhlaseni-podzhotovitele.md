@@ -6,7 +6,7 @@ popis: "Správce stavby odsouhlasí Podzhotovitele, pakliže je to možné."
 zdroj: "FIDIC_red_RSD; 22; 4.4"
 faze: []
 etapa:
-  - realizace_dozor
+  - realizace_stavby
 R - Odpovědnost za provádění činnosti:
   - "Správce stavby"
 A - Právní odpovědnost za dokončení činnosti: []

@@ -5,7 +5,7 @@ oznaceni: "5"
 popis: Po pověření realizační tým mobilizuje zdroje, IT infrastrukturu a CDE, testuje metody a postupy pro vytváření informací a připravuje se na zahájení společné tvorby.
 zdroj: ČSN EN ISO 19650-2; 5.5
 faze:
-  - "[[Příprava]]"
+  - "priprava"
 ---
 # Obecný popis
 

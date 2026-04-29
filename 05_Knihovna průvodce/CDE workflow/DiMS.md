@@ -2,9 +2,9 @@
 title: DiMS
 typ: workflow
 faze:
-  - "[[Realizace]]"
-  - "[[Příprava]]"
-  - "[[Provoz a údržba]]"
+  - "realizace"
+  - "priprava"
+  - "provoz"
 stav: draft
 permalink: workflow/dims
 navazane_cinnosti: []

@@ -6,7 +6,7 @@ popis: "Správce stavby vyjádří souhlas se jmenovaným Zástupcem zhotovitele
 zdroj: "FIDIC_red_RSD; 10; 4.3"
 faze: []
 etapa:
-  - priprava_zakazky
+  - priprava_projektu
 R - Odpovědnost za provádění činnosti:
   - "Správce stavby"
 A - Právní odpovědnost za dokončení činnosti: []

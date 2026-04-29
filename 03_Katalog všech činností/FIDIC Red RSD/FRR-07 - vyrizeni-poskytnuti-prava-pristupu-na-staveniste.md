@@ -6,7 +6,7 @@ popis: "Objednatel poskytne Zhotoviteli právo přístupu na všechny Staveništ
 zdroj: "FIDIC_red_RSD; 17; 2.1"
 faze: []
 etapa:
-  - priprava_zakazky
+  - priprava_projektu
 R - Odpovědnost za provádění činnosti:
   - "Správce stavby"
 A - Právní odpovědnost za dokončení činnosti: []

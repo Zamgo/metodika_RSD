@@ -6,8 +6,8 @@ popis: "Správce stavby musí dát souhlas k použití Materiálů"
 zdroj: "FIDIC_red_RSD; 46; 7.2"
 faze: []
 etapa:
-  - realizace_dozor
-  - predani_a_uvedeni
+  - realizace_stavby
+  - predani_stavby
 R - Odpovědnost za provádění činnosti:
   - "Správce stavby"
 A - Právní odpovědnost za dokončení činnosti: []

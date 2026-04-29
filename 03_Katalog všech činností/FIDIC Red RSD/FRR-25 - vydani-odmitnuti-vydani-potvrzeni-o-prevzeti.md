@@ -6,7 +6,7 @@ popis: "Správce stavby do 28 dní ode dne obdržení žádosti o vydání Potvr
 zdroj: "FIDIC_red_RSD; 59; 10.1"
 faze: []
 etapa:
-  - predani_a_uvedeni
+  - predani_stavby
   - provoz_a_sprava
 R - Odpovědnost za provádění činnosti:
   - "Správce stavby"

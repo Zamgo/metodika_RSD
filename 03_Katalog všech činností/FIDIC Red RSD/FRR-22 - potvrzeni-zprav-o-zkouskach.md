@@ -6,8 +6,8 @@ popis: "Správce stavby potvrdí správnost Zhotovitelova certifikátu o zkoušc
 zdroj: "FIDIC_red_RSD; 52; 7.4"
 faze: []
 etapa:
-  - realizace_dozor
-  - predani_a_uvedeni
+  - realizace_stavby
+  - predani_stavby
 R - Odpovědnost za provádění činnosti:
   - "Správce stavby"
 A - Právní odpovědnost za dokončení činnosti: []

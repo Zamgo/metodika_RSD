@@ -6,7 +6,7 @@ popis: "Správce stavby do 28 dnů po obdržení Vyúčtování a podpůrných d
 zdroj: "FIDIC_red_RSD; 61; 14.10"
 faze: []
 etapa:
-  - predani_a_uvedeni
+  - predani_stavby
   - provoz_a_sprava
 R - Odpovědnost za provádění činnosti:
   - "Správce stavby"

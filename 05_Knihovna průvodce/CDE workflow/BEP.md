@@ -2,7 +2,7 @@
 title: BEP
 typ: workflow
 faze:
-  - "[[Příprava]]"
+  - "priprava"
 stav: draft
 permalink: workflow/bep
 aliases:

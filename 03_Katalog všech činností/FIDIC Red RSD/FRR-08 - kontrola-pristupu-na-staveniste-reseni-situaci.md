@@ -6,7 +6,7 @@ popis: "Pokud z nějakého důvodu není možné předat všechny části Staven
 zdroj: "FIDIC_red_RSD; 18; 2.1"
 faze: []
 etapa:
-  - priprava_zakazky
+  - priprava_projektu
 R - Odpovědnost za provádění činnosti:
   - "Správce stavby"
 A - Právní odpovědnost za dokončení činnosti: []

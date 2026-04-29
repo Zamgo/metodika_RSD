@@ -6,7 +6,7 @@ popis: "Správce stavby pověří dle uvážení asistenty a přenese na ně vym
 zdroj: "FIDIC_red_RSD; 7; 3.2"
 faze: []
 etapa:
-  - priprava_zakazky
+  - priprava_projektu
 R - Odpovědnost za provádění činnosti:
   - "Správce stavby"
 A - Právní odpovědnost za dokončení činnosti: []

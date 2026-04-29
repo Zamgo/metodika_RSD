@@ -6,7 +6,7 @@ popis: "Správce stavby musí na oznámení Zhotovitele o  Archeologických a ji
 zdroj: "FIDIC_red_RSD; 38; 4.24"
 faze: []
 etapa:
-  - realizace_dozor
+  - realizace_stavby
 R - Odpovědnost za provádění činnosti:
   - "Správce stavby"
 A - Právní odpovědnost za dokončení činnosti: []

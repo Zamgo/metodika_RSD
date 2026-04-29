@@ -2,7 +2,7 @@
 title: Variace
 typ: workflow
 faze:
-  - "[[Realizace]]"
+  - "realizace"
 stav: draft
 permalink: workflow/variace
 navazane_cinnosti: []

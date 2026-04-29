@@ -6,7 +6,7 @@ popis: "Správce stavby/Objednatel oznámí Zhotoviteli zjištěný nedodělek, 
 zdroj: "FIDIC_red_RSD; 62; 11.1"
 faze: []
 etapa:
-  - predani_a_uvedeni
+  - predani_stavby
   - provoz_a_sprava
 R - Odpovědnost za provádění činnosti:
   - "Správce stavby"

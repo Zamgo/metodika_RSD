@@ -6,7 +6,7 @@ popis: "Správce stavby vydá Potvrzení o splnění smlouvy do 28 dnů poté, c
 zdroj: "FIDIC_red_RSD; 64; 11.9"
 faze: []
 etapa:
-  - predani_a_uvedeni
+  - predani_stavby
   - provoz_a_sprava
 R - Odpovědnost za provádění činnosti:
   - "Správce stavby"

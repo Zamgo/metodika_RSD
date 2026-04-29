@@ -30,6 +30,7 @@ const LS_MIGRATED = "cinnosti-migrated-v1:"
 /** Hardcoded fallback groupingy podle jména view (případně data-cinnosti-ls-id). */
 const DEFAULT_GROUP_BY_BY_VIEW: Record<string, string> = {
   "Všechny dílčí činnosti": "oblast",
+  "Všechny úkoly": "oblast",
 }
 
 /** Fallback pokud view není v mapě nahoře - podle data-cinnosti-ls-id root elementu. */
@@ -100,8 +101,30 @@ const FILTER_ICON = `<svg width="12" height="12" viewBox="0 0 24 24" fill="none"
 
 function prettyLabel(key: string): string {
   if (key === "file.name") return "Název záznamu"
-  if (key === "formula.dilci_cinnost") return "Dílčí činnost"
+  if (key === "formula.dilci_cinnost") return "Úkol"
   return key
+}
+
+const META_VALUE_LABELS: Record<string, Record<string, string>> = {
+  etapa: {
+    strategicka_priprava: "Strategická příprava",
+    priprava_zakazky: "Příprava",
+  },
+  typ: {
+    ukol: "Úkol",
+  },
+}
+
+function prettifyMetaValue(col: string, value: string): string {
+  const plain = plainTextFromWikiMeta(String(value ?? "")).trim()
+  if (!plain) return ""
+  const mapped = META_VALUE_LABELS[col]?.[plain]
+  if (mapped) return mapped
+  if (plain.includes("_")) {
+    const normalized = plain.replace(/_/g, " ").trim()
+    return normalized.charAt(0).toUpperCase() + normalized.slice(1)
+  }
+  return plain
 }
 
 function getRaciHelpText(col: string, label: string): string | null {
@@ -520,6 +543,29 @@ async function setupCinnosti(root: HTMLElement, currentSlug: FullSlug, data: Cin
     return cols.length > 0 ? cols : fallbackView.order!
   }
 
+  const getAvailableCols = (view?: BaseView): string[] => {
+    const ordered = getDefaultCols(view)
+    const set = new Set(ordered)
+    const extraFromBase = Object.keys(baseConfig.properties ?? {})
+    for (const col of extraFromBase) {
+      if (!set.has(col)) {
+        ordered.push(col)
+        set.add(col)
+      }
+    }
+    for (const row of rows) {
+      const meta = row.meta
+      if (!meta) continue
+      for (const col of Object.keys(meta)) {
+        if (!set.has(col)) {
+          ordered.push(col)
+          set.add(col)
+        }
+      }
+    }
+    return ordered
+  }
+
   // ── Views system ─────────────────────────────────────────────────────
 
   const viewsUiEnabled = lsScope === "cinnosti"
@@ -696,7 +742,7 @@ async function setupCinnosti(root: HTMLElement, currentSlug: FullSlug, data: Cin
 
   function loadColumnOrder() {
     const sv = viewsUiEnabled ? getActiveSavedView() : null
-    const defaults = getDefaultCols(views[activeViewIdx])
+    const defaults = getAvailableCols(views[activeViewIdx])
     const defaultSet = new Set(defaults)
     try {
       const raw = localStorage.getItem(lsScope + ":" + LS_ORDER + viewKey())
@@ -880,7 +926,7 @@ async function setupCinnosti(root: HTMLElement, currentSlug: FullSlug, data: Cin
       if (!decoded || typeof decoded !== "object") return
       if (Array.isArray(decoded.hiddenCols)) hiddenCols = new Set(decoded.hiddenCols)
       if (Array.isArray(decoded.colOrder) && decoded.colOrder.length > 0) {
-        const defaults = getDefaultCols(views[activeViewIdx])
+        const defaults = getAvailableCols(views[activeViewIdx])
         const ds = new Set(defaults)
         columnOrder = decoded.colOrder.filter((c) => ds.has(c))
         for (const c of defaults) if (!columnOrder.includes(c)) columnOrder.push(c)
@@ -905,7 +951,7 @@ async function setupCinnosti(root: HTMLElement, currentSlug: FullSlug, data: Cin
     const fromFm = baseConfig.properties?.[col]?.displayName
     if (fromFm) return fromFm
     if (col === "file.name") {
-      return workflowTable ? "Workflow / dokument" : "Činnost / dílčí činnost"
+      return workflowTable ? "Workflow / dokument" : "Činnost / úkol"
     }
     return prettyLabel(col)
   }
@@ -1042,7 +1088,7 @@ async function setupCinnosti(root: HTMLElement, currentSlug: FullSlug, data: Cin
       if (vals.length === 0) return ""
       const badges = vals
         .map((raw) => {
-          const plain = plainTextFromWikiMeta(String(raw)).trim()
+          const plain = prettifyMetaValue(col, String(raw))
           if (!plain) return ""
           return `<span class="cinnosti-pill cinnosti-pill-phase">${escapeHtml(plain)}</span>`
         })
@@ -1050,6 +1096,11 @@ async function setupCinnosti(root: HTMLElement, currentSlug: FullSlug, data: Cin
         .join("")
       if (!badges) return ""
       return `<div class="cinnosti-pill-list">${badges}</div>`
+    }
+    if (col === "typ" || col === "etapa") {
+      const vals = getCellValues(row, col)
+      const pretty = vals.map((v) => prettifyMetaValue(col, String(v))).filter(Boolean)
+      return escapeHtml(pretty.join(", "))
     }
     return metaStringToTableHtml(getMetaString(row.meta, col), currentSlug, resolveNote)
   }
@@ -1097,7 +1148,7 @@ async function setupCinnosti(root: HTMLElement, currentSlug: FullSlug, data: Cin
           .map((val) => {
             const isChecked = !selectedSet || selectedSet.size === 0 || selectedSet.has(val)
             const ck = isChecked ? " checked" : ""
-            const display = val ? plainTextFromWikiMeta(String(val)) : "(prázdné)"
+            const display = val ? prettifyMetaValue(col, String(val)) : "(prázdné)"
             return `<label class="cinnosti-filter-value"><input type="checkbox" value="${escapeHtml(val)}"${ck}><span>${escapeHtml(display)}</span></label>`
           })
           .join("")
@@ -1138,6 +1189,10 @@ async function setupCinnosti(root: HTMLElement, currentSlug: FullSlug, data: Cin
 
   function renderGroupValueHtml(node: RowGroupNode<Row>): string {
     if (node.empty) return escapeHtml(node.label)
+    const prettyLabel = prettifyMetaValue(node.col, node.label)
+    if (prettyLabel && prettyLabel !== node.label) {
+      return escapeHtml(prettyLabel)
+    }
     const raw = getMetaString(node.sampleRow.meta, node.col)
     if (raw.includes("[[")) {
       return metaStringToTableHtml(raw, currentSlug, resolveNote)

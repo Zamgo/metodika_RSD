@@ -6,7 +6,7 @@ popis: "Správce stavby do 21 dnů od předložení harmonogramu může oznámit
 zdroj: "FIDIC_red_RSD; 25; 8.3"
 faze: []
 etapa:
-  - realizace_dozor
+  - realizace_stavby
 R - Odpovědnost za provádění činnosti:
   - "Správce stavby"
 A - Právní odpovědnost za dokončení činnosti: []

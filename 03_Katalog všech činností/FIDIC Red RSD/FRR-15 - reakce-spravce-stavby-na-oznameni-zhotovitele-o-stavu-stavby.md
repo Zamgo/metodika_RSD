@@ -6,7 +6,7 @@ popis: "Správce stavby bez zbytečného odkladu reaguje na oznámení Zhotovite
 zdroj: "FIDIC_red_RSD; 37; 1.8, 1,9, 8.3, 16.1, 19.2"
 faze: []
 etapa:
-  - realizace_dozor
+  - realizace_stavby
 R - Odpovědnost za provádění činnosti:
   - "Správce stavby"
 A - Právní odpovědnost za dokončení činnosti: []

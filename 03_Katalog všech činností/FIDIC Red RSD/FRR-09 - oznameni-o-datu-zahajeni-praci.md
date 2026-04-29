@@ -6,7 +6,7 @@ popis: "Správce stavby oznámí Zhotoviteli nejméně 7 dní předem. Není-li 
 zdroj: "FIDIC_red_RSD; 19; 8.1"
 faze: []
 etapa:
-  - priprava_zakazky
+  - priprava_projektu
 R - Odpovědnost za provádění činnosti:
   - "Správce stavby"
 A - Právní odpovědnost za dokončení činnosti: []

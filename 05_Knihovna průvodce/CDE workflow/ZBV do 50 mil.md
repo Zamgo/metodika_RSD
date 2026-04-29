@@ -2,7 +2,7 @@
 title: ZBV do 50 mil
 typ: workflow
 faze:
-  - "[[Realizace]]"
+  - "realizace"
 stav: draft
 permalink: workflow/zbv-do-50-mil
 navazane_cinnosti: []

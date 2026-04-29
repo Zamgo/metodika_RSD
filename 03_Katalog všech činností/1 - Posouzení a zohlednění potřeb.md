@@ -5,7 +5,7 @@ oznaceni: "1"
 popis: "Pověřující strana (Objednatel) stanoví základní rámec managementu informací -- pověří osoby, definuje požadavky na informace, milníky, standard, metody, CDE a protokol."
 zdroj: "ČSN EN ISO 19650-2; 5.1"
 faze:
-  - "[[Příprava]]"
+  - "priprava"
 ---
 # Obecný popis
 

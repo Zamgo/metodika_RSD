@@ -2,8 +2,8 @@
 title: RDS
 typ: workflow
 faze:
-  - "[[Realizace]]"
-  - "[[Příprava]]"
+  - "realizace"
+  - "priprava"
 stav: draft
 permalink: workflow/rds
 navazane_cinnosti: []

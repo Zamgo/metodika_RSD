@@ -6,7 +6,7 @@ popis: "Správce stavby na úvodním jednání připomene Zhotovitele (a popř. 
 zdroj: "FIDIC_red_RSD; 14; 1.3 OP + 1.3 Přílohy k nabídce"
 faze: []
 etapa:
-  - priprava_zakazky
+  - priprava_projektu
 R - Odpovědnost za provádění činnosti:
   - "Správce stavby"
 A - Právní odpovědnost za dokončení činnosti: []

@@ -6,7 +6,7 @@ popis: "Správce stavby může odepřít vydání Potvrzení průběžné platby
 zdroj: "FIDIC_red_RSD; 33; 14.6"
 faze: []
 etapa:
-  - realizace_dozor
+  - realizace_stavby
 R - Odpovědnost za provádění činnosti:
   - "Správce stavby"
 A - Právní odpovědnost za dokončení činnosti: []

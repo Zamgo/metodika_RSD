@@ -6,8 +6,8 @@ popis: "Správce stavby oznámením odmítne s odůvodněním Tech. zařízení,
 zdroj: "FIDIC_red_RSD; 53; 7.5"
 faze: []
 etapa:
-  - realizace_dozor
-  - predani_a_uvedeni
+  - realizace_stavby
+  - predani_stavby
 R - Odpovědnost za provádění činnosti:
   - "Správce stavby"
 A - Právní odpovědnost za dokončení činnosti: []

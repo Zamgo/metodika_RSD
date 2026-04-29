@@ -2,7 +2,7 @@
 title: Fakturace
 typ: workflow
 faze:
-  - "[[Realizace]]"
+  - "realizace"
 stav: draft
 permalink: workflow/fakturace
 navazane_cinnosti: []

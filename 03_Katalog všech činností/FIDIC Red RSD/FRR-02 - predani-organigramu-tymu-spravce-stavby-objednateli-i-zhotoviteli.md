@@ -6,7 +6,7 @@ popis: "Správce stavby předá Objednateli i Zhotoviteli organigram svého tým
 zdroj: "FIDIC_red_RSD; 8; X"
 faze: []
 etapa:
-  - priprava_zakazky
+  - priprava_projektu
 R - Odpovědnost za provádění činnosti:
   - "Správce stavby"
 A - Právní odpovědnost za dokončení činnosti: []

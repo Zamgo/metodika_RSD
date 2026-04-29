@@ -12,7 +12,7 @@ properties:
   cinnost:
     displayName: Činnost
   formula.dilci_cinnost:
-    displayName: Dílčí činnost
+    displayName: Úkol
   oznaceni:
     displayName: Označení
   popis:
@@ -53,7 +53,7 @@ properties:
     displayName: Stav
 views:
   - type: table
-    name: Všechny dílčí činnosti
+    name: Všechny úkoly
     filters:
       and:
         - typ == "ukol"

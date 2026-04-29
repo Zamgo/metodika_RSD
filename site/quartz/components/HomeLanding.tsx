@@ -191,11 +191,11 @@ const HomeLanding: QuartzComponent = ({
   const personaCards = pickPersonaCards(allFiles)
   const activities = pickActivities(currentSlug, allFiles)
 
-  // Seznam všech činností pro přímý přístup — najdeme cestu na /cinnosti
+  // Katalog činností pro přímý přístup — najdeme cestu na /cinnosti
   const cinnostiFile = allFiles.find((f) => {
     const fm = (f.frontmatter ?? {}) as FrontmatterLike
     const title = coerceString(fm.title).toLowerCase()
-    return title === "seznam všech činností"
+    return title === "katalog všech činností" || title === "seznam všech činností"
   })
   const cinnostiHref = cinnostiFile
     ? resolveRelative(currentSlug, cinnostiFile.slug!)

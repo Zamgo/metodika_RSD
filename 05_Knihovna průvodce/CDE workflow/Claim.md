@@ -2,7 +2,7 @@
 title: Claim
 typ: workflow
 faze:
-  - "[[Realizace]]"
+  - "realizace"
 stav: draft
 permalink: workflow/claim
 navazane_cinnosti: []

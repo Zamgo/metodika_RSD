@@ -2,7 +2,7 @@
 title: ZBV
 typ: workflow
 faze:
-  - "[[Realizace]]"
+  - "realizace"
 stav: draft
 permalink: workflow/zbv
 navazane_cinnosti: []
