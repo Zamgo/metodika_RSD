@@ -31,28 +31,29 @@ Tato stránka definuje jednotná pravidla pro frontmatter ve všech stránkách 
 | `description` | Popis stránky (pro SEO/meta tagy) |
 | `zdroj` | Odkaz na zdroj požadavku (text, např. `ČSN EN ISO 19650-2; 5.1.1`) |
 
-## Klíče specifické pro typ `procesni_oblast`, `cinnost`, `dilci_cinnost`
+## Klíče specifické pro typ `oblast`, `cinnost`, `ukol`
 
 | Klíč | Popis | Typ | Platí pro |
 |------|-------|-----|-----------|
 | `oznaceni` | Hierarchické ID činnosti z RACI matice (např. `1.1.1`) | text | všechny |
 | `popis` | Popis činnosti | text | všechny |
-| `R - Odpovědnost za provádění činnosti` | Seznam rolí s odpovědností R | seznam | všechny |
-| `A - Právní odpovědnost za dokončení činnosti` | Seznam rolí s odpovědností A | seznam | všechny |
-| `C - Konzultace v průběhu činnosti` | Seznam rolí pro konzultaci C | seznam | všechny |
-| `I - Informování po dokončení činnosti` | Seznam rolí pro informování I | seznam | všechny |
-| `procesni_oblast` | Wikilink na nadřazenou procesní oblast | wikilink | všechny |
-| `cinnost` | Wikilink na nadřazenou činnost | wikilink | `cinnost`, `dilci_cinnost` |
+| `garant` | Wikilink na garanta činnosti (vlastník/owner činnosti na úrovni `cinnost`) | wikilink | `cinnost` |
+| `R - Odpovědnost za provádění činnosti` | Seznam rolí s odpovědností R | seznam | `ukol` |
+| `A - Právní odpovědnost za dokončení činnosti` | Seznam rolí s odpovědností A | seznam | `ukol` |
+| `C - Konzultace v průběhu činnosti` | Seznam rolí pro konzultaci C | seznam | `ukol` |
+| `I - Informování po dokončení činnosti` | Seznam rolí pro informování I | seznam | `ukol` |
+| `oblast` | Wikilink na nadřazenou oblast | wikilink | všechny |
+| `cinnost` | Wikilink na nadřazenou činnost | wikilink | `cinnost`, `ukol` |
 | `vstupy` | Wikilinky na vstupní dokumenty/artefakty | seznam wikilinků | všechny |
 | `vystupy` | Wikilinky na výstupní artefakty | seznam wikilinků | všechny |
 | `navazane_workflow` | Wikilinky na workflow stránky v `03_CDE_workflow/` | seznam wikilinků | všechny |
-| `predchozi_cinnost` | Wikilink na předchozí dílčí činnost v sekvenci | wikilink | `dilci_cinnost` |
-| `nasledujici_cinnost` | Wikilink na následující dílčí činnost v sekvenci | wikilink | `dilci_cinnost` |
-| `nastroj` | CDE nástroje relevantní pro činnost (`controlis`, `aspehub`, ...) | seznam | `dilci_cinnost` |
-| `etapa` | Etapa stavebního projektu (jemnější granularita než `faze`); viz [[Ciselnik etap]] | seznam | `cinnost`, `dilci_cinnost` |
-| `frekvence` | **DEPRECATED** — nahrazeno klíčem `opakovatelnost` (viz sekce „Klíče časového chování"). Stávající soubory s `frekvence` zůstávají platné, nové činnosti vyplňují `opakovatelnost`. | text | `dilci_cinnost` |
+| `predchozi_cinnost` | Wikilink na předchozí úkol v sekvenci | wikilink | `ukol` |
+| `nasledujici_cinnost` | Wikilink na následující úkol v sekvenci | wikilink | `ukol` |
+| `nastroj` | CDE nástroje relevantní pro činnost (`controlis`, `aspehub`, ...) | seznam | `ukol` |
+| `etapa` | Etapa stavebního projektu (jemnější granularita než `faze`); viz [[Ciselnik etap]] | seznam | `cinnost`, `ukol` |
+| `frekvence` | **DEPRECATED** — nahrazeno klíčem `opakovatelnost` (viz sekce „Klíče časového chování"). Stávající soubory s `frekvence` zůstávají platné, nové činnosti vyplňují `opakovatelnost`. | text | `ukol` |
 
-## Klíče časového chování (typ `dilci_cinnost`)
+## Klíče časového chování (typ `ukol`)
 
 Tato vrstva metadat popisuje, **kdy** se činnost provádí, **čím** je aktivovaná a **kdy** je dokončená. Vrstva je doplňková a v MVP žádný klíč není striktně povinný — `spousteci_udalost`, `opakovatelnost` a `ukoncovaci_podminka` jsou ale doporučené pro každou novou činnost.
 
@@ -94,9 +95,9 @@ Klíč `workflow` z obecné sady se u těchto stránek nepoužívá (identita wo
 
 - `index`
 - `process`
-- `procesni_oblast`
+- `oblast`
 - `cinnost`
-- `dilci_cinnost`
+- `ukol`
 - `workflow`
 - `term` — obecný pojem (CDE, BEP, DiMS, PIR, ...)
 - `role` — funkční role v týmu (Správce stavby, Koordinátor CDE, Koordinátor BIM, ...)
@@ -227,12 +228,12 @@ permalink: /workflow/zbv
 ---
 ```
 
-### Dílčí činnost (se skeleton poli pro vstupy/výstupy/návaznosti a časové chování)
+### Úkol (se skeleton poli pro vstupy/výstupy/návaznosti a časové chování)
 
 ```yaml
 ---
 title: "4.5.1 - Sloučení TIDP do MIDP"
-typ: dilci_cinnost
+typ: ukol
 oznaceni: "4.5.1"
 popis: ""
 zdroj: "ČSN EN ISO 19650-2; 5.4.5"
@@ -244,7 +245,7 @@ C - Konzultace v průběhu činnosti: []
 I - Informování po dokončení činnosti: []
 workflow: []
 stav: draft
-procesni_oblast: "[[4 - Proces managementu informací – Pověření]]"
+oblast: "[[4 - Proces managementu informací – Pověření]]"
 cinnost: "[[4.5 - Stanovení hlavního plánu předávání informací (MIDP)]]"
 vstupy: []
 vystupy: []
@@ -265,12 +266,12 @@ poznamka_k_ukonceni: ""
 ---
 ```
 
-### Dílčí činnost s FIDIC vazbou a smluvní lhůtou (vzor pro Notice of Claim)
+### Úkol s FIDIC vazbou a smluvní lhůtou (vzor pro Notice of Claim)
 
 ```yaml
 ---
 title: "Oznámit claim — Notice of Claim"
-typ: dilci_cinnost
+typ: ukol
 oznaceni: "9.1.1"
 popis: "Vedoucí pověřená strana písemně oznámí pověřující straně událost vedoucí k nároku."
 zdroj: "FIDIC Red Book SC 20.2.1; ŘSD Zvláštní podmínky 5. vyd."

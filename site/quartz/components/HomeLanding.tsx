@@ -133,7 +133,7 @@ function pickActivities(currentSlug: FullSlug, allFiles: QuartzPluginData[]): Ac
   for (const file of allFiles) {
     const fm = (file.frontmatter ?? {}) as FrontmatterLike
     const typ = coerceString(fm.typ)
-    if (typ !== "dilci_cinnost") continue
+    if (typ !== "ukol") continue
 
     const title = coerceString(fm.title) || "Bez názvu"
     const oznaceni = coerceString(fm.oznaceni)

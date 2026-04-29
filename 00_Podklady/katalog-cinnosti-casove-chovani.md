@@ -710,3 +710,16 @@ Provoz – předání asset dat
 ```
 
 Tato struktura je dostatečně jednoduchá pro ruční plnění, ale zároveň dostatečně přesná pro filtrování, databázové pohledy a budoucí aplikaci.
+
+---
+
+# 16. Poznámka k mapování FIDIC Red RSD
+
+Při přenosu činností z podkladů FIDIC Red RSD se časové bloky ze vstupní tabulky mapují do stávajících metadat bez přidání nových polí:
+
+- `spousteci_udalost` nese primární časový kontext,
+- `etapa` nese projektové zasazení činnosti,
+- `casove_pravidlo` upřesňuje vztah k události (typicky `po`),
+- `zdroj` má formát `FIDIC_red_RSD; <cislo_bodu>; <clanek_fidic>`.
+
+Tím je zachována kompatibilita katalogu pro ISO 19650 i FIDIC bez změny struktury frontmatteru.

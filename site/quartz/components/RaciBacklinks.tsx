@@ -219,7 +219,7 @@ export default ((opts?: Partial<RaciBacklinksOptions>) => {
       }
     }
 
-    // 1) Sesbíráme všechny `dilci_cinnost`, kde rola figuruje v některém z R/A/C/I.
+    // 1) Sesbíráme všechny `ukol`, kde rola figuruje v některém z R/A/C/I.
     const buckets: Record<Letter, Map<string, CinnostGroup>> = {
       R: new Map(),
       A: new Map(),
@@ -232,7 +232,7 @@ export default ((opts?: Partial<RaciBacklinksOptions>) => {
 
     for (const file of allFiles) {
       if (file.slug === fileData.slug) continue
-      if (file.frontmatter?.typ !== "dilci_cinnost") continue
+      if (file.frontmatter?.typ !== "ukol") continue
       const fm = (file.frontmatter ?? {}) as Record<string, unknown>
 
       const fazeList = fazeFromFrontmatter(fm)

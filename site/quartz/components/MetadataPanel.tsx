@@ -38,7 +38,7 @@ const FIELDS: FieldDef[] = [
   },
   { key: "workflow", label: "Workflow" },
   { key: "stav", label: "Stav" },
-  { key: "procesni_oblast", label: "Metadata procesní oblasti" },
+  { key: "oblast", label: "Metadata oblasti" },
   { key: "cinnost", label: "Činnost" },
   { key: "vstupy", label: "Vstupy" },
   { key: "vystupy", label: "Výstupy" },
@@ -59,7 +59,7 @@ const ROLE_FIELDS: FieldDef[] = [
   { key: "stav", label: "Stav" },
 ]
 
-const ACTIVITY_TYPES = new Set(["cinnost", "dilci_cinnost"])
+const ACTIVITY_TYPES = new Set(["cinnost", "ukol"])
 const ROLE_TYPES = new Set(["role", "smluvni_strana"])
 
 function normalizeValue(v: unknown): string[] {

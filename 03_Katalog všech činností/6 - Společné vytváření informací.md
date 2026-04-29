@@ -1,6 +1,6 @@
 ---
 title: 6 - Společné vytváření informací
-typ: procesni_oblast
+typ: oblast
 oznaceni: "6"
 popis: Realizační tým společně vytváří informace dle TIDP, provádí kontroly kvality, přezkoumává a schvaluje informační kontejnery a koordinuje prostorovou geometrii modelů.
 zdroj: ČSN EN ISO 19650-2; 5.6

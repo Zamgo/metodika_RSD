@@ -98,7 +98,7 @@ export const sharedPageComponents: SharedLayout = {
     Component.ConditionalRender({
       component: Component.ProcesniOblastRuntime(),
       condition: (page) =>
-        page.fileData.frontmatter?.typ === "procesni_oblast",
+        page.fileData.frontmatter?.typ === "oblast",
     }),
     Component.ConditionalRender({
       component: Component.CinnostiTable(),
@@ -117,8 +117,8 @@ export const sharedPageComponents: SharedLayout = {
           typ === "role" ||
           typ === "smluvni_strana" ||
           typ === "cinnost" ||
-          typ === "dilci_cinnost" ||
-          typ === "procesni_oblast"
+          typ === "ukol" ||
+          typ === "oblast"
         )
       },
     }),

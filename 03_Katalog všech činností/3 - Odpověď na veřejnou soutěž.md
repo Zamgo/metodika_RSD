@@ -1,6 +1,6 @@
 ---
 title: 3 - Odpověď na veřejnou soutěž
-typ: procesni_oblast
+typ: oblast
 oznaceni: "3"
 popis: Uchazeč (budoucí vedoucí pověřená strana) připraví odpověď -- nominuje osoby, vypracuje Pre-BEP, posoudí způsobilost, připraví plán mobilizace a registr rizik.
 zdroj: ČSN EN ISO 19650-2; 5.3

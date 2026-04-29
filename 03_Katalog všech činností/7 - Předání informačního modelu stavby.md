@@ -1,6 +1,6 @@
 ---
 title: 7 - Předání informačního modelu stavby
-typ: procesni_oblast
+typ: oblast
 oznaceni: "7"
 popis: Formální předložení informačního modelu stavby k autorizování vedoucí pověřenou stranou a následně k akceptaci pověřující stranou (Objednatelem).
 zdroj: ČSN EN ISO 19650-2; 5.7

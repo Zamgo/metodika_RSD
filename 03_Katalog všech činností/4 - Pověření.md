@@ -1,6 +1,6 @@
 ---
 title: 4 - Pověření
-typ: procesni_oblast
+typ: oblast
 oznaceni: "4"
 popis: Po výběru zhotovitele se formalizují pravidla managementu informací – potvrdí se BEP, rozdělí odpovědnosti, nastaví plány předávání a vyhotoví pověřovací dokumenty.
 zdroj: ČSN EN ISO 19650-2; 5.4

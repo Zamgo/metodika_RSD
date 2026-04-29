@@ -3,12 +3,12 @@ filters:
     - file.inFolder("03_Katalog všech činností")
 formulas:
   Bez názvu: ""
-  dilci_cinnost: if(typ == "dilci_cinnost", link(file.path, title), "")
+  dilci_cinnost: if(typ == "ukol", link(file.path, title), "")
 properties:
   typ:
     displayName: Úroveň
-  procesni_oblast:
-    displayName: Procesní oblast
+  oblast:
+    displayName: Oblast
   cinnost:
     displayName: Činnost
   formula.dilci_cinnost:
@@ -56,9 +56,9 @@ views:
     name: Všechny dílčí činnosti
     filters:
       and:
-        - typ == "dilci_cinnost"
+        - typ == "ukol"
     order:
-      - procesni_oblast
+      - oblast
       - cinnost
       - formula.dilci_cinnost
       - popis
@@ -74,7 +74,7 @@ views:
       - lhuta_typ
       - stav
     sort:
-      - property: procesni_oblast
+      - property: oblast
         direction: ASC
       - property: faze
         direction: DESC
@@ -83,7 +83,7 @@ views:
       - property: oznaceni
         direction: ASC
     columnSize:
-      note.procesni_oblast: 320
+      note.oblast: 320
       note.cinnost: 400
       formula.dilci_cinnost: 456
       note.oznaceni: 262
@@ -100,7 +100,7 @@ views:
     name: Časové chování
     filters:
       and:
-        - typ == "dilci_cinnost"
+        - typ == "ukol"
     order:
       - oznaceni
       - formula.dilci_cinnost
@@ -141,12 +141,12 @@ views:
     name: Dle zdroje (FIDIC)
     filters:
       and:
-        - typ == "dilci_cinnost"
+        - typ == "ukol"
         - zdroj.contains("FIDIC")
     order:
       - oznaceni
       - formula.dilci_cinnost
-      - procesni_oblast
+      - oblast
       - cinnost
       - zdroj
       - faze
@@ -161,7 +161,7 @@ views:
     columnSize:
       note.oznaceni: 120
       formula.dilci_cinnost: 380
-      note.procesni_oblast: 280
+      note.oblast: 280
       note.cinnost: 320
       note.zdroj: 380
       note.lhuta: 280
@@ -170,12 +170,12 @@ views:
     name: Dle zdroje (ISO 19650)
     filters:
       and:
-        - typ == "dilci_cinnost"
+        - typ == "ukol"
         - zdroj.contains("19650")
     order:
       - oznaceni
       - formula.dilci_cinnost
-      - procesni_oblast
+      - oblast
       - cinnost
       - zdroj
       - faze
@@ -188,14 +188,14 @@ views:
     columnSize:
       note.oznaceni: 120
       formula.dilci_cinnost: 380
-      note.procesni_oblast: 280
+      note.oblast: 280
       note.cinnost: 320
       note.zdroj: 380
   - type: table
     name: Nevyplněná časová metadata
     filters:
       and:
-        - typ == "dilci_cinnost"
+        - typ == "ukol"
         - or:
             - etapa == []
             - opakovatelnost == ""
@@ -224,13 +224,13 @@ views:
     name: Procesní oblasti činností
     filters:
       and:
-        - typ == "procesni_oblast"
+        - typ == "oblast"
     order:
       - file.name
       - faze
       - popis
     sort:
-      - property: procesni_oblast
+      - property: oblast
         direction: ASC
     columnSize:
       note.oznaceni: 107

@@ -29,12 +29,12 @@ const LS_MIGRATED = "cinnosti-migrated-v1:"
 
 /** Hardcoded fallback groupingy podle jména view (případně data-cinnosti-ls-id). */
 const DEFAULT_GROUP_BY_BY_VIEW: Record<string, string> = {
-  "Všechny dílčí činnosti": "procesni_oblast",
+  "Všechny dílčí činnosti": "oblast",
 }
 
 /** Fallback pokud view není v mapě nahoře - podle data-cinnosti-ls-id root elementu. */
 const DEFAULT_GROUP_BY_BY_SCOPE: Record<string, string> = {
-  cinnosti: "procesni_oblast",
+  cinnosti: "oblast",
   "cde-workflow": "typ",
 }
 
@@ -185,7 +185,7 @@ function rowMatchesViewFilters(
 
 /** Stejné chování jako formule v 02 - Seznam všech činností.base: dilci_cinnost. */
 function dilciCinnostDisplay(row: Row): string {
-  if (getMetaString(row.meta, "typ") !== "dilci_cinnost") return ""
+  if (getMetaString(row.meta, "typ") !== "ukol") return ""
   return row.title.trim()
 }
 

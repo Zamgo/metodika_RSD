@@ -93,7 +93,7 @@ export function getGroupValue<T extends { meta?: Record<string, unknown>; title?
   if (col === "file.name") return (row.title ?? "").trim()
   if (col === "formula.dilci_cinnost") {
     const typ = getMetaString(row.meta, "typ")
-    if (typ !== "dilci_cinnost") return ""
+    if (typ !== "ukol") return ""
     return (row.title ?? "").trim()
   }
   const arr = getMetaArray(row.meta, col)
