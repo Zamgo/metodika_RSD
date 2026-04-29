@@ -5,7 +5,10 @@ import { runtimeSitePath, type FullSlug } from "../../util/path"
 /** Index stránek z contentIndex.json (klíč = slug). */
 export type CinnostiIndex = Record<string, ContentDetails & { meta?: Record<string, unknown> }>
 
-export const FOLDER_MARKERS = ["03_Oblasti správy informací/"] as const
+export const FOLDER_MARKERS = [
+  "03_Oblasti správy informací/",
+  "03_Katalog všech činností/",
+] as const
 export const CDE_WORKFLOW_FOLDER = "05_Knihovna průvodce/CDE workflow/"
 
 export function normalizePath(fp: string): string {
@@ -55,7 +58,7 @@ export type CinnostSidebarGroup = "oblasti"
 
 export function getCinnostGroup(fp: string): CinnostSidebarGroup | null {
   const p = normalizePath(fp)
-  if (p.includes("03_Oblasti správy informací/")) return "oblasti"
+  if (FOLDER_MARKERS.some((marker) => p.includes(marker))) return "oblasti"
   return null
 }
 

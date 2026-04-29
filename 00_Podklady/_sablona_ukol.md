@@ -79,7 +79,7 @@ poznamka_k_ukonceni: ""
 
 ## Pravidla zápisu
 
-- Klíče i ID hodnoty číselníků jsou **česky bez diakritiky** (snake_case): `bim_odevzdani_modelu`, `ve_lhute`, `priprava_zakazky`.
+- Klíče i ID hodnoty číselníků jsou **česky bez diakritiky** (snake_case): `bim_odevzdani_modelu`, `ve_lhute`, `priprava_projektu`.
 - Pole označená v [[Pravidla metadat]] jako seznam se vždy zapisují jako seznam (`[]` i pro prázdnou hodnotu, `[hodnota]` i pro jednu).
 - `casove_pravidlo` se nevyplňuje, pokud platí default `po` (reaktivní činnost).
 - Pokud činnost potřebuje hodnotu, která není v číselníku - **nejprve doplň hodnotu do číselníku**, pak ji použij ve frontmatteru.

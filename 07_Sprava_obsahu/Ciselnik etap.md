@@ -30,7 +30,7 @@ Pole `etapa` je multi-select (zapisuje se vždy jako seznam, i u jedné hodnoty)
 
 ## Pravidlo pro vyplňování
 
-- `etapa` a `faze` se vyplňují **souběžně**. Pokud má činnost `etapa: [predani_a_uvedeni]`, ve `faze` musí být `realizace`.
+- `etapa` a `faze` se vyplňují **souběžně**. Pokud má činnost `etapa: [predani_stavby]`, ve `faze` musí být `realizace`.
 - Mapping je informativní pro kontrolu konzistence. Obsidian Bases nedělá auto-join mezi soubory, takže obě pole musí být ve frontmatteru ručně.
 - Skript pro auto-derive `faze` z `etapa` není v MVP plánován — případně až ve druhém kole.
 

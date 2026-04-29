@@ -7,13 +7,13 @@ stav: draft
 permalink: /sprava-obsahu/seed-metadata-hodnoty
 etapa:
   - strategicka_priprava
-  - priprava_zakazky
-  - dokumentace_navrhu
-  - dokumentace_pro_povoleni
-  - dokumentace_pro_provadeni
+  - priprava_projektu
+  - studie
+  - DPZ
+  - DPS
   - soupis_praci
-  - realizace_dozor
-  - predani_a_uvedeni
+  - realizace_stavby
+  - predani_stavby
   - provoz_a_sprava
 rezim_cinnosti:
   - fazova

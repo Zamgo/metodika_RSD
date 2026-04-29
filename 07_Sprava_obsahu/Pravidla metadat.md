@@ -238,7 +238,7 @@ oznaceni: "4.5.1"
 popis: ""
 zdroj: "ČSN EN ISO 19650-2; 5.4.5"
 faze: [priprava]
-etapa: [priprava_zakazky, dokumentace_navrhu]
+etapa: [priprava_projektu, studie]
 R - Odpovědnost za provádění činnosti: []
 A - Právní odpovědnost za dokončení činnosti: []
 C - Konzultace v průběhu činnosti: []
@@ -276,7 +276,7 @@ oznaceni: "9.1.1"
 popis: "Vedoucí pověřená strana písemně oznámí pověřující straně událost vedoucí k nároku."
 zdroj: "FIDIC Red Book SC 20.2.1; ŘSD Zvláštní podmínky 5. vyd."
 faze: [realizace]
-etapa: [realizace_dozor]
+etapa: [realizace_stavby]
 stav: draft
 # časové chování
 rezim_cinnosti: podminena
