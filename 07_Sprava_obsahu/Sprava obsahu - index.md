@@ -17,9 +17,21 @@ aliases: [Správa obsahu - index]
 
 ## Číselníky
 
+### Základní
+
 - [[Ciselnik roli]]
 - [[Ciselnik fazi]]
+- [[Ciselnik etap]]
 - [[Ciselnik workflow]]
+
+### Časové chování činnosti
+
+- [[Ciselnik rezimu cinnosti]]
+- [[Ciselnik spousteci udalost]]
+- [[Ciselnik opakovatelnosti]]
+- [[Ciselnik casoveho pravidla]]
+- [[Ciselnik typu lhut]]
+- [[Ciselnik ukoncovacich podminek]]
 
 ## Zdroje a doplnění
 

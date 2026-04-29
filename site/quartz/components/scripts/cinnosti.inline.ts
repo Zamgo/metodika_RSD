@@ -501,7 +501,6 @@ async function setupCinnosti(root: HTMLElement, currentSlug: FullSlug, data: Cin
       "file.name",
       "oznaceni",
       "typ",
-      "zdroj_typ",
       "zdroj",
       "faze",
       "role",

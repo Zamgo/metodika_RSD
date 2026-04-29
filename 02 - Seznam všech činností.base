@@ -1,6 +1,6 @@
 filters:
   or:
-    - file.inFolder("03_Oblasti správy informací")
+    - file.inFolder("03_Katalog všech činností")
 formulas:
   Bez názvu: ""
   dilci_cinnost: if(typ == "dilci_cinnost", link(file.path, title), "")
@@ -29,6 +29,26 @@ properties:
     displayName: I - Informování po dokončení činnosti
   faze:
     displayName: Fáze
+  etapa:
+    displayName: Etapa
+  rezim_cinnosti:
+    displayName: Režim
+  spousteci_udalost:
+    displayName: Spouštěcí událost
+  opakovatelnost:
+    displayName: Opakovatelnost
+  casove_pravidlo:
+    displayName: Časové pravidlo
+  casova_poznamka:
+    displayName: Časová poznámka
+  lhuta:
+    displayName: Lhůta
+  lhuta_typ:
+    displayName: Typ lhůty
+  ukoncovaci_podminka:
+    displayName: Ukončovací podmínka
+  poznamka_k_ukonceni:
+    displayName: Poznámka k ukončení
   stav:
     displayName: Stav
 views:
@@ -47,7 +67,11 @@ views:
       - C - Konzultace v průběhu činnosti
       - I - Informování po dokončení činnosti
       - faze
+      - etapa
       - zdroj
+      - rezim_cinnosti
+      - opakovatelnost
+      - lhuta_typ
       - stav
     sort:
       - property: procesni_oblast
@@ -68,6 +92,134 @@ views:
       note.A - Právní odpovědnost za dokončení činnosti: 486
       note.C - Konzultace v průběhu činnosti: 254
       note.faze: 303
+      note.etapa: 280
+      note.rezim_cinnosti: 160
+      note.opakovatelnost: 220
+      note.lhuta_typ: 160
+  - type: table
+    name: Časové chování
+    filters:
+      and:
+        - typ == "dilci_cinnost"
+    order:
+      - oznaceni
+      - formula.dilci_cinnost
+      - rezim_cinnosti
+      - spousteci_udalost
+      - opakovatelnost
+      - casove_pravidlo
+      - casova_poznamka
+      - lhuta
+      - lhuta_typ
+      - ukoncovaci_podminka
+      - poznamka_k_ukonceni
+      - faze
+      - etapa
+      - stav
+    sort:
+      - property: faze
+        direction: ASC
+      - property: etapa
+        direction: ASC
+      - property: oznaceni
+        direction: ASC
+    columnSize:
+      note.oznaceni: 120
+      formula.dilci_cinnost: 380
+      note.rezim_cinnosti: 140
+      note.spousteci_udalost: 320
+      note.opakovatelnost: 200
+      note.casove_pravidlo: 150
+      note.casova_poznamka: 320
+      note.lhuta: 280
+      note.lhuta_typ: 140
+      note.ukoncovaci_podminka: 220
+      note.poznamka_k_ukonceni: 320
+      note.faze: 140
+      note.etapa: 220
+  - type: table
+    name: Dle zdroje (FIDIC)
+    filters:
+      and:
+        - typ == "dilci_cinnost"
+        - zdroj.contains("FIDIC")
+    order:
+      - oznaceni
+      - formula.dilci_cinnost
+      - procesni_oblast
+      - cinnost
+      - zdroj
+      - faze
+      - etapa
+      - rezim_cinnosti
+      - lhuta
+      - lhuta_typ
+      - stav
+    sort:
+      - property: oznaceni
+        direction: ASC
+    columnSize:
+      note.oznaceni: 120
+      formula.dilci_cinnost: 380
+      note.procesni_oblast: 280
+      note.cinnost: 320
+      note.zdroj: 380
+      note.lhuta: 280
+      note.lhuta_typ: 140
+  - type: table
+    name: Dle zdroje (ISO 19650)
+    filters:
+      and:
+        - typ == "dilci_cinnost"
+        - zdroj.contains("19650")
+    order:
+      - oznaceni
+      - formula.dilci_cinnost
+      - procesni_oblast
+      - cinnost
+      - zdroj
+      - faze
+      - etapa
+      - rezim_cinnosti
+      - stav
+    sort:
+      - property: oznaceni
+        direction: ASC
+    columnSize:
+      note.oznaceni: 120
+      formula.dilci_cinnost: 380
+      note.procesni_oblast: 280
+      note.cinnost: 320
+      note.zdroj: 380
+  - type: table
+    name: Nevyplněná časová metadata
+    filters:
+      and:
+        - typ == "dilci_cinnost"
+        - or:
+            - etapa == []
+            - opakovatelnost == ""
+            - ukoncovaci_podminka == ""
+    order:
+      - oznaceni
+      - formula.dilci_cinnost
+      - etapa
+      - opakovatelnost
+      - ukoncovaci_podminka
+      - casove_pravidlo
+      - lhuta_typ
+      - stav
+    sort:
+      - property: oznaceni
+        direction: ASC
+    columnSize:
+      note.oznaceni: 120
+      formula.dilci_cinnost: 380
+      note.etapa: 220
+      note.opakovatelnost: 220
+      note.ukoncovaci_podminka: 240
+      note.casove_pravidlo: 150
+      note.lhuta_typ: 140
   - type: table
     name: Procesní oblasti činností
     filters:
