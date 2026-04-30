@@ -315,13 +315,16 @@ a {
 
 input[type="checkbox"] {
   transform: translateY(2px);
+  cursor: pointer;
   color: var(--secondary);
   border: 1px solid var(--lightgray);
   border-radius: 3px;
   background-color: var(--light);
   position: relative;
-  margin-inline-end: 0.2rem;
-  margin-inline-start: -1.4rem;
+  pointer-events: auto;
+  z-index: 2;
+  margin-inline-end: 0.4rem;
+  margin-inline-start: 0;
   appearance: none;
   width: 16px;
   height: 16px;
