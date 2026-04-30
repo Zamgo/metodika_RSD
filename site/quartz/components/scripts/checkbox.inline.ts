@@ -8,6 +8,10 @@ document.addEventListener("nav", () => {
   ) as NodeListOf<HTMLInputElement>
   checkboxes.forEach((el, index) => {
     const elId = checkboxId(index)
+    // Some markdown pipelines keep boolean `disabled` present ("disabled=false"),
+    // which still disables the input in browser. Force-enable for interactive demo.
+    el.disabled = false
+    el.removeAttribute("disabled")
 
     const switchState = (e: Event) => {
       const newCheckboxState = (e.target as HTMLInputElement)?.checked ? "true" : "false"

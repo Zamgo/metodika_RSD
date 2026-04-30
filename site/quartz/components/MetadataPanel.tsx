@@ -53,10 +53,43 @@ const PREFERRED_FIELDS: FieldDef[] = [
 
 const FRONTMATTER_HIDDEN_KEYS = new Set(["title"])
 
+const TECHNICAL_LABELS: Record<string, string> = {
+  cssclasses: "CSS třídy",
+  publish: "Publikovat",
+  permalink: "Trvalý odkaz",
+  tags: "Štítky",
+  created: "Vytvořeno",
+  modified: "Upraveno",
+  casova_poznamka: "Časová poznámka",
+  casove_pravidlo: "Časové pravidlo",
+  etapa: "Etapa",
+  lhuta: "Lhůta",
+  lhuta_typ: "Typ lhůty",
+  opakovatelnost: "Opakovatelnost",
+  poznamka_k_ukonceni: "Poznámka k ukončení",
+  rezim_cinnosti: "Režim činnosti",
+  spousteci_udalost: "Spouštěcí událost",
+  typ: "Typ",
+  ukoncovaci_podminka: "Ukončovací podmínka",
+}
+
+function humanizeKey(key: string): string {
+  const normalized = key
+    .replace(/([a-z0-9])([A-Z])/g, "$1 $2")
+    .replace(/[_-]+/g, " ")
+    .replace(/\s+/g, " ")
+    .trim()
+
+  if (!normalized) return key
+  return normalized.charAt(0).toUpperCase() + normalized.slice(1)
+}
+
 function toReadableLabel(key: string): string {
   const fromPreferred = PREFERRED_FIELDS.find((f) => f.key === key)?.label
   if (fromPreferred) return fromPreferred
-  return key
+  const fromTechnical = TECHNICAL_LABELS[key]
+  if (fromTechnical) return fromTechnical
+  return humanizeKey(key)
 }
 
 function normalizeValue(v: unknown): string[] {
