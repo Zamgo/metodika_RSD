@@ -18,8 +18,16 @@ function initCheckboxPersistence() {
       localStorage.setItem(elId, newCheckboxState)
     }
 
+    const forceToggle = (e: Event) => {
+      e.preventDefault()
+      el.checked = !el.checked
+      localStorage.setItem(elId, el.checked ? "true" : "false")
+    }
+
     if (!el.dataset.checkboxPersistenceBound) {
+      el.addEventListener("click", forceToggle)
       el.addEventListener("change", switchState)
+      window.addCleanup(() => el.removeEventListener("click", forceToggle))
       window.addCleanup(() => el.removeEventListener("change", switchState))
       el.dataset.checkboxPersistenceBound = "true"
     }
