@@ -20,6 +20,7 @@ function initCheckboxPersistence() {
 
     const forceToggle = (e: Event) => {
       e.preventDefault()
+      e.stopPropagation()
       el.checked = !el.checked
       localStorage.setItem(elId, el.checked ? "true" : "false")
     }
@@ -37,7 +38,7 @@ function initCheckboxPersistence() {
       const onRowClick = (event: Event) => {
         const target = event.target as HTMLElement | null
         if (!target) return
-        if (target.closest("a, button, input, label")) return
+        if (target.closest("a, button")) return
         el.checked = !el.checked
         localStorage.setItem(elId, el.checked ? "true" : "false")
       }

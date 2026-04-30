@@ -4,7 +4,6 @@ typ: faq
 faze:
   - "realizace"
 stav: draft
-permalink: knihovna-pruvodce/faq-zkusenosti-z-projektu-rsd-cde
 ---
 
 # FAQ - Zkušenosti z projektů ŘSD (CDE)
