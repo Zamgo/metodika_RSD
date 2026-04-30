@@ -2,7 +2,7 @@ import { getFullSlug } from "../../util/path"
 
 const checkboxId = (index: number) => `${getFullSlug(window)}-checkbox-${index}`
 
-document.addEventListener("nav", () => {
+function initCheckboxPersistence() {
   const checkboxes = document.querySelectorAll(
     ".article-surface input[type='checkbox']",
   ) as NodeListOf<HTMLInputElement>
@@ -27,4 +27,9 @@ document.addEventListener("nav", () => {
       el.checked = true
     }
   })
-})
+}
+
+document.addEventListener("nav", initCheckboxPersistence)
+// Fallback for cases where `nav` did not fire yet.
+document.addEventListener("DOMContentLoaded", initCheckboxPersistence)
+initCheckboxPersistence()

@@ -176,7 +176,7 @@ export const RoamFlavoredMarkdown: QuartzTransformerPlugin<Partial<Options> | un
               TODORegex,
               () => ({
                 type: "html",
-                value: `<input type="checkbox" disabled>`,
+                value: `<input type="checkbox">`,
               }),
             ])
           }
@@ -186,7 +186,7 @@ export const RoamFlavoredMarkdown: QuartzTransformerPlugin<Partial<Options> | un
               DONERegex,
               () => ({
                 type: "html",
-                value: `<input type="checkbox" checked disabled>`,
+                value: `<input type="checkbox" checked>`,
               }),
             ])
           }

@@ -664,7 +664,6 @@ export const ObsidianFlavoredMarkdown: QuartzTransformerPlugin<Partial<Options>>
                 const isChecked = node.properties?.checked ?? false
                 node.properties = {
                   type: "checkbox",
-                  disabled: false,
                   checked: isChecked,
                   class: "checkbox-toggle",
                 }

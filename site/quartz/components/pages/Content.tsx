@@ -1,6 +1,8 @@
 import { ComponentChildren } from "preact"
 import { htmlToJsx } from "../../util/jsx"
 import { QuartzComponent, QuartzComponentConstructor, QuartzComponentProps } from "../types"
+// @ts-ignore
+import checkboxScript from "../scripts/checkbox.inline"
 
 const Content: QuartzComponent = ({ fileData, tree }: QuartzComponentProps) => {
   const content = htmlToJsx(fileData.filePath!, tree) as ComponentChildren
@@ -12,5 +14,7 @@ const Content: QuartzComponent = ({ fileData, tree }: QuartzComponentProps) => {
     </article>
   )
 }
+
+Content.afterDOMLoaded = checkboxScript
 
 export default (() => Content) satisfies QuartzComponentConstructor
