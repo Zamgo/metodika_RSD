@@ -14,8 +14,8 @@ type FieldDef = {
   label: string
 }
 
-/** Pořadí polí jako ve frontmatteru úkolu (např. 1.1.3) */
-const FIELDS: FieldDef[] = [
+/** Prioritní pořadí známých polí; zbytek se doplní dynamicky dle frontmatteru. */
+const PREFERRED_FIELDS: FieldDef[] = [
   { key: "oznaceni", label: "Označení" },
   { key: "popis", label: "Popis" },
   { key: "zdroj", label: "Zdroj" },
@@ -45,20 +45,19 @@ const FIELDS: FieldDef[] = [
   { key: "predchozi_cinnost", label: "Předchozí činnost" },
   { key: "nasledujici_cinnost", label: "Následující činnost" },
   { key: "nastroj", label: "Nástroj" },
-]
-
-/** Metadata panel pro typy role / smluvní strana — zobrazuje strukturovaná data
- *  z frontmatteru, která dříve renderoval RolePortal. */
-const ROLE_FIELDS: FieldDef[] = [
   { key: "aliases", label: "Další názvy" },
   { key: "nadrizena_role", label: "Nadřízená role" },
   { key: "ekvivalent", label: "Ekvivalent" },
   { key: "ramec", label: "Rámec" },
-  { key: "stav", label: "Stav" },
 ]
 
-const ACTIVITY_TYPES = new Set(["cinnost", "ukol"])
-const ROLE_TYPES = new Set(["role", "smluvni_strana"])
+const FRONTMATTER_HIDDEN_KEYS = new Set(["title"])
+
+function toReadableLabel(key: string): string {
+  const fromPreferred = PREFERRED_FIELDS.find((f) => f.key === key)?.label
+  if (fromPreferred) return fromPreferred
+  return key
+}
 
 function normalizeValue(v: unknown): string[] {
   if (v == null) return []
@@ -75,19 +74,24 @@ function normalizeValue(v: unknown): string[] {
 
 const MetadataPanel: QuartzComponent = ({ fileData, displayClass, allFiles }: QuartzComponentProps) => {
   const fm = (fileData.frontmatter ?? {}) as FrontmatterLike
-  const typ = String(fm.typ ?? "")
-  const isRole = ROLE_TYPES.has(typ)
-  const showAllFields = ACTIVITY_TYPES.has(typ)
   const pageSlug = fileData.slug as FullSlug | undefined
   const resolveNote = createSlugResolverFromAllFiles(allFiles)
 
-  const activeFields = isRole ? ROLE_FIELDS : FIELDS
-  const rows = activeFields.map(({ key, label }) => {
+  const preferredKeys = PREFERRED_FIELDS.map((f) => f.key)
+  const knownKeys = new Set(preferredKeys)
+  const dynamicKeys = Object.keys(fm).filter((key) => !knownKeys.has(key) && !FRONTMATTER_HIDDEN_KEYS.has(key))
+
+  const orderedKeys = [
+    ...preferredKeys.filter((key) => key in fm && !FRONTMATTER_HIDDEN_KEYS.has(key)),
+    ...dynamicKeys.sort((a, b) => a.localeCompare(b, "cs")),
+  ]
+
+  const rows = orderedKeys.map((key) => {
     const values = normalizeValue(fm[key])
-    return { key, label, values }
+    return { key, label: toReadableLabel(key), values }
   })
 
-  const displayRows = showAllFields ? rows : rows.filter((row) => row.values.length > 0)
+  const displayRows = rows.filter((row) => row.values.length > 0 || row.key in fm)
 
   if (displayRows.length === 0) return null
 
