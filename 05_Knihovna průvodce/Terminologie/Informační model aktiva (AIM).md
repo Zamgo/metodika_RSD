@@ -2,7 +2,6 @@
 title: Informační model aktiva (AIM)
 typ: term
 faze: [provoz]
-workflow: []
 stav: draft
 permalink: /pojem/cde/aim
 aliases: [AIM]

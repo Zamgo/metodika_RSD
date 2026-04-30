@@ -87,17 +87,17 @@ function escapeHtml(s: string): string {
     .replace(/"/g, "&quot;")
 }
 
-const META_DIMS = ["faze", "role", "workflow"] as const
+const META_DIMS = ["faze", "role", "navazane_workflow"] as const
 
 const DIM_LABELS_CS: Record<string, string> = {
   faze: "Fáze",
   role: "Role",
-  workflow: "Workflow",
+  navazane_workflow: "Navázané workflow",
 }
 const DIM_LABELS_EN: Record<string, string> = {
   faze: "Phase",
   role: "Role",
-  workflow: "Workflow",
+  navazane_workflow: "Linked workflows",
 }
 
 function getPageDimValues(slug: FullSlug, dim: string, data: ContentIndex): string[] {

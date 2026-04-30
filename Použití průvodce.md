@@ -3,7 +3,6 @@ title: Cíl a použití průvodce
 description: Cíl a použití průvodce
 typ: index
 faze: []
-workflow: []
 stav: draft
 aliases:
 ---

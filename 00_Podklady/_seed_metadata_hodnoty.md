@@ -2,7 +2,6 @@
 title: Seed metadata hodnoty (Obsidian)
 typ: catalog
 faze: []
-workflow: []
 stav: draft
 permalink: /sprava-obsahu/seed-metadata-hodnoty
 etapa:

@@ -25,7 +25,7 @@ export type ContentIndexMap = Map<FullSlug, ContentDetails>
 export type PageMeta = Record<string, unknown>
 
 const FM_SKIP_KEYS = new Set(["title", "tags", "aliases", "cssclasses", "publish", "permalink"])
-const FM_ARRAY_KEYS = new Set(["faze", "role", "workflow"])
+const FM_ARRAY_KEYS = new Set(["faze", "role", "navazane_workflow"])
 
 function normalizeFmValue(v: unknown): unknown {
   if (v == null) return undefined

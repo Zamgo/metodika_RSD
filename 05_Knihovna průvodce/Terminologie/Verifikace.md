@@ -2,7 +2,6 @@
 title: Verifikace
 typ: term
 faze: [priprava]
-workflow: []
 stav: draft
 permalink: /pojem/rizeni/verifikace
 ---

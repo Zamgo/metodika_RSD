@@ -2,7 +2,6 @@
 title: CDE nástroj
 typ: term
 faze: [priprava]
-workflow: []
 stav: draft
 permalink: /pojem/cde/cde-nastroj
 aliases: [CDE nástroj]

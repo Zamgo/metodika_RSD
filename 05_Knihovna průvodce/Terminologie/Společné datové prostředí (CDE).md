@@ -2,7 +2,6 @@
 title: Společné datové prostředí (CDE)
 typ: term
 faze: [priprava]
-workflow: []
 stav: draft
 permalink: /pojem/cde/spolecne-datove-prostredi
 aliases: [CDE, Common Data Environment, Spolecne datove prostredi]

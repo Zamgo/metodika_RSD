@@ -2,7 +2,6 @@
 title: Důvodová zpráva k části první - Zákon o správě informací o stavbě a vystavěném prostředí
 typ: term
 faze: []
-workflow: []
 stav: draft
 aliases:
   - Důvodová zpráva k části první

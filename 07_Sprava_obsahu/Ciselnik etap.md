@@ -2,7 +2,6 @@
 title: Ciselnik etap
 typ: catalog
 faze: []
-workflow: []
 stav: draft
 permalink: /sprava-obsahu/ciselnik-etap
 aliases: [Číselník etap]

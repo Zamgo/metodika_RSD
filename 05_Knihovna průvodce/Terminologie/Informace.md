@@ -2,7 +2,6 @@
 title: Informace
 typ: term
 faze: [priprava]
-workflow: []
 stav: draft
 permalink: /pojem/cde/informace
 ---

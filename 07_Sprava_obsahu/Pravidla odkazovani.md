@@ -2,7 +2,6 @@
 title: Pravidla odkazovani
 typ: catalog
 faze: []
-workflow: []
 stav: draft
 permalink: /sprava-obsahu/pravidla-odkazovani
 aliases: [Pravidla odkazování]

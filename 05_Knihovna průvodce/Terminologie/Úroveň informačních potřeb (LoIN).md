@@ -2,7 +2,6 @@
 title: Úroveň informačních potřeb (LoIN)
 typ: term
 faze: [priprava]
-workflow: []
 stav: draft
 permalink: /pojem/cde/loin
 aliases: [LoIN]

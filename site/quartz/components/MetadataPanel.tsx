@@ -36,7 +36,6 @@ const FIELDS: FieldDef[] = [
     key: "I - Informování po dokončení činnosti",
     label: "I - Informování po dokončení činnosti",
   },
-  { key: "workflow", label: "Workflow" },
   { key: "stav", label: "Stav" },
   { key: "oblast", label: "Metadata oblasti" },
   { key: "cinnost", label: "Činnost" },
@@ -46,7 +45,6 @@ const FIELDS: FieldDef[] = [
   { key: "predchozi_cinnost", label: "Předchozí činnost" },
   { key: "nasledujici_cinnost", label: "Následující činnost" },
   { key: "nastroj", label: "Nástroj" },
-  { key: "frekvence", label: "Frekvence" },
 ]
 
 /** Metadata panel pro typy role / smluvní strana — zobrazuje strukturovaná data

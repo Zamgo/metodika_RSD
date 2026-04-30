@@ -2,7 +2,6 @@
 title: Účel užití
 typ: term
 faze: [priprava]
-workflow: []
 stav: draft
 permalink: /pojem/rizeni/ucel-uziti
 aliases: [Ucel uziti]

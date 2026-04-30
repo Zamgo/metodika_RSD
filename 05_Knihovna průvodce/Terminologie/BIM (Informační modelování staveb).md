@@ -2,7 +2,6 @@
 title: BIM (Informační modelování staveb)
 typ: term
 faze: [priprava]
-workflow: []
 stav: draft
 permalink: /pojem/cde/bim
 aliases: [BIM]

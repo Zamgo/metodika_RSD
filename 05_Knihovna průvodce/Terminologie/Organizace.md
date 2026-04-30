@@ -2,7 +2,6 @@
 title: Organizace
 typ: term
 faze: []
-workflow: []
 stav: draft
 permalink: /pojem/cde/organizace
 ---

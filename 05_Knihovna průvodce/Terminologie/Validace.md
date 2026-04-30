@@ -2,7 +2,6 @@
 title: Validace
 typ: term
 faze: [priprava]
-workflow: []
 stav: draft
 permalink: /pojem/rizeni/validace
 ---

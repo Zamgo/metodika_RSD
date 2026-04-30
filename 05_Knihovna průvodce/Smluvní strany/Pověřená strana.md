@@ -3,7 +3,6 @@ title: Pověřená strana
 typ: smluvni_strana
 ramec: ISO19650
 faze: [priprava, realizace]
-workflow: []
 stav: draft
 permalink: /pojem/smluvni-strana/poverena-strana
 ---

@@ -2,7 +2,6 @@
 title: Ciselnik roli
 typ: catalog
 faze: []
-workflow: []
 stav: draft
 permalink: /sprava-obsahu/ciselnik-roli
 aliases: [Číselník rolí]

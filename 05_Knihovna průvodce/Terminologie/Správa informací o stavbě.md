@@ -2,7 +2,6 @@
 title: Správa informací o stavbě
 typ: term
 faze: [priprava]
-workflow: []
 stav: draft
 permalink: /pojem/cde/sprava-informaci-o-stavbe
 ---

@@ -2,7 +2,6 @@
 title: Ciselnik fazi
 typ: catalog
 faze: []
-workflow:
 stav: draft
 permalink: /sprava-obsahu/ciselnik-fazi
 aliases:

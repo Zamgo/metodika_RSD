@@ -2,7 +2,6 @@
 title: Ciselnik spousteci udalost
 typ: catalog
 faze: []
-workflow: []
 stav: draft
 permalink: /sprava-obsahu/ciselnik-spousteci-udalost
 aliases: [Číselník spouštěcích událostí]

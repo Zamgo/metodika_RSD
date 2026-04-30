@@ -2,7 +2,6 @@
 title: Požadavky na projektové informace (PIR)
 typ: term
 faze: [priprava]
-workflow: []
 stav: draft
 permalink: /pojem/cde/pir
 aliases: [PIR]

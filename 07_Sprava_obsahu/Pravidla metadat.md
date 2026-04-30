@@ -2,7 +2,6 @@
 title: Pravidla metadat
 typ: catalog
 faze: []
-workflow: []
 stav: draft
 permalink: /sprava-obsahu/pravidla-metadat
 ---
@@ -18,7 +17,6 @@ Tato stránka definuje jednotná pravidla pro frontmatter ve všech stránkách 
 | `title` | Název stránky | text |
 | `typ` | Typ stránky (viz níže) | text |
 | `faze` | Fáze projektu, ve kterých je obsah relevantní | seznam |
-| `workflow` | Související workflow (u stránek s `typ: workflow` se **neuvádí** — je nadbytečné) | seznam |
 | `stav` | Redakční stav | text |
 | `permalink` | Stabilní URL pro Quartz | text |
 | `tags` | Volné štítky pro vyhledávání | seznam |
@@ -46,12 +44,11 @@ Tato stránka definuje jednotná pravidla pro frontmatter ve všech stránkách 
 | `cinnost` | Wikilink na nadřazenou činnost | wikilink | `cinnost`, `ukol` |
 | `vstupy` | Wikilinky na vstupní dokumenty/artefakty | seznam wikilinků | všechny |
 | `vystupy` | Wikilinky na výstupní artefakty | seznam wikilinků | všechny |
-| `navazane_workflow` | Wikilinky na workflow stránky v `03_CDE_workflow/` | seznam wikilinků | všechny |
+| `navazane_workflow` | Wikilinky na workflow stránky v `05_Knihovna průvodce/CDE workflow/` | seznam wikilinků | všechny |
 | `predchozi_cinnost` | Wikilink na předchozí úkol v sekvenci | wikilink | `ukol` |
 | `nasledujici_cinnost` | Wikilink na následující úkol v sekvenci | wikilink | `ukol` |
 | `nastroj` | CDE nástroje relevantní pro činnost (`controlis`, `aspehub`, ...) | seznam | `ukol` |
 | `etapa` | Etapa stavebního projektu (jemnější granularita než `faze`); viz [[Ciselnik etap]] | seznam | `cinnost`, `ukol` |
-| `frekvence` | **DEPRECATED** — nahrazeno klíčem `opakovatelnost` (viz sekce „Klíče časového chování"). Stávající soubory s `frekvence` zůstávají platné, nové činnosti vyplňují `opakovatelnost`. | text | `ukol` |
 
 ## Klíče časového chování (typ `ukol`)
 
@@ -61,7 +58,7 @@ Tato vrstva metadat popisuje, **kdy** se činnost provádí, **čím** je aktivo
 |------|-------|-----|-----------|
 | `rezim_cinnosti` | Jak se činnost chová v čase (`fazova`, `milnikova`, `udalostni`, `periodicka`, `prubezna`, `podminena`, `aktualizacni`); viz [[Ciselnik rezimu cinnosti]] | text | volitelné |
 | `spousteci_udalost` | Co činnost aktivuje (1–3 hodnoty); viz [[Ciselnik spousteci udalost]] | seznam | doporučené |
-| `opakovatelnost` | Jak často se činnost provádí; viz [[Ciselnik opakovatelnosti]]. **Nahrazuje** deprecated `frekvence`. | text | doporučené |
+| `opakovatelnost` | Jak často se činnost provádí; viz [[Ciselnik opakovatelnosti]]. | text | doporučené |
 | `casove_pravidlo` | Pozice činnosti vůči `spousteci_udalost` (`pred`, `pri`, `ihned_po`, `po`, `prubezne`, `ve_lhute`); viz [[Ciselnik casoveho pravidla]]. Default `po` (reaktivní) — pokud sedí default, klíč nevyplňovat. | text | volitelné |
 | `casova_poznamka` | Volné slovní upřesnění časového pravidla (např. „do 5 pracovních dnů od odevzdání modelu") | text | volitelné |
 | `lhuta` | Konkrétní časový limit (volný text, např. „Do 28 kalendářních dnů od oznámení") | text | volitelné |
@@ -87,7 +84,7 @@ V praxi je `casove_pravidlo` často odvoditelné z `rezim_cinnosti` (např. peri
 |------|-------|-----|
 | `navazane_cinnosti` | Zpětné wikilinky na činnosti, které workflow využívají | seznam wikilinků |
 
-Klíč `workflow` z obecné sady se u těchto stránek nepoužívá (identita workflow je daná souborem a `permalink`).
+Identita workflow je daná souborem a `permalink`.
 
 ## Povolené hodnoty `typ`
 
@@ -141,7 +138,6 @@ Následující pole se vždy zapisují jako seznamy (i když obsahují jen jednu
 - `faze`
 - `etapa`
 - `role`
-- `workflow`
 - `tags`
 - `vstupy`
 - `vystupy`
@@ -158,7 +154,6 @@ Hodnoty pro řízené klíče se berou **výhradně** z číselníků. Volný te
 
 - [[Ciselnik fazi]] — pro `faze`
 - [[Ciselnik etap]] — pro `etapa` (včetně mapování `etapa → faze`)
-- [[Ciselnik workflow]] — pro `workflow`
 - [[Ciselnik roli]] — pro RACI klíče a smluvní strany
 - [[Ciselnik_RACI_hodnot]] — povolené R/A/C/I hodnoty
 
@@ -222,7 +217,6 @@ Používané hodnoty (v prvním průchodu):
 title: ZBV
 typ: workflow
 faze: [realizace]
-workflow: [zbv]
 stav: draft
 permalink: /workflow/zbv
 ---
@@ -243,7 +237,6 @@ R - Odpovědnost za provádění činnosti: []
 A - Právní odpovědnost za dokončení činnosti: []
 C - Konzultace v průběhu činnosti: []
 I - Informování po dokončení činnosti: []
-workflow: []
 stav: draft
 oblast: "[[4 - Proces managementu informací – Pověření]]"
 cinnost: "[[4.5 - Stanovení hlavního plánu předávání informací (MIDP)]]"

@@ -2,7 +2,6 @@
 title: Shrnutí Zákonu o správě informací o stavbě a vystavěném prostředí
 typ: term
 faze: []
-workflow: []
 stav: draft
 aliases:
 ---

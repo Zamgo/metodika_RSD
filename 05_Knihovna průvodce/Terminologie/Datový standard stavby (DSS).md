@@ -2,7 +2,6 @@
 title: Datový standard stavby (DSS)
 typ: term
 faze: [priprava]
-workflow: []
 stav: draft
 permalink: /pojem/cde/dss
 aliases: [DSS]

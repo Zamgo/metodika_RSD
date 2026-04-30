@@ -2,7 +2,6 @@
 title: Výměna informací
 typ: term
 faze: [priprava]
-workflow: []
 stav: draft
 permalink: /pojem/cde/vymena-informaci
 ---

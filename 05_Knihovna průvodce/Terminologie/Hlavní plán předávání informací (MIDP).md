@@ -2,7 +2,6 @@
 title: Hlavní plán předávání informací (MIDP)
 typ: term
 faze: [priprava]
-workflow: []
 stav: draft
 permalink: /pojem/cde/midp
 aliases: [MIDP]

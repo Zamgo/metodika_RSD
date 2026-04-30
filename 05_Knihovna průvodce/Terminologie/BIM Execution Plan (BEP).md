@@ -2,7 +2,6 @@
 title: BIM Execution Plan (BEP)
 typ: term
 faze: [priprava]
-workflow: [bep]
 stav: draft
 permalink: /pojem/cde/bep
 aliases: [BEP]

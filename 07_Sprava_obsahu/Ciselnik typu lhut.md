@@ -2,7 +2,6 @@
 title: Ciselnik typu lhut
 typ: catalog
 faze: []
-workflow: []
 stav: draft
 permalink: /sprava-obsahu/ciselnik-typu-lhut
 aliases: [Číselník typů lhůt]

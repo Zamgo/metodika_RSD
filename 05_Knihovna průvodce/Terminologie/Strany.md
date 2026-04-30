@@ -2,7 +2,6 @@
 title: Strany
 typ: term
 faze: [priprava]
-workflow: []
 stav: draft
 permalink: /pojem/cde/strany
 ---

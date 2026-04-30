@@ -2,7 +2,6 @@
 title: Požadavky organizace na informace (OIR)
 typ: term
 faze: [priprava]
-workflow: []
 stav: draft
 permalink: /pojem/cde/oir
 aliases: [OIR]

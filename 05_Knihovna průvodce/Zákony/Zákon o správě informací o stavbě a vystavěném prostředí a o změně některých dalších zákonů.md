@@ -2,7 +2,6 @@
 title: Zákon č. 330/2025 Sb. o správě informací o stavbě a vystavěném prostředí a o změně některých dalších zákonů
 typ: term
 faze: []
-workflow: []
 stav: draft
 aliases:
   - Zákon

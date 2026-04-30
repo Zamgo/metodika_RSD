@@ -2,7 +2,6 @@
 title: Informační model stavby
 typ: term
 faze: [priprava]
-workflow: []
 stav: draft
 permalink: /pojem/cde/informacni-model-stavby
 aliases: [IMS]

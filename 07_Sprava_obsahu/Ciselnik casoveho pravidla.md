@@ -2,7 +2,6 @@
 title: Ciselnik casoveho pravidla
 typ: catalog
 faze: []
-workflow: []
 stav: draft
 permalink: /sprava-obsahu/ciselnik-casoveho-pravidla
 aliases: [Číselník časového pravidla]

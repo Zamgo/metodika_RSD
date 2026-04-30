@@ -256,7 +256,6 @@ def process_oblasti(dry_run: bool) -> dict:
                 new_fields.append(f"predchozi_cinnost: {prev_link if prev_link else empty}")
                 new_fields.append(f"nasledujici_cinnost: {next_link if next_link else empty}")
                 new_fields.append("nastroj: []")
-                new_fields.append('frekvence: ""')
 
             fm_lines.extend(new_fields)
             changed = True

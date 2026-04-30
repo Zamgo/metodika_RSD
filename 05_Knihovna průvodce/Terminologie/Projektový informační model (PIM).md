@@ -2,7 +2,6 @@
 title: Projektový informační model (PIM)
 typ: term
 faze: [priprava]
-workflow: []
 stav: draft
 permalink: /pojem/cde/pim
 aliases: [PIM]

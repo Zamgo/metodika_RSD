@@ -2,7 +2,6 @@
 title: Aktivum
 typ: term
 faze: [priprava]
-workflow: []
 stav: draft
 permalink: /pojem/cde/aktivum
 ---

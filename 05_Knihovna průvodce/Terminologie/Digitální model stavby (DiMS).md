@@ -2,7 +2,6 @@
 title: Digitální model stavby (DiMS)
 typ: term
 faze: [priprava]
-workflow: []
 stav: draft
 permalink: /pojem/cde/dims
 aliases: [DiMS, Digitální model stavby]

@@ -6,7 +6,6 @@ aliases:
   - Zhotovitel
   - Hlavní zhotovitel
 faze: [priprava, realizace]
-workflow: []
 stav: draft
 permalink: /pojem/smluvni-strana/vedouci-poverena-strana
 show_na_rozcestniku: true

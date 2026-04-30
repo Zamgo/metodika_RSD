@@ -2,7 +2,6 @@
 title: Metadata
 typ: term
 faze: [priprava]
-workflow: []
 stav: draft
 permalink: /pojem/cde/metadata
 ---

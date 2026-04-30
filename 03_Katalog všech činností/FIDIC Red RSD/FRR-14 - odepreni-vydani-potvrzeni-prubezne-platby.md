@@ -13,7 +13,6 @@ A - Právní odpovědnost za dokončení činnosti: []
 C - Konzultace v průběhu činnosti:
   []
 I - Informování po dokončení činnosti: []
-workflow: []
 stav: draft
 oblast: ""
 cinnost: ""

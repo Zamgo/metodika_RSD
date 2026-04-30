@@ -2,7 +2,6 @@
 title: Ciselnik ukoncovacich podminek
 typ: catalog
 faze: []
-workflow: []
 stav: draft
 permalink: /sprava-obsahu/ciselnik-ukoncovacich-podminek
 aliases: [Číselník ukončovacích podmínek]

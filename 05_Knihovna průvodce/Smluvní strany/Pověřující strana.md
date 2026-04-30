@@ -6,7 +6,6 @@ aliases:
   - Objednatel
   - ŘSD
 faze: [priprava]
-workflow: []
 stav: draft
 permalink: /pojem/smluvni-strana/poverujici-strana
 show_na_rozcestniku: true

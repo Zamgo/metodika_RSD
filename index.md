@@ -3,7 +3,6 @@ title: Praktický průvodce správou informací o stavbě na projektech ŘSD
 description: Praktický průvodce správou informací o stavbě na projektech ŘSD
 typ: index
 faze: []
-workflow: []
 stav: draft
 aliases:
   - Domů

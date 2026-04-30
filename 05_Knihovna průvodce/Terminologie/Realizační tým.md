@@ -2,7 +2,6 @@
 title: Realizační tým
 typ: term
 faze: [priprava]
-workflow: []
 stav: draft
 permalink: /pojem/cde/realizacni-tym
 ---

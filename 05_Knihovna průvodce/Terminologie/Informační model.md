@@ -2,7 +2,6 @@
 title: Informační model
 typ: term
 faze: [priprava]
-workflow: []
 stav: draft
 permalink: /pojem/cde/informacni-model
 ---

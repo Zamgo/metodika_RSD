@@ -2,7 +2,6 @@
 title: Workflow
 typ: term
 faze: [priprava]
-workflow: []
 stav: draft
 permalink: /pojem/rizeni/workflow
 aliases: [Pracovní postup]

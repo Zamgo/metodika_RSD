@@ -2,7 +2,6 @@
 title: Přístupová oprávnění
 typ: term
 faze: [priprava]
-workflow: []
 stav: draft
 permalink: /pojem/rizeni/pristupova-opravneni
 aliases: [Pristupova opravneni]

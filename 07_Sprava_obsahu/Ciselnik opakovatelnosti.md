@@ -2,7 +2,6 @@
 title: Ciselnik opakovatelnosti
 typ: catalog
 faze: []
-workflow: []
 stav: draft
 permalink: /sprava-obsahu/ciselnik-opakovatelnosti
 aliases: [Číselník opakovatelnosti]
@@ -13,10 +12,6 @@ aliases: [Číselník opakovatelnosti]
 Tento číselník je jediný zdroj hodnot pro metadata `opakovatelnost`. Říká, jak často se činnost typicky provádí.
 
 Pole je single-select.
-
-## Vztah k poli `frekvence`
-
-**Pole `opakovatelnost` nahrazuje původní pole `frekvence`** (deprecated). Nové činnosti vyplňují `opakovatelnost`. Staré soubory s `frekvence` se v MVP nemigrují — zůstávají platné, ale klíč už není v pravidlech doporučován.
 
 ## Hodnoty (ID)
 

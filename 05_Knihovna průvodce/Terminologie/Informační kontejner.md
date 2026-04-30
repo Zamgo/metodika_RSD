@@ -2,7 +2,6 @@
 title: Informační kontejner
 typ: term
 faze: [priprava]
-workflow: []
 stav: draft
 permalink: /pojem/cde/informacni-kontejner
 ---

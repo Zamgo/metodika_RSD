@@ -2,7 +2,6 @@
 title: Auditní stopa
 typ: term
 faze: [priprava]
-workflow: []
 stav: draft
 permalink: /pojem/rizeni/auditni-stopa
 aliases: [Auditni stopa]

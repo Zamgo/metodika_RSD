@@ -2,7 +2,6 @@
 title: Předběžný plán realizace BIM (Pre-BEP)
 typ: term
 faze: [priprava]
-workflow: [bep]
 stav: draft
 permalink: /pojem/cde/pre-bep
 aliases: [Pre-BEP, Předběžný BEP]

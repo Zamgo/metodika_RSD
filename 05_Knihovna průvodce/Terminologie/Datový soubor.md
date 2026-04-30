@@ -2,7 +2,6 @@
 title: Datový soubor
 typ: term
 faze: [priprava]
-workflow: []
 stav: draft
 permalink: /pojem/cde/datovy-soubor
 ---

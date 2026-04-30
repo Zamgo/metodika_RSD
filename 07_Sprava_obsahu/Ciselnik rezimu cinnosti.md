@@ -2,7 +2,6 @@
 title: Ciselnik rezimu cinnosti
 typ: catalog
 faze: []
-workflow: []
 stav: draft
 permalink: /sprava-obsahu/ciselnik-rezimu-cinnosti
 aliases: [Číselník režimu činnosti]

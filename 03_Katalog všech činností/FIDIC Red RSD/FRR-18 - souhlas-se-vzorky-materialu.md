@@ -1,22 +1,22 @@
 ---
-title: "FIDIC RSD - Souhlas se vzorky Materiálů"
+title: FIDIC RSD - Souhlas se vzorky Materiálů
 typ: ukol
 oznaceni: ""
-popis: "Správce stavby musí dát souhlas k použití Materiálů"
-zdroj: "FIDIC_red_RSD; 46; 7.2"
-faze: []
+popis: Správce stavby musí dát souhlas k použití Materiálů
+zdroj: FIDIC_red_RSD; 46; 7.2
+faze:
+  - realizace
 etapa:
   - realizace_stavby
   - predani_stavby
 R - Odpovědnost za provádění činnosti:
-  - "Správce stavby"
-A - Právní odpovědnost za dokončení činnosti: []
-C - Konzultace v průběhu činnosti:
-  []
+  - "[[Správce stavby]]"
+A - Právní odpovědnost za dokončení činnosti:
+  - "[[Správce stavby]]"
+C - Konzultace v průběhu činnosti: []
 I - Informování po dokončení činnosti: []
-workflow: []
 stav: draft
-oblast: ""
+oblast: Zkoušky, přejímací zkoušky a přejímací řízení.
 cinnost: ""
 vstupy: []
 vystupy: []
@@ -24,16 +24,15 @@ navazane_workflow: []
 predchozi_cinnost: ""
 nasledujici_cinnost: ""
 nastroj: []
-rezim_cinnosti: "podminena"
+rezim_cinnosti: podminena
 spousteci_udalost:
-  - kontrola_bim_review
-opakovatelnost: "podle_potreby"
-casove_pravidlo: "po"
+opakovatelnost: podle_potreby
+casove_pravidlo: po
 casova_poznamka: "Mapováno z časového bloku XLSX: 5. Zkoušky, přejímací zkoušky a přejímací řízení."
 lhuta: ""
 lhuta_typ: ""
-ukoncovaci_podminka: "vystup_schvalen"
-poznamka_k_ukonceni: "Odvozeno z názvu činnosti a popisu v podkladu FIDIC Red RSD."
+ukoncovaci_podminka: vystup_schvalen
+poznamka_k_ukonceni: Odvozeno z názvu činnosti a popisu v podkladu FIDIC Red RSD.
 ---
 
 # Popis

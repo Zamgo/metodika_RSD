@@ -14,7 +14,7 @@
               "type": "markdown",
               "state": {
                 "file": "03_Katalog všech činností/1.1.1 - Poverit jednotlivce pro management informaci.md",
-                "mode": "preview",
+                "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
@@ -219,12 +219,14 @@
       "bases:Vytvořit novou základnu": false
     }
   },
-  "active": "62b4535f5b718117",
+  "active": "c87f27a3c1c62110",
   "lastOpenFiles": [
+    "Požadavky na management informací.md",
+    "03_Katalog všech činností/1.1.1 - Poverit jednotlivce pro management informaci.md",
+    "03_Katalog všech činností/FIDIC Red RSD/FRR-18 - souhlas-se-vzorky-materialu.md",
     "03_Katalog všech činností/1.1 - Pověření jednotlivců k plnění funkcí při managementu informací.md",
     "03_Katalog všech činností/1 - Posouzení a zohlednění potřeb.md",
     "03_Katalog všech činností/FIDIC Red RSD/FRR-04 - nastavit-a-pripomenout-pravidla-komunikace-a-spoluprace-se-zhotovitelem-tymem-sps.md",
-    "03_Katalog všech činností/1.1.1 - Poverit jednotlivce pro management informaci.md",
     "03_Katalog všech činností/FIDIC Red RSD/FRR-16 - reakce-na-nepredvidatelne-fyzicke-podminky.md",
     "03_Katalog všech činností/FIDIC Red RSD/FRR-08 - kontrola-pristupu-na-staveniste-reseni-situaci.md",
     "00_Podklady/_sablona_ukol.md",
@@ -240,14 +242,12 @@
     "03_Katalog všech činností/FIDIC Red RSD/FRR-13 - potvrzeni-prubezne-platby.md",
     "03_Katalog všech činností/FIDIC Red RSD/FRR-15 - reakce-spravce-stavby-na-oznameni-zhotovitele-o-stavu-stavby.md",
     "03_Katalog všech činností/FIDIC Red RSD/FRR-17 - oznameni-spravce-stavby-o-neaktualnosti-predlozeneho-harmonogramu.md",
-    "03_Katalog všech činností/FIDIC Red RSD/FRR-18 - souhlas-se-vzorky-materialu.md",
     "03_Katalog všech činností/FIDIC Red RSD/FRR-16 - reakce-spravce-stavby-pokynem-na-oznameni-zhotovitele-o-oznameni-nepredvidatelnych-fyzickych-podmink.md",
     "03_Katalog všech činností/FIDIC Red RSD/FRR-19 - provedeni-zkousky-mereni-nebo-oznameni-o-neprovedeni-zkousky-mereni.md",
     "03_Katalog všech činností/FIDIC Red RSD/FRR-29 - vydani-potvrzeni-zaverecne-platby.md",
     "03_Katalog všech činností/FIDIC Red RSD/FRR-28 - vydani-potvrzeni-o-splneni-smlouvy.md",
     "03_Katalog všech činností/FIDIC Red RSD/FRR-27 - zjisteni-a-oznameni-vady-ci-nedodelku-behem-zarucni-doby.md",
     "03_Katalog všech činností/FIDIC Red RSD/FRR-26 - vydani-potvrzeni-prubezne-platby.md",
-    "03_Katalog všech činností/FIDIC Red RSD/FRR-25 - vydani-odmitnuti-vydani-potvrzeni-o-prevzeti.md",
     "scripts/tmp_regenerate_fidic_texts.py",
     "scripts/tmp_validate_fidic_seed.py",
     "03_Katalog všech činností/FIDIC Red RSD",

@@ -3,7 +3,6 @@ title: Šablony ke stažení
 description: Odkazy na stažení šablon a podkladů pro konfiguraci CDE a workflow (adresářová struktura, šablony workflow)
 typ: reference
 faze: [priprava]
-workflow: []
 stav: draft
 permalink: /reference/sablony-ke-stazeni
 aliases:
