@@ -23,6 +23,20 @@ function initCheckboxPersistence() {
       window.addCleanup(() => el.removeEventListener("change", switchState))
       el.dataset.checkboxPersistenceBound = "true"
     }
+
+    const taskItem = el.closest("li")
+    if (taskItem && !taskItem.dataset.checkboxRowToggleBound) {
+      const onRowClick = (event: Event) => {
+        const target = event.target as HTMLElement | null
+        if (!target) return
+        if (target.closest("a, button, input, label")) return
+        el.checked = !el.checked
+        localStorage.setItem(elId, el.checked ? "true" : "false")
+      }
+      taskItem.addEventListener("click", onRowClick)
+      window.addCleanup(() => taskItem.removeEventListener("click", onRowClick))
+      taskItem.dataset.checkboxRowToggleBound = "true"
+    }
     if (localStorage.getItem(elId) === "true") {
       el.checked = true
     }
