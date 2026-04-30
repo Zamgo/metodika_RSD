@@ -4,7 +4,7 @@ const checkboxId = (index: number) => `${getFullSlug(window)}-checkbox-${index}`
 
 document.addEventListener("nav", () => {
   const checkboxes = document.querySelectorAll(
-    "input.checkbox-toggle",
+    ".article-surface input[type='checkbox']",
   ) as NodeListOf<HTMLInputElement>
   checkboxes.forEach((el, index) => {
     const elId = checkboxId(index)
@@ -18,8 +18,11 @@ document.addEventListener("nav", () => {
       localStorage.setItem(elId, newCheckboxState)
     }
 
-    el.addEventListener("change", switchState)
-    window.addCleanup(() => el.removeEventListener("change", switchState))
+    if (!el.dataset.checkboxPersistenceBound) {
+      el.addEventListener("change", switchState)
+      window.addCleanup(() => el.removeEventListener("change", switchState))
+      el.dataset.checkboxPersistenceBound = "true"
+    }
     if (localStorage.getItem(elId) === "true") {
       el.checked = true
     }
